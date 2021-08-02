@@ -1,0 +1,177 @@
+{
+    "PRELOADER": {
+	"partition_name": "PRELOADER",
+	"file_name": "AUTO",
+        "is_download": true,
+	"type": "SV5_BL_BIN",
+	"linear_start_addr": 0,
+	"physical_start_addr": 0,
+	"partition_size": 16384,
+	"region": "NONE",
+        "is_reserved": false,
+	"operation_type": "BOOTLOADERS",
+	"file_type": "Raw data",
+        "d_type": "LOW_PAGE",
+        "is_upgradable": false,
+        "reserve": 0
+    },
+    "PRO_INFO": {
+        "operation_type": "PROTECTED",
+        "type": "NONE",
+	"file_type": "Raw data",
+	"d_type": "LOW_PAGE"
+    },
+    "NVRAM": {
+        "operation_type": "BINREGION",
+        "type": "NONE",
+	"file_type": "Raw data",
+	"d_type": "LOW_PAGE"
+    },
+    "SECCFG": {
+        "operation_type": "INVISIBLE",
+        "type": "NONE",
+	"file_type": "Raw data",
+	"d_type": "LOW_PAGE"
+    },
+    "UBOOT": {
+        "operation_type": "UPDATE",
+	"file_name": "lk.img",
+        "file_type": "Raw data",
+	"d_type": "LOW_PAGE"
+    },
+    "UBOOT2": {
+        "operation_type": "UPDATE",
+	"file_name": "lk.img",
+	"file_type": "Raw data",
+	"d_type": "LOW_PAGE"
+    },
+    "BOOTIMG": {
+        "operation_type": "UPDATE",
+	"file_name": "boot.img",
+        "file_type": "Raw data",
+	"d_type": "LOW_PAGE"
+    },
+    "RECOVERY": {
+        "operation_type": "UPDATE",
+	"file_name": "recovery.img",
+        "file_type": "Raw data",
+	"d_type": "LOW_PAGE"
+    },
+    "MISC": {
+        "operation_type": "INVISIBLE",
+	"file_type": "Raw data",
+	"d_type": "LOW_PAGE"
+    },
+    "MNB": {
+        "operation_type": "UPDATE",
+	"file_name": "mnb.img",
+        "file_type": "Raw data",
+	"d_type": "LOW_PAGE"
+    },
+    "LOGO": {
+        "operation_type": "UPDATE",
+	"file_name": "logo.bin",
+        "file_type": "Raw data",
+	"is_upgradable": false,
+	"d_type": "LOW_PAGE"
+    },
+    "DTBO": {
+	"operation_type": "UPDATE",
+        "file_name": "dtbo.img",
+	"file_type": "Raw data",
+	"d_type": "LOW_PAGE"
+    },
+    "EXPDB": {
+	"operation_type": "INVISIBLE",
+        "type": "NONE",
+        "is_upgradable": false,
+	"file_type": "Raw data",
+	"d_type": "LOW_PAGE"
+    },
+    "TEE1": {
+	"operation_type": "UPDATE",
+        "file_name": "tee.img",
+        "file_type": "Raw data",
+        "is_upgradable": true,
+	"d_type": "LOW_PAGE"
+    },
+    "TEE2": {
+	"operation_type": "UPDATE",
+        "file_name": "tee.img",
+        "file_type": "Raw data",
+        "is_upgradable": true,
+	"d_type": "LOW_PAGE"
+    },
+    "KB": {
+        "operation_type": "INVISIBLE",
+        "type": "NONE",
+	"file_type": "Raw data",
+	"d_type": "LOW_PAGE"
+    },
+    "DKB": {
+        "operation_type": "INVISIBLE",
+        "type": "NONE",
+	"file_type": "Raw data",
+	"d_type": "LOW_PAGE"
+    },
+    "METADATA": {
+        "operation_type": "INVISIBLE",
+        "type": "NONE",
+	"file_type": "Raw data",
+	"d_type": "LOW_PAGE"
+    },
+    "VBMETA": {
+	"operation_type": "UPDATE",
+	"file_name": "vbmeta.img",
+	"file_type": "Raw data",
+	"d_type": "LOW_PAGE"
+    },
+    "VBMETA_SYSTEM": {
+	"operation_type": "UPDATE",
+	"file_name": "vbmeta_system.img",
+	"file_type": "Raw data",
+	"d_type": "LOW_PAGE"
+    },
+    "VBMETA_VENDOR": {
+	"operation_type": "UPDATE",
+	"file_name": "vbmeta_vendor.img",
+	"file_type": "Raw data",
+	"d_type": "LOW_PAGE"
+    },
+    "SUPER": {
+        "file_name": "super.img",
+        "file_type": "Mntl data",
+	"d_type": "FULL_PAGE"
+    },
+    "ANDROID": {
+        "file_name": "system.img",
+        "file_type": "Mntl data",
+	"d_type": "FULL_PAGE"
+    },
+    "VENDOR": {
+        "file_name": "vendor.img",
+        "file_type": "Mntl data",
+	"d_type": "FULL_PAGE"
+    },
+    "CACHE": {
+        "file_name": "cache.img",
+        "file_type": "Mntl data",
+        "is_upgradable": true,
+	"d_type": "FULL_PAGE"
+    },
+    "USRDATA": {
+	"file_name": "userdata.img",
+        "file_type": "Mntl data",
+        "is_upgradable": false,
+	"d_type": "FULL_PAGE"
+    },
+    "BMTPOOL": {
+	"operation_type": "RESERVED",
+	"boundary_check": false,
+        "type": "NONE",
+	"is_reserved": true,
+	"file_type": "Raw data",
+	"is_upgradable": false,
+	"d_type": "LOW_PAGE"
+    }
+}

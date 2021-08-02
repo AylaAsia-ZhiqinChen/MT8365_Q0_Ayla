@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<!-- AGO: disable the automatic dimming animation to save cpu cycles -->
+<bool name="config_navigation_bar_enable_auto_dim_no_visible_wallpaper">false</bool>
+</resources>

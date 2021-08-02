@@ -1,0 +1,26 @@
+# ==============================================
+# Policy File of /system/bin/XoSetCap Executable File
+
+# ==============================================
+# Type Declaration
+# ==============================================
+
+#newverallow check failed
+
+#type XoSetCap, domain;
+#type XoSetCap_exec, exec_type, file_type;
+
+# ==============================================
+# Android Policy Rule
+# ==============================================
+#init_daemon_domain(XoSetCap)
+
+# new policy
+#allow XoSetCap device:dir {read write open};
+#allow XoSetCap kmsg_device:chr_file {read write open};
+#allow XoSetCap nvram_data_file:dir { add_name write search create};
+#allow XoSetCap nvram_data_file:file { write getattr setattr read create open };
+#allow XoSetCap nvram_device:blk_file { open read write };
+#allow XoSetCap block_device:dir {read write open ioctl search};
+#allow XoSetCap sysfs:file {read write open};
+

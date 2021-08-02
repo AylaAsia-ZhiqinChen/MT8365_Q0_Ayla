@@ -1,0 +1,3 @@
+#============= mtk_hal_bluetooth ==============
+allow mtk_hal_bluetooth nvram_data_file:dir search;
+allow mtk_hal_bluetooth nvram_data_file:file { open read write getattr };

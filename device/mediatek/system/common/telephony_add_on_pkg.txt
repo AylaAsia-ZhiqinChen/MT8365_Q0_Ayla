@@ -1,0 +1,5 @@
+com.mediatek.callrecorder
+com.mediatek.mms.appservice
+com.mediatek.ppl
+com.mediatek.simprocessor
+com.android.mms

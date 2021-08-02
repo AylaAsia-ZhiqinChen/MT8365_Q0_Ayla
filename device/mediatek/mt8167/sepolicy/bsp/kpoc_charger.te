@@ -1,0 +1,1 @@
+allow kpoc_charger mtd_device:blk_file {read open};

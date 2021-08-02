@@ -1,0 +1,6 @@
+# This file registers the release packages of a project.
+#
+# All release packages are assembled in one line, separated with one space
+# character. Empty lines and comments (lines starting with #) are ignored.
+
+basic kernel-4.14 modem product_aiot

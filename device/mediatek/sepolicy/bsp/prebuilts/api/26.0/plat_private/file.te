@@ -1,0 +1,25 @@
+# ATCI socket types
+type atci_serv_fw_socket, file_type;
+type atci_audio_socket, file_type;
+type atci_service_socket, file_type;
+type adb_atci_socket, file_type;
+
+# ATCI data file
+type atci_data_file, file_type, data_file_type, core_data_file_type;
+
+#define new type
+#path = "/sys/devices/platform/(charger|mt-battery)/BatteryNotify"
+type sysfs_battery_warning, fs_type, sysfs_type;
+
+# MOTA permission
+# Purpose: Allow GoogleOtaBinder to access proc and sysfs
+# path="/proc/cmdline"
+type mota_proc_file, fs_type, proc_type;
+
+#define new type for sn process
+#path = "/sys/class/android_usb/android0/iSerial"
+#path = "/sys/devices/platform/mt_usb/cmode"
+#path = "/sys/class/udc/musb-hdrc/device/cmode"
+type sysfs_android0_usb, fs_type, sysfs_type;
+type sysfs_mt_usb, fs_type, sysfs_type;
+type sysfs_musb_hdrc, fs_type, sysfs_type;

@@ -1,0 +1,12 @@
+# Date: WK18.32
+# Purpose: allow wlan_assistant access nvram for project didn't support
+#          nvdata partition
+
+allow wlan_assistant nvdata_file:lnk_file read;
+allow wlan_assistant nvram_data_file:dir { search read getattr open };
+allow wlan_assistant nvram_data_file:file { read getattr open };
+
+
+
+
+

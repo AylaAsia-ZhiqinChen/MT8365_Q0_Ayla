@@ -1,0 +1,11 @@
+<manifest version="1.0" type="device">
+    <hal format="hidl">
+        <name>vendor.mediatek.hardware.fm</name>
+        <transport>hwbinder</transport>
+        <version>1.0</version>
+        <interface>
+            <name>IFmRadio</name>
+            <instance>fm_hidl_service</instance>
+        </interface>
+    </hal>
+</manifest>

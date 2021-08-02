@@ -1,0 +1,7 @@
+# Date: WK16.46
+# Purpose: allow mediadrmserver access mtee
+#allow mediadrmserver tee_device:chr_file { read write open ioctl };
+
+# Purpose: allow mediadrmserver access kisd
+#newverallow check failed
+#allow mediadrmserver kisd:unix_stream_socket connectto;

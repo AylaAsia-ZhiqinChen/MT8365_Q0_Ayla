@@ -1,0 +1,19 @@
+Partition_Name,Type,Size_KB,,Region,,Reserved,Download,Download_File,OTA_Update,EmptyBoot_Needed,FastBoot_Erase,,FastBoot_Download,,Operation_Type
+,,eng,user,emmc,ufs,,,,,,eng,user,eng,user,
+preloader,Raw data,256,,EMMC_BOOT1_BOOT2,UFS_LU0_LU1,N,Y,AUTO,N,N,N,,N,,BOOTLOADERS
+pgpt,Raw data,512,,EMMC_USER,UFS_LU2,N,N,AUTO,N,N,N,,N,,AUTO
+AP_ROM,Raw data,51200,,EMMC_USER,UFS_LU2,N,Y,AUTO,N,N,N,,N,,AUTO
+CONN_SYS,Raw data,10240,,EMMC_USER,UFS_LU2,N,Y,AUTO,N,N,N,,N,,AUTO
+seccfg,Raw data,256,,EMMC_USER,UFS_LU2,N,N,NONE,N,N,N,,N,,AUTO
+secro,Raw data,256,,EMMC_USER,UFS_LU2,N,N,NONE,N,N,N,,N,,AUTO
+lk,Raw data,384,,EMMC_USER,UFS_LU2,N,N,NONE,N,N,N,,N,,AUTO
+boot,Raw data,10240,,EMMC_USER,UFS_LU2,N,N,NONE,N,N,N,,N,,AUTO
+recovery,Raw data,10240,,EMMC_USER,UFS_LU2,N,N,NONE,N,N,N,,N,,AUTO
+secro,Raw data,6144,,EMMC_USER,UFS_LU2,N,N,NONE,N,N,N,,N,,AUTO
+logo,Raw data,8192,,EMMC_USER,UFS_LU2,N,N,NONE,N,N,N,,N,,AUTO
+custom,Raw data,56320,,EMMC_USER,UFS_LU2,N,N,NONE,N,N,N,,N,,AUTO
+expdb,Raw data,10240,,EMMC_USER,UFS_LU2,N,N,NONE,N,N,N,,N,,AUTO
+system,Raw data,716800,,EMMC_USER,UFS_LU2,N,N,NONE,N,N,N,,N,,AUTO
+cache,Raw data,129024,,EMMC_USER,UFS_LU2,N,N,NONE,N,N,N,,N,,AUTO
+userdata,Raw data,1310720,,EMMC_USER,UFS_LU2,N,N,NONE,N,N,N,,N,,AUTO
+sgpt,Raw data,512,,EMMC_USER,UFS_LU2,Y,N,NONE,N,N,N,,N,,RESERVED

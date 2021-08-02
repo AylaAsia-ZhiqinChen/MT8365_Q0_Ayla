@@ -1,0 +1,16 @@
+<manifest version="1.0" type="device">
+   <hal format="hidl">
+        <name>vendor.mediatek.hardware.log</name>
+        <transport>hwbinder</transport>
+        <version>1.0</version>
+        <interface>
+            <name>ILog</name>
+            <instance>aee</instance>
+            <instance>ModemLogHidlServer</instance>
+            <instance>MobileLogHidlServer</instance>
+            <instance>ATMWiFiHidlServer</instance>
+            <instance>ConnsysFWHidlServer</instance>
+            <instance>default</instance>
+        </interface>
+    </hal>
+</manifest>

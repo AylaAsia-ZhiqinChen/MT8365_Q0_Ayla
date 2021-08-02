@@ -1,0 +1,6 @@
+# ==============================================
+# MTK Policy Rule
+# ============
+# uncrypt for mtd
+allow uncrypt mtd_device:blk_file { read write open};
+

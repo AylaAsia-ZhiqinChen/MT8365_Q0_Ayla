@@ -1,0 +1,2 @@
+allow mtk_hal_gnss gps_device:chr_file rw_file_perms;
+allow mtk_hal_gnss ttyMT_device:chr_file rw_file_perms;

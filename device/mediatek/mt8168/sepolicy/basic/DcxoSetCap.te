@@ -1,0 +1,21 @@
+# ==============================================
+# Policy File of /vendor/bin/DcxoSetCap Executable File
+
+# ==============================================
+# Type Declaration
+# ==============================================
+type DcxoSetCap, domain;
+type DcxoSetCap_exec, exec_type, file_type, vendor_file_type;
+
+# ==============================================
+# Android Policy Rule
+# ==============================================
+init_daemon_domain(DcxoSetCap)
+
+#============= DcxoSetCap ==============
+allow DcxoSetCap nvdata_file:dir search;
+allow DcxoSetCap nvdata_file:file { read getattr open };
+allow DcxoSetCap mnt_vendor_file:dir search;
+allow DcxoSetCap sysfs:file { read write open };
+allow DcxoSetCap sysfs_boot_mode:file { read open };
+

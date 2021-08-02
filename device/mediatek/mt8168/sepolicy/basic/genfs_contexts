@@ -1,0 +1,17 @@
+# ==============================================
+# MTK Policy Rule
+# ============
+
+# Date : 2019/09/27
+# Purpose: allow Audio Framework get HDMI status through 'extcon'
+genfscon sysfs /devices/platform/soc/soc:extd_drv@0/extcon/HDMI_audio_extcon/state u:object_r:sysfs_hdmi_extcon:s0
+
+# dumpstate mmcblk access
+genfscon sysfs /devices/platform/soc/11230000.mmc/mmc_host/mmc0 u:object_r:sysfs_devices_block:s0
+genfscon sysfs /devices/platform/soc/11240000.mmc/mmc_host/mmc1 u:object_r:sysfs_devices_block:s0
+
+# Date: 2020/01/12
+# Purpose: SIU update mmcblk access
+genfscon sysfs /devices/platform/soc/11230000.mmc/mmc_host/mmc0/mmc0:0001/block/mmcblk0 u:object_r:sysfs_mmcblk:s0
+genfscon sysfs /class/block u:object_r:sysfs_mmcblk:s0
+genfscon tmpfs /__properties__ u:object_r:atci_sys_prop:s0

@@ -1,0 +1,17 @@
+# ==============================================
+# MTK Policy Rule
+# ==============================================
+# Policy File of /vendor/bin/securetime Executable File
+type mt_securetime, domain;
+
+type mt_securetime_exec, exec_type, file_type, vendor_file_type;
+init_daemon_domain(mt_securetime)
+
+#=============== mt_securetime =================
+# Date: 2017/12/24
+# Purpose: Allow securetime daemon to access MTK In house TEE
+allow mt_securetime tee_device:chr_file { ioctl open read write };
+
+# Purpose: Allow securetime daemon to access /data/securetime and create securely securetime data file
+allow mt_securetime securetime_data_file:dir { add_name search write };
+allow mt_securetime securetime_data_file:file { create getattr lock open read write };

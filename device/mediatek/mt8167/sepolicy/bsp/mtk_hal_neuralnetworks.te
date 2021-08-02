@@ -1,0 +1,15 @@
+# Date : WK14.40 2018/11/16
+# Purpose : allow access to /data/vendor for blob cache for gpunn service
+allow mtk_hal_neuralnetworks init:dir search;
+allow mtk_hal_neuralnetworks init:file { read open };
+allow mtk_hal_neuralnetworks mnt_user_file:lnk_file read;
+allow mtk_hal_neuralnetworks mnt_user_file:dir search;
+allow mtk_hal_neuralnetworks storage_file:lnk_file read;
+allow mtk_hal_neuralnetworks sdcardfs:dir search;
+allow mtk_hal_neuralnetworks vendor_data_file:dir { read open write create getattr add_name };
+allow mtk_hal_neuralnetworks vendor_data_file:file { read open write create getattr };
+
+# Date : WK19.03 2019/01/14
+# Purpose : allow access to /data/vendor for blob cache for gpunn service
+allow mtk_hal_neuralnetworks gpunn_data_file:dir { search read open write create getattr add_name};
+allow mtk_hal_neuralnetworks gpunn_data_file:file { read open write create getattr};

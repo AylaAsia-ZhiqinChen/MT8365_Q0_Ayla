@@ -1,0 +1,4 @@
+libOpenCL.so
+libneuron_platform.so
+libion_mtk.so
+libvpu.so

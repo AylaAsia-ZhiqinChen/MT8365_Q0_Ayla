@@ -1,0 +1,21 @@
+# ==============================================
+# MTK Policy Rule
+# ==============================================
+
+# TODO:: Security Issue.
+
+# Date: 2016/02/26
+# Operation: Migration
+# Purpose: Allow MTK modified ElephantStress and WhatsTemp to read thermal zone temperatures
+#					 from MTK kernel modules for thermal tests at OEM/ODM.
+allow untrusted_app proc_mtktz:dir search;
+allow untrusted_app proc_mtktz:file r_file_perms;
+
+allow untrusted_app ttyS0_device:chr_file { read write ioctl open getattr };
+
+# Date: 2020/05/20
+# Operation: GPU to MDP to CMDQ security
+# Purpose: Allow same-process GPU library to call MDP/CMDQ via MTK MDP HAL
+#          from app process, instead of via same-process MDP library, to
+#          protect CMDQ device node.
+hal_client_domain(untrusted_app, hal_mms)

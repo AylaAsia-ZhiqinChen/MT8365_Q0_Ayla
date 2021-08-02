@@ -1,0 +1,11 @@
+# ==============================================
+# MTK Policy Rule
+# ============
+
+# Date : WK16.21
+# Operation : direct coredump enhancement
+# Purpose : support abort message dumping
+userdebug_or_eng(`
+  allow aee_aed coredump_file:dir { remove_name };
+  allow aee_aed coredump_file:file { unlink };
+')

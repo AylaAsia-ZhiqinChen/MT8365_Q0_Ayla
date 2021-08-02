@@ -1,0 +1,6 @@
+# ==============================================
+# MTK Policy Rule
+# ==============================================
+# Date: W1920
+# Purpose: Make app can get phoneEx
+allow untrusted_app_all mtk_radio_service:service_manager find;

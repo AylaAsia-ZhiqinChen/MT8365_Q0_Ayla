@@ -1,0 +1,2 @@
+type mntl_block_device, dev_type;
+type power_loss_test_device, dev_type;

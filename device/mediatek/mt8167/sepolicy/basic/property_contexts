@@ -1,0 +1,4 @@
+# ==============================================
+# MTK Policy Rule
+# ==============================================
+vendor.rpmb.ready u:object_r:vendor_rpmb_ready_prop:s0

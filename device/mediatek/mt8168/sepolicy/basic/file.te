@@ -1,0 +1,2 @@
+#for Audio Framework get HDMI status
+type sysfs_hdmi_extcon, fs_type, sysfs_type;

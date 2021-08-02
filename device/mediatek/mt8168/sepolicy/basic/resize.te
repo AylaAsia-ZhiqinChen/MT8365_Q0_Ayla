@@ -1,0 +1,5 @@
+
+# for mntl
+#allow resize rootfs:file entrypoint;
+#allow resize mntl_block_device:blk_file rw_file_perms;
+

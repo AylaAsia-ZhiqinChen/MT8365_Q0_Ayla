@@ -1,0 +1,10 @@
+#=============allow atcid==============
+ctl.atcid-daemon-u u:object_r:ctl_atcid-daemon-u_prop:s0
+ctl.atci_service u:object_r:ctl_atci_service_prop:s0
+
+#=============allow md_monitor set prop==============
+persist.vendor.mdmmonitor u:object_r:config_prop:s0
+
+#=============allow terservice to set terservice property==============
+persist.vendor.ter u:object_r:terservice_prop:s0
+vendor.ter.service u:object_r:terservice_prop:s0

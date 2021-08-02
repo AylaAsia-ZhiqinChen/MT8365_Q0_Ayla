@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<partition lba="999431">
+<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="8192" name="PRO_INFO" />
+<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="24576" name="NVRAM" />
+<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="8192" name="SECCFG" />
+<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="8192" name="UBOOT" />
+<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="8192" name="UBOOT2" />
+<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="65536" name="BOOTIMG" />
+<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="65536" name="RECOVERY" />
+<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="8192" name="MISC" />
+<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="8192" name="MNB" />
+<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="8192" name="LOGO" />
+<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="8192" name="DTBO" />
+<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="16384" name="EXPDB" />
+<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="8192" name="TEE1" />
+<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="8192" name="TEE2" />
+<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="8192" name="KB" />
+<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="8192" name="DKB" />
+<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="8192" name="METADATA" />
+<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="2457600" name="ANDROID" />
+<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="524288" name="VENDOR" />
+<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="262144" name="CACHE" />
+<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="2097152" name="USRDATA" />
+<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="0" name="BMTPOOL" />
+</partition>

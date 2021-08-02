@@ -1,0 +1,70 @@
+# ==============================================
+# MTK Policy Rule
+# ==============================================
+
+
+# Date : WK15.40
+# Operation : Migration
+# Purpose: for Camera preview feature, allow cameraserver to mkdir
+#allow cameraserver nvram_data_file:dir { add_name write search create};
+#allow cameraserver nvram_data_file:file { write getattr setattr read create open };
+#allow cameraserver tee_device:chr_file { read write open ioctl };
+
+#Purpose: hdcp for kisd(mtk94109)
+# neverallow check fail
+#allow cameraserver kisd:unix_stream_socket {connectto};
+
+allow untrusted_app cameraserver:fifo_file { read write getattr };
+
+#============= mtk_hal_camera ==============
+#allow mtk_hal_camera default_prop:file { read getattr open };
+allow mtk_hal_camera devmap_device:chr_file read;
+allow mtk_hal_camera devmap_device:chr_file { ioctl open };
+allow mtk_hal_camera mtk_mmdvfs_device:chr_file { ioctl open read };
+
+#============= platform_app ==============
+allow platform_app mtk_amslog_prop:file { read getattr open };
+#allow platform_app proc:file { read getattr open };
+allow platform_app vendor_default_prop:file { read getattr open };
+allow platform_app debug_bq_dump_prop:file read;
+allow platform_app graphics_debug_prop:file read;
+allow platform_app vendor_bluetooth_prop:file read;
+
+#============= priv_app ==============
+allow priv_app vendor_default_prop:file { read getattr open };
+
+#============= system_app ==============
+allow system_app mtk_amslog_prop:file { read getattr open };
+allow system_app mtk_em_tel_log_prop:file open;
+allow system_app mtk_update_prop:file { read open };
+allow system_app sysfs_boot_type:file { read getattr open };
+allow system_app vendor_default_prop:file { getattr open };
+
+#============= system_server ==============
+allow system_server debug_mtk_aee_prop:file read;
+allow system_server vendor_default_prop:file { read getattr open };
+
+#============= drmserver ==============
+allow drmserver vendor_default_prop:file { read getattr open };
+
+#============= dumpstate ==============
+allow dumpstate adbd_exec:file read;
+#allow dumpstate atci_service_sys_exec:file { read open };
+#allow dumpstate em_svr_exec:file read;
+allow dumpstate ged_srv_exec:file { read open };
+allow dumpstate init_exec:file { read open };
+
+#============= hal_graphics_composer_default ==============
+allow hal_graphics_composer_default sysfs_boot_mode:file { read open };
+
+#============= cameraserver ==============
+allow cameraserver graphics_debug_prop:file read;
+
+#============= mediaprovider ==============
+allow mediaprovider vendor_default_prop:file { read getattr open };
+
+#============= system_app ==============
+allow system_app vendor_default_prop:file read;
+
+#============= traceur_app ==============
+allow traceur_app vendor_default_prop:file read;

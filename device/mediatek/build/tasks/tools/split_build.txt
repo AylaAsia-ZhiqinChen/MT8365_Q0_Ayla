@@ -1,0 +1,40 @@
+[PRODUCT_OUT view]
+system/		system layer
+		- except rsc.xml when RSC enabled
+system_other/	system layer, when AB_OTA enabled
+product/	system layer
+vendor/		vendor layer
+root/		system layer
+ramdisk/	vendor layer
+recovery/root/	common layer
+		- init.recovery.mt*.rc is vendor layer
+		- others copied from root/ are system layer
+debug_ramdisk/	common layer
+		- adb_debug.prop & userdebug_plat_sepolicy.cli are vendor layer
+		- others copied from recovery/root/ when recovery_as_boot enabled are common layer
+		- others copied from ramdisk/ when recovery_as_boot disabled are vendor layer
+data/		common layer
+		- any modules with tests tags
+kernel		vendor layer
+
+
+[TARGET_FILES_PACKAGE view]
+SYSTEM/*		system layer, from system/
+			- except rsc.xml
+SYSTEM_OTHER/*		system layer, from system_other/
+PRODUCT/*		system layer, from product/
+VENDOR/*		vendor layer, from vendor/
+ROOT/*			system layer, from root/
+BOOT/kernel		vendor layer, from kernel
+BOOT/RAMDISK/*		common layer
+			- from recovery/root/ when recovery_as_boot enabled
+			- from ramdisk/ when recovery_as_boot disabled
+RECOVERY/kernel		vendor layer, from kernel when recovery_as_boot disabled
+RECOVERY/RAMDISK/*	common layer, from recovery/root/ when recovery_as_boot disabled
+BOOT_DEBUG/kernel	vendor layer, from kernel
+BOOT_DEBUG/RAMDISK/*	common layer, from debug_ramdisk/
+DATA/*			common layer, from data/
+
+
+system_as_root must be always disabled
+

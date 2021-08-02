@@ -1,0 +1,10 @@
+#Date : WK19.51
+#Operation : skip produce log in dumpstate of dev
+#Purpose : don't produce log in dumpstate of dev
+dontaudit dumpstate device:file *;
+dontaudit dumpstate device:dir *;
+
+#access sysfs
+allow dumpstate sysfs_devices_block:file r_file_perms;
+dontaudit dumpstate sysfs:file *;
+dontaudit dumpstate sysfs:dir *;

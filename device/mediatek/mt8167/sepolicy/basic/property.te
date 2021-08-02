@@ -1,0 +1,2 @@
+type vendor_rpmb_ready_prop, property_type;
+type graphics_debug_prop, property_type;

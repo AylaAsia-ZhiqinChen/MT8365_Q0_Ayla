@@ -1,0 +1,11 @@
+<manifest version="1.0" type="device">
+   <hal format="hidl">
+        <name>vendor.mediatek.hardware.modemdbfilter</name>
+        <transport>hwbinder</transport>
+        <version>1.0</version>
+        <interface>
+            <name>ICopyDBFilter</name>
+            <instance>ModemDBFilterHidlServer</instance>
+        </interface>
+    </hal>
+</manifest>

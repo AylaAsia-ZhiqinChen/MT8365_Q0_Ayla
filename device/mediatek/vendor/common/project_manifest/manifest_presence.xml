@@ -1,0 +1,11 @@
+<manifest version="1.0" type="device">
+    <hal format="hidl">
+        <name>vendor.mediatek.hardware.presence</name>
+        <transport>hwbinder</transport>
+        <version>1.0</version>
+        <interface>
+            <name>IPresence</name>
+            <instance>presence_hal_service</instance>
+        </interface>
+    </hal>
+</manifest>

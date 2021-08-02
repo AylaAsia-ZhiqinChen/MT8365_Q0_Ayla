@@ -1,0 +1,2 @@
+
+# For NFC Vendor Configuration

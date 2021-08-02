@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AudioParam>
+	<ParamTree>
+		<Param path="Ring_Alarm,RCV" param_id="2"/>
+		<Param path="Ring_Alarm,HS" param_id="3"/>
+		<Param path="Ring_Alarm,SPK" param_id="0"/>
+		<Param path="Ring_Alarm,HSSPK" param_id="1"/>
+		<Param path="Ring_Alarm,HS5POLE" param_id="4"/>
+		<Param path="Ring_Alarm,HS5POLE_ANC" param_id="4"/>
+
+		<Param path="Others,RCV" param_id="2"/>
+		<Param path="Others,HS" param_id="3"/>
+		<Param path="Others,SPK" param_id="0"/>
+		<Param path="Others,HSSPK" param_id="1"/>
+		<Param path="Others,HS5POLE" param_id="4"/>
+		<Param path="Others,HS5POLE_ANC" param_id="4"/>
+
+		<Param path="Notification,RCV" param_id="2"/>
+		<Param path="Notification,HS" param_id="3"/>
+		<Param path="Notification,SPK" param_id="0"/>
+		<Param path="Notification,HSSPK" param_id="1"/>
+		<Param path="Notification,HS5POLE" param_id="4"/>
+		<Param path="Notification,HS5POLE_ANC" param_id="4"/>
+	</ParamTree>
+	<ParamUnitPool>
+		<ParamUnit param_id="0">
+			<Param name="headset_pga" value="-1"/><!-- -1 means not available -->
+			<Param name="speaker_pga" value="10"/>
+			<!-- current speaker_pga setting is based on SPK_PATH_INT,
+			     the decimal value is index not dB,
+			     the value needs to be chose in the range of check_list which
+			     marked the feature_option as "SPK_PATH_INT" in PlaybackVolAna_ParamUnitDesc.xml.
+			     if we use SPK_PATH_LO or SPK_PATH_HP, i.e. different feature_option,
+			     be sure to check the corresponding check_list and choose the proper value -->
+			<Param name="receiver_pga" value="-1"/>
+			<Param name="amp" value="0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0"/>
+		</ParamUnit>
+		<ParamUnit param_id="1">
+			<Param name="headset_pga" value="7"/>
+			<Param name="speaker_pga" value="10"/><!-- SPK_PATH_INT -->
+			<Param name="receiver_pga" value="-1"/>
+			<Param name="amp" value="0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0"/>
+		</ParamUnit>
+		<ParamUnit param_id="3">
+			<Param name="headset_pga" value="6"/>
+			<Param name="speaker_pga" value="-1"/>
+			<Param name="receiver_pga" value="-1"/>
+			<Param name="amp" value="0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0"/>
+		</ParamUnit>
+		<ParamUnit param_id="2">
+			<Param name="headset_pga" value="-1"/>
+			<Param name="speaker_pga" value="4"/><!-- SPK_PATH_INT -->
+			<Param name="receiver_pga" value="8"/>
+			<Param name="amp" value="0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0"/>
+		</ParamUnit>
+		<ParamUnit param_id="4">
+			<Param name="headset_pga" value="5"/>
+			<Param name="speaker_pga" value="-1"/>
+			<Param name="receiver_pga" value="-1"/>
+			<Param name="amp" value="0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0"/>
+		</ParamUnit>
+	</ParamUnitPool>
+</AudioParam>

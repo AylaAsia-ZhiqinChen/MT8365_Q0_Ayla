@@ -1,0 +1,22 @@
+Partition_Name,Type,Size_KB,,Region,Reserved,Download,Download_File,FastBoot_Erase,,FastBoot_Download,,Operation_Type
+,,eng,user,,,,,eng,user,eng,user,
+PRELOADER,Raw data,1024.0,,NAND_USER,N,Y,AUTO,N,,N,,BOOTLOADERS
+PRO_INFO,Raw data,1024.0,,NAND_USER,N,N,NA,N,,N,,PROTECTED
+NVRAM,Raw data,3072.0,,NAND_USER,N,N,NA,N,,N,,BINREGION
+PROTECT_F,YAFFS2,3072.0,,NAND_USER,N,N,NA,N,,N,,PROTECTED
+PROTECT_S,YAFFS2,3072.0,,NAND_USER,N,N,NA,N,,N,,PROTECTED
+SECCFG,Raw data,256.0,,NAND_USER,N,N,NA,N,,N,,AUTO
+UBOOT,Raw data,512.0,,NAND_USER,N,Y,lk.bin,N,,N,,AUTO
+BOOTIMG,Raw data,16384.0,,NAND_USER,N,Y,boot.img,Y,,Y,,AUTO
+RECOVERY,Raw data,24576.0,,NAND_USER,N,Y,recovery.img,N,,N,,AUTO
+SEC_RO,Raw data,256.0,,NAND_USER,N,Y,secro.img,N,,N,,AUTO
+MISC,Raw data,768.0,,NAND_USER,N,N,NA,N,,N,,AUTO
+LOGO,Raw data,1024.0,,NAND_USER,N,Y,logo.bin,N,,N,,AUTO
+EXPDB,Raw data,2048.0,,NAND_USER,N,N,NA,N,,N,,AUTO
+tee1,Raw data,5120.0,,NAND_USER,N,Y,trustzone.bin,N,,N,,AUTO
+tee2,Raw data,5120.0,,NAND_USER,N,Y,trustzone.bin,N,,N,,AUTO
+FAT,UBIFS,20480.0,,NAND_USER,N,N,NA,N,,N,,AUTO
+ANDROID,UBIFS,614400.0,614400.0,NAND_USER,N,Y,system.img,Y,,Y,,AUTO
+CACHE,UBIFS,7168.0,,NAND_USER,N,Y,cache.img,Y,,Y,,AUTO
+USRDATA,UBIFS,0.0,,NAND_USER,N,Y,userdata.img,Y,,Y,,AUTO
+BMTPOOL,Raw data,20480.0,,NAND_USER,Y,N,NA,N,,N,,RESERVED

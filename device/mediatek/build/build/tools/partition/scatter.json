@@ -1,0 +1,367 @@
+{
+    "preloader": {
+        "boundary_check": true,
+        "is_download": true,
+        "is_upgradable": false,
+        "file_name": "preloader.bin",
+        "is_reserved": false,
+        "partition_name": "preloader",
+        "partition_size": 262144,
+        "physical_start_addr": 0,
+        "linear_start_addr": 0,
+        "region": "EMMC_BOOT_1",
+        "storage": "HW_STORAGE_EMMC",
+        "operation_type": "BOOTLOADERS",
+        "type": "SV5_BL_BIN",
+        "reserve": 0
+    },
+    "pgpt": {
+        "boundary_check": true,
+        "is_download": true,
+        "file_name": "MBR",
+        "is_reserved": false,
+        "partition_name": "pgpt",
+        "partition_size": 524288,
+        "physical_start_addr": 0,
+        "linear_start_addr": 0,
+        "region": "EMMC_USER",
+        "storage": "HW_STORAGE_EMMC",
+        "operation_type": "UPDATE",
+        "type": "NORMAL_ROM",
+        "reserve": 0
+    },
+    "PRO_INFO": {
+        "operation_type": "PROTECTED",
+        "type": "NORMAL_ROM"
+    },
+    "proinfo": {
+        "operation_type": "PROTECTED",
+        "type": "NORMAL_ROM"
+    },
+    "NVRAM": {
+        "operation_type": "BINREGION",
+        "type": "NORMAL_ROM"
+    },
+    "nvram": {
+        "operation_type": "BINREGION",
+        "type": "NORMAL_ROM"
+    },
+    "protect1": {
+        "operation_type": "PROTECTED",
+        "type": "EXT4_IMG"
+    },
+    "protect2": {
+        "operation_type": "PROTECTED",
+        "type": "EXT4_IMG"
+    },
+    "para": {
+        "operation_type": "INVISIBLE",
+        "type": "NORMAL_ROM"
+    },
+    "SECCFG": {
+        "operation_type": "INVISIBLE",
+        "type": "NONE"
+    },
+    "seccfg": {
+        "operation_type": "INVISIBLE",
+        "type": "NORMAL_ROM"
+    },
+    "PROTECT_F": {
+        "operation_type": "PROTECTED",
+        "type": "NORMAL_ROM"
+    },
+    "PROTECT_S": {
+        "operation_type": "PROTECTED",
+        "type": "NORMAL_ROM"
+    },
+    "UBOOT": {
+        "file_name": "lk.img",
+        "type": "NORMAL_ROM"
+    },
+    "lk": {
+        "file_name": "lk.img",
+        "type": "NORMAL_ROM",
+        "is_upgradable": true
+    },
+    "lk2": {
+        "file_name": "lk.img",
+        "type": "NORMAL_ROM",
+        "is_upgradable": true
+    },
+    "lk_a": {
+        "file_name": "lk.img",
+        "type": "NORMAL_ROM",
+        "is_upgradable": true
+    },
+    "lk_b": {
+        "type": "NORMAL_ROM",
+        "is_upgradable": true
+    },
+    "BOOTIMG": {
+        "file_name": "boot.img",
+        "type": "NORMAL_ROM",
+        "is_upgradable": true
+    },
+    "boot": {
+        "file_name": "boot.img",
+        "type": "NORMAL_ROM",
+        "is_upgradable": true
+    },
+    "boot_a": {
+        "file_name": "boot.img",
+        "type": "NORMAL_ROM",
+        "is_upgradable": true
+    },
+    "boot_b": {
+        "type": "NORMAL_ROM",
+        "is_upgradable": true
+    },
+    "recovery": {
+        "file_name": "recovery.img",
+        "is_upgradable": true
+    },
+    "RECOVERY": {
+        "file_name": "recovery.img",
+        "is_upgradable": true
+    },
+    "SEC_RO": {
+        "file_name": "secro.img",
+        "type": "NORMAL_ROM"
+    },
+    "secro": {
+        "file_name": "secro.img",
+        "type": "NORMAL_ROM"
+    },
+    "MISC": {
+        "operation_type": "INVISIBLE",
+        "type": "NONE"
+    },
+    "misc": {
+        "operation_type": "INVISIBLE",
+        "type": "NONE"
+    },
+    "LOGO": {
+        "file_name": "logo.bin",
+        "type": "NORMAL_ROM"
+    },
+    "logo": {
+        "file_name": "logo.bin",
+        "type": "NORMAL_ROM"
+    },
+    "DTBO": {
+        "file_name": "dtbo.img",
+        "type": "NORMAL_ROM",
+        "is_upgradable": true
+    },
+    "dtbo": {
+        "file_name": "dtbo.img",
+        "type": "NORMAL_ROM",
+        "is_upgradable": true
+    },
+    "ODMDTBO": {
+        "file_name": "odmdtbo.img",
+        "type": "NORMAL_ROM",
+        "is_upgradable": true
+    },
+    "odmdtbo": {
+        "file_name": "odmdtbo.img",
+        "type": "NORMAL_ROM",
+        "is_upgradable": true
+    },
+    "odmdtbo_a": {
+        "file_name": "odmdtbo.img",
+        "type": "NORMAL_ROM",
+        "is_upgradable": true
+    },
+    "odmdtbo_b": {
+        "file_name": "odmdtbo.img",
+        "type": "NORMAL_ROM",
+        "is_upgradable": true
+    },
+    "EXPDB": {
+        "operation_type": "INVISIBLE",
+        "type": "NORMAL_ROM"
+    },
+    "expdb": {
+        "operation_type": "INVISIBLE",
+        "type": "NORMAL_ROM"
+    },
+    "TEE1": {
+        "file_name": "tee.img",
+        "type": "NORMAL_ROM",
+        "is_upgradable": true
+    },
+    "TEE2": {
+        "file_name": "tee.img",
+        "type": "NORMAL_ROM",
+        "is_upgradable": true
+    },
+    "tee1": {
+        "file_name": "tee.img",
+        "type": "NORMAL_ROM",
+        "is_upgradable": true
+    },
+    "tee2": {
+        "file_name": "tee.img",
+        "type": "NORMAL_ROM",
+        "is_upgradable": true
+    },
+    "tee_a": {
+        "file_name": "tee.img",
+        "type": "NORMAL_ROM",
+        "is_upgradable": true
+    },
+    "tee_b": {
+        "type": "NORMAL_ROM",
+        "is_upgradable": true
+    },
+    "oemkeystore": {
+        "operation_type": "INVISIBLE",
+        "type": "NORMAL_ROM"
+    },
+    "keystore": {
+        "operation_type": "INVISIBLE",
+        "type": "NORMAL_ROM"
+    },
+    "FRP": {
+        "operation_type": "INVISIBLE",
+        "type": "NORMAL_ROM"
+    },
+    "frp": {
+        "operation_type": "INVISIBLE",
+        "type": "NORMAL_ROM"
+    },
+    "nvdata": {
+        "operation_type": "INVISIBLE",
+        "type": "EXT4_IMG"
+    },
+    "metadata": {
+        "operation_type": "INVISIBLE",
+        "type": "NORMAL_ROM"
+    },
+    "KB": {
+        "operation_type": "INVISIBLE",
+        "type": "NORMAL_ROM"
+    },
+    "kb": {
+        "operation_type": "INVISIBLE",
+        "type": "NORMAL_ROM"
+    },
+    "dkb": {
+        "operation_type": "INVISIBLE",
+        "type": "NORMAL_ROM"
+    },
+    "system": {
+        "file_name": "system.img",
+        "type": "EXT4_IMG",
+        "is_upgradable": true
+    },
+    "system_a": {
+        "file_name": "system.img",
+        "type": "EXT4_IMG",
+        "is_upgradable": true
+    },
+    "system_b": {
+        "file_name": "system_other.img",
+        "type": "EXT4_IMG",
+        "is_upgradable": true
+    },
+    "ANDROID": {
+        "file_name": "system.img",
+        "type": "EXT4_IMG",
+        "is_upgradable": true
+    },
+    "vendor": {
+        "file_name": "vendor.img",
+        "type": "EXT4_IMG",
+        "is_upgradable": true
+    },
+    "VENDOR": {
+        "file_name": "vendor.img",
+        "type": "EXT4_IMG",
+        "is_upgradable": true
+    },
+    "vendor_a": {
+        "file_name": "vendor.img",
+        "type": "EXT4_IMG",
+        "is_upgradable": true
+    },
+    "vendor_b": {
+        "type": "EXT4_IMG",
+        "is_upgradable": true
+    },
+    "odm": {
+        "file_name": "odm.img",
+        "type": "EXT4_IMG",
+        "is_upgradable": true
+    },
+    "ODM": {
+        "file_name": "odm.img",
+        "type": "EXT4_IMG",
+        "is_upgradable": true
+    },
+    "odm_a": {
+        "file_name": "odm.img",
+        "type": "EXT4_IMG",
+        "is_upgradable": true
+    },
+    "odm_b": {
+        "type": "EXT4_IMG",
+        "is_upgradable": true
+    },
+    "cache": {
+        "file_name": "cache.img",
+        "type": "EXT4_IMG"
+    },
+    "CACHE": {
+        "file_name": "cache.img",
+        "type": "EXT4_IMG"
+    },
+    "persisbackup": {
+        "file_name": "persistbackup.img",
+        "type": "EXT4"
+    },
+    "userdata": {
+        "file_name": "userdata.img",
+        "type": "EXT4_IMG"
+    },
+    "USRDATA": {
+        "file_name": "userdata.img",
+        "type": "EXT4_IMG"
+    },
+    "FAT": {
+        "type": "EXT4_IMG",
+        "operation_type": "INVISIBLE"
+    },
+    "OTP": {
+        "boundary_check": false,
+        "is_download": false,
+        "file_name": "NONE",
+        "is_reserved": true,
+        "partition_name": "OTP",
+        "partition_size": 45088768,
+        "physical_start_addr": 4294902104,
+        "linear_start_addr": 4294902104,
+        "region": "EMMC_USER",
+        "storage": "HW_STORAGE_EMMC",
+        "operation_type": "RESERVED",
+        "type": "NONE",
+        "reserve": 0
+    },
+    "sgpt": {
+        "boundary_check": false,
+        "is_download": false,
+        "file_name": "NONE",
+        "is_reserved": true,
+        "partition_name": "sgpt",
+        "partition_size": 16896,
+        "physical_start_addr": 4294901760,
+        "linear_start_addr": 4294901760,
+        "region": "EMMC_USER",
+        "storage": "HW_STORAGE_EMMC",
+        "operation_type": "RESERVED",
+        "type": "NORMAL_ROM",
+        "reserve": 0
+    }
+
+}

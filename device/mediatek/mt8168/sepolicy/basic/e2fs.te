@@ -1,0 +1,5 @@
+# ==============================================
+# MTK Policy Rule
+# ==============================================
+
+allow e2fs nvcfg_block_device:blk_file rw_file_perms;

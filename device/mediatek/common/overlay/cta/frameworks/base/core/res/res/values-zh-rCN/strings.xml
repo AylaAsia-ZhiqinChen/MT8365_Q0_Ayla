@@ -1,0 +1,6 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="permlab_readSms" msgid="8745086572213270480">"读取您的讯息（短信或彩信）"</string>
+    <string name="permlab_writeContacts" msgid="5107492086416793544">"写入/删除联系人"</string>
+    <string name="permlab_writeCalendar" msgid="8438874755193825647">"写入或删除日历活动"</string>
+</resources>

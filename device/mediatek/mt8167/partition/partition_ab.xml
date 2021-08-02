@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<partition lba="15647778">
+<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="6144" name="proinfo" />
+<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="10240" name="nvram" />
+<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="20480" name="protect1" />
+<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="20480" name="protect2" />
+<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="98304" name="persist" />
+<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="512" name="seccfg" />
+<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="768" name="lk_a" />
+<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="768" name="lk_b" />
+<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="65536" name="boot_a" />
+<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="65536" name="boot_b" />
+<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="1024" name="para" />
+<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="16384" name="logo" />
+<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="16384" name="dtbo_a" />
+<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="16384" name="dtbo_b" />
+<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="819200" name="vendor_a" />
+<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="819200" name="vendor_b" />
+<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="20480" name="expdb" />
+<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="2048" name="frp" />
+<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="10240" name="tee_a" />
+<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="10240" name="tee_b" />
+<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="4096" name="kb" />
+<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="4096" name="dkb" />
+<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="67584" name="metadata" />
+<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="5242880" name="system_a" />
+<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="5242880" name="system_b" />
+<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="2097152" name="userdata" />
+</partition>

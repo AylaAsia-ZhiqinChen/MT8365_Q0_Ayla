@@ -1,0 +1,9 @@
+# ==============================================
+# MTK Policy Rule
+# ============
+
+#newverallow check failed
+#allow system_server kisd:unix_stream_socket {connectto};
+
+# Purpose: Audio Framework(system server) access HDMI status
+allow system_server sysfs_hdmi_extcon:file r_file_perms;

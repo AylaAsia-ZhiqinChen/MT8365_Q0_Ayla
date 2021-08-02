@@ -1,0 +1,11 @@
+<manifest version="1.0" type="device">
+    <hal format="hidl">
+        <name>vendor.mediatek.hardware.camera.callbackclient</name>
+        <transport>hwbinder</transport>
+        <version>1.1</version>
+        <interface>
+            <name>IMtkCallbackClient</name>
+            <instance>internal/0</instance>
+        </interface>
+    </hal>
+</manifest>

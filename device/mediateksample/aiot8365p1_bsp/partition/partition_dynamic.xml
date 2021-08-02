@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<partition lba="16777216">
+	<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="6144" name="proinfo"/>
+	<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="2048" name="boot_para"/>
+	<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="30720" name="cam_vpu1"/>
+	<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="30720" name="cam_vpu2"/>
+	<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="30720" name="cam_vpu3"/>
+	<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="10240" name="nvram"/>
+	<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="20480" name="protect1"/>
+	<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="20480" name="protect2"/>
+	<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="98304" name="persist"/>
+	<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="16384" name="nvcfg"/>
+	<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="512" name="seccfg"/>
+	<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="2048" name="lk"/>
+	<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="2048" name="lk2"/>
+	<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="65536" name="boot"/>
+	<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="65536" name="recovery"/>
+	<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="1024" name="para"/>
+	<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="16384" name="logo"/>
+	<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="16384" name="dtbo"/>
+	<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="20480" name="expdb"/>
+	<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="2048" name="frp"/>
+	<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="10240" name="tee1"/>
+	<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="10240" name="tee2"/>
+	<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="4096" name="kb"/>
+	<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="4096" name="dkb"/>
+	<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="65536" name="metadata"/>
+	<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="23040" name="vbmeta"/>
+	<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="8192" name="nvdata" />
+	<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="8192" name="vbmeta_system" />
+	<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="8192" name="vbmeta_vendor" />
+	<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="8192" name="md_udc" />
+	<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="5505024" name="super"/>
+	<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="229376" name="cache"/>
+	<entry type="{0FC63DAF-8483-4772-8E79-3D69D8477DE4}" size="6291456" name="userdata"/>
+</partition>

@@ -1,0 +1,73 @@
+Partition_Name,Type,Size_KB,,Region,,Group,Reserved,Download,Download_File,OTA_Update,EmptyBoot_Needed,FastBoot_Erase,,FastBoot_Download,,Operation_Type
+,,eng,user,emmc,ufs,,,,,,,eng,user,eng,user,
+preloader,Raw data,512,,EMMC_BOOT1_BOOT2,UFS_LU0_LU1,,N,Y,AUTO,Y,N,N,,N,,BOOTLOADERS
+pgpt,Raw data,32,,EMMC_USER,UFS_LU2,,N,N,NONE,N,N,Y,N,Y,N,AUTO
+boot_para,Raw data,1024,,EMMC_USER,UFS_LU2,,N,N,NONE,N,N,N,,N,,AUTO
+para,Raw data,512,,EMMC_USER,UFS_LU2,,N,N,NONE,N,N,N,,N,,AUTO
+expdb,Raw data,20480,,EMMC_USER,UFS_LU2,,N,N,NONE,N,N,N,,N,,AUTO
+frp,Raw data,1024,,EMMC_USER,UFS_LU2,,N,N,NONE,N,N,N,,N,,AUTO
+nvcfg,EXT4,32768,,EMMC_USER,UFS_LU2,,N,N,NONE,N,N,N,,N,,PROTECTED
+nvdata,EXT4,65536,,EMMC_USER,UFS_LU2,,N,N,NONE,N,N,N,,N,,AUTO
+eng_system,EXT4,32768,,EMMC_USER,UFS_LU2,,N,N,NONE,N,N,Y,,Y,,AUTO
+eng_vendor,EXT4,32768,,EMMC_USER,UFS_LU2,,N,N,NONE,N,N,Y,,Y,,AUTO
+md_udc,Raw data,23144,,EMMC_USER,UFS_LU2,,N,N,NONE,N,N,Y,,N,,AUTO
+metadata,Raw data,32768,,EMMC_USER,UFS_LU2,,N,N,NONE,N,N,N,,N,,AUTO
+protect1,EXT4,8192,,EMMC_USER,UFS_LU2,,N,N,NONE,N,N,N,,N,,PROTECTED
+protect2,EXT4,8192,,EMMC_USER,UFS_LU2,,N,N,NONE,N,N,N,,N,,PROTECTED
+seccfg,Raw data,512,,EMMC_USER,UFS_LU2,,N,N,NONE,N,N,N,,N,,AUTO
+persist,EXT4,49152,,EMMC_USER,UFS_LU2,,N,N,NONE,N,N,N,,N,,PROTECTED
+sec1,Raw data,2048,,EMMC_USER,UFS_LU2,,N,N,NONE,N,N,N,,N,,AUTO
+proinfo,Raw data,3072,,EMMC_USER,UFS_LU2,,N,N,NONE,N,N,N,,N,,PROTECTED
+efuse,Raw data,512,,EMMC_USER,UFS_LU2,,N,Y,efuse.img,N,N,N,,N,,AUTO
+nvram,Raw data,65536,,EMMC_USER,UFS_LU2,,N,N,NONE,N,N,N,,N,,BINREGION
+logo,Raw data,8192,,EMMC_USER,UFS_LU2,,N,Y,logo.bin,N,Y,Y,N,Y,N,AUTO
+vbmeta_a,Raw data,8192,,EMMC_USER,UFS_LU2,,N,Y,vbmeta.img,Y,N,Y,,Y,,AUTO
+vbmeta_system_a,Raw data,8192,,EMMC_USER,UFS_LU2,,N,Y,vbmeta_system.img,Y,N,Y,,Y,,AUTO
+vbmeta_vendor_a,Raw data,8192,,EMMC_USER,UFS_LU2,,N,Y,vbmeta_vendor.img,Y,N,Y,,Y,,AUTO
+md1img_a,Raw data,102400,,EMMC_USER,UFS_LU2,,N,Y,md1img.img,Y,N,N,,N,,AUTO
+md1dsp_a,Raw data,16384,,EMMC_USER,UFS_LU2,,N,Y,md1dsp.img,Y,N,N,,N,,AUTO
+spmfw_a,Raw data,1024,,EMMC_USER,UFS_LU2,,N,Y,spmfw.img,Y,N,N,,N,,AUTO
+mcupmfw_a,Raw data,1024,,EMMC_USER,UFS_LU2,,N,Y,mcupmfw.img,Y,N,N,,N,,AUTO
+scp_a,Raw data,6144,,EMMC_USER,UFS_LU2,,N,Y,scp.img,Y,N,Y,,Y,,AUTO
+sspm_a,Raw data,1024,,EMMC_USER,UFS_LU2,,N,Y,sspm.img,Y,N,N,,N,,AUTO
+cam_vpu1_a,Raw data,15360,,EMMC_USER,UFS_LU2,,N,Y,cam_vpu1.img,Y,N,N,,N,,AUTO
+cam_vpu2_a,Raw data,15360,,EMMC_USER,UFS_LU2,,N,Y,cam_vpu2.img,Y,N,N,,N,,AUTO
+cam_vpu3_a,Raw data,15360,,EMMC_USER,UFS_LU2,,N,Y,cam_vpu3.img,Y,N,N,,N,,AUTO
+gz_a,Raw data,16384,,EMMC_USER,UFS_LU2,,N,Y,gz.img,Y,N,N,,N,,AUTO
+lk_a,Raw data,1024,,EMMC_USER,UFS_LU2,,N,Y,lk.img,Y,Y,Y,N,Y,N,AUTO
+boot_a,Raw data,32768,,EMMC_USER,UFS_LU2,,N,Y,boot.img,Y,N,Y,,Y,,AUTO
+odmdtbo_a,Raw data,16384,,EMMC_USER,UFS_LU2,,N,Y,odmdtbo.img,Y,N,Y,,Y,,AUTO
+dtbo_a,Raw data,8192,,EMMC_USER,UFS_LU2,,N,Y,dtbo.img,Y,N,Y,,Y,,AUTO
+tee_a,Raw data,5120,,EMMC_USER,UFS_LU2,,N,Y,tee.img,Y,Y,N,,N,,AUTO
+odm_a,EXT4,32768,,EMMC_USER,UFS_LU2,main,N,Y,odm.img,Y,N,Y,,Y,,AUTO
+product_a,EXT4,282144,,EMMC_USER,UFS_LU2,main,N,Y,product.img,Y,N,Y,,Y,,AUTO
+vendor_a,EXT4,524288,,EMMC_USER,UFS_LU2,main,N,Y,vendor.img,Y,N,Y,,Y,,AUTO
+system_a,EXT4,3145728,,EMMC_USER,UFS_LU2,main,N,Y,system.img,Y,N,Y,,Y,,AUTO
+vbmeta_b,Raw data,8192,,EMMC_USER,UFS_LU2,,N,N,NONE,Y,N,Y,,Y,,AUTO
+vbmeta_system_b,Raw data,8192,,EMMC_USER,UFS_LU2,,N,N,NONE,Y,N,Y,,Y,,AUTO
+vbmeta_vendor_b,Raw data,8192,,EMMC_USER,UFS_LU2,,N,N,NONE,Y,N,Y,,Y,,AUTO
+md1img_b,Raw data,102400,,EMMC_USER,UFS_LU2,,N,N,NONE,Y,N,N,,N,,AUTO
+md1dsp_b,Raw data,16384,,EMMC_USER,UFS_LU2,,N,N,NONE,Y,N,N,,N,,AUTO
+spmfw_b,Raw data,1024,,EMMC_USER,UFS_LU2,,N,N,NONE,Y,N,N,,N,,AUTO
+mcupmfw_b,Raw data,1024,,EMMC_USER,UFS_LU2,,N,N,NONE,Y,N,N,,N,,AUTO
+scp_b,Raw data,6144,,EMMC_USER,UFS_LU2,,N,N,NONE,Y,N,Y,,Y,,AUTO
+sspm_b,Raw data,1024,,EMMC_USER,UFS_LU2,,N,N,NONE,Y,N,N,,N,,AUTO
+cam_vpu1_b,Raw data,15360,,EMMC_USER,UFS_LU2,,N,N,NONE,Y,N,N,,N,,AUTO
+cam_vpu2_b,Raw data,15360,,EMMC_USER,UFS_LU2,,N,N,NONE,Y,N,N,,N,,AUTO
+cam_vpu3_b,Raw data,15360,,EMMC_USER,UFS_LU2,,N,N,NONE,Y,N,N,,N,,AUTO
+gz_b,Raw data,16384,,EMMC_USER,UFS_LU2,,N,N,NONE,Y,N,N,,N,,AUTO
+lk_b,Raw data,1024,,EMMC_USER,UFS_LU2,,N,N,NONE,Y,N,Y,N,Y,N,AUTO
+boot_b,Raw data,32768,,EMMC_USER,UFS_LU2,,N,N,NONE,Y,N,Y,,Y,,AUTO
+odmdtbo_b,Raw data,16384,,EMMC_USER,UFS_LU2,,N,N,NONE,Y,N,Y,,Y,,AUTO
+dtbo_b,Raw data,8192,,EMMC_USER,UFS_LU2,,N,N,NONE,Y,N,Y,,Y,,AUTO
+tee_b,Raw data,5120,,EMMC_USER,UFS_LU2,,N,N,NONE,Y,N,N,,N,,AUTO
+odm_b,EXT4,32768,,EMMC_USER,UFS_LU2,main,N,N,NONE,Y,N,Y,,Y,,AUTO
+product_b,EXT4,282144,,EMMC_USER,UFS_LU2,main,N,N,NONE,Y,N,Y,,Y,,AUTO
+vendor_b,EXT4,524288,,EMMC_USER,UFS_LU2,main,N,N,NONE,Y,N,Y,,Y,,AUTO
+system_b,EXT4,3145728,,EMMC_USER,UFS_LU2,main,N,Y,system_other.img,Y,N,Y,,Y,,AUTO
+super,Raw data,6291456,,EMMC_USER,UFS_LU2,,N,Y,super.img,Y,N,Y,,Y,,AUTO
+userdata,EXT4,3145728,,EMMC_USER,UFS_LU2,,N,Y,userdata.img,N,N,Y,,Y,,AUTO
+intsd,FAT,0,,EMMC_USER,UFS_LU2,,N,N,NONE,N,N,N,,N,,AUTO
+otp,Raw data,44032,,EMMC_USER,UFS_LU2,,Y,N,NONE,N,N,N,,N,,RESERVED
+flashinfo,Raw data,16384,,EMMC_USER,UFS_LU2,,Y,N,NONE,N,N,N,,N,,RESERVED
+sgpt,Raw data,32,,EMMC_USER,UFS_LU2,,Y,N,NONE,N,N,N,,N,,RESERVED

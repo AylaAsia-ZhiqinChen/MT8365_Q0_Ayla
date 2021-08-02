@@ -1,0 +1,10 @@
+on early-init
+    wait /dev/.coldboot_done 1000
+
+on init
+    mkdir /config
+    setprop sys.usb.configfs 1
+    setprop sys.usb.controller "musb-hdrc"
+
+on fs
+    symlink /dev/block/platform/soc/11120000.mmc /dev/block/platform/bootdevice

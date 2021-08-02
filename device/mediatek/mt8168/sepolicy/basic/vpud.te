@@ -1,0 +1,48 @@
+# ==============================================
+# Policy File of /vendor/bin/vpud Executable File
+
+# ==============================================
+# Type Declaration
+# ==============================================
+type vpud_native_exec, exec_type, file_type, vendor_file_type;
+type vpud_native, domain;
+
+# ==============================================
+# MTK Policy Rule
+# ==============================================
+init_daemon_domain(vpud_native)
+
+#============= vpud_native ==============
+allow vpud_native ion_device:chr_file { read write ioctl open };
+allow vpud_native vcu_device:chr_file { read write ioctl open };
+allow vpud_native MTK_SMI_device:chr_file { ioctl read open };
+#allow vpud_native hwservicemanager_prop:file { read ioctl getattr open };
+allow vpud_native proc:file { read ioctl getattr open };
+allow vpud_native init:unix_stream_socket connectto;
+allow vpud_native mtk_hal_power_hwservice:hwservice_manager find;
+allow vpud_native mtk_thermal_config_prop:file read;
+allow vpud_native thermal_manager_data_file:file { read write };
+allow vpud_native thermalloadalgod:unix_stream_socket connectto;
+allow vpud_native proc_thermal:file open;
+allow vpud_native property_socket:sock_file write;
+allow vpud_native sysfs:file write;
+allow mediaserver vpud_device:chr_file { read write ioctl open };
+
+#============= vpud_native ==============
+allow vpud_native mediaserver:fd use;
+allow vpud_native debugfs_ion:dir search;
+
+not_full_treble(`
+  allow vpud_native shell_exec:file { execute read open execute_no_trans getattr };
+  allow vpud_native toolbox_exec:file { getattr execute read open execute_no_trans };
+')
+
+full_treble_only(`
+  allow vpud_native vendor_shell_exec:file rx_file_perms;
+  allow vpud_native vendor_toolbox_exec:file rx_file_perms;
+')
+
+allow vpud_native sysfs:file { read open getattr };
+allow vpud_native tee_device:chr_file { read write ioctl open };
+allow vpud_native vcu_device:chr_file { map };
+allow vpud_native sysfs_device_tree_model:file { open read getattr };

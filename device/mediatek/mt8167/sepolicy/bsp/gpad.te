@@ -1,0 +1,4 @@
+# processes can create file under directory /data/gpad/
+#allow guiext-server gpad_data_file:sock_file { create_file_perms };
+#allow guiext-server gpad_data_file:dir { create_dir_perms };
+#allow guiext-server gpadd:unix_stream_socket { connectto };

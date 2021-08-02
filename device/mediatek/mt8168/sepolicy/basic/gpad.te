@@ -1,0 +1,54 @@
+# ==============================================
+# Policy File of mTune Module
+# ==============================================
+
+# ==============================================
+# Policy File of gpad Executable File
+# gpadd : gpad daemon
+# ==============================================
+
+# ==============================================
+# Type Declaration
+# ==============================================
+#type gpad_device, dev_type;
+#type gpadd_exec , exec_type, file_type;
+#type gpadd, domain;
+#type gpad_data_file, file_type;
+
+#init_daemon_domain(gpadd)
+
+#allow gpadd         gpad_data_file:{ sock_file file } { create_file_perms };
+#allow gpadd         gpad_data_file:dir                { create_dir_perms };
+#allow gpadd         system_data_file:dir              { create_dir_perms };
+# /dev/gpad0
+#allow gpadd         gpad_device:chr_file              { rw_file_perms };
+#allow gpadd         self:capability                   { fowner chown fsetid dac_override setgid };
+
+# processes can create file under directory /data/gpad/
+#allow { adbd appdomain }     gpad_data_file:file       r_file_perms;
+#allow { adbd appdomain bootanim dumpstate mediaserver surfaceflinger system_server debuggerd ipod program_binary zygote } 
+#    gpad_data_file:sock_file          { create_file_perms };
+#allow { adbd appdomain bootanim dumpstate mediaserver surfaceflinger system_server debuggerd ipod program_binary zygote }
+#    gpad_data_file:dir                { create_dir_perms };
+#allow { adbd appdomain bootanim dumpstate mediaserver surfaceflinger system_server debuggerd ipod program_binary zygote }
+
+#    gpadd:unix_stream_socket          { connectto };
+#type_transition     gpadd system_data_file:{ dir file sock_file } gpad_data_file;
+
+# ==============================================
+# Policy File of mtune Executable File
+# ==============================================
+
+# ==============================================
+# Type Declaration
+# ==============================================
+
+#type mtune_exec , exec_type, file_type;
+
+#allow appdomain         mtune_exec:file { rx_file_perms };
+
+# ==============================================
+# Policy File of IPEM Proc File
+# ==============================================
+#type proc_ipem, file_type;
+#allow shell            proc_ipem:file rw_file_perms;

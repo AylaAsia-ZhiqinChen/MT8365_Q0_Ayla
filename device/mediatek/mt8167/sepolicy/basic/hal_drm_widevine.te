@@ -1,0 +1,2 @@
+#=================== hal_drm_widevine ==================
+#allow hal_drm_widevine kisd:unix_stream_socket connectto;

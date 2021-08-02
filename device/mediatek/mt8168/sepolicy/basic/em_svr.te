@@ -1,0 +1,7 @@
+# ==============================================
+# MTK Policy Rule
+# ============
+
+# for supporting mlc nand
+allow em_svr mtd_device:chr_file rw_file_perms;
+allow em_svr mtd_device:dir search;
