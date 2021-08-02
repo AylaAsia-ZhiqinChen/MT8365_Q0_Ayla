@@ -1,0 +1,17 @@
+This is a script used to turn on/off Trusty options in MediaTek platform.
+
+Usage:
+  perl changeTrusty.pl --config=ConfigFile --project=Project --kernel=Kernel_Version
+
+Turn on trusty config options:
+  perl changeTrusty.pl --config=trustyArmv8_on.xml --project=k53mv1_64 --kernel=kernel-3.18
+  perl changeTrusty.pl --config=trustyArmv7_on.xml --project=k80hd --kernel=kernel-3.18
+
+Turn off trusty config options:
+  perl changeTrusty.pl --config=trustyArmv8_off.xml --project=k53mv1_64 --kernel=kernel-3.18
+  perl changeTrusty.pl --config=trustyArmv7_off.xml --project=k80hd --kernel=kernel-3.18
+
+
+This is a script used to check Trusty options in MediaTek platform.
+./foscheck.py --project=k53mv1_64 --platform=mt6735 --kernel=kernel-3.18 fos_trusty_enable.json
+./foscheck.py --project=k53mv1_64 --platform=mt6735 --kernel=kernel-3.18 fos_trusty_disable.json

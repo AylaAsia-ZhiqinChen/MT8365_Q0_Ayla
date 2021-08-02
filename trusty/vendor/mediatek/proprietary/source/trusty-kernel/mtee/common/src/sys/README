@@ -1,0 +1,23 @@
+The static library 'libtz_sys' is the library provide basic functions in MTK in-house TEE.
+
+
+WHAT IT DOES?
+=============
+
+The libtz_sys is the basic library provide the log printing, memory layout, and register read/write functions.
+
+
+HOW IT WAS BUILT?
+==================
+
+All source/dependency modules of this module are already put in
+'vendor/mediatek/proprietary/trustzone' folder.
+
+
+HOW TO USE IT?
+==============
+
+Linked with trustzone image, and call the basic functions provided by it.
+
+
+All the source code of this library were written by MediaTek co..
