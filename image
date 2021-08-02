@@ -1,0 +1,176 @@
+#!/bin/bash
+
+#全局变量
+lcurdir=$(readlink -f .)
+SOURCE_PATH=$lcurdir
+DEST_PATH1=$lcurdir/pack_out
+VERSION="v2.0"
+
+#获取配置文件值
+getProjectKey(){
+	local file=$1
+	local key=$2
+	if [ -f "${file}" ];then
+		local value=$(grep -v "^\s*#" ${file} | grep -w ${key} | tail -1 | sed 's#^[^=]*=\(.*\)$#\1#g' | sed 's#[[:space:]]##g' )
+	fi
+	echo ${value}
+}
+
+#打印硬件相关信息
+printHarewareConfig(){
+	echo project:
+	echo $project
+
+	echo   
+	echo version: 
+	cat ${buildProp} | grep  "ro.build.display.id=" | grep -v "\#" |  awk -F'=' '{print $2}' 
+
+	echo 
+	echo buildtime:
+	cat ${buildProp} | grep  "ro.git.buildtime=" | grep -v "\#" |  awk -F'=' '{print $2}'
+	
+	echo  
+	echo camera: 
+	echo $(getProjectKey ${projectConfig} CUSTOM_HAL_IMGSENSOR) 
+
+	echo 
+	echo LCD: 
+	echo $(getProjectKey  ${projectConfig} CUSTOM_KERNEL_LK_LCM)
+
+	echo   
+	echo TP: 
+	echo $(getProjectKey  ${projectConfig} CUSTOM_KERNEL_TOUCHPANEL) 
+
+	echo  
+	echo flash:
+	cat ${flashFile} | grep CS_PART_NUMBER | grep -v "\/\/\#" | awk -F' ' '{print $3}' 
+
+	echo  
+	echo modem: 
+	echo $(getProjectKey  ${projectConfig} CUSTOM_MODEM) 
+
+	alsps_string=$(getProjectKey  ${projectConfig} CUSTOM_KERNEL_ALSPS)
+	echo  
+	echo psensor/lsensor: 
+	if [ "$alsps_string" ];then
+		echo $alsps_string 
+	else
+		echo no
+	fi
+
+	echo  
+	echo gps support: 
+	echo $(getProjectKey  ${projectConfig} MTK_GPS_SUPPORT)
+
+	echo   
+	echo ipaddr: 
+	echo $(ifconfig | grep inet | awk -F":" '{print $2}' | awk '{print $1}' | grep "192.168.") 
+
+	echo   
+	echo developer: 
+	echo $USER@`hostname` 	
+}
+
+copyfile(){
+	local old=$1
+	local new=$2
+	if [ -f "${old}" ];then
+		cp $old $new
+	fi
+
+	if [ -d "${old}" ];then
+		cp -r $old $new
+	fi	
+}
+#拷贝生成相关信息文件
+
+genConfigFile(){
+	local database="$DEST_PATH/database/"
+	local modem_path="vendor/mediatek/proprietary/modem/$(getProjectKey  ${projectConfig} CUSTOM_MODEM)"
+	mkdir -p ${database}
+	
+	copyfile $(find out/target/product/$project/obj/ETC/apdb_intermediates/ -name "APDB_*" | grep -v ENUM) ${database}
+#	cp vendor/mediatek/proprietary/modem/m8806_lwtg_cat4/MDDB_InfoCustomAppSrcP_MT6771_S00_MOLY_LR12A_R3_MP_V111_7_1_ulwtg_n.EDB ${database}
+	local projectDir="$DEST_PATH/$project/"
+	mkdir  -p $projectDir
+	cp out/target/product/$project/obj/KERNEL_OBJ/vmlinux  $projectDir
+}
+#拷贝镜像
+copyImgFile(){
+	cp out/target/product/$project/MT*_Android_scatter.txt $DEST_PATH
+	cp out/target/product/$project/preloader_$project.bin $DEST_PATH
+	if [ -d out/target/product/${project}/signed_bin ]; then
+		cp -rf out/target/product/${project}/signed_bin/* $DEST_PATH
+	else
+		for fw_img in $(grep file_name out/target/product/$project/MT*_Android_scatter.txt | grep -v "file_name: NONE" | awk -F"file_name: " '{print $2}' | uniq);
+		do
+		{
+			sign_filename=$(echo $fw_img | sed 's/\./-verified\./g')
+			if [ -f out/target/product/$project/$sign_filename ];then
+				cp out/target/product/$project/$sign_filename $DEST_PATH
+			else
+				cp out/target/product/$project/$fw_img $DEST_PATH
+			fi
+		}
+		done
+	fi
+}
+
+#拷贝ota压缩包
+copyOtaFile(){
+	test -f out/target/product/$project/target_files-package.zip && cp out/target/product/$project/target_files-package.zip $DEST_PATH
+	test -f out/target/product/$project/momagic_fota_package.zip && cp out/target/product/$project/momagic_fota_package.zip $DEST_PATH
+	test -f out/target/product/$project/*-ota-*.zip && cp out/target/product/$project/*-ota-*.zip $DEST_PATH/$BUILD_VERSION-sdcard.zip
+	test -f out/target/product/$project/obj/PACKAGING/target_files_intermediates/*.zip && cp out/target/product/$project/obj/PACKAGING/target_files_intermediates/*.zip $DEST_PATH/
+}
+
+#执行checksum镜像
+makeCheckSum(){
+	#mkdir -p $DEST_PATH/check_sum
+	cp -rf yuntian/tools/check_sum/* $DEST_PATH/
+	cd $DEST_PATH
+	chmod 777 ./CheckSum_Gen
+	./CheckSum_Gen -h
+	cd $SOURCE_PATH
+}
+
+
+#主函数入口
+main(){
+	local buildinfo="out/buildinfo.txt"
+	project=$(cat ${buildinfo} | grep -w "TARGET_PRODUCT" | awk -F"=" '{print $2}'|sed 's#^full_##g')
+	
+	#全局变量
+	projectConfig="out/target/product/${project}/vendor/data/misc/ProjectConfig.mk"
+	project_out_path="out/target/product/$project"
+	buildProp="out/target/product/${project}/system/build.prop"
+
+	BUILD_VERSION=$(getProjectKey ${buildProp} "ro.build.display.id"| tr a-z A-Z)
+
+	BUILD_TYPE=$(getProjectKey ${buildProp} "ro.build.type")
+	BUILD_VERSION=${BUILD_VERSION}_${BUILD_TYPE}
+	echo project=$project
+
+	echo build_version=${BUILD_VERSION}
+
+	DEST_PATH=$DEST_PATH1/$BUILD_VERSION
+	rm -rf $DEST_PATH1
+	mkdir -p $DEST_PATH
+
+	genConfigFile
+
+	copyImgFile
+
+	copyOtaFile
+
+	makeCheckSum
+	
+	echo $DEST_PATH
+
+}
+
+#程序入口
+main
+
+
+
