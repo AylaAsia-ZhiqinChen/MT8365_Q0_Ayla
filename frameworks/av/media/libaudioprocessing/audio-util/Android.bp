@@ -1,0 +1,34 @@
+
+cc_library {
+    name: "libaudioutilmtk",
+
+    srcs: [
+        "AudioUtilmtk.cpp",
+        "AudioLoudmtk.cpp",
+    ],
+
+    cflags: [
+        "-Wall",
+        "-Werror",
+        "-DSYS_IMPL",
+    ],
+
+    shared_libs: [
+        "libaudioutils",
+        "libcutils",
+        "liblog",
+        "libutils",
+    ],
+
+    include_dirs: [
+        "frameworks/av/include",
+        "system/media/audio/include/system",
+        "vendor/mediatek/proprietary/external/audio_utils/common_headers/cgen/cfgfileinc",
+        "vendor/mediatek/proprietary/external/AudioComponentEngine",
+        "external/libxml2/include",
+        "external/icu/libandroidicu/include",
+        "vendor/mediatek/proprietary/external/AudioParamParser",
+        "vendor/mediatek/proprietary/external/AudioParamParser/include",
+    ],
+
+}
