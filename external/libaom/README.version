@@ -1,0 +1,5 @@
+URL: https://aomedia.googlesource.com/aom/+archive/978ab9e6cd19904cdd54b69a4c30b10c747eb55a.tar.gz
+Version: v1.0.0
+Local Modifications:
+  Remove __clang__analyzer__ preprocessor directives (ag/7285842)
+  Cherry-pick 0a0368368 Check the conformance requirements in Sec. 6.8.1.
