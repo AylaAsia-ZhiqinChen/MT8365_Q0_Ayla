@@ -1,0 +1,19 @@
+Library of MTK JPEG Encode feature.
+
+This library is pre-built by MediaTek internal.
+
+WHAT IT DOES?
+=============
+libJpgEncDrv_plat.a controls MTK JPEG HW Encoder through kernel IOCTL interfaces to do the HW JPEG Encode tasks.
+
+HOW IT WAS BUILT?
+==================
+All source/dependency modules of this module are already put in
+'vendor/mediatek/libs' folder.
+
+HOW TO USE IT?
+==============
+Provide api for JPEG Encode feature called from libJpgEncPipe.
+all api interfaces are at (vendor\mediatek\proprietary\hardware\jpeg\mt8167\hal)
+
+All the source code of this library were written by MediaTek co..

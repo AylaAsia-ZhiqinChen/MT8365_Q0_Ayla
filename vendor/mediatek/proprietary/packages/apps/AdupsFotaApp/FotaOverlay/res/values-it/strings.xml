@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">Aggiornamento firmware</string>
+    <string name="check_now">Verifica aggiornamenti</string>
+    <string name="option_settings">Impostazioni</string>
+    <string name="current_version_text">Attuale:</string>
+    <string name="new_version_text">Nuova versione</string>
+    <string name="download_progress">Progresso:</string>
+    <string name="update_now">Aggiorna adesso</string>
+    <string name="update_later">Aggiorna più tardi</string>
+    <string name="battery_remove_title">Attenzione</string>
+    <string name="notification_content_title">Aggiornamento firmware</string>
+    <string name="notification_content_newversion">Una nuova versione è disponibile.</string>
+    <string name="new_version_query">Verifica aggiornamenti...</string>
+    <string name="no_new_version">Il sistema è aggiornato.</string>
+    <string name="network_error">Collegamento rete fallito</string>
+    <string name="unmount_sdcard">Errore montaggio SD card, prego controllare</string>
+    <string name="sdcard_crash_or_unmount">Errore SD card error. Controllare e riprovare.</string>
+    <string name="btn_pause">Pausa</string>
+    <string name="btn_resume">Riprendere</string>
+    <string name="btn_download">Scaricare</string>
+    <string name="btn_ok">Ok</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="cancel_download_title">Cancellare download</string>
+    <string name="cancel_download_content">Questa operazione cancellerà il file scaricato.</string>
+    <string name="cancel_download_positive_btn">Si</string>
+    <string name="cancel_download_negative_btn">No</string>
+    <string name="update_prompt">Il dispositivo si riavvierà e passerà alla modalità di aggiornamento, l\'intero processo durerà alcuni minuti e durante questo periodo non eseguire alcuna operazione per evitare l\'errore di aggiornamento.</string>
+    <string name="not_support_fota_title">Attenzione</string>
+    <string name="not_support_version">Il dispositivo non supporta FOTA</string>
+    <string name="package_error_title">Installazione fallita</string>
+    <string name="package_error_message_invalid">Errore package. Controllare e riscaricare.</string>
+    <string name="updateSuccessTitle">Installazione riuscita</string>
+    <string name="updateSuccess">Già installata versione %s.</string>
+    <string name="package_unzip">Decompressione package, non interrompere...</string>
+    <string name="package_unzip_error">Errore decompressione</string>
+    <string name="upgrade_hint">Suggerimenti</string>
+    <string name="setting_autocheck">Controlla aggiornamenti automaticamente</string>
+    <string name="setting_autocheck_title">Impostazione periodo</string>
+    <string name="setting_autocheck_hint">Imposta ogni quanto controllare aggiornamenti</string>
+    <string name="setting_autocheck_schedule1">un giorno</string>
+    <string name="setting_autocheck_schedule2">Tre giorni</string>
+    <string name="setting_autocheck_schedule3">Settimana</string>
+    <string name="setting_only_wifi">Aggiorna solo via Wi-Fi</string>
+    <string name="setting_only_wifi_hint">L\'aggiornamento verrà scaricato solo via Wi-Fi</string>
+    <string name="setting_autodownload">Permetti scaricamento automatico</string>
+    <string name="setting_autodownload_hint">L\'aggiornamento verrà scaricato automaticamente</string>
+    <string name="setting_network_tip">Sei in 2G/3G, cambiare la selezione [Aggiornamento solo via Wi-Fi] e riprovare.</string>
+    <string name="reboot">Riavvia...</string>
+    <string name="option_file_select">Aggiornamenti Locali</string>
+    <string name="selected_update_zip">File selezionato: </string>
+    <string name="sdCard_update_tips_content"><Data><![CDATA[ <div style="font-size:13px;color:#4c4c4c"><p>1. Please make sure the selected file is official;</p>
+                                <p>2. Local Update may wipe your data, please backup before updating;</p>
+                                <p>3. Install the wrong update file will damage your device;</p>
+                                <p>4. Click [Update now] button, your device will enter into the Recovery Mode. Please do not remove the battery and do nothing until the update has been completed.</p></div> ]]> </Data>
+    </string>
+    <string name="sdCard_upgrade_hint">Aggiorna hint</string>
+    <string name="sdCard_upgrade_find_update_file_fail">Nessun aggiornamento disponibile</string>
+    <string name="sdCard_upgrade_update_file_fail_prompt">Aggiornamento non presente, si prega di riselezionare.</string>
+    <!-- no translation found for sdCard_upgrade_memory_space_not_enough -->
+    <string name="sdCard_upgrade_copy_file_fail">Importazione non riuscita</string>
+    <string name="sdCard_upgrade_copy_file_fail_prompt">Importazione non riuscita, si prega di riprovare!</string>
+    <!-- no translation found for sdCard_upgrade_copying -->
+    <string name="download_completed_text">Download completo, si prega di fare click per installare</string>
+    <string name="empty_directory">Nessun file zip nella cartella!</string>
+    <string name="sdcard_update_prompt">Il dispositivo si bloccherà se si sceglie e si installa un file zip non ufficiale o incompatibile!</string>
+    <string name="export_data">Esporta dati</string>
+    <string name="start_catch_log">Inizia a registrare</string>
+    <string name="stop_catch_log">Smetti di registrare</string>
+    <string name="remind_last_time">Ricorda ancora</string>
+    <string name="pop_install_schedule1">Tra 1 ora</string>
+    <string name="pop_install_schedule2">Tra 4 ore</string>
+    <string name="pop_install_schedule3">Tra 8 ore</string>
+    <string name="pop_install_remind_title">Suggerimento di aggiornamento</string>
+    <string name="pop_install_remind_content">Nuova versione scaricata. Installarla subito.</string>
+    <string name="option_exit">Esci</string>
+    <string name="htmlstring_version"><![CDATA[<div style=\'font-size:16px;color:#303030;\'><span style=\'word-break:break-all\'>]]></string>
+    <string name="htmlstring_version_end"><![CDATA[</span><br/>]]></string>
+    <string name="htmlstring_code_head"><![CDATA[<div style=\'font-size:14px;color:#8e8e8e;\'><span style=\'word-break:break-all\'>]]></string>
+    <string name="htmlstring_code_end"><![CDATA[</span><br/></div>]]></string>
+    <string name="ota_notify_download_pause_content">In pausa. Fare clic per continuare</string>
+    <string name="ota_button_text_know">Lo so</string>
+    <string name="ota_device_rooted_content">Dispositivo rooted. Impossibile aggiornare.</string>
+    <string name="ota_battery_low">La batteria attuale è inferiore a %1$d%%, si prega di caricare!</string>
+    <string name="ota_wifi_setting">Impostazioni Wi-Fi</string>
+    <string name="ota_no_wifi_tip">Wi-Fi al momento non disponibile. Confermare il download tramite la rete?</string>
+    <string name="ota_full_rom_check">Controlla</string>
+    <string name="ota_optional_full_check">Controlla intero aggiornamento</string>
+    <string name="ota_toast_no_network">Rete non connessa</string>
+    <string name="out_sdcard">Scheda SD</string>
+    <string name="inner_sdcard">Archivio interno</string>
+    <string name="match_imei">IMEI is illegal</string>
+    <string name="sdcard_crash_dir_un_build">The SDCard is not available!</string>
+    <string name="post_pro">%</string>
+    <string name="ab_install_fail">Install fail</string>
+    <string name="ab_install_success">Install successfully</string>
+    <string name="updated_need_reboot">Restart the cell phone to activate the updated version</string>
+    <string name="ab_isnatll_fail_reason">Reason：</string>
+    <string name="ab_installing">Installing</string>
+    <string name="ab_connect_fail">Connect reboot fail</string>
+    <string name="ab_battery_low">The update will be installed automatically when the battery is charged to more than %17$d%%</string>
+    <string name="ab_parms_illegal">Incorrect upgrade package parameter</string>
+    <string name="ab_reboot_now">Restart immediately</string>
+    <string name="tips_abDownOrInstall">In the downloading upgrade, do not upgrade locally at the same time</string>
+    <string name="tips_abInstall">In the installation, please do not check the full package.</string>
+    <string name="button_click_toast">Click too fast, Please try again later.</string>
+    <string name="about_wireless_update">Informazioni sull\'aggiornamento wireless</string>
+    <string name="agree">ESSERE D\'ACCORDO</string>
+    <string name="analysis">Analisi delle app</string>
+    <string name="content">Scegli di migliorare la tua app condividendo la sua attività e i dati relativi agli arresti anomali.</string>
+    <string name="sdCard_upgrade_memory_space_not_enough">Error</string>
+    <string name="sdCard_upgrade_copying">Copying&#8230;</string>
+</resources>

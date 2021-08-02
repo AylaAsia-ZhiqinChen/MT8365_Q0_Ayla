@@ -1,0 +1,12 @@
+// cstalign standard header
+#ifndef _CSTDALIGN_
+#define _CSTDALIGN_
+#include <c99/yvals.h>
+
+#include <c99/stdalign.h>
+#endif /* _CSTDALIGN_ */
+
+/*
+ * Copyright (c) by P.J. Plauger. All rights reserved.
+ * Consult your license regarding permissions and restrictions.
+V6.50:1611 */

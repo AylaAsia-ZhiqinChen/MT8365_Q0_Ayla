@@ -1,0 +1,34 @@
+cc_prebuilt_library_shared {
+
+    name: "libjpeg-alpha",
+
+    owner: "mtk",
+    arch: {
+        arm: {
+            srcs: ["lib/libjpeg-alpha.so"],
+        },
+        arm64: {
+            srcs: ["lib64/libjpeg-alpha.so"],
+        },
+    },
+    compile_multilib: "both",
+    export_include_dirs: ["include/"],
+    shared_libs: ["libjpeg-alpha-oal"],
+}
+
+cc_prebuilt_library_shared {
+
+    name: "libjpeg-alpha-oal",
+
+    owner: "mtk",
+    arch: {
+        arm: {
+            srcs: ["lib/libjpeg-alpha-oal.so"],
+        },
+        arm64: {
+            srcs: ["lib64/libjpeg-alpha-oal.so"],
+        },
+    },
+    compile_multilib: "both",
+}
+

@@ -1,0 +1,23 @@
+The static library 'libtz_drv_sram' is a TA library which provide the APIs to handle the sram/rom access violation event.
+
+
+WHAT IT DOES?
+=============
+
+The 'libtz_drv_sram' provides the handler to process sram/rom access violation event.
+
+
+HOW IT WAS BUILT?
+==================
+
+All source/dependency modules of this module are already put in
+'vendor/mediatek/release_objs' folder.
+
+
+HOW TO USE IT?
+==============
+
+The libary 'libtz_drv_sram' is linked with the image of MTK in-house TEE.
+It will be used to handle sram/rom access violation event.
+
+All the source code of this library were written by MediaTek co..

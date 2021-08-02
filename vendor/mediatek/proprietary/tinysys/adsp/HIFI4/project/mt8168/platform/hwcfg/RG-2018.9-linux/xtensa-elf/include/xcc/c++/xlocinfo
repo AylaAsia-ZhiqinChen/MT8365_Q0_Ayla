@@ -1,0 +1,5 @@
+#if __cplusplus >= 201103
+#include <c++11/xlocinfo>
+#else
+#include <c++98/xlocinfo>
+#endif

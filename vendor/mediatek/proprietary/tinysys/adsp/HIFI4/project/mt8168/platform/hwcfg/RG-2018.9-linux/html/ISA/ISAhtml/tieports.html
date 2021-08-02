@@ -1,0 +1,265 @@
+<html>
+  <head>
+    <title>
+      TIE Queues and Lookups
+    </title>
+    <style type="text/css">
+      <!--
+	body {
+	background: white;
+	color: black;
+	font-family: Arial, Verdana, Myriad Web, Syntax, sans-serif;
+	margin-left: 2em;
+	margin-right: 2em;
+	}
+	#boundingbox {
+	background: white;
+	color: black;
+	font-family: Arial, Verdana, Myriad Web, Syntax, sans-serif;
+	position: relative;
+	width: 865px;
+	margin: 0 auto;
+	padding: 20px;
+	border-style: dashed;
+	border-width: 1px;
+	border-spacing: 10px;
+	border-collapse: separate;
+	}
+	a {
+	text-decoration: none;
+	}
+	a:visited {
+	color: blue;
+	}
+	a:link {
+	color: green;
+	}
+	a:active {
+	color: green;
+	}
+	a:hover {
+	color: green;
+	}
+	a:offsite {
+	color: green;
+	}
+	h1 {
+	font-size: 14pt;
+	font-weight: bold;
+	}
+	h1.center {
+	font-size: 14pt;
+	font-weight: bold;
+	text-align: center;
+	}
+	h2 {
+	font-size: 12pt;
+	}
+	caption {
+	padding-top: 1em;
+	}
+	table.thin {
+	border-width: thin;
+	border-spacing: 0px;
+	border-style: inset;
+	border-color: gray;
+	border-collapse: collapse;
+	background-color: rgb(250, 240, 230);
+	}
+	table th.thin {
+	border-width: thin;
+	padding: 3px;
+	border-style: inset;
+	border-color: gray;
+	background-color: white;
+	-moz-border-radius: 0px 0px 0px 0px;
+	}
+	table th.thin2 {
+	border-width: thin;
+	padding: 3px;
+	border-style: inset;
+	border-color: gray;
+	background-color: rgb(250, 240, 230);
+	-moz-border-radius: 0px 0px 0px 0px;
+	}
+	table td.thin {
+	border-width: thin;
+	padding: 3px;
+	border-style: inset;
+	border-color: gray;
+	background-color: white;
+	-moz-border-radius: 0px 0px 0px 0px;
+	}
+	table td.thin2 {
+	border-width: thin;
+	padding: 3px;
+	border-style: inset;
+	border-color: gray;
+	background-color: rgb(250, 240, 230);
+	-moz-border-radius: 0px 0px 0px 0px;
+	}
+	pre {
+	font-family: Lucidatypewriter, monospace;
+	font-size: 10pt;
+	}
+	.proto {
+	font-family: Lucidatypewriter, monospace;
+	font-size: 10pt;
+	padding-left: 1em;
+	text-indent: -1em;
+	}
+	.protohead {
+	font-family: Lucidatypewriter, monospace;
+	font-size: 10pt;
+	padding-left: 2em;
+	text-indent: -2em;
+	}
+	.protobody {
+	font-family: Lucidatypewriter, monospace;
+	font-size: 10pt;
+	padding-left: 4em;
+	text-indent: -2em;
+	}
+	.rotate {
+	display: block;
+	-webkit-transform: rotate(-90deg); 
+        -moz-transform:
+	rotate(-90deg);
+	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+	padding-top: 20px;                       
+}
+	.light {
+	font-size: 75%;
+	color: SlateGrey;
+	}
+	table.format {
+	border-width: thin;
+	border-spacing: 0px;
+	border-style: inset;
+	border-color: gray;
+	border-collapse: collapse;
+	background-color: rgb(250, 240, 230);
+	font-size: 75%;
+	}
+	table.format th {
+	border-width: thin;
+	padding: 3px;
+	border-style: inset;
+	border-color: gray;
+	background-color: #FFF5EE;
+	-moz-border-radius: 0px 0px 0px 0px;
+	vertical-align: bottom;
+	font-size: 75%;
+	}
+	table.format td {
+	border-width: thin;
+	padding: 3px;
+	border-style: inset;
+	border-color: gray;
+	background-color: white;
+	-moz-border-radius: 0px 0px 0px 0px;
+	font-size: 75%;
+	}
+	table.format td.opcodeBit_present {
+	background-color: #FFE4E1;
+	text-align: center;
+	}
+	table.format td.formatBit_present {
+	background-color: #EEE8AA;
+	text-align: center;
+	}
+	table.format td.slotBit_present {
+	background-color: #B0E0E6;
+	text-align: center;
+	vertical-align: bottom;
+	}
+	
+        -->
+    </style>
+  </head>
+  <body>
+    <h1>
+      TIE Queues and Lookups
+    </h1>
+    <h2>
+      ImportWire
+    </h2>
+    <ul>
+      <li>
+	IMPWIRE
+      </li>
+      <ul>
+	<li>
+	  <a href=instruction/READ_IMPWIRE.html>READ_IMPWIRE</a>
+	</li>
+      </ul>
+      <li>
+	mfp1status
+      </li>
+      <ul>
+	<li>
+	  <a href=instruction/MFP1STATUS.html>MFP1STATUS</a>
+	</li>
+      </ul>
+      <li>
+	mfp2status
+      </li>
+      <ul>
+	<li>
+	  <a href=instruction/MFP2STATUS.html>MFP2STATUS</a>
+	</li>
+      </ul>
+    </ul>
+    <h2>
+      Lookup
+    </h2>
+    <ul>
+      <li>
+	MFP1
+      </li>
+      <ul>
+	<li>
+	  <a href=instruction/COS_OP.html>COS_OP</a>
+	</li>
+	<li>
+	  <a href=instruction/EXPACC_OP.html>EXPACC_OP</a>
+	</li>
+	<li>
+	  <a href=instruction/EXP_OP.html>EXP_OP</a>
+	</li>
+	<li>
+	  <a href=instruction/LN_OP.html>LN_OP</a>
+	</li>
+	<li>
+	  <a href=instruction/LOG2_OP.html>LOG2_OP</a>
+	</li>
+	<li>
+	  <a href=instruction/RECIP_OP.html>RECIP_OP</a>
+	</li>
+	<li>
+	  <a href=instruction/SIN_OP.html>SIN_OP</a>
+	</li>
+	<li>
+	  <a href=instruction/SQRT_OP.html>SQRT_OP</a>
+	</li>
+      </ul>
+      <li>
+	MFP2
+      </li>
+      <ul>
+	<li>
+	  <a href=instruction/LOG10_OP.html>LOG10_OP</a>
+	</li>
+	<li>
+	  <a href=instruction/POWER10_OP.html>POWER10_OP</a>
+	</li>
+	<li>
+	  <a href=instruction/SIGMOID_OP.html>SIGMOID_OP</a>
+	</li>
+	<li>
+	  <a href=instruction/TANH_OP.html>TANH_OP</a>
+	</li>
+      </ul>
+    </ul>
+  </body>
+</html>

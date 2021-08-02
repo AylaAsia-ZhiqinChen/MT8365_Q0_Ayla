@@ -1,0 +1,23 @@
+The static library 'libtz_bsp_platform_mt8167' is a TA library which provide the APIs to do cpu hotplug/dormant flow in MTK in-house TEE.
+
+
+WHAT IT DOES?
+=============
+
+The 'libtz_bsp_platform_mt8167' provides the API related to cpu hotplug/dormant flow inside MTK in-house TEE.
+
+
+HOW IT WAS BUILT?
+==================
+
+All source/dependency modules of this module are already put in
+'vendor/mediatek/libs' folder.
+
+
+HOW TO USE IT?
+==============
+
+The libary 'libtz_bsp_platform_mt8167' is linked with the image of MTK in-house TEE.
+It will be used to handle cpu hotplug/dormant event.
+
+All the source code of this library were written by MediaTek co..

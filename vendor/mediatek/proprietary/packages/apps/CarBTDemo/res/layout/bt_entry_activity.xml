@@ -1,0 +1,20 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/padding"
+    android:orientation="vertical"
+    android:gravity="center"
+    >
+
+    <TextView android:id="@+id/subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18dp"
+        android:paddingStart="19dp"
+        />
+    <ImageView android:id="@+id/image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="15px"
+        android:paddingTop="10px"
+        />
+
+</LinearLayout>

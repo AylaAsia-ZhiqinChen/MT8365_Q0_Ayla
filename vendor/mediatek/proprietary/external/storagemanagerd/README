@@ -1,0 +1,18 @@
+This module is used to mount all storages in meta/factory mode
+
+
+WHAT IT DOES?
+=============
+Mount all storages in meta/factory mode
+
+HOW IT WAS BUILT?
+==================
+It needs the following library from AOSP:
+
+libcutils libbase
+
+HOW TO USE IT?
+==============
+Run storagemanagerd with the parameter, 'volume mount_all'.
+
+The majority of source code comes from /system/vold/vdc.cpp and is modified by MediaTek.

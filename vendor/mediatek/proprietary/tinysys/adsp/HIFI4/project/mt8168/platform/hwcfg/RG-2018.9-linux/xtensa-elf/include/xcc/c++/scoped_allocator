@@ -1,0 +1,5 @@
+#if __cplusplus >= 201103
+#include <c++11/scoped_allocator>
+#else
+#include <c++98/scoped_allocator>
+#endif

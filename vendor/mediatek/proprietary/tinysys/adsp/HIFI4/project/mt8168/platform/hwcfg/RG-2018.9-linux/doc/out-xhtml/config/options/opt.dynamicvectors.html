@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en-us" lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="copyright" content="(C) Copyright 2005"/>
+<meta name="DC.rights.owner" content="(C) Copyright 2005"/>
+<meta name="DC.Type" content="tconcept"/>
+<meta name="DC.Title" content="Dynamic Vectors"/>
+<meta name="abstract" content=""/>
+<meta name="description" content=""/>
+<meta name="DC.Relation" scheme="URI" content="../../config/pages/page.vectors.html"/>
+<meta name="DC.Relation" scheme="URI" content="opt.cfg_auto_vectors.html"/>
+<meta name="DC.Relation" scheme="URI" content="opt.staticvectors.html"/>
+<meta name="DC.Format" content="XHTML"/>
+<meta name="DC.Identifier" content="opt-dynamicvectors"/>
+<link rel="stylesheet" type="text/css" href="../../commonltr.css"/>
+<link rel="stylesheet" type="text/css" href="../../cadence.css"/>
+<title>Dynamic Vectors</title>
+</head>
+<body id="opt-dynamicvectors">
+
+
+    <h1 class="title topictitle1">Dynamic Vectors</h1>
+
+    
+    <div class="body conbody"><p class="shortdesc"/>
+
+        <div class="p">
+
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" id="opt-dynamicvectors__d2813e4616" class="table" frame="border" border="1" rules="all"><caption><span class="tablecap">Table 1. Dynamic Vectors</span></caption>
+
+
+
+
+
+
+<thead class="thead" align="left">
+<tr class="row">
+
+<th class="entry" valign="top" id="d13489e37">Vector</th>
+
+<th class="entry" valign="top" id="d13489e40">In Memory</th>
+
+<th class="entry" valign="top" id="d13489e43">Address</th>
+
+<th class="entry" valign="top" id="d13489e46">Prefix Bytes</th>
+
+<th class="entry" valign="top" id="d13489e49">Size Bytes</th>
+
+</tr>
+
+</thead>
+
+<tbody class="tbody">
+
+<tr class="row">
+<td class="entry" valign="top" headers="d13489e37 ">Window vector base</td>
+
+<td class="entry" valign="top" headers="d13489e40 ">System RAM</td>
+
+<td class="entry" valign="top" headers="d13489e43 ">0x40020400</td>
+
+<td class="entry" valign="top" headers="d13489e46 ">0x0</td>
+
+<td class="entry" valign="top" headers="d13489e49 ">0x178</td>
+
+</tr>
+
+<tr class="row">
+<td class="entry" valign="top" headers="d13489e37 ">Level 2 vector</td>
+
+<td class="entry" valign="top" headers="d13489e40 ">System RAM</td>
+
+<td class="entry" valign="top" headers="d13489e43 ">0x4002057c</td>
+
+<td class="entry" valign="top" headers="d13489e46 ">0x4</td>
+
+<td class="entry" valign="top" headers="d13489e49 ">0x1c</td>
+
+</tr>
+
+<tr class="row">
+<td class="entry" valign="top" headers="d13489e37 ">Level 3 vector</td>
+
+<td class="entry" valign="top" headers="d13489e40 ">System RAM</td>
+
+<td class="entry" valign="top" headers="d13489e43 ">0x4002059c</td>
+
+<td class="entry" valign="top" headers="d13489e46 ">0x4</td>
+
+<td class="entry" valign="top" headers="d13489e49 ">0x1c</td>
+
+</tr>
+
+<tr class="row">
+<td class="entry" valign="top" headers="d13489e37 ">Level 4 vector (Debug)</td>
+
+<td class="entry" valign="top" headers="d13489e40 ">System RAM</td>
+
+<td class="entry" valign="top" headers="d13489e43 ">0x400205bc</td>
+
+<td class="entry" valign="top" headers="d13489e46 ">0x4</td>
+
+<td class="entry" valign="top" headers="d13489e49 ">0x1c</td>
+
+</tr>
+
+<tr class="row">
+<td class="entry" valign="top" headers="d13489e37 ">Kernel vector</td>
+
+<td class="entry" valign="top" headers="d13489e40 ">System RAM</td>
+
+<td class="entry" valign="top" headers="d13489e43 ">0x400205dc</td>
+
+<td class="entry" valign="top" headers="d13489e46 ">0x4</td>
+
+<td class="entry" valign="top" headers="d13489e49 ">0x1c</td>
+
+</tr>
+
+<tr class="row">
+<td class="entry" valign="top" headers="d13489e37 ">User vector</td>
+
+<td class="entry" valign="top" headers="d13489e40 ">System RAM</td>
+
+<td class="entry" valign="top" headers="d13489e43 ">0x400205fc</td>
+
+<td class="entry" valign="top" headers="d13489e46 ">0x4</td>
+
+<td class="entry" valign="top" headers="d13489e49 ">0x1c</td>
+
+</tr>
+
+<tr class="row">
+<td class="entry" valign="top" headers="d13489e37 ">Double vector</td>
+
+<td class="entry" valign="top" headers="d13489e40 ">System RAM</td>
+
+<td class="entry" valign="top" headers="d13489e43 ">0x4002061c</td>
+
+<td class="entry" valign="top" headers="d13489e46 ">0x4</td>
+
+<td class="entry" valign="top" headers="d13489e49 ">0x1c</td>
+
+</tr>
+
+</tbody>
+
+</table>
+</div>
+
+</div>
+
+        <p class="p">The dynamic vector group comprises the window vector group, the level vectors and the
+            NMI, Kernel, User and Double vectors. </p>
+
+        <p class="p">If Automatically Position Vectors is enabled (recommended), then these vectors will be
+            automatically positioned at the start of an appropriate memory - typically System RAM,
+            or if that is not available then Instruction RAM. In this mode, the address of vectors
+            cannot be directly edited.</p>
+
+        
+        
+        
+    </div>
+
+    <div class="related-links">
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="../../config/pages/page.vectors.html">Vector and System Memory Options</a></div>
+</div>
+<div class="relinfo"><strong>Related information</strong><br/>
+<div><a class="link" href="opt.cfg_auto_vectors.html">Automatically Position Vectors</a></div>
+<div><a class="link" href="opt.staticvectors.html">Static Vectors</a></div>
+</div>
+</div>
+
+
+</body>
+</html>

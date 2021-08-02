@@ -1,0 +1,69 @@
+cc_library_static {
+    name: "libstagefright_mpeg2support_mtk",
+
+    srcs: [
+        "MtkAnotherPacketSource.cpp",
+        "MtkATSParser.cpp",
+        "MtkCasManager.cpp",
+        "MtkESQueue.cpp",
+        "MtkHlsSampleDecryptor.cpp",
+        "MtkMetaDataUtils.cpp",
+    ],
+
+    include_dirs: [
+        "frameworks/av/media/libstagefright",
+        "frameworks/native/include/media/openmax",
+    ],
+
+    cflags: [
+        "-Werror",
+        "-Wall",
+    ],
+
+    sanitize: {
+        misc_undefined: [
+            "unsigned-integer-overflow",
+            "signed-integer-overflow",
+        ],
+        cfi: true,
+    },
+
+    shared_libs: [
+        "libcrypto",
+        "libmedia",
+        "libhidlmemory",
+        "android.hardware.cas.native@1.0",
+        "android.hidl.memory@1.0",
+        "android.hidl.allocator@1.0",
+        "libcutils",
+    ],
+
+    header_libs: [
+        "media_ndk_headers",
+    ],
+
+    whole_static_libs: [
+        "libstagefright_metadatautils",
+    ],
+    defaults: [
+        "mtk_mpeg2atsparser_defaults",
+    ],
+}
+
+
+bootstrap_go_package {
+    name:"soong-mpeg2atsparser-mediatek",
+    pkgPath:"android/soong/mpeg2atsparser/mediatek",
+    deps:[
+        "soong-android",
+        "soong-cc",
+    ],
+    srcs:[
+        "mpeg2atsparser.go",
+    ],
+    pluginFor:["soong_build"],
+}
+
+mtk_mpeg2atsparser_defaults {
+    name: "mtk_mpeg2atsparser_defaults",
+}

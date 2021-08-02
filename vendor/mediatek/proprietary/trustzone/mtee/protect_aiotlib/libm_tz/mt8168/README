@@ -1,0 +1,17 @@
+WHAT IT DOES?
+=============
+This provide basic libm library for trustzone usage.
+This library comes from bionic libm
+
+HOW IT WAS BUILT?
+==================
+
+All source/dependency modules of this module are already put in
+'vendor/mediatek/libs' folder.
+
+
+HOW TO USE IT?
+==============
+
+The libary is linked with the image of MTK in-house TEE.
+

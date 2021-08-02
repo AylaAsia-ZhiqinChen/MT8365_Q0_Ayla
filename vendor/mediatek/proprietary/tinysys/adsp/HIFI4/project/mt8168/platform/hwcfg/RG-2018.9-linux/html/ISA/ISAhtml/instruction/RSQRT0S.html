@@ -1,0 +1,391 @@
+<html>
+  <head>
+    <title>
+      RSQRT0.S - Two-way SIMD Reciprocal Sqrt Begin Single
+    </title>
+    <style type="text/css">
+      <!--
+	body {
+	background: white;
+	color: black;
+	font-family: Arial, Verdana, Myriad Web, Syntax, sans-serif;
+	margin-left: 2em;
+	margin-right: 2em;
+	}
+	#boundingbox {
+	background: white;
+	color: black;
+	font-family: Arial, Verdana, Myriad Web, Syntax, sans-serif;
+	position: relative;
+	width: 865px;
+	margin: 0 auto;
+	padding: 20px;
+	border-style: dashed;
+	border-width: 1px;
+	border-spacing: 10px;
+	border-collapse: separate;
+	}
+	a {
+	text-decoration: none;
+	}
+	a:visited {
+	color: blue;
+	}
+	a:link {
+	color: green;
+	}
+	a:active {
+	color: green;
+	}
+	a:hover {
+	color: green;
+	}
+	a:offsite {
+	color: green;
+	}
+	h1 {
+	font-size: 14pt;
+	font-weight: bold;
+	}
+	h1.center {
+	font-size: 14pt;
+	font-weight: bold;
+	text-align: center;
+	}
+	h2 {
+	font-size: 12pt;
+	}
+	caption {
+	padding-top: 1em;
+	}
+	table.thin {
+	border-width: thin;
+	border-spacing: 0px;
+	border-style: inset;
+	border-color: gray;
+	border-collapse: collapse;
+	background-color: rgb(250, 240, 230);
+	}
+	table th.thin {
+	border-width: thin;
+	padding: 3px;
+	border-style: inset;
+	border-color: gray;
+	background-color: white;
+	-moz-border-radius: 0px 0px 0px 0px;
+	}
+	table th.thin2 {
+	border-width: thin;
+	padding: 3px;
+	border-style: inset;
+	border-color: gray;
+	background-color: rgb(250, 240, 230);
+	-moz-border-radius: 0px 0px 0px 0px;
+	}
+	table td.thin {
+	border-width: thin;
+	padding: 3px;
+	border-style: inset;
+	border-color: gray;
+	background-color: white;
+	-moz-border-radius: 0px 0px 0px 0px;
+	}
+	table td.thin2 {
+	border-width: thin;
+	padding: 3px;
+	border-style: inset;
+	border-color: gray;
+	background-color: rgb(250, 240, 230);
+	-moz-border-radius: 0px 0px 0px 0px;
+	}
+	pre {
+	font-family: Lucidatypewriter, monospace;
+	font-size: 10pt;
+	}
+	.proto {
+	font-family: Lucidatypewriter, monospace;
+	font-size: 10pt;
+	padding-left: 1em;
+	text-indent: -1em;
+	}
+	.protohead {
+	font-family: Lucidatypewriter, monospace;
+	font-size: 10pt;
+	padding-left: 2em;
+	text-indent: -2em;
+	}
+	.protobody {
+	font-family: Lucidatypewriter, monospace;
+	font-size: 10pt;
+	padding-left: 4em;
+	text-indent: -2em;
+	}
+	.rotate {
+	display: block;
+	-webkit-transform: rotate(-90deg); 
+        -moz-transform:
+	rotate(-90deg);
+	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+	padding-top: 20px;                       
+}
+	.light {
+	font-size: 75%;
+	color: SlateGrey;
+	}
+	table.format {
+	border-width: thin;
+	border-spacing: 0px;
+	border-style: inset;
+	border-color: gray;
+	border-collapse: collapse;
+	background-color: rgb(250, 240, 230);
+	font-size: 75%;
+	}
+	table.format th {
+	border-width: thin;
+	padding: 3px;
+	border-style: inset;
+	border-color: gray;
+	background-color: #FFF5EE;
+	-moz-border-radius: 0px 0px 0px 0px;
+	vertical-align: bottom;
+	font-size: 75%;
+	}
+	table.format td {
+	border-width: thin;
+	padding: 3px;
+	border-style: inset;
+	border-color: gray;
+	background-color: white;
+	-moz-border-radius: 0px 0px 0px 0px;
+	font-size: 75%;
+	}
+	table.format td.opcodeBit_present {
+	background-color: #FFE4E1;
+	text-align: center;
+	}
+	table.format td.formatBit_present {
+	background-color: #EEE8AA;
+	text-align: center;
+	}
+	table.format td.slotBit_present {
+	background-color: #B0E0E6;
+	text-align: center;
+	vertical-align: bottom;
+	}
+	
+        -->
+    </style>
+  </head>
+  <body>
+    <h1>
+      RSQRT0.S &#8212; Two-way SIMD Reciprocal Sqrt Begin Single
+    </h1>
+    <h2>
+      Instruction Word
+    </h2>
+    
+<table border="1" class="format">
+<tr><th width="130" nowrap>Slot<br>ae_slot2</th><th>8<br>7</th><th>8<br>6</th><th>8<br>5</th><th>8<br>4</th><th>8<br>3</th><th>8<br>2</th><th>8<br>1</th><th>8<br>0</th><th>7<br>9</th><th>7<br>8</th><th>7<br>7</th><th>7<br>6</th><th>7<br>5</th><th>7<br>4</th><th>7<br>3</th><th>7<br>2</th><th>7<br>1</th><th>7<br>0</th><th>6<br>9</th><th>6<br>8</th><th>6<br>7</th><th>6<br>6</th><th>6<br>5</th><th>6<br>4</th><th>6<br>3</th><th>6<br>2</th><th>6<br>1</th><th>6<br>0</th><th>5<br>9</th><th>5<br>8</th><th>5<br>7</th><th>5<br>6</th><th>5<br>5</th><th>5<br>4</th><th>5<br>3</th><th>5<br>2</th><th>5<br>1</th><th>5<br>0</th><th>4<br>9</th><th>4<br>8</th><th>4<br>7</th><th>4<br>6</th><th>4<br>5</th><th>4<br>4</th><th>4<br>3</th><th>4<br>2</th><th>4<br>1</th><th>4<br>0</th><th>3<br>9</th><th>3<br>8</th><th>3<br>7</th><th>3<br>6</th><th>3<br>5</th><th>3<br>4</th><th>3<br>3</th><th>3<br>2</th><th>3<br>1</th><th>3<br>0</th><th>2<br>9</th><th>2<br>8</th><th>2<br>7</th><th>2<br>6</th><th>2<br>5</th><th>2<br>4</th><th>2<br>3</th><th>2<br>2</th><th>2<br>1</th><th>2<br>0</th><th>1<br>9</th><th>1<br>8</th><th>1<br>7</th><th>1<br>6</th><th>1<br>5</th><th>1<br>4</th><th>1<br>3</th><th>1<br>2</th><th>1<br>1</th><th>1<br>0</th><th>9</th><th>8</th><th>7</th><th>6</th><th>5</th><th>4</th><th>3</th><th>2</th><th>1</th><th>0</th></tr>
+<tr><td nowrap>Format ae_format88 - 88 bit(s)</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="formatBit_present">1</td><td class="formatBit_present">1</td><td class="formatBit_present">1</td><td class="formatBit_present">1</td><td class="formatBit_present">1</td></tr>
+<tr><td nowrap>RSQRT0.S</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">1</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="opcodeBit_present">1</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">1</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+<tr><td nowrap>fld_vfpu2_sem_spmisc_vt</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">3</td><td class="slotBit_present">2</td><td class="slotBit_present">1</td><td class="slotBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+<tr><td nowrap>fld_vfpu2_sem_spmisc_vr</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">3</td><td class="slotBit_present">2</td><td class="slotBit_present">1</td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+</table>
+<br>
+    <h2>
+      Assembler Syntax
+    </h2>
+    <p>
+      <code title="Instruction Mnemonic for Two-way SIMD Reciprocal Sqrt Begin Single">RSQRT0.S</code>
+      <span title="Write  of register file AE_DR indexed by the fld_vfpu2_sem_spmisc_vt field of the instruction word"><code>aed0..15(opnd_vfpu2_sem_spmisc_vt)</code></span>,
+      <span title="Read  of register file AE_DR indexed by the fld_vfpu2_sem_spmisc_vr field of the instruction word"><code>aed0..15(opnd_vfpu2_sem_spmisc_vr)</code></span>
+    </p>
+    <h2>
+      C Syntax
+    </h2>
+    #include &lt;xtensa/tie/xt_FP.h&gt;<P>extern xtfloat XT_RSQRT0_S(xtfloat s);
+</P>
+    <h2>
+      Description
+    </h2>
+    
+
+<P><small>(please consult the <i>Xtensa &reg; Instruction Set Architecture Reference Manual</i> for any cross references and additional information)</small></P>
+
+<P>
+
+<code>RSQRT0.S</code>
+
+is the first step of a Newton-Raphson reciprocal square-root computation. 
+
+A rough approximation of the reciprocal square-root of the argument in <code>frs</code> is computed by table lookup and placed in <code>frr</code>. 
+
+IEEE flags are set for the reciprocal square-root operation. 
+
+The approximation is accurate enough that two Newton-Raphson steps are sufficient for an accuracy better than 2-ulps. 
+
+</P>
+
+<h3>Operation</h3>
+
+For each corresponding half:
+
+<pre>
+
+AE_DR[r] &#8592; reciprocal_square_root_approximation(AE_DR[s])
+
+FSR[StatusFlags: VZI] &#8592; Or in update
+
+</pre>
+
+<h3>Exceptions</h3>
+
+<UL>
+
+<LI>
+
+EveryInst Group
+
+</LI>
+
+<LI>
+
+GenExcep(Coprocessor0Disabled) if Coprocessor Context Option
+
+</LI>
+
+</UL>
+
+
+    <h2>
+      Implementation Pipeline
+    </h2>
+    <table class="thin">
+      <thead>
+	<tr>
+	  <th align="left" class="thin">
+	    In
+	  </th>
+	  <th align="left" class="thin">
+	    Out
+	  </th>
+	</tr>
+      </thead>
+      <tbody>
+	<tr>
+	  <td class="thin">
+	    <code>InvalidFlag&nbsp;Wstage+2</code>, <code>DivZeroFlag&nbsp;Wstage+2</code>,
+	    <code>opnd_vfpu2_sem_spmisc_vr&nbsp;Mstage</code>
+	  </td>
+	  <td class="thin">
+	    <code>InvalidFlag&nbsp;Wstage+2</code>, <code>DivZeroFlag&nbsp;Wstage+2</code>,
+	    <code>opnd_vfpu2_sem_spmisc_vt&nbsp;Wstage</code>
+	  </td>
+	</tr>
+      </tbody>
+    </table>
+    <h2>
+      Protos that use RSQRT0.S
+    </h2>
+    <div>
+      <div class=protohead>proto <a href=../protos.html#FSQRT.S>FSQRT.S</a> {
+      out xtfloat r, in xtfloat s }{xtbool2 b2, xtfloatx2 t0, xtfloatx2 zero,
+      xtfloatx2 t1, xtfloatx2 t2, xtfloatx2 t3, xtfloatx2 t4, xtfloatx2 t5,
+      xtfloatx2 t6, xtfloatx2 t7, xtfloatx2 t8}{</div><div class=protobody><a
+      href=CONSTS.html>CONST.S</a> zero, 0;</div><div class=protobody><a
+      href=CONSTS.html>CONST.S</a> t5, 1;</div><div class=protobody><a
+      href=OEQS.html>OEQ.S</a> b2, s, zero;</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> t0, s;</div><div class=protobody><a
+      href=AE_MOVT32X2.html>AE_MOVT32X2</a> t0, t5, b2;</div><div
+      class=protobody><a href=RSQRT0S.html>RSQRT0.S</a> t1, t0;</div><div
+      class=protobody><a href=MULS.html>MUL.S</a> t2, s, t1;</div><div
+      class=protobody><a href=CONSTS.html>CONST.S</a> t3, 3;</div><div
+      class=protobody><a href=MULS.html>MUL.S</a> t4, t3, t1;</div><div
+      class=protobody><a href=MSUBS.html>MSUB.S</a> t5, t2, t1;</div><div
+      class=protobody><a href=MADDNS.html>MADDN.S</a> t1, t4, t5;</div><div
+      class=protobody><a href=MULS.html>MUL.S</a> t6, s, t1;</div><div
+      class=protobody><a href=MULS.html>MUL.S</a> t7, t3, t1;</div><div
+      class=protobody><a href=CONSTS.html>CONST.S</a> t8, 1;</div><div
+      class=protobody><a href=MSUBS.html>MSUB.S</a> t8, t6, t1;</div><div
+      class=protobody><a href=MADDNS.html>MADDN.S</a> t1, t7, t8;</div><div
+      class=protobody><a href=MULS.html>MUL.S</a> r, t1, s;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#FSQRT.SX2>FSQRT.SX2</a> { out xtfloatx2 r, in
+      xtfloatx2 s }{xtbool2 b2, xtfloatx2 t0, xtfloatx2 zero, xtfloatx2 t1,
+      xtfloatx2 t2, xtfloatx2 t3, xtfloatx2 t4, xtfloatx2 t5, xtfloatx2 t6,
+      xtfloatx2 t7, xtfloatx2 t8}{</div><div class=protobody><a
+      href=CONSTS.html>CONST.S</a> zero, 0;</div><div class=protobody><a
+      href=CONSTS.html>CONST.S</a> t5, 1;</div><div class=protobody><a
+      href=OEQS.html>OEQ.S</a> b2, s, zero;</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> t0, s;</div><div class=protobody><a
+      href=AE_MOVT32X2.html>AE_MOVT32X2</a> t0, t5, b2;</div><div
+      class=protobody><a href=RSQRT0S.html>RSQRT0.S</a> t1, t0;</div><div
+      class=protobody><a href=MULS.html>MUL.S</a> t2, s, t1;</div><div
+      class=protobody><a href=CONSTS.html>CONST.S</a> t3, 3;</div><div
+      class=protobody><a href=MULS.html>MUL.S</a> t4, t3, t1;</div><div
+      class=protobody><a href=MSUBS.html>MSUB.S</a> t5, t2, t1;</div><div
+      class=protobody><a href=MADDNS.html>MADDN.S</a> t1, t4, t5;</div><div
+      class=protobody><a href=MULS.html>MUL.S</a> t6, s, t1;</div><div
+      class=protobody><a href=MULS.html>MUL.S</a> t7, t3, t1;</div><div
+      class=protobody><a href=CONSTS.html>CONST.S</a> t8, 1;</div><div
+      class=protobody><a href=MSUBS.html>MSUB.S</a> t8, t6, t1;</div><div
+      class=protobody><a href=MADDNS.html>MADDN.S</a> t1, t7, t8;</div><div
+      class=protobody><a href=MULS.html>MUL.S</a> r, t1, s;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a href=../protos.html#RSQRT.S>RSQRT.S</a> {
+      out xtfloat r, in xtfloat s }{xtfloat t1, xtfloat t2, xtfloat t3,
+      xtfloat t4, xtfloat t5, xtfloat t6, xtfloat t7, xtfloat t8}{</div><div
+      class=protobody><a href=RSQRT0S.html>RSQRT0.S</a> t1, s;</div><div
+      class=protobody><a href=MULS.html>MUL.S</a> t2, s, t1;</div><div
+      class=protobody><a href=CONSTS.html>CONST.S</a> t3, 3;</div><div
+      class=protobody><a href=MULS.html>MUL.S</a> t4, t3, t1;</div><div
+      class=protobody><a href=CONSTS.html>CONST.S</a> t5, 1;</div><div
+      class=protobody><a href=MSUBS.html>MSUB.S</a> t5, t2, t1;</div><div
+      class=protobody><a href=MADDNS.html>MADDN.S</a> t1, t4, t5;</div><div
+      class=protobody><a href=MULS.html>MUL.S</a> t6, s, t1;</div><div
+      class=protobody><a href=MULS.html>MUL.S</a> t7, t3, t1;</div><div
+      class=protobody><a href=CONSTS.html>CONST.S</a> t8, 1;</div><div
+      class=protobody><a href=MSUBS.html>MSUB.S</a> t8, t6, t1;</div><div
+      class=protobody><a href=MADDNS.html>MADDN.S</a> t1, t7, t8;</div><div
+      class=protobody><a href=AE_MOV.html>AE_MOV</a> r, t1;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#RSQRT.SX2>RSQRT.SX2</a> { out xtfloatx2 r, in
+      xtfloatx2 s }{xtfloatx2 t1, xtfloatx2 t2, xtfloatx2 t3, xtfloatx2 t4,
+      xtfloatx2 t5, xtfloatx2 t6, xtfloatx2 t7, xtfloatx2 t8}{</div><div
+      class=protobody><a href=RSQRT0S.html>RSQRT0.S</a> t1, s;</div><div
+      class=protobody><a href=MULS.html>MUL.S</a> t2, s, t1;</div><div
+      class=protobody><a href=CONSTS.html>CONST.S</a> t3, 3;</div><div
+      class=protobody><a href=MULS.html>MUL.S</a> t4, t3, t1;</div><div
+      class=protobody><a href=CONSTS.html>CONST.S</a> t5, 1;</div><div
+      class=protobody><a href=MSUBS.html>MSUB.S</a> t5, t2, t1;</div><div
+      class=protobody><a href=MADDNS.html>MADDN.S</a> t1, t4, t5;</div><div
+      class=protobody><a href=MULS.html>MUL.S</a> t6, s, t1;</div><div
+      class=protobody><a href=MULS.html>MUL.S</a> t7, t3, t1;</div><div
+      class=protobody><a href=CONSTS.html>CONST.S</a> t8, 1;</div><div
+      class=protobody><a href=MSUBS.html>MSUB.S</a> t8, t6, t1;</div><div
+      class=protobody><a href=MADDNS.html>MADDN.S</a> t1, t7, t8;</div><div
+      class=protobody><a href=AE_MOV.html>AE_MOV</a> r, t1;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a href=../protos.html#RSQRT0.S>RSQRT0.S</a>
+      { out xtfloat r, in xtfloat s }{}{</div><div class=protobody><a
+      href=RSQRT0S.html>RSQRT0.S</a> r, s;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#RSQRT0.SX2>RSQRT0.SX2</a> { out xtfloatx2 r, in
+      xtfloatx2 s }{}{</div><div class=protobody><a
+      href=RSQRT0S.html>RSQRT0.S</a> r, s;</div><div class=protohead>}</div>
+    </div>
+  </body>
+</html>

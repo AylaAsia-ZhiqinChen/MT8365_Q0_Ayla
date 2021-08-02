@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en-us" lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="copyright" content="(C) Copyright 2005"/>
+<meta name="DC.rights.owner" content="(C) Copyright 2005"/>
+<meta name="DC.Type" content="tconcept"/>
+<meta name="DC.Title" content="MAC16 DSP Instruction Family"/>
+<meta name="abstract" content="16-bit Multiply/Accumulate with 40 bit accumulator (instruction family)"/>
+<meta name="description" content="16-bit Multiply/Accumulate with 40 bit accumulator (instruction family)"/>
+<meta name="DC.Format" content="XHTML"/>
+<meta name="DC.Identifier" content="opt-mac16"/>
+<link rel="stylesheet" type="text/css" href="../../commonltr.css"/>
+<link rel="stylesheet" type="text/css" href="../../cadence.css"/>
+<title>MAC16 DSP Instruction Family</title>
+</head>
+<body id="opt-mac16">
+
+
+    <h1 class="title topictitle1">MAC16 DSP Instruction Family</h1>
+
+    
+    <div class="body conbody"><p class="shortdesc">16-bit Multiply/Accumulate with 40 bit accumulator (instruction family)</p>
+
+        <dl class="dl">
+            
+                <dt class="dt dlterm">MAC16 DSP option</dt>
+
+                <dd class="dd"><span class="ph">Not Selected</span></dd>
+
+            
+        </dl>
+
+        <p class="p">The MAC16 instruction family is a series of instructions allowing a 16-bit multiply
+            accumulate into a 40-bit accumulator in parallel with two 16-bit updating loads. It
+            allows a full iteration of a 16-bit dot product every cycle. Note that the instructions
+            in this family that perform loads in parallel with the multiply accumulate are
+            specialized and are not inferred by the C compiler. The only way to use these
+            instructions is with compiler intrinsics or with hand-coded assembly. Note that using
+            intrinsics, the specialized m registers are accessed by passing in their index, 0 to 3,
+            directly into the intrinsic. The compiler is able to infer use of the multiply
+            accumulate instruction that does not execute in parallel with a load. However, this
+            instruction is typically no faster than what is enabled by the MUL16 option.</p>
+
+        <p class="p">With no other multiplication options, the compiler will emulate 32-bit multiplications
+            using the MAC16 instructions.</p>
+
+    </div>
+
+
+</body>
+</html>

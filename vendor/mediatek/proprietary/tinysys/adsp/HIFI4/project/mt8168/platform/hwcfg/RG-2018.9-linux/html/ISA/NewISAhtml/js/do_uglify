@@ -1,0 +1,3 @@
+uglifyjs tiedoc.js -cm > tiedoc.min.js
+uglifyjs tiedocTemp.js -cm > tiedocTemp.min.js
+

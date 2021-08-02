@@ -1,0 +1,131 @@
+# Customer ID=13943; Build=0x75f5e; Copyright (c) 2005-2014 Tensilica Inc.  ALL RIGHTS RESERVED.
+# 
+# These coded instructions, statements, and computer programs are the
+# copyrighted works and confidential proprietary information of
+# Tensilica Inc.  They may be adapted and modified by bona fide
+# purchasers for internal use, but neither the original nor any adapted
+# or modified version may be disclosed or distributed to third parties
+# in any manner, medium, or form, in whole or in part, without the prior
+# written consent of Tensilica Inc.
+
+# Common Makefile for building XTSC examples
+
+.PHONY: default all custom_target target tie run xtsc-run clean custom_clean library sc_main
+.PHONY: library_clean vclean
+.PHONY: library.clean very.clean sc_main.clean
+ifeq ($(NO_TIE),)
+TIE_DEPEND = ../TIE/example.tdk/done
+endif
+
+default: xtsc-run
+
+all: target
+
+custom_target:
+
+target: $(TARGET_OBJECTS) custom_target 
+
+$(XTENSA_XMP_DEFS): $(XTENSA_XMP_XSYS)
+	$(MAKE) -C $(XTENSA_XMP_ROOT)/.. xmp
+
+tie: ../TIE/example.tdk/done
+../TIE/example.tdk/done: ../TIE/example.tie
+	$(MAKE) -C .. tie
+
+$(EXAMPLE_NAME): $(HOST_OBJECTS)
+ifneq ($(HOST_OBJECTS),)
+	$(LINK) $(LDFLAGS) $(LDOUT)$@ $(HOST_OBJECTS) $(LIBS)
+endif
+
+%.out: %.c $(TIE_DEPEND)
+	$(TARGET_CXX) $(TARGET_CFLAGS) -o $@ $< $(TARGET_LIBS)
+
+%.$(OBJ): %.cpp
+	$(CXX) $(CXXFLAGS) $<
+
+all: $(EXAMPLE_NAME)
+
+ifneq ($(XTSC_PLUGIN),) # {
+
+LIBRARY = $(LIBRARY_NAME).so
+
+library: $(LIBRARY)
+
+$(LIBRARY): $(LIBRARY_OBJECTS)
+	$(LINK) -shared $(LDFLAGS) $(LDOUT)$@ $(LIBRARY_OBJECTS) $(LIBS)
+
+endif # }
+
+
+run: $(EXAMPLE_NAME) target
+	./$(EXAMPLE_NAME) $(RUNARGS)
+
+library_clean: library.clean
+library.clean:
+	-$(RM) *.so 
+
+clean:
+	-$(RM) target/*.out *.$(OBJ)
+	-$(RM) $(EXAMPLE_NAME)
+	-$(RM) *.log
+
+
+info:
+	-uname -a
+	-pwd
+	@echo PATH=$(PATH)
+	@echo LIBS=$(LIBS)
+	@echo XTSC_USE_OSCI=$(XTSC_USE_OSCI)
+	@echo XTSC_USE_SYSTEMC_2_2_0=$(XTSC_USE_SYSTEMC_2_2_0)
+	@echo XTSC_USE_SHARED_LIBRARY=$(XTSC_USE_SHARED_LIBRARY)
+	@echo XTSC_64BIT=$(XTSC_64BIT)
+	@echo SYSTEMC_INC=$(SYSTEMC_INC)
+	@echo TLM2_INC=$(TLM2_INC)
+	@echo SYSTEMC_LIB_PATH=$(SYSTEMC_LIB_PATH)
+	@echo SYSTEMC_LIBS=$(SYSTEMC_LIBS)
+	@echo XTSC_LIB_PATH=$(XTSC_LIB_PATH)
+	@echo XTTOOLS=$(XTTOOLS)
+	@echo LIBDIR=$(LIBDIR)
+	@echo ISSDIR=$(ISSDIR)
+	@echo CXX=$(CXX)
+	@echo CXXFLAGS=$(CXXFLAGS)
+	@echo LINK=$(LINK)
+	@echo LDFLAGS=$(LDFLAGS)
+	@echo TARGET_CXX=$(TARGET_CXX)
+	-which $(CXX)
+	-$(CXX) -v
+ifneq ($(CXX),$(LINK))
+	@echo Linker:
+	-which $(LINK)
+endif
+	-which $(TARGET_CXX)
+
+
+clean: library.clean
+clean: custom_clean
+
+custom_clean:
+
+sc_main.clean:
+	-$(RM) sc_main.cpp
+
+vclean: very.clean
+very.clean: clean
+	-$(RMDIR) $(TDK_DIR)
+
+sc_main: $(BASE_NAME).inc
+	$(XTSC_RUN) -include=$< -sc_main=sc_main.cpp -nosim 
+
+xtsc-run.not.supported:
+	@echo ""
+	@echo ""
+	@echo "=========================================================================================="
+	@echo "Error: The $(BASE_NAME) example is not supported by xtsc-run.  You can use 'make all run'"
+	@echo "       to compile and run sc_main.cpp if your environment is setup correctly.  Please see"
+	@echo "       'The XTSC Examples Using sc_main' in xtsc_ug.pdf Chapter 2 'Getting Started'."
+	@echo "=========================================================================================="
+	@false
+
+xtsc-run: target
+	$(XTSC_RUN) -include=$(BASE_NAME).inc $(XTSCRUNARGS)
+

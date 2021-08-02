@@ -1,0 +1,24 @@
+// Customer ID=13943; Build=0x75f5e; Copyright (c) 2006-2010 Tensilica Inc.  ALL RIGHTS RESERVED.
+// 
+// These coded instructions, statements, and computer programs are the
+// copyrighted works and confidential proprietary information of
+// Tensilica Inc.  They may be adapted and modified by bona fide
+// purchasers for internal use, but neither the original nor any adapted
+// or modified version may be disclosed or distributed to third parties
+// in any manner, medium, or form, in whole or in part, without the prior
+// written consent of Tensilica Inc.
+
+// ROM look-up table contents
+// File does not have to be in address order
+
+     0xfacef00d         // Implied address of 0x00
+0x33 0x33333333
+0x77 0x77777777  
+0xbb 0xbbbbbbbb
+0x32 0x12345678
+0xff 0xffffffff
+0x10 0x10101010
+     0xcafebabe         // Implied address of 0x11
+0x22 0x22222222
+0xdd 0xdddddddd
+// 0x33 0xbad1bad1      // This would cause a duplicate address error

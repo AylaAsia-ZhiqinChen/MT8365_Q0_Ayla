@@ -1,0 +1,8 @@
+README for GDB Source Files
+------------------------------------------------------------------------
+
+The files in this directory are intended for customizing a future
+version of GDB to a particular Xtensa processor configuration.
+Their contents are tentative, and instructions for using them to build
+GDB are not yet available.
+

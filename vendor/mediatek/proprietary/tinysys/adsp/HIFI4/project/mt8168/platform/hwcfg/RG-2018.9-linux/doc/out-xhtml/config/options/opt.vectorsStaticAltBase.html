@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en-us" lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="copyright" content="(C) Copyright 2005"/>
+<meta name="DC.rights.owner" content="(C) Copyright 2005"/>
+<meta name="DC.Type" content="tconcept"/>
+<meta name="DC.Title" content="Alternate Static Vector Base Address"/>
+<meta name="abstract" content="Alternate address for the static vectors (reset and optionally memory errors) which will be used if the appropriate pin is asserted."/>
+<meta name="description" content="Alternate address for the static vectors (reset and optionally memory errors) which will be used if the appropriate pin is asserted."/>
+<meta name="DC.Relation" scheme="URI" content="../../config/pages/page.vectors.html"/>
+<meta name="DC.Format" content="XHTML"/>
+<meta name="DC.Identifier" content="opt-vectorsStaticAltBase"/>
+<link rel="stylesheet" type="text/css" href="../../commonltr.css"/>
+<link rel="stylesheet" type="text/css" href="../../cadence.css"/>
+<title>Alternate Static Vector Base Address</title>
+</head>
+<body id="opt-vectorsStaticAltBase">
+
+
+    <h1 class="title topictitle1">Alternate Static Vector Base Address</h1>
+
+    
+    <div class="body conbody"><p class="shortdesc">Alternate address for the static vectors (reset and optionally memory errors) which
+        will be used if the appropriate pin is asserted.</p>
+
+        <dl class="dl">
+            
+                <dt class="dt dlterm">Alternate Static Vector Base Address</dt>
+
+                <dd class="dd"><span class="ph">0x40000640</span></dd>
+
+            
+        </dl>
+
+        <p class="p">Relocatable vectors are arranged with offsets within a 2K byte aligned block of memory.
+            This address is the base of that block for the reset vector and if configured also the
+            memory error vector. As an example, most of the Diamond processors have the primary
+            reset in System ROM, and the alternate reset in Instruction RAM to support different
+            kinds of processor instances.</p>
+
+        <div class="note note"><span class="notetitle">Note:</span> Xplorer will attempt to choose an appropriate location (e.g. IRAM if confgured), but
+            you should review it carefully because your anticipated use of the alternate location
+            cannot be predicted.</div>
+
+    </div>
+
+<div class="related-links">
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="../../config/pages/page.vectors.html">Vector and System Memory Options</a></div>
+</div>
+</div>
+
+</body>
+</html>

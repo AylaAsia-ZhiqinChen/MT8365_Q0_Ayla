@@ -1,0 +1,5 @@
+#if __cplusplus >= 201103
+#include <c++11/forward_list>
+#else
+#include <c++98/forward_list>
+#endif

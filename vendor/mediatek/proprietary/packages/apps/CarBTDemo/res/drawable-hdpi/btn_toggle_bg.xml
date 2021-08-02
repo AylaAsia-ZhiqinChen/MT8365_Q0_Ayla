@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+	<item 
+        android:state_enabled="true"
+        android:state_checked="true"
+    	android:state_pressed="true"
+        android:drawable="@drawable/bt_toggle_check_pressed" />
+	    
+	<item 
+	    android:state_enabled="true"
+	    android:state_checked="true"
+	    android:state_focused="true"
+	    android:drawable="@drawable/bt_toggle_check_focused" />"
+    
+	<item 
+	    android:state_enabled="true"
+	    android:state_checked="true"
+	    android:state_focused="false"
+	    android:state_pressed="false"
+	    android:drawable="@drawable/bt_toggle_check" />
+	
+	<item
+	    android:state_enabled="true"
+	    android:state_checked="false"
+	    android:state_focused="false"
+	    android:state_pressed="false"
+	    android:drawable="@drawable/bt_toggle_uncheck" />
+	
+	<item
+	    android:state_enabled="true"
+	    android:state_checked="false"
+	    android:state_pressed="true"
+	    android:drawable="@drawable/bt_toggle_uncheck_pressed" />
+		
+	<item
+	    android:state_enabled="true"
+	    android:state_checked="false"
+	    android:state_focused="true"
+	    android:drawable="@drawable/bt_toggle_uncheck_focused" />
+	
+	<item
+	    android:state_enabled="false"
+	    android:state_checked="true"
+	    android:state_focused="false"
+	    android:state_pressed="false"
+	    android:drawable="@drawable/bt_toggle_disable_check" />
+	
+	<item 
+	    android:state_enabled="false"
+	    android:state_checked="true"
+	    android:state_focused="true"
+	    android:drawable="@drawable/bt_toggle_disable_check_focused" />
+	
+	<item
+	    android:state_enabled="false"
+	    android:state_checked="true"
+	    android:state_pressed="true"
+	    android:drawable="@drawable/bt_toggle_disable_check_focused" />
+	
+	<item
+	    android:state_enabled="false"
+	    android:state_checked="false"
+	    android:state_focused="false"
+	    android:state_pressed="false"
+	    android:drawable="@drawable/bt_toggle_disable_uncheck" />
+	
+	<item
+	    android:state_enabled="false"
+	    android:state_checked="false"
+	    android:state_focused="true"
+	    android:drawable="@drawable/bt_toggle_disable_uncheck_focused" />
+	
+	<item
+	    android:state_enabled="false" 
+	    android:state_checked="false"
+	    android:state_pressed="true"
+	    android:drawable="@drawable/bt_toggle_disable_uncheck_focused" />
+	
+</selector>

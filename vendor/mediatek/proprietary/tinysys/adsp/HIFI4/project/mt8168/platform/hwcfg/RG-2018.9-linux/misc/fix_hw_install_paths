@@ -1,0 +1,58 @@
+#!/bin/sh
+# Set the installation directories for the Xtensa hardware files.
+
+# Customer ID=13943; Build=0x75f5e; Copyright (c) 2004-2007 Tensilica Inc.  ALL RIGHTS RESERVED.
+# These coded instructions, statements, and computer programs are the
+# copyrighted works and confidential proprietary information of Tensilica Inc.
+# They may not be modified, copied, reproduced, distributed, or disclosed to
+# third parties in any manner, medium, or form, in whole or in part, without
+# the prior written consent of Tensilica Inc.
+
+#
+# usage: fix_hw_install_path <tools_root> <xtensa_root> <config_root>
+#
+
+tools="$1"
+swtools="$2"
+prefix="$3"
+tools_vpath="$4"
+swtools_vpath="$5"
+prefix_vpath="$6"
+
+orig_tools="$tools"
+if [ "$tools_vpath" != "__default" ]; then
+  tools="$tools_vpath"
+fi 
+if [ "$swtools_vpath" != "__default" ]; then
+  swtools="$swtools_vpath"
+fi 
+orig_prefix="$prefix"
+if [ "$prefix_vpath" != "__default" ]; then
+  prefix="$prefix_vpath"
+fi 
+
+factory_tools='/././usr/xtensa/tools-7.0';
+factory_swtools='/././home/xpgcust/tree/RG-2018.9/tools/swtools-x86-linux';
+factory_prefix='/././project/cust/genapp/RG-2018.9/build/mediatek_ss2_hifi4/prod/hifi4_Aquila_E2_PROD/280244/RG-2018.9/hifi4_Aquila_E2_PROD';
+
+# Directories to search under PREFIX
+subdirs="Hardware CSM";
+
+for sname in $subdirs; do
+  SDIR="$orig_prefix/$sname";
+  if [ -d "$SDIR" ]; then
+    echo "Setting paths in the $sname directory. (This may take a while.)"
+    echo "    temporarily making files writable...."
+    # Save owner permissions as group permissions
+    find $SDIR -type f -perm -u+w | xargs -r chmod -f ug+w
+    # Do not make regular files group writeable 
+    find $SDIR -type f ! -perm -u+w | xargs -r chmod -f u+w
+    echo "    setting the paths...."
+    find $SDIR -type f | xargs "$orig_tools/bin/perl" -p -i \
+	-e "s'$factory_prefix'$prefix'g ; s'$factory_swtools'$swtools'g ; s'$factory_tools'$tools'g"
+    echo "    restoring the original file permissions...."
+    # Restore owner permission from group permission
+    find $SDIR -type f ! -perm -g+w | xargs -r chmod -f ug-w
+    find $SDIR -type f -perm -ug+w | xargs -r chmod -f g-w
+  fi
+done

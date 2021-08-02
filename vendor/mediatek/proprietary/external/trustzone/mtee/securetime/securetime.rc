@@ -1,0 +1,7 @@
+service securetime /vendor/bin/securetime
+    class main
+    user media
+    group mediadrm drmrpc
+
+on post-fs-data
+    mkdir /data/vendor/securetime 0770 media mediadrm

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<carrier_config>
+    <boolean name="carrier_default_wfc_ims_roaming_enabled_bool" value="true"/>
+    <boolean name="carrier_supports_ss_over_ut_bool" value="true"/>
+    <boolean name="mtk_domestic_roaming_enabled_only_by_mobile_data_setting" value="true" />
+    <boolean name="mtk_intl_roaming_enabled_only_by_roaming_data_setting" value="true" />
+</carrier_config>

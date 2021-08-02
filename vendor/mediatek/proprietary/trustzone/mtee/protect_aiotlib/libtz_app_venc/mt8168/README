@@ -1,0 +1,22 @@
+The lib "libtz_app_venc" is the libary which supply h264 encoder API in secure mode.
+
+
+WHAT IT DOES?
+=============
+
+The libtz_app_venc is the libary which supply h264 encoder API in secure mode.
+
+
+HOW IT WAS BUILT?
+==================
+
+All source/dependency modules of this module are already put in
+'vendor/mediatek/proprietary/trustzone' & 'vendor/mediatek/libs' folder.
+
+
+HOW TO USE IT?
+==============
+
+Download to the flash, and preloader will load and run it.
+
+All the source code of this library were written by MediaTek co..

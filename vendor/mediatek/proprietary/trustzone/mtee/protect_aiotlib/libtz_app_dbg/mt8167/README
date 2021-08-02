@@ -1,0 +1,23 @@
+The static library 'libtz_app_dbg' is a TA library which provide the debugging purpose service.
+
+
+WHAT IT DOES?
+=============
+
+The 'libtz_app_dbg' provides the interface to query the secure heap usage status inside MTK in-house TEE.
+
+
+HOW IT WAS BUILT?
+==================
+
+All source/dependency modules of this module are already put in
+'vendor/mediatek/libs' folder.
+
+
+HOW TO USE IT?
+==============
+
+The libary 'libtz_app_dbg' is linked with the image of MTK in-house TEE.
+It will be called when 'uree_mem' is executed for querying the secure heap status.
+
+All the source code of this library were written by MediaTek co..

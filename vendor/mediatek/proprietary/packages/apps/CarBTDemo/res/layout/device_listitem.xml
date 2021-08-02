@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:descendantFocusability="beforeDescendants"
+    android:id="@+id/device_item"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="1dp"
+    android:paddingLeft="10dp" >
+
+    <TextView
+        android:id="@+id/item_remote_device_name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#FFFFFFFF"
+        android:textSize="20dp"
+  		/>
+
+    <TextView
+        android:id="@+id/item_remote_connect_status"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15dp" 
+        />
+
+    <TextView
+        android:id="@+id/item_remote_device_macaddr"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15dp"
+        android:visibility="gone"
+         />
+
+</LinearLayout>

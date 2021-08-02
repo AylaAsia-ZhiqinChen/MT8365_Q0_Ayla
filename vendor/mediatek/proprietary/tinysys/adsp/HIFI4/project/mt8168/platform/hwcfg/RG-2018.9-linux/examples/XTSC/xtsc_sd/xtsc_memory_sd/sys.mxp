@@ -1,0 +1,161 @@
+#// Customer ID=13943; Build=0x75f5e; Copyright (c) 2007-2012 by Tensilica Inc.  ALL RIGHTS RESERVED.
+#// These coded instructions, statements, and computer programs are the
+#// copyrighted works and confidential proprietary information of
+#// Tensilica Inc.  They may be adapted and modified by bona fide
+#// purchasers for internal use, but neither the original nor any adapted
+#// or modified version may be disclosed or distributed to third parties
+#// in any manner, medium, or form, in whole or in part, without the prior
+#// written consent of Tensilica Inc.
+
+
+system "sys"
+(
+  properties
+  (
+    type = "System";
+    version = "1.0";
+    variant = "";
+    loadfile_extension = "";
+    description = "";
+    onecyclevalue = "10.0";
+    onecycletime = "ns";
+    simulationresolution = "1 ps";
+    simulationdefaulttime = "1 ns";
+  )
+  parameters ()
+  components
+  (
+
+    instance "core0"
+    (
+      model   = "xtsc_core_sd";
+      version = "";
+      variant = "";
+
+      parameters
+      (
+        "SimTargetOutput" = "core0_output.log";
+      )
+
+    )
+
+    instance "pif"
+    (
+      model   = "xtsc_memory_sd_1";
+      version = "";
+      variant = "";
+
+      parameters
+      (
+        "block_read_delay" = "1";
+        "block_write_delay" = "1";
+        "block_write_repeat" = "1";
+        "block_write_response" = "1";
+        "byte_width" = "8";
+        "rcw_response" = "1";
+        "read_delay" = "1";
+        "write_delay" = "1";
+      )
+
+    )
+
+    instance "iram0"
+    (
+      model   = "xtsc_memory_sd_1";
+      version = "";
+      variant = "";
+
+      parameters
+      (
+        "block_read_delay" = "1";
+        "block_write_delay" = "1";
+        "block_write_repeat" = "1";
+        "block_write_response" = "1";
+        "byte_width" = "16";
+        "rcw_response" = "1";
+        "read_delay" = "1";
+        "write_delay" = "1";
+      )
+
+    )
+
+    instance "iram1"
+    (
+      model   = "xtsc_memory_sd_1";
+      version = "";
+      variant = "";
+
+      parameters
+      (
+        "block_read_delay" = "1";
+        "block_write_delay" = "1";
+        "block_write_repeat" = "1";
+        "block_write_response" = "1";
+        "byte_width" = "16";
+        "rcw_response" = "1";
+        "read_delay" = "1";
+        "write_delay" = "1";
+      )
+
+    )
+
+    instance "dram0"
+    (
+      model   = "xtsc_memory_sd_2";
+      version = "";
+      variant = "";
+
+      parameters
+      (
+        "block_read_delay" = "1";
+        "block_write_delay" = "1";
+        "block_write_repeat" = "1";
+        "block_write_response" = "1";
+        "byte_width" = "8";
+        "rcw_response" = "1";
+        "read_delay" = "1";
+        "write_delay" = "1";
+      )
+
+    )
+
+    instance "dram1"
+    (
+      model   = "xtsc_memory_sd_2";
+      version = "";
+      variant = "";
+
+      parameters
+      (
+        "block_read_delay" = "1";
+        "block_write_delay" = "1";
+        "block_write_repeat" = "1";
+        "block_write_response" = "1";
+        "byte_width" = "8";
+        "rcw_response" = "1";
+        "read_delay" = "1";
+        "write_delay" = "1";
+      )
+
+    )
+
+  )
+  connections
+  (
+    "core0::m_pif_request_port<-->pif::m_request_exports[0]" = "core0":"m_pif_request_port" to "pif":"m_request_exports[0]";
+    "pif::m_respond_ports[0]<-->core0::m_pif_respond_export" = "pif":"m_respond_ports[0]" to "core0":"m_pif_respond_export";
+    "core0::m_iram0_request_port<-->iram0::m_request_exports[0]" = "core0":"m_iram0_request_port" to "iram0":"m_request_exports[0]";
+    "iram0::m_respond_ports[0]<-->core0::m_iram0_respond_export" = "iram0":"m_respond_ports[0]" to "core0":"m_iram0_respond_export";
+    "core0::m_iram1_request_port<-->iram1::m_request_exports[0]" = "core0":"m_iram1_request_port" to "iram1":"m_request_exports[0]";
+    "iram1::m_respond_ports[0]<-->core0::m_iram1_respond_export" = "iram1":"m_respond_ports[0]" to "core0":"m_iram1_respond_export";
+    "core0::m_dram0p0_request_port<-->dram0::m_request_exports[0]" = "core0":"m_dram0p0_request_port" to "dram0":"m_request_exports[0]";
+    "dram0::m_respond_ports[0]<-->core0::m_dram0p0_respond_export" = "dram0":"m_respond_ports[0]" to "core0":"m_dram0p0_respond_export";
+    "core0::m_dram0p1_request_port<-->dram0::m_request_exports[1]" = "core0":"m_dram0p1_request_port" to "dram0":"m_request_exports[1]";
+    "dram0::m_respond_ports[1]<-->core0::m_dram0p1_respond_export" = "dram0":"m_respond_ports[1]" to "core0":"m_dram0p1_respond_export";
+    "core0::m_dram1p0_request_port<-->dram1::m_request_exports[0]" = "core0":"m_dram1p0_request_port" to "dram1":"m_request_exports[0]";
+    "dram1::m_respond_ports[0]<-->core0::m_dram1p0_respond_export" = "dram1":"m_respond_ports[0]" to "core0":"m_dram1p0_respond_export";
+    "core0::m_dram1p1_request_port<-->dram1::m_request_exports[1]" = "core0":"m_dram1p1_request_port" to "dram1":"m_request_exports[1]";
+    "dram1::m_respond_ports[1]<-->core0::m_dram1p1_respond_export" = "dram1":"m_respond_ports[1]" to "core0":"m_dram1p1_respond_export";
+  )
+  portmaps ()
+)

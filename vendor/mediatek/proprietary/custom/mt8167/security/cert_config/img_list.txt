@@ -1,0 +1,10 @@
+[single_bin]
+logo.bin=logo
+boot.img=boot
+recovery.img=recovery
+odmdtbo.img=dtbo
+dtbo.img=dtbo
+
+[multi_bin]
+tee.img=atf,tee
+lk.img=lk,lk_main_dtb

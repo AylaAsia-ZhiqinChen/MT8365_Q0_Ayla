@@ -1,0 +1,23 @@
+The static library 'libtz_ndbg_tz' is a TA library which provide the non-deterministic random bits generating service.
+
+
+WHAT IT DOES?
+=============
+
+The 'libtz_ndbg_tz' provides the secure non-deterministic random bits generating API for MTK in-house TEE.
+
+
+HOW IT WAS BUILT?
+==================
+
+All source/dependency modules of this module are already put in
+'vendor/mediatek/libs' folder.
+
+
+HOW TO USE IT?
+==============
+
+The libary 'libtz_ndbg_tz' is linked with the image of MTK in-house TEE.
+It will be used to get the random number.
+
+All the source code of this library were written by MediaTek co..

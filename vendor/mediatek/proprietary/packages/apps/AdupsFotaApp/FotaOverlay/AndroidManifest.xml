@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2017 Google Inc. All Rights Reserved. -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.adups.fota.overlay">
+	<overlay android:targetPackage="com.adups.fota" android:priority="1" android:isStatic="true" />
+</manifest>

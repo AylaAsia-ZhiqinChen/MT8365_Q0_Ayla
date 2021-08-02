@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:key="advanced_calling_settings"
+                  android:title="@string/wifi_calling_title">
+
+  <Preference
+        android:key="update_emergency_address_key"
+        android:title="@string/update_emergency_address_title"
+        android:summary="@string/update_emergency_address_summary">
+
+      <intent android:action="com.mediatek.intent.action.WFC_UPDATE_E911"/>
+  </Preference>
+
+  <ListPreference
+            android:key="roaming_mode"
+            android:title="@string/when_roaming_title"
+            android:summary="@string/when_roaming_summary"
+            android:entries="@array/roaming_mode_choices"
+            android:entryValues="@array/roaming_mode_values"
+            android:dialogTitle="@string/when_roaming_title"/>
+
+</PreferenceScreen>

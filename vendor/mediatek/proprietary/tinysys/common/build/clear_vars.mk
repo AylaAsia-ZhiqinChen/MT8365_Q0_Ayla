@@ -1,0 +1,23 @@
+CFLAGS                      :=
+CCFLAGS                     :=
+LDFLAGS                     :=
+LIBFLAGS                    :=
+INCLUDES                    :=
+C_FILES                     :=
+S_FILES                     :=
+OBJS                        :=
+DEPS                        :=
+$(PROCESSOR).CONFIG_OPTIONS :=
+
+CC              :=
+CPP             :=
+LLD             :=
+AS              :=
+AR              :=
+OBJCOPY         :=
+OBJDUMP         :=
+DUMPELF         :=
+RANLIB          :=
+SIZE            :=
+STRIP           :=
+READELF         :=

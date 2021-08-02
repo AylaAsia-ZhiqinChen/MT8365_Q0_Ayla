@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en-us" lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="copyright" content="(C) Copyright 2005"/>
+<meta name="DC.rights.owner" content="(C) Copyright 2005"/>
+<meta name="DC.Type" content="tconcept"/>
+<meta name="DC.Title" content="Max Instruction Width Option"/>
+<meta name="abstract" content="Max instruction width. Xtensa core instructions are 2 or 3 bytes wide."/>
+<meta name="description" content="Max instruction width. Xtensa core instructions are 2 or 3 bytes wide."/>
+<meta name="DC.Relation" scheme="URI" content="../../config/nodes/g_isaisa.html"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/options/opt.unalignedLoadAction.html"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/options/opt.l32r.html"/>
+<meta name="DC.Format" content="XHTML"/>
+<meta name="DC.Identifier" content="opt-instWidthBytes"/>
+<link rel="stylesheet" type="text/css" href="../../commonltr.css"/>
+<link rel="stylesheet" type="text/css" href="../../cadence.css"/>
+<title>Max Instruction Width Option</title>
+</head>
+<body id="opt-instWidthBytes">
+
+
+    <h1 class="title topictitle1">Max Instruction Width Option</h1>
+
+    
+    <div class="body conbody"><p class="shortdesc">Max instruction width. Xtensa core instructions are 2 or 3 bytes wide. </p>
+
+        <dl class="dl">
+            
+                <dt class="dt dlterm">Max instruction width option (bytes)</dt>
+
+                <dd class="dd"><span class="ph">11</span></dd>
+
+            
+        </dl>
+
+        <p class="p"><span class="ph">Cadence</span> supports modeless intermixing of multiple instruction
+            sizes. All configurations support 24-bit instructions. The use of 16-bit instructions is
+            almost always recommended to save code size. The 16-bit instructions are equivalent
+            variants of the most commonly used 24-bit instructions so that the compiler will always
+            use them when possible. Additionally, <span class="ph">Cadence</span> supports
+            customer defined FLIX (VLIW) instructions of any multiple of eight length from 32 to 128
+            bits. You can partition the wide instructions into custom slots, each of which is
+            capable of executing one of a set of operations. The compiler automatically packs
+            operations into the instructions. To utilize larger instructions, set the maximum
+            instruction width appropriately. </p>
+
+    </div>
+
+<div class="related-links">
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="../../config/nodes/g_isaisa.html">ISA Configuration Options</a></div>
+<div class="previouslink"><strong>Previous topic:</strong> <a class="link" href="../../config/options/opt.unalignedLoadAction.html" title="How unaligned loads / stores are handled.">Unaligned Load / Store Action Selection</a></div>
+<div class="nextlink"><strong>Next topic:</strong> <a class="link" href="../../config/options/opt.l32r.html" title="Select what hardware support options to include for L32R.">L32R Hardware Support Option</a></div>
+</div>
+</div>
+
+</body>
+</html>

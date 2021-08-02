@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en-us" lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="copyright" content="(C) Copyright 2005"/>
+<meta name="DC.rights.owner" content="(C) Copyright 2005"/>
+<meta name="DC.Type" content="tconcept"/>
+<meta name="DC.Title" content="Zero-Overhead Loops Option"/>
+<meta name="abstract" content="Enable zero-overhead loop instructions (eliminates loop pipeline overhead)"/>
+<meta name="description" content="Enable zero-overhead loop instructions (eliminates loop pipeline overhead)"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/nodes/g_isainst.html"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/options/opt.tieArbitraryByteEnable.html"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/options/opt.sync.html"/>
+<meta name="DC.Format" content="XHTML"/>
+<meta name="DC.Identifier" content="opt-loops"/>
+<link rel="stylesheet" type="text/css" href="../../commonltr.css"/>
+<link rel="stylesheet" type="text/css" href="../../cadence.css"/>
+<title>Zero-Overhead Loops Option</title>
+</head>
+<body id="opt-loops">
+
+
+    <h1 class="title topictitle1">Zero-Overhead Loops Option</h1>
+
+    
+    <div class="body conbody"><p class="shortdesc">Enable zero-overhead loop instructions (eliminates loop pipeline
+        overhead)</p>
+
+        <dl class="dl">
+            
+                <dt class="dt dlterm">Zero overhead loops option</dt>
+
+                <dd class="dd"><span class="ph">Selected</span></dd>
+
+            
+        </dl>
+
+        <p class="p">These instructions enable looping with no per-iteration cycle overhead. The use of the
+            loop instructions set up a loop trip count, beginning PC and ending PC. Whenever the
+            hardware executes the last instruction in the loop and the loop trip count has not been
+            exceeded, control is automatically transferred back to the first instruction without
+            needing any explicit branch instructions. Because every taken branch on <span class="ph">Cadence</span> processors requires 3 to 5 cycles to execute, the
+            zero overhead loop instructions are extremely useful for code that spends time in loops.
+            When compiling with optimization, the compiler will typically use these instructions for
+            every loop that does not contain a function call.</p>
+
+    </div>
+
+<div class="related-links">
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="../../config/nodes/g_isainst.html">Miscellaneous ISA Instruction Options</a></div>
+<div class="previouslink"><strong>Previous topic:</strong> <a class="link" href="../../config/options/opt.tieArbitraryByteEnable.html" title="Selecting the TIE arbitrary byte enables option allows you to use the StoreByteDisable interface in your TIE code">TIE Arbitrary Byte Enables Option</a></div>
+<div class="nextlink"><strong>Next topic:</strong> <a class="link" href="../../config/options/opt.sync.html">Synchronize Instruction</a></div>
+</div>
+</div>
+
+</body>
+</html>

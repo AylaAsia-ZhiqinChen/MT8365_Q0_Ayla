@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en-us" lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="copyright" content="(C) Copyright 2005"/>
+<meta name="DC.rights.owner" content="(C) Copyright 2005"/>
+<meta name="DC.Type" content="tconcept"/>
+<meta name="DC.Title" content="Inbound PIF Request Buffer Depth"/>
+<meta name="abstract" content=""/>
+<meta name="description" content=""/>
+<meta name="DC.Relation" scheme="URI" content="../../config/nodes/g_intpif.html"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/options/opt.wbBypassAddrBits.html"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/options/opt.pifWriteResp.html"/>
+<meta name="DC.Format" content="XHTML"/>
+<meta name="DC.Identifier" content="opt-dmaDepth"/>
+<link rel="stylesheet" type="text/css" href="../../commonltr.css"/>
+<link rel="stylesheet" type="text/css" href="../../cadence.css"/>
+<title>Inbound PIF Request Buffer Depth</title>
+</head>
+<body id="opt-dmaDepth">
+
+
+    <h1 class="title topictitle1">Inbound PIF Request Buffer Depth </h1>
+
+    
+    <div class="body conbody"><p class="shortdesc"/>
+
+        <dl class="dl">
+            
+                <dt class="dt dlterm">Inbound PIF request buffer depth </dt>
+
+                <dd class="dd"><span class="ph">2</span></dd>
+
+            
+        </dl>
+
+        <p class="p">Inbound PIF allows an external PIF master to read/write to Xtensa's internal memories.
+            When the inbound-PIF request option is enabled, an inbound-PIF request buffer is added
+            to the processor. The depth of the inbound-PIF request buffer limits the maximum
+            block-read or -write request that the Xtensa processor can handle. Therefore, the
+            inbound-PIF request buffer size should be configured to be greater than, or equal to the
+            largest possible inbound-PIF block-request size. Note that this control is enabled when
+            the inbound-PIF option is selected for one or more local memories.</p>
+
+    </div>
+
+<div class="related-links">
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="../../config/nodes/g_intpif.html">PIF Options</a></div>
+<div class="previouslink"><strong>Previous topic:</strong> <a class="link" href="../../config/options/opt.wbBypassAddrBits.html">Prioritize Loads Before Stores</a></div>
+<div class="nextlink"><strong>Next topic:</strong> <a class="link" href="../../config/options/opt.pifWriteResp.html" title="Enable PIF Write Responses. If enabled, a &#34;Write Error&#34; interrupt may be configured">PIF Write Responses option</a></div>
+</div>
+</div>
+
+</body>
+</html>

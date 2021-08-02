@@ -1,0 +1,30 @@
+// cstdarg standard header
+#ifndef _CSTDARG_
+#define _CSTDARG_
+
+ #if _IS_GHS
+#include <stdarg.h>
+
+ #if defined(__NAMESPACES) && !defined(__EMBEDDED_CXX_HEADERS)
+namespace std {
+using ::va_list;
+}	// namespace std
+ #endif /* defined(__NAMESPACES), etc. */
+
+ #else /* _IS_GHS */
+#include <yvals.h>
+#include <stdarg.h>
+
+ #ifdef _GLOBAL_USING
+_STD_BEGIN
+using ::va_list;
+_STD_END
+ #endif /* _GLOBAL_USING */
+
+ #endif /* _IS_GHS */
+#endif /* _CSTDARG_ */
+
+/*
+ * Copyright (c) by P.J. Plauger. All rights reserved.
+ * Consult your license regarding permissions and restrictions.
+V6.50:1611 */

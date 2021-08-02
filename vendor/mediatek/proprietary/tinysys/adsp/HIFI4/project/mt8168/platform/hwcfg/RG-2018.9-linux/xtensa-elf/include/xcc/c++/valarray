@@ -1,0 +1,5 @@
+#if __cplusplus >= 201103
+#include <c++11/valarray>
+#else
+#include <c++98/valarray>
+#endif

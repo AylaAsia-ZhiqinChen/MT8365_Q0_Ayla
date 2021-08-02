@@ -1,0 +1,202 @@
+# Fix up hardwired paths in the installed files
+
+# Customer ID=13943; Build=0x75f5e; Copyright (c) 2003-2007 Tensilica Inc.  ALL RIGHTS RESERVED.
+# These coded instructions, statements, and computer programs are the
+# copyrighted works and confidential proprietary information of Tensilica Inc.
+# They may not be modified, copied, reproduced, distributed, or disclosed to
+# third parties in any manner, medium, or form, in whole or in part, without
+# the prior written consent of Tensilica Inc.
+
+# Replace the <tools_root>, <xtensa_root> and <config_root> directories
+# with the corresponding paths for the current installation.
+
+
+# tell Perl where to find its libraries
+BEGIN {@INC = map({s|/usr/xtensa/tools-7.0|$ARGV[0]|; $_} @INC);}
+
+package fix_install_paths;
+
+use strict;
+use Cwd;
+use FileHandle;
+use File::Copy;
+use File::Find;
+use File::Spec;
+
+my @substs;
+my $filePattern;
+
+# Make sure a directory path is absolute.
+sub make_absolute {
+  my ($path, $isWin32) = @_;
+  $path = File::Spec->rel2abs ($path);
+  # rel2abs will not add the current drive letter if the path is otherwise
+  # absolute (at least with our current version of Perl).
+  if ($isWin32) {
+    if ($path !~ /^(\w:|\/\/|\\\\)/) {
+      my $drive = getcwd();
+      $drive =~ s/(^\w:).*/$1/;
+      $path = $drive . $path;
+    }
+  }
+  return $path;
+}
+
+
+# Perform a list of substitutions on each line of a file.
+sub doSubstsInFile {
+  my ($fileName, @substSubs) = @_;
+
+  if (! -r $fileName) {
+    return;
+  }
+
+  # make a copy of the input file
+  my $origFile = $fileName . '.bak';
+  copy ($fileName, $origFile) ||
+    die ("Unable to copy $fileName to $origFile");
+
+  # open the original file and the new version
+  my $origfh = new FileHandle ($origFile, '<') ||
+    die ("Cannot read $fileName");
+  my $newfh = new FileHandle ($fileName, '>') ||
+    die ("Cannot write to $fileName");
+
+  my $subst;
+  while (<$origfh>) {
+    foreach $subst (@substSubs) {
+      $_ = &$subst ($_);
+    }
+    $newfh->print ($_);
+  }
+
+  # close the files and remove the original
+  $origfh->close();
+  $newfh->close();
+  unlink ($origFile);
+}
+
+
+sub doSubstsInTree {
+  my $file = $_;
+  if (eval "\$file =~ /$filePattern/") {
+    doSubstsInFile ($file, @substs);
+  }
+}
+
+
+# Program
+{
+  my $file;
+
+  if ($#ARGV != 5) {
+    print "Usage: fix_install_paths <tools_root> <xtensa_root> <config_root> " .
+      "<tools_vpath> <xtensa_vpath> <config_vpath> \n";
+    exit 1;
+  }
+
+  my $isWin32 = (($^O eq 'MSWin32') || ($^O eq 'NT') || ($^O =~ /cygwin/));
+
+  my $tools = $ARGV[0];
+  my $xtensa = $ARGV[1];
+  my $config = $ARGV[2];
+  my $tools_vpath = $ARGV[3];
+  my $xtensa_vpath = $ARGV[4];
+  my $config_vpath = $ARGV[5];
+
+  # make sure the directories are accessible
+  die "Error: bad directory $tools: $!\n" unless -d $tools;
+  die "Error: bad directory $xtensa: $!\n" unless -d $xtensa;
+  die "Error: bad directory $config: $!\n" unless -d $config;
+
+  # get absolute paths
+  $tools = make_absolute ($tools, $isWin32);
+  $xtensa = make_absolute ($xtensa, $isWin32);
+  $config = make_absolute ($config, $isWin32);
+  my $orig_config = $config;
+
+  $tools = $tools_vpath if ("$tools_vpath" ne "__default");
+  $xtensa = $xtensa_vpath if ("$xtensa_vpath" ne "__default");
+  $config = $config_vpath if ("$config_vpath" ne "__default");
+
+  my $toolsb = $tools;
+  my $xtensab = $xtensa;
+  my $configb = $config;
+  if ($isWin32) {
+    # Convert any backslashes to forward slashes
+    $tools =~ s|\\|/|g;
+    $xtensa =~ s|\\|/|g;
+    $config =~ s|\\|/|g;
+    # And vice-versa for certain cases:
+    $toolsb =~ s|/|\\|g;
+    $xtensab =~ s|/|\\|g;
+    $configb =~ s|/|\\|g;
+  }
+
+  my $substTools = sub {
+    my ($line) = @_;
+    $line =~ s|/././usr/xtensa/tools-7.0|$tools|g;
+    my $tb = '\\.\\.\\usr\\xtensa\\tools-7.0';
+    $line =~ s|\Q$tb|$toolsb|g if $isWin32;
+    return $line;
+  };
+
+  my $substXtensa = sub {
+    my ($line) = @_;
+    $line =~ s|/././home/xpgcust/tree/RG-2018.9/tools/swtools-x86-linux|$xtensa|g;
+    my $xb = '\\.\\.\\home\\xpgcust\\tree\\RG-2018.9\\tools\\swtools-x86-linux';
+    $line =~ s|\Q$xb|$xtensab|g if $isWin32;
+    return $line;
+  };
+
+  my $substConfig = sub {
+    my ($line) = @_;
+    $line =~ s|/././project/cust/genapp/RG-2018.9/build/mediatek_ss2_hifi4/prod/hifi4_Aquila_E2_PROD/280244/RG-2018.9/hifi4_Aquila_E2_PROD|$config|g;
+    my $cb = '\\.\\.\\project\\cust\\genapp\\RG-2018.9\\build\\mediatek_ss2_hifi4\\prod\\hifi4_Aquila_E2_PROD\\280244\\RG-2018.9\\hifi4_Aquila_E2_PROD';
+    $line =~ s|\Q$cb|$config|g if $isWin32;
+    return $line;
+  };
+
+  @substs = ($substTools, $substXtensa, $substConfig);
+
+  # Change to the $config directory; the following must be run there
+  chdir $orig_config || die ("Unable to change to $orig_config directory");
+
+  # Perl and shell scripts
+  my @files =
+    ("config/default-params",
+     "config/hifi4_Aquila_E2_PROD-params",
+     "misc/xtconfig",
+     "misc/xtconfig.bat",
+     "misc/xtvars.bat",
+     "examples/XTMP/Makefile",
+     "examples/XTSC/cosim/systemc.on.top/Makefile.include",
+     "examples/XTSC/cosim/verilog.on.top/Makefile.include",
+     "examples/XTSC/hello_world.standalone/Makefile",
+     "examples/XTSC/Makefile.include",
+     "examples/XTSC/multicore.standalone/Makefile",
+     "examples/XTSC/multicore.standalone/multicore.standalone.inc",
+     "examples/XTSC/xtsc_sd/xtsc_pin2tlm_memory_transactor_sd/sys.mxp",
+     "examples/XTSC/xtsc_sd/xtsc_tlm2pin_memory_transactor_sd/sys.mxp",
+     "examples/XTSC/xtsc_sd/Makefile.include",
+     "examples/XTSC/xtsc_vp/Makefile.include",
+     "examples/XTSC/xtsc_vsp/Makefile.include");
+
+  foreach $file (@files) {
+    doSubstsInFile ($file, @substs);
+  }
+
+  $filePattern = '.*\.vcproj';
+  find (\&doSubstsInTree, "examples/XTMP");
+  find (\&doSubstsInTree, "examples/XTSC");
+
+  $filePattern = '.*\.vcxproj';
+  find (\&doSubstsInTree, "examples/XTMP");
+  find (\&doSubstsInTree, "examples/XTSC");
+}
+
+# Local Variables:
+# mode:perl
+# perl-indent-level:2
+# cperl-indent-level:2
+# End:

@@ -1,0 +1,598 @@
+eval '(exit $?0)' && eval 'exec /usr/bin/perl -w -S $0 ${1+"$@"}'
+    & eval 'exec /usr/bin/perl -w -S $0 $argv:q'
+    if 0;
+
+# +-------------------------------------------------------------------------------+
+# |          Customer ID=4457; Build=0x57b95; Copyright (c) 2003-2010 by Tensilica Inc.  ALL RIGHTS RESERVED.      |
+# |   These coded instructions, statements, and computer programs are the         |
+# |   copyrighted works and confidential proprietary information of Tensilica Inc.|
+# |   They may not be modified, copied, reproduced, distributed, or disclosed to  |
+# |   third parties in any manner, medium, or form, in whole or in part, without  |
+# |   the prior written consent of Tensilica Inc.                                 |
+# +-------------------------------------------------------------------------------+
+#
+
+#
+# This script reads an ELF binary and dumps a text file compatible with
+# Verilog $readmemh().
+#
+
+
+BEGIN {@INC = map({s'/usr/xtensa/tools-7.0''; $_} @INC);}
+
+
+use v5.6.0;
+use Pod::Usage;
+
+use FileHandle;
+use Getopt::Long;
+use File::Basename;
+
+use strict;
+
+use vars qw($me);
+$me = basename($0);
+
+use vars qw(
+	    $opt_help
+	    $opt_man
+	    @opt_base
+	    $opt_size
+	    $opt_width
+	    $opt_linesize
+	    $opt_big_endian
+	    $opt_little_endian
+	    $opt_sparse
+	    $opt_full
+            $opt_offset
+	    $opt_default
+	    );
+
+sub ispower2 {
+  my ($n) = @_;
+  ($n & ($n - 1)) == 0;
+}
+
+#####################################################################
+sub ParseOptions {
+    GetOptions(
+	       "help"           => \$opt_help,
+	       "man"            => \$opt_man,
+	       "base=s@"        => \@opt_base,
+	       "size=s"         => \$opt_size,
+               "offset=s"       => \$opt_offset,
+	       "width=i"        => \$opt_width,
+	       "linesize=i"     => \$opt_linesize,
+	       "big-endian"     => \$opt_big_endian,
+	       "little-endian"  => \$opt_little_endian,
+	       "sparse"         => \$opt_sparse,
+	       "full"           => \$opt_full,
+	       "default=s"      => \$opt_default,
+	       ) || pod2usage(2);
+
+    pod2usage(1)  if ($opt_help);
+    pod2usage(VERBOSE => 2)  if ($opt_man);
+
+
+    ###########
+    # Check legality of arguments from command line.
+    my $err = 0;
+
+    if (@ARGV < 1) {
+	print STDERR "Error: $me: no input file specified\n";
+	$err++;
+    }
+
+    if ((@opt_base < 1) ||
+        !defined($opt_size) ||
+        !defined($opt_width) ||
+        !defined($opt_default)) {
+	print STDERR "Error: $me: must specify --base, --size, --width, and --default\n";
+	$err++;
+    }
+
+
+    if (!(defined($opt_big_endian) || defined($opt_little_endian)) ||  # need one or the other
+        (defined($opt_big_endian) && defined($opt_little_endian)) ) {  # but not both
+	print STDERR "Error: $me: must specify either --big-endian or --little-endian\n";
+	$err++;
+    }
+
+    if (!(defined($opt_sparse) || defined($opt_full)) ||   # need one or the other
+        (defined($opt_sparse) && defined($opt_full)) ) {   # but not both
+	print STDERR "Error: $me: must specify either --sparse or --full\n";
+	$err++;
+    }
+
+    if ($opt_full && defined($opt_offset)) {
+	print STDERR "Error: $me: --offset has no effect with --full\n";
+	$err++;
+    }
+
+    if ($err) {
+	pod2usage(2);
+    }
+
+    ###########
+    # Interpret and properly format arguments
+
+    # Default line size: same as width.  Effectively disables cache line padding.
+    $opt_linesize = $opt_width/8 unless defined($opt_linesize);
+
+    $opt_offset = 0 unless defined($opt_offset);
+
+    foreach my $i (0..$#opt_base) {
+	$opt_base[$i] = oct($opt_base[$i]) if ($opt_base[$i] =~ /^0x/);
+    }
+    $opt_size     = oct($opt_size    ) if ($opt_size     =~ /^0x/);
+    $opt_linesize = oct($opt_linesize) if ($opt_linesize =~ /^0x/);
+    $opt_offset   = oct($opt_offset)   if ($opt_offset   =~ /^0x/);
+
+    foreach my $opt_base (@opt_base) {
+	if ($opt_base !~ /^\d+$/) { die "Error: $me: --base has invalid value\n"; }
+    }
+    if ($opt_size     !~ /^\d+$/) { die "Error: $me: --size has invalid value\n"; }
+    if ($opt_width    !~ /^\d+$/) { die "Error: $me: --width has invalid value\n"; }
+    if ($opt_linesize !~ /^\d+$/) { die "Error: $me: --linesize has invalid value\n"; }
+    if ($opt_offset   !~ /^\d+$/) { die "Error: $me: --offset has invalid value\n"; }
+
+
+    if (($opt_width < 32) || !ispower2($opt_width)) {
+	die "Error: $me: --width must be >= 32 bits and must be a power of 2\n";
+    }
+
+    foreach my $opt_base (@opt_base) {
+	if ( (($opt_base % ($opt_width/8)) != 0) || (($opt_base % $opt_linesize) != 0) ) {
+	    die "Error: $me: --base must be aligned to specified width and linesize\n";
+	}
+    }
+
+    if ( (($opt_size % ($opt_width/8)) != 0) || (($opt_size % $opt_linesize) != 0) ) {
+	die "Error: $me: --size must be a multiple of specified width and linesize\n";
+    }
+
+    if ($opt_default !~ /^(0x)?([0-9a-fxA-F]+)$/) {
+	die "Error: $me: --default has invalid value\n";
+    }
+
+    $opt_default = $2;   # remove "0x" if present
+    if (length($opt_default) != ($opt_width/4)) {
+	die "Error: $me: --default has wrong length (expected ".($opt_width/4)." digits)\n";
+    }
+
+
+    foreach my $i (0..$#opt_base) {
+	foreach my $j (0..$#opt_base) {
+	    next if ($i == $j);
+	    # For each pair of bases, make sure they don't overlap.
+	    if (($opt_base[$i] >= $opt_base[$j]) && ($opt_base[$i] < $opt_base[$j] + $opt_size)) {
+		die sprintf("Error: $me: --base at 0x%08x overlaps --base at 0x%08x\n", $opt_base[$i], $opt_base[$j]);
+	    }
+	}
+    }
+
+
+}
+
+
+#####################################################################
+# Split segments that cross in or out of our target region.
+sub SplitSegments {
+    my($segments) = @_;
+
+    my $i;
+
+    for ($i = 0; $i <= $#$segments; $i++) {
+	my $seg = $segments->[$i];
+
+	my $rem = remaining($seg->{vma});
+	#printf STDERR "DEBUG SplitSegments looking at va=0x%08x, rem=0x%08x\n", $seg->{vma}, $rem;
+
+
+	# ANDing with 0xffffffff to force unsigned comparisons.
+	if (($seg->{size} & 0xffffffff) > ($rem & 0xffffffff)) {
+	    #printf STDERR "DEBUG splitting this into two segments\n";
+	    my $nvma = $seg->{vma} + $rem;
+	    my $nsize = $seg->{size} - $rem;
+	    my $nbuf = substr($seg->{buf}, $rem);
+	    $seg->{buf} = substr($seg->{buf}, 0, $rem);
+	    $seg->{size} = $rem;
+
+	    # Insert another segment; we'll analyze this segment on our next iteration of this loop.
+	    splice(@$segments, $i+1, 0, {
+		vma => $nvma,
+		size => $nsize,
+		buf => $nbuf,
+	    });
+	}
+
+    }
+
+}
+
+
+# How many bytes are remaining beyond $vma in our region?
+sub remaining {
+    my ($vma) = @_;
+
+    # Bytes remaining could be measured by number of bytes till the end of the segment,
+    # or number of bytes till the beginning of the segment.  Both methods are needed
+    # to handle all cases, so I'll use both and take the minimum of anything I find.
+    # ANDing with 0xffffffff to force Perl to use unsigned comparison (not sure if
+    # that's necessary but it's safe).
+    my @dist = ( 0xffffffff ); # default: plenty of space remaining.
+    foreach my $opt_base (@opt_base) {
+	push @dist, $opt_base - $vma;
+	push @dist, $opt_base + $opt_size - $vma;
+    }
+
+    @dist = sort {($a & 0xffffffff) <=> ($b & 0xffffffff)} @dist;
+
+    # Some of the distances we computed may be 0, such as $vma being
+    # at the start of the target segment.  But I don't care about
+    # that, I only want nonzero numbers here.  So look through @dist
+    # for the first nonzero number and return that.
+
+    for (0..$#dist) {
+	if ($dist[$_]) { return($dist[$_]); }
+    }
+    die("Error: $me: expected nonzero entry in sub remaining");
+}
+
+# Remove segments that are not in our target region.
+sub PurgeSegments {
+    my($segments) = @_;
+
+    my $i = 0;
+
+
+    while ($i <= $#$segments) {
+	my $seg = $segments->[$i];
+
+	my $found = 0;
+	foreach my $opt_base (@opt_base) {
+	    if (($seg->{vma} >= $opt_base) && ($seg->{vma} < ($opt_base + $opt_size))) {
+		# This segment is in our target region
+		$i++;
+		$seg->{ofs} = $seg->{vma} - $opt_base;
+		$found = 1;
+	    }
+	}
+
+	if (!$found) {
+	    #printf STDERR "DEBUG purging segment at va=0x%08x\n", $vma;
+	    # Not in our target region: purge!
+	    splice(@$segments, $i, 1);
+	}
+
+    }
+
+
+    #print STDERR "DEBUG ======= after any splitting and purging necessary we have the following segments\n";
+    #for ($i = 0; $i <= $#$segments; $i++) {
+    #    my $seg = $segments->[$i];
+    #    printf STDERR "DEBUG found segment vma=0x%08x size=0x%08x\n", $seg->{vma}, $seg->{size};
+    #}
+
+
+}
+
+
+sub PrintRegion {
+    my($segments, $start, $end) = @_;
+
+    my $addr = $start;
+
+    while ($addr < $end) {
+	# Find the next segment that's coming up.
+	my ($seg) = grep(($_->{ofs} >= $addr), @$segments);
+	#printf STDERR "DEBUG PrintRegion found next segment of va=0x%08x\n", $seg->{vma} if defined($seg);
+
+	# Fill bytes either up to the beginning of that region, or up to $end, whichever comes first..
+	if (!defined($seg) || ($seg->{ofs} > $addr)) {
+	    # fill in until the beginning of this segment, unless we reach $end
+	    my $goto = $end;
+	    if (defined($seg) && ($seg->{ofs} < $end)) {
+		$goto = $seg->{ofs};
+	    }
+	    while ($addr < $goto) {
+	        print "\0";
+		$addr++;
+	    }
+	}
+
+	# If there's a segment waiting to be printed, dump him.
+	if (defined($seg) && ($seg->{ofs} < $end)) {
+	    # print out $seg
+	    my @bytes = unpack("C*", $seg->{buf});
+            print pack("C*", @bytes);
+            $addr = $addr + scalar(@bytes);
+	}
+    }
+}
+
+
+#####################################################################
+sub ReadInput {
+    my $work_dir = dirname($0);
+    my $elf_load = "$work_dir/elf_load_out";  # find elf_load_out in 'scripts' directory
+
+    my $segment_number = 0;
+    my @segment_data;
+
+    foreach my $infile (@ARGV) {
+
+	my $elf = new FileHandle("$elf_load $infile |");
+	die("Error: $me: cannot execute $elf_load: $!\n") unless defined($elf);
+
+	my $buf;
+
+	# First 12 bytes are header that we can safely ignore.
+	if ($elf->read($buf, 12) != 12) {
+	    die "Error: $me: $!: could not read ELF file " . $infile."\n";
+	}
+
+	while($elf->read($buf, 12) == 12) {
+	    my ($vma, $size, $desc) = unpack('I3', $buf);
+	    my @data = ();
+
+	    my ($i, $j);
+	    if ($size) {
+		#printf "----------------------\n";
+		#printf "Segment   : %d\n", $segment_number++;
+		#printf "vma       : 0x%08x\n", $vma;
+		#printf "size      : 0x%08x\n", $size;
+		#printf "descriptor: 0x%08x\n", $desc;
+
+		# I'll read in all segments for now, then only print out those in my target region.
+		if ($elf->read($buf, $size) != $size) {
+		    die "Error: $me: $!: could not read ELF file " . $infile."\n";
+		}
+		push(@segment_data, {
+		    file => $infile,
+		    vma => $vma,
+		    size => $size,
+		    buf => $buf,
+		});
+
+	    }
+	}
+
+
+
+	$elf->close();
+	die "Error: $me: error closing elf_load_out: $?\n" if $?;
+
+    }
+
+    return(\@segment_data);
+
+
+}
+
+
+sub CheckForOverlaps {
+    my($segments) = @_;
+
+    foreach my $i (1..$#$segments) {
+	my $seg = $segments->[$i];
+	my $prev_seg = $segments->[$i-1];
+	my $prev_end = $prev_seg->{ofs} + $prev_seg->{size};
+	if ($seg->{ofs} < $prev_end) {
+	}
+    }
+
+
+
+}
+
+#####################################################################
+# sub main
+{
+
+    ParseOptions();
+    my $segments = ReadInput();
+
+    # Need to split segments here in case any segment is partially inside our target region.
+    SplitSegments($segments);
+
+    # Remove any segments not in our target region. Also create $seg->{ofs} field.
+    PurgeSegments($segments);
+
+    @$segments = sort {$a->{ofs} <=> $b->{ofs}} @$segments;  # sort by starting address
+
+    CheckForOverlaps($segments);
+
+
+    # Create a list of start/finish addresses.  For full, this is easy: the entire range.
+    # For sparse, it's harder, since one segment may end and the next one begins on the
+    # same cache line.  We want to combine those into one start/finish pair.
+
+    my @addrs;
+    if ($opt_sparse) {
+	# --sparse
+	foreach my $seg (@$segments) {
+	    my $start = $seg->{ofs} - ($seg->{ofs} % $opt_linesize);  # round down to nearest cache line
+
+	    my $end = $seg->{ofs} + $seg->{size};
+
+	    if ($end % $opt_linesize) {
+		$end += $opt_linesize - ($end % $opt_linesize);
+	    }
+
+	    # See if this merges in with prior one
+	    if (@addrs && ($addrs[-1]->[1] >= $start)) {
+		$addrs[-1]->[1] = $end;  # merge
+	    } else {
+		push @addrs, [$start, $end];
+	    }
+	}
+
+    } else {
+	# --full
+	push @addrs, [0, $opt_size];
+    }
+
+
+    my $start;
+    my $end;
+    my $last = 0xFFFFFFFF;
+    foreach my $addr (@addrs) {
+	($start, $end) = @$addr;
+
+        if ($last < $start) {
+            $start = $last;
+        }
+
+	#printf STDERR "DEBUG start=0x%08x end=0x%08x\n", @$addr;
+	#if ($opt_sparse) {
+	#    # print out the "@address" line for $readmemh
+	#    my $start_word = ($start + $opt_offset) / ($opt_width/8);
+	#    printf "\@%08x\n", $start_word;
+	#}
+	PrintRegion($segments, $start, $end);
+	$last = $end;
+    }
+}
+
+######################
+#        Customer ID=4457; Build=0x57b95; Copyright (c) 2003-2009 by Tensilica Inc.  ALL RIGHTS RESERVED.
+# These coded instructions, statements, and computer programs are the
+# copyrighted works and confidential proprietary information of Tensilica Inc.
+# They may not be modified, copied, reproduced, distributed, or disclosed to
+# third parties in any manner, medium, or form, in whole or in part, without
+# the prior written consent of Tensilica Inc.
+
+
+=pod
+
+=head1 NAME
+
+dumpelf - Read ELF binary and dump Verilog $readmemh() format.
+
+=head1 SYNOPSIS
+
+dumpelf --base=I<address> --size=I<bytes> --width=I<bits> [--big-endian|--little-endian] [--sparse|--full] [--linesize=I<bytes>] --default=I<value> I<file> [I<file> ...]
+
+  Options:
+    --help        brief help message
+    --man         full documentation
+    --base        base address of region to dump
+    --size        size of region to dump
+    --width       width of each line to dump
+    --linesize    size of cache line
+    --big-endian  endianness of output
+    --little-endian  "
+    --sparse      completeness of output
+    --full           "
+    --offset      base address for sparse output
+    --default     default value for each line
+
+
+=head1 OPTIONS
+
+=over 8
+
+=item B<--help>
+
+Prints a brief help message and exits.
+
+=item B<--man>
+
+Prints the manual page and exits.
+
+=item B<--base>
+
+Specifies the base virtual address of the region to dump.  Interpreted
+as decimal unless prepended with "0x".
+
+Multiple --base options may be specified, corresponding to multiple
+virtual addresses each mapping to a common physical address. (To dump
+multiple physical memories, run dumpelf multiple times.)
+
+=item B<--size>
+
+Specifies the size in bytes of the region to dump.  Interpreted as
+decimal unless prepended with "0x".
+
+=item B<--width>
+
+Specifies the width in bits of each line of output.  Any power of 2
+from 32 and up is supported.
+
+=item B<--linesize>
+
+Specifies the width in bytes of one cache line.  Interpreted as
+decimal unless prepended with "0x".  The output will have partial
+cache lines padded with default bytes to ensure that no cache line is
+only partially initialized.
+
+=item B<--big-endian>|B<--little-endian>
+
+Specifies the endianness of the target memory.
+
+=item B<--sparse>|B<--full>
+
+Specifies whether to initialize only those lines that have data in the
+ELF file (--sparse), or to initialize every line in the range
+(--full), using the specified default value for lines not contained in
+the ELF file.
+
+=item B<--default>
+
+Specifies the default value for each line.  This value is used to
+initialize lines that are not in the ELF file (if --full is used), and
+also to initialize bytes of a line that is only partially contained in
+the ELF file (for both --full and --sparse).
+
+This value is ALWAYS interpreted as hex.
+
+=item B<--offset>
+
+Specifies the base address of the sparse output.  Interpreted
+as decimal unless prepended with "0x".
+
+The data in the input at address --base will appear in the output
+at address --offset. Default is 0.
+
+Note that this value is a byte address, while the addresses that
+appear in the output (following the @-signs) are word addresses.
+
+=back
+
+=head1 DESCRIPTION
+
+B<dumpelf> reads one or more input file in Xtensa ELF format (a binary
+executable created by the linker program xt-ld) and outputs a series
+of lines to stdout.  The output is a text format that can be read by
+Verilog's $readmemh() system call to initialize a testbench memory
+model.
+
+Typically B<dumpelf> is run several times, once per memory.  A typical
+invocation might look like:
+
+    % dumpelf --base=0x7fff0000 --size=0x10000 --width=64 --little-endian
+    --default=0x1111222233334444 --sparse myprogram
+
+Note that the output might be empty if no initialized data appears in
+the ELF file within the specified range.
+
+=head2 Multiple Files
+
+When run with multiple input files, B<dumpelf> combines the data and
+produces a single output.
+
+If two files contain data for the same address, output is undefined.
+
+=head1 COPYRIGHT
+
+       Customer ID=4457; Build=0x57b95; Copyright (c) 2003-2009 by Tensilica Inc.  ALL RIGHTS RESERVED.
+These coded instructions, statements, and computer programs are the
+copyrighted works and confidential proprietary information of Tensilica Inc.
+They may not be modified, copied, reproduced, distributed, or disclosed to
+third parties in any manner, medium, or form, in whole or in part, without
+the prior written consent of Tensilica Inc.
+
+
+=cut
+

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  	android:layout_width="fill_parent"
+  	android:layout_height="fill_parent"
+  	android:background="@drawable/bt_background"
+  	android:orientation="vertical">
+<LinearLayout
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:orientation="horizontal"
+  >
+  <LinearLayout
+  	android:layout_width="wrap_content"
+  	android:layout_height="wrap_content"
+  	android:layout_marginLeft="15dp"
+  	android:layout_marginRight="15dp"
+  	android:layout_marginTop="25dp"
+  	android:orientation="vertical"
+  	>
+  	<Button android:id="@+id/bt_callhistory_syn"
+  		android:layout_width="wrap_content"
+  		android:layout_height="70dp"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+  		android:background="@drawable/btn_180_50_bg"
+  		android:textColor="@color/btn_textview"
+  		android:text="@string/bt_callhistory_syn_string"
+  		android:textSize="20dp"
+  		/>
+  	<Button android:id="@+id/btn_received"
+  		android:layout_width="wrap_content"
+  		android:layout_height="70dp"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        android:background="@drawable/btn_180_50_bg"
+  		android:textColor="@color/btn_textview"
+  		android:text="@string/received_string"
+  		android:textSize="20dp"
+  		/>
+  	<Button android:id="@+id/btn_dialed"
+  		android:layout_width="wrap_content"
+  		android:layout_height="70dp"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        android:background="@drawable/btn_180_50_bg"
+  		android:textColor="@color/btn_textview"
+  		android:text="@string/dialed_string"
+  		android:textSize="20dp"
+  		/>
+  	<Button android:id="@+id/btn_missed"
+  		android:layout_width="wrap_content"
+  		android:layout_height="70dp"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        android:background="@drawable/btn_180_50_bg"
+  		android:textColor="@color/btn_textview"
+  		android:text="@string/missed_string"
+  		android:textSize="20dp"
+  		/>
+  	<Button android:id="@+id/btn_history_all"
+  		android:layout_width="wrap_content"
+  		android:layout_height="70dp"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        android:background="@drawable/btn_180_50_bg"
+  		android:textColor="@color/btn_textview"
+  		android:text="@string/history_all_string"
+  		android:textSize="20dp"
+  		/>
+  	<Button android:id="@+id/btn_history_clean"
+  		android:layout_width="wrap_content"
+  		android:layout_height="70dp"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        android:background="@drawable/btn_180_50_bg"
+  		android:textColor="@color/btn_textview"
+  		android:text="@string/bt_phonebook_clear_string"
+  		android:textSize="20dp"
+  		/>
+  	</LinearLayout>
+    <ListView
+  	    android:id="@+id/history_listview"
+  		android:layout_width="fill_parent"
+  		android:layout_height="fill_parent"
+  		android:layout_marginLeft="10dp"
+	    android:layout_marginRight="5dp"
+	    android:layout_marginTop="20dp"
+	    android:layout_marginBottom="10dp"
+  		android:choiceMode="singleChoice"
+  		android:cacheColorHint="#00000000"
+  		>
+  	</ListView>
+</LinearLayout>
+ 	 <LinearLayout 
+  	      android:id="@+id/download_callhistory_layout"
+	      android:layout_width="fill_parent"
+	      android:layout_height="fill_parent"
+	      android:orientation="horizontal"
+	      android:gravity="center"
+	      android:visibility="gone"
+	      >
+        <ProgressBar 
+	        android:id="@+id/progressbar_download_callhistory"
+	        android:indeterminateDrawable="@drawable/blue_progressbar"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+        />
+        <TextView 
+            android:id="@+id/tv_download_callhistory_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_download_history"/>
+  	</LinearLayout>
+</FrameLayout>

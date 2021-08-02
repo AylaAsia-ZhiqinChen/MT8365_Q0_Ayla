@@ -1,0 +1,82 @@
+/*
+ * Some Stylin for DITA generated html
+ * These are ADDED as a custom css to the default css DITA-OT provides
+ */
+
+body{
+    background:#FFFFFF;
+    font-size:11pt;
+    font-family:Arial, Helvetica, Verdana, sans-serif;
+    padding-left:15pt;
+}
+thead{
+    background:#DDDDFF;
+}
+caption{
+    text-align:left;
+    font-weight:bold;
+}
+table.lr{
+    width:80%;
+}
+
+h1{
+    font-size:18pt;
+    font-weight:bold;
+    margin-top:20pt;
+    margin-bottom:5pt;
+    font-family:Arial, Helvetica, Verdana, sans-serif;
+    color:#336699;
+}
+h2{
+    font-size:14pt;
+    font-weight:bold;
+    margin-top:20pt;
+    margin-bottom:3pt;
+    font-family:Arial, Helvetica, Verdana, sans-serif;
+    color:#336699;
+}
+h3{
+    font-size:12pt;
+    font-weight:bold;
+    margin-top:15pt;
+    margin-bottom:3pt;
+    font-family:Arial, Helvetica, Verdana, sans-serif;
+    color:#006666;
+}
+p{
+    font-size:11pt;
+    margin-top:10px;
+    margin-bottom:10px;
+    font-family:Arial, Helvetica, Verdana, sans-serif;
+}
+
+div.foot
+{
+    border-width:1pt;
+    border-style:solid;
+}
+table.foot
+{
+    border-width:0;
+    margin-left:0;
+    margin-right:2%;
+    width:98%;
+}
+td.foot
+{
+    border-width:0;
+    margin:2px;
+    padding:2px;
+}
+
+td.imagefoot
+{
+    background-image:url(Cadence_Logo_Red_Reg.gif);
+    background-repeat:no-repeat;
+    background-position:center top;
+    width: 230px;
+    border-width:0;
+    margin:2px;
+    padding:2px;
+}

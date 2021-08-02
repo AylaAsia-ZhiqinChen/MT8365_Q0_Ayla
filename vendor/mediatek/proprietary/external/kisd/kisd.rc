@@ -1,0 +1,11 @@
+# change key_provisioning
+service kisd /vendor/bin/kisd
+    user root
+    group system drmrpc
+
+on post-fs-data
+    mkdir /data/vendor/key_provisioning
+    chmod 0770 /data/vendor/key_provisioning
+    chown system system /data/vendor/key_provisioning
+
+    start kisd

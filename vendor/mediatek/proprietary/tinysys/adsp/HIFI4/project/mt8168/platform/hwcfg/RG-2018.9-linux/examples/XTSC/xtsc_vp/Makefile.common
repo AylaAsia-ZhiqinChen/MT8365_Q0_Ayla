@@ -1,0 +1,114 @@
+# Customer ID=13943; Build=0x75f5e; Copyright (c) 2006-2016 Cadence Design Systems, Inc.  ALL RIGHTS RESERVED.
+# These coded instructions, statements, and computer programs are the
+# copyrighted works and confidential proprietary information of
+# Cadence Design Systems, Inc.  They may be adapted and modified by bona fide
+# purchasers for internal use, but neither the original nor any adapted
+# or modified version may be disclosed or distributed to third parties
+# in any manner, medium, or form, in whole or in part, without the prior
+# written consent of Cadence Design Systems, Inc.
+
+BASE_NAME := $(EXAMPLE_NAME)
+
+TIMEOUT = 60
+SELF_TIMEOUT = 30
+
+TIE_DSO = ../../TIE/example.tdk/lib-i686-Linux/libcas-example.so
+CORE_XML = xtsc_core_vp/xtsc_core_vp.xml
+
+
+
+.PHONY: all target custom_target run clean custom_clean create_xtsc_core_vp clean_xtsc_core_vp alias xml_libraries
+
+.PRECIOUS: %.c
+
+.SUFFIXES :
+.SUFFIXES : .c .cpp .cxx .o
+
+all: target
+
+custom_target:
+
+target: $(TARGET_OBJECTS) custom_target
+
+
+
+$(TIE_DSO): ../../TIE/example.tie
+	$(MAKE) -C ../.. tie
+
+
+%.c:
+	-$(MKDIR) target
+	$(CP) $(TARGET_SOURCE_PATH)/$@ $@
+
+%.out: %.c $(TIE_DEPEND)
+	$(TARGET_CXX) $(TARGET_CFLAGS) -o $@ $< $(TARGET_LIBS)
+
+run: target
+	pcsh ../run.tcl $(NULL)
+
+custom_clean:
+
+clean: custom_clean
+	-$(RM) system.xml *.log
+	-$(RM) HARDWARE.cpp HARDWARE.h
+	-$(RM) .cwrSimParams logicalnames.inc mem_map .sim.src_dirs
+	-$(RM) Properties.xml RouterInfo.xml configurations.xml SystemHierarchy.xml
+	-$(RM) sim_build.tcl sim_elab.tcl sim_run.tcl sim_setup.tcl sim.tcl load_and_make_sim.tcl
+	-$(RM) sim_vpa.tcl sim_vpx.tcl param.ini 
+	-$(RM) snps.vpproject unevald.parameters
+	-$(RM) *.o core.* $(TARGET_OBJECTS)
+	-$(RMDIR) export export_windows export_windows.common 
+	-$(RMDIR) .packaging parameters vpconfigs
+	-$(RMDIR) cwr Debug install work analysis_results
+
+
+
+
+ifdef NO_XTSC_CORE_VP
+XML_LIBRARIES = 
+else
+XML_LIBRARIES = $(CORE_XML)
+all: create_xtsc_core_vp
+clean: clean_xtsc_core_vp
+endif
+
+
+xml_libraries: $(XML_LIBRARIES)
+
+alias: .pcshrc
+
+.pcshrc:
+	@echo "interp alias {} add_module            {} source ../add_module.tcl"   >  $@
+	@echo "interp alias {} create_system         {} source create_system.tcl"   >> $@
+	@echo "interp alias {} make_sim              {} source ../make_sim.tcl"     >> $@
+	@echo "interp alias {} run                   {} source ../run.tcl"          >> $@
+	@echo "interp alias {} doit                  {} source ../doit.tcl"         >> $@
+	@echo "interp alias {} export_windows        {} source export_windows.tcl"  >> $@
+
+
+all: alias
+	pcsh create_system.tcl $(NULL)
+	pcsh ../make_sim.tcl $(NULL)
+
+CORE_MEMORY_INTERFACES = -add=memory=pif
+
+create_xtsc_core_vp: $(CORE_XML)
+
+$(CORE_XML): xtsc_core_vp/SRC_DIR/xtsc_core_vp.cpp xtsc_core_vp/SRC_DIR/xtsc_core_vp.h
+	cd xtsc_core_vp && $(MAKE) xtsc_core_vp.xml
+        
+xtsc_core_vp/SRC_DIR/xtsc_core_vp.cpp: $(TIE_DEPEND)
+	-$(RMDIR) xtsc_core_vp
+	xt-genvpmodel $(XTENSA_PARAMS_CMD) \
+          -name=xtsc_core_vp \
+          -version=$(SYNOPSYS_VIRTUAL_PROTOTYPING_VERSION) \
+          $(STATIC) \
+          -clear \
+          $(CORE_MEMORY_INTERFACES) \
+          $(ADDITIONAL_CORE_INTERFACES)
+
+clean_xtsc_core_vp:
+	-$(RMDIR) xtsc_core_vp
+        
+
+

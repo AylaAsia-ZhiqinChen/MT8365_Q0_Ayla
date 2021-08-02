@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/llprovisioned"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/node_list_height"
+    android:orientation="vertical"
+    android:background="@drawable/selector_recycleview_item"
+    >
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:textSize="@dimen/node_list_text_textsize"
+        android:text="@string/provisioned_mesh_device"/>
+
+    <TextView
+        android:id="@+id/status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/node_list_status_textsize"
+        />
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/node_list_time_textsize"
+        />
+    <TextView
+        android:id="@+id/heartbeatReceive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/node_list_heartbeat_textsize"
+        android:visibility="gone"
+        />
+
+</LinearLayout>

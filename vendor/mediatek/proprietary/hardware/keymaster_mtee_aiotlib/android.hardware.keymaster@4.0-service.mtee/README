@@ -1,0 +1,14 @@
+
+WHAT IT DOES?
+=============
+keymaster service is used by keystore program, and provided hardware-backed RSA algorithm.
+
+
+HOW IT WAS BUILT?
+==================
+android.hardware.keymaster@4.0-service.mtee will be built and put under vendor/bin.
+
+
+HOW TO USE IT?
+==============
+keymaster is a excutable program and will be started by init.

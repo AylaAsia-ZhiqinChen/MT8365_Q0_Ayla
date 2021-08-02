@@ -1,0 +1,23 @@
+Library of Drm features, including modular drm api.
+
+This library is pre-built by MediaTek internal.
+
+WHAT IT DOES?
+=============
+lib_uree_mtk_modular_drm will be used by modular drm, including acquire secure buffer and decrypt.
+Without them, modular drm will not work.
+
+HOW IT WAS BUILT?
+==================
+It needs the following library from AOSP:
+1. libutils.so
+2. libcutils.so
+
+and the following libs from MediaTek:
+
+All source/dependency modules of this module are already put in
+'system/lib' folder.
+
+HOW TO USE IT?
+==============
+lib_uree_mtk_modular_drm provides interface of modular drm, it is built library.

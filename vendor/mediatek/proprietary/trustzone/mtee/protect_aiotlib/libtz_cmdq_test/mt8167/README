@@ -1,0 +1,24 @@
+The static library 'libtz_cmdq_test' is a TA library which provide the way to test the communication between kernel and trustzone in MTK in-house TEE.
+
+
+WHAT IT DOES?
+=============
+
+The 'libtz_cmdq_test' provides the way to test the communication between kernel and trustzone inside MTK in-house TEE.
+The 'libtz_cmdq_test' is used in CMDQ and MDP integration test.
+
+
+HOW IT WAS BUILT?
+==================
+
+All source/dependency modules of this module are already put in
+'vendor/mediatek/libs' folder.
+
+
+HOW TO USE IT?
+==============
+
+It will be used in CMDQ and MDP integration test.
+Normal world MDP unitTest code will call seviceCall to access this folder
+
+All the source code of this library were written by MediaTek co..

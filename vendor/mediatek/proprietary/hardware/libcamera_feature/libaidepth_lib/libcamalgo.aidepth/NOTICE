@@ -1,0 +1,24 @@
+Copyright (C) 2009 Gael Guennebaud <gael.guennebaud@inria.fr>
+This software is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the
+MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+The  software is provided under this License on an "as is" basis, without warranty of any kind,
+either expressed, implied, or statutory, including, without limitation, warranties that
+the software is free of defects, merchantable, fit for a particular purpose or non-infringing.
+The entire risk as to the quality and performance of the software is with you.
+Should any software prove defective in any respect, you (not any contributor) assume the cost of
+any necessary servicing, repair, or correction.
+This disclaimer of warranty constitutes an essential part of this License.
+No use of any software is authorized under this License except under this disclaimer.
+Under no circumstances and under no legal theory, whether tort (including negligence),
+contract, or otherwise, shall any contributor, or anyone who distributes software as permitted above,
+be liable to you for any direct, indirect, special, incidental, or consequential damages of
+any character including, without limitation, damages for lost profits, loss of goodwill,
+work stoppage, computer failure or malfunction, or any and all other commercial damages or losses,
+even if such party shall have been informed of the possibility of such damages.
+This limitation of liability shall not apply to liability for death or personal injury resulting from
+such party's negligence to the extent applicable law prohibits such limitation.
+Some jurisdictions do not allow the exclusion or limitation of incidental or consequential damages,
+so this exclusion and limitation may not apply to you. You can receive a complete machine-readable copy of
+the source code by sending a written request to:
+MediaTek Inc., No. 1, Dusing Road 1, Science-based Industrial Park, Hsin-Chu City, Taiwan, R.O.C.
+Attn: mail.alps.eign.support@mediatek.com

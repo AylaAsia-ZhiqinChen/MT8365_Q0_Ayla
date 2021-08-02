@@ -1,0 +1,5 @@
+#if __cplusplus >= 201103
+#include <c++11/algorithm>
+#else
+#include <c++98/algorithm>
+#endif

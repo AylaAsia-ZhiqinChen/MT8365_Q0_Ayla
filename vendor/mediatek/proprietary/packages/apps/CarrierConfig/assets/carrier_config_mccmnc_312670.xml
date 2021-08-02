@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8' standalone='yes' ?>
+<carrier_config_list>
+    <carrier_config>
+        <boolean name="support_video_conference_call_bool" value="true" />
+        <boolean name="mtk_domestic_roaming_enabled_only_by_mobile_data_setting" value="true" />
+        <boolean name="mtk_intl_roaming_enabled_only_by_roaming_data_setting" value="true" />
+    </carrier_config>
+</carrier_config_list>

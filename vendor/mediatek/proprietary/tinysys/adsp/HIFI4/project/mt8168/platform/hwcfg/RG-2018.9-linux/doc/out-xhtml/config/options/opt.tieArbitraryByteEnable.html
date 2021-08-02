@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en-us" lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="copyright" content="(C) Copyright 2005"/>
+<meta name="DC.rights.owner" content="(C) Copyright 2005"/>
+<meta name="DC.Type" content="tconcept"/>
+<meta name="DC.Title" content="TIE Arbitrary Byte Enables Option"/>
+<meta name="abstract" content="Selecting the TIE arbitrary byte enables option allows you to use the StoreByteDisable interface in your TIE code"/>
+<meta name="description" content="Selecting the TIE arbitrary byte enables option allows you to use the StoreByteDisable interface in your TIE code"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/nodes/g_isainst.html"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/options/opt.prid.html"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/options/opt.loops.html"/>
+<meta name="DC.Format" content="XHTML"/>
+<meta name="DC.Identifier" content="opt-tieArbitraryByteEnable"/>
+<link rel="stylesheet" type="text/css" href="../../commonltr.css"/>
+<link rel="stylesheet" type="text/css" href="../../cadence.css"/>
+<title>TIE Arbitrary Byte Enables Option</title>
+</head>
+<body id="opt-tieArbitraryByteEnable">
+
+
+    <h1 class="title topictitle1">TIE Arbitrary Byte Enables Option</h1>
+
+    
+    <div class="body conbody"><p class="shortdesc">Selecting the TIE arbitrary byte enables option allows you to use the
+        StoreByteDisable interface in your TIE code</p>
+
+        <dl class="dl">
+            
+                <dt class="dt dlterm">TIE arbitrary byte enables option</dt>
+
+                <dd class="dd"><span class="ph">Selected</span></dd>
+
+            
+        </dl>
+
+        <p class="p">This option is necessary for TIE files and <span class="ph">Cadence</span>
+            coprocessors that contain instructions that disable part of a memory store. A TIE
+            developer might use this feature for developing predicated, SIMD, memory references.
+            Example usage: the ConnX Vectra LX and ConnX D2 coprocessors use this feature for
+            implementing unaligned data accesses. HiFi 2 uses this feature to do conditional,
+            bit-stream writes.</p>
+
+    </div>
+
+<div class="related-links">
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="../../config/nodes/g_isainst.html">Miscellaneous ISA Instruction Options</a></div>
+<div class="previouslink"><strong>Previous topic:</strong> <a class="link" href="../../config/options/opt.prid.html">Processor ID Option</a></div>
+<div class="nextlink"><strong>Next topic:</strong> <a class="link" href="../../config/options/opt.loops.html" title="Enable zero-overhead loop instructions (eliminates loop pipeline overhead)">Zero-Overhead Loops Option</a></div>
+</div>
+</div>
+
+</body>
+</html>

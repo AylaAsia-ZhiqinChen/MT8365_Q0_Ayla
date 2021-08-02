@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="slideswitch">
+        <!-- 按钮的颜色 -->
+        <attr name="themeColor" format="color" />
+        <!-- 按钮的打开状态 -->
+        <attr name="isOpen" format="boolean" />
+        <!-- 滑动开关的形状 -->
+        <attr name="shape">
+            <enum name="rect" value="1" />
+            <enum name="circle" value="2" />
+        </attr>
+    </declare-styleable>
+
+
+    <declare-styleable name="PrintView">
+        <!-- Icon text. -->
+        <attr name="print_iconText" format="string"/>
+        <!-- Icon text based on char code. -->
+        <attr name="print_iconCode" format="integer"/>
+        <!-- Color of the icon. -->
+        <attr name="print_iconColor" format="color"/>
+        <!-- Size of the icon. -->
+        <attr name="print_iconSize" format="dimension"/>
+        <!-- File name of the font in the assets directory. -->
+        <attr name="print_iconFont" format="string"/>
+    </declare-styleable>
+
+</resources>

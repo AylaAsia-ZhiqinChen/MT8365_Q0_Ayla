@@ -1,0 +1,5 @@
+#if __cplusplus >= 201103
+#include <c++11/xxmem_fn>
+#else
+#include <c++98/xxmem_fn>
+#endif

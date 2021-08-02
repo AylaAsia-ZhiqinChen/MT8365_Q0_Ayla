@@ -1,0 +1,4 @@
+service hidl_jpeg /vendor/bin/hw/vendor.mediatek.hardware.jpeg@1.0-service-mediatek
+    class hal
+    user system
+    group system drmpc

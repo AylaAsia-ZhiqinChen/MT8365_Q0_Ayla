@@ -1,0 +1,41 @@
+cc_prebuilt_library_shared {
+    arch: {
+        arm: {
+            cortex_a53: {
+                shared_libs: [
+                    "libcutils",
+                    "libutils",
+                    "liblog",
+                    "libdl",
+                    "libnativewindow",
+                    "libGLES_meow",
+                ],
+                srcs: [
+                    "arm_armv8-a_cortex-a53/libMEOW_trace.so",
+                ],
+            },
+        },
+        arm64: {
+            cortex_a53: {
+                shared_libs: [
+                    "libcutils",
+                    "libutils",
+                    "liblog",
+                    "libdl",
+                    "libnativewindow",
+                    "libGLES_meow",
+                ],
+                srcs: [
+                    "arm64_armv8-a_cortex-a53/libMEOW_trace.so",
+                ],
+            },
+        },
+    },
+    name: "libMEOW_trace@MTK,aiot",
+    proprietary: true,
+    relative_install_path: "egl",
+    strip: {
+        none: true,
+    },
+}
+

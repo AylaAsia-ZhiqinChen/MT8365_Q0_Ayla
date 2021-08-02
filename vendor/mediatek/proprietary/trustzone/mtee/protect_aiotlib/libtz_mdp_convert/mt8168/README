@@ -1,0 +1,21 @@
+The static library 'libtz_mdp_convert' is a TA library which provide the way to convert block to nv12 in MTK in-house TEE.
+
+
+WHAT IT DOES?
+=============
+provide the way to convert block to nv12 in MTK in-house TEE.
+
+
+
+HOW IT WAS BUILT?
+==================
+
+All source/dependency modules of this module are already put in
+'vendor/mediatek/libs' folder.
+
+
+HOW TO USE IT?
+==============
+call in mdp so
+
+All the source code of this library were written by MediaTek co..

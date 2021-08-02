@@ -1,0 +1,31 @@
+cc_prebuilt_library_shared {
+    arch: {
+        arm: {
+            shared_libs: [
+                "libbase",
+                "liblog",
+                "libcutils",
+            ],
+            srcs: [
+                "arm/libnir_neon_driver.so",
+            ],
+        },
+        arm64: {
+            shared_libs: [
+                "libbase",
+                "liblog",
+                "libcutils",
+            ],
+            srcs: [
+                "arm64/libnir_neon_driver.so",
+            ],
+        },
+    },
+    name: "libnir_neon_driver@MTK,mt8168",
+    owner: "mtk",
+    proprietary: true,
+    strip: {
+        none: true,
+    },
+}
+

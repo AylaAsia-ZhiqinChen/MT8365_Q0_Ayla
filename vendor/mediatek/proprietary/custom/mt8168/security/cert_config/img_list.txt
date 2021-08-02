@@ -1,0 +1,17 @@
+[single_bin]
+logo.bin=logo
+boot.img=boot
+recovery.img=recovery
+md1arm7.img=md1arm7
+md1dsp.img=md1dsp
+md3rom.img=md3rom
+dtbo.img=dtbo
+odmdtbo.img=dtbo
+cam_vpu1.img=cam_vpu1
+cam_vpu2.img=cam_vpu2
+cam_vpu3.img=cam_vpu3
+
+[multi_bin]
+tee.img=atf,tee
+lk.img=lk,lk_main_dtb
+md1img.img=md1rom,md1dsp,md1drdi

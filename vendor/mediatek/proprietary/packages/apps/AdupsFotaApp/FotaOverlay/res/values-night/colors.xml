@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="white_color">#22272B</color><!--界面背景颜色-->
+    <color name="white_text_color">#80CBC4</color><!--主界面进度内字体颜色-->
+    <color name="black_text_color">#fff</color><!--所有页面黑色文字-->
+
+    <color name="status_bar_bg">#000</color><!--状态栏颜色-->
+    <color name="title_bg_color">#22272B</color><!--标题栏，主界面颜色-->
+
+    <color name="dialog_content_text_color">#FAFAFA</color><!--弹窗内容文字颜色-->
+    <color name="dialog_bottom_text_color">#80CBC4</color><!--弹窗底部按钮颜色-->
+    <!--弹窗底部按钮按压颜色-->
+
+    <color name="title_text_color">#fff</color><!--标题栏字体颜色-->
+    <color name="title_back_pressed_color">#80109677</color><!--标题栏返回上一级按压颜色-->
+
+    <color name="button_bg_normal_color">#ff212121</color><!--按钮默认颜色-->
+    <color name="button_bg_pressed_color">#84898D</color><!--按钮按压颜色-->
+    <color name="button_bg_focused_color">#10BBFFFF</color><!--无触摸按钮选中颜色-->
+    <color name="button_border_color">#dedede</color><!--主页面和升级页面底部按钮边沿颜色-->
+    <color name="button_text_normal_color">#fff</color><!--按钮内字体默认颜色-->
+    <color name="button_text_pressed_color">#80CBC4</color><!--按钮内字体按压颜色-->
+
+    <color name="setting_check_text_color">#80109677</color><!--设置页面检测周期字体颜色-->
+    <color name="setting_small_text_color">#F2F2F2</color><!--设置页面小字颜色-->
+
+    <color name="notification_text_color">#80109677</color><!--通知栏文字颜色-->
+
+    <color name="horizontal_line_color">#ff383d41</color><!--分割线颜色-->
+
+    <color name="option_pop_text_color">#fff</color><!--主界面右上角弹窗内文字颜色-->
+
+    <color name="ic_launcher_background">#80109677</color><!--8.0及以上桌面图标的背景色-->
+
+</resources>

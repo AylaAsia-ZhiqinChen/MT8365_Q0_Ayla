@@ -1,0 +1,42 @@
+cc_prebuilt_library_shared {
+    arch: {
+        arm: {
+            cortex_a53: {
+                shared_libs: [
+                    "libcutils",
+                    "libutils",
+                    "liblog",
+                    "libdl",
+                    "libsync",
+                    "libnativewindow",
+                ],
+                srcs: [
+                    "arm_armv8-a_cortex-a53/libged_sys.so",
+                ],
+            },
+        },
+        arm64: {
+            cortex_a53: {
+                shared_libs: [
+                    "libcutils",
+                    "libutils",
+                    "liblog",
+                    "libdl",
+                    "libsync",
+                    "libnativewindow",
+                ],
+                srcs: [
+                    "arm64_armv8-a_cortex-a53/libged_sys.so",
+                ],
+            },
+        },
+    },
+    export_include_dirs: [
+        "include",
+    ],
+    name: "libged_sys@MTK,aiot",
+    strip: {
+        none: true,
+    },
+}
+

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en-us" lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="copyright" content="(C) Copyright 2005"/>
+<meta name="DC.rights.owner" content="(C) Copyright 2005"/>
+<meta name="DC.Type" content="tconcept"/>
+<meta name="DC.Title" content="AR Registers Count"/>
+<meta name="abstract" content="Number of physical AR registers. Setting to 16 registers means windowed calls are not supported"/>
+<meta name="description" content="Number of physical AR registers. Setting to 16 registers means windowed calls are not supported"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/nodes/g_isaisa.html"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/options/opt.byteOrder.html"/>
+<meta name="DC.Relation" scheme="URI" content="../swoptions/opt.sw_abi.html"/>
+<meta name="DC.Format" content="XHTML"/>
+<meta name="DC.Identifier" content="opt-arCount"/>
+<link rel="stylesheet" type="text/css" href="../../commonltr.css"/>
+<link rel="stylesheet" type="text/css" href="../../cadence.css"/>
+<title>AR Registers Count</title>
+</head>
+<body id="opt-arCount">
+
+
+    <h1 class="title topictitle1">AR Registers Count</h1>
+
+    
+    <div class="body conbody"><p class="shortdesc">Number of physical AR registers. Setting to 16 registers means windowed calls are not
+        supported</p>
+
+        <dl class="dl">
+            
+                <dt class="dt dlterm">AR Registers Count</dt>
+
+                <dd class="dd"><span class="ph">64</span></dd>
+
+            
+        </dl>
+
+        <p class="p">The <span class="ph">Cadence</span> windowed ABI allows you to have more physical AR
+            registers than the 16 that are directly accessible by instructions in the ISA. On a
+            call, the system rotates the AR register file, automatically giving the called function
+            access to new scratch registers. This windowing mechanism allows for faster and smaller
+            code. Whenever the number of physical registers is exceeded, an exception is thrown and
+            the exception handler automatically saves and restores the excess registers to and from
+            the memory stack. See the Xtensa Instruction Set Architecture (ISA) Reference Manual for
+            more details.</p>
+
+
+        <p class="p"><span class="ph">Cadence</span> allows 16, 32, or 64 physical registers. The selection
+            of 16 registers necessitates the use of the CALL0 ABI. The use of 32 versus 64 physical
+            registers does not affect application software. The choice is a trade-off between
+            application performance and hardware area. The extra registers add approximately 5,000
+            gates to the processor but minimize the number of exceptions. If the number of gates is
+            significant to your application, it is recommended that you profile your application and
+            search for the functions beginning with _WindowUnderflow and _WindowOverflow. The more
+            time spent in these handlers, the greater the value of having 64 physical registers.
+        </p>
+
+    </div>
+
+    <div class="related-links">
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="../../config/nodes/g_isaisa.html">ISA Configuration Options</a></div>
+<div class="nextlink"><strong>Next topic:</strong> <a class="link" href="../../config/options/opt.byteOrder.html" title="Little or Big Endian">Byte Ordering Option</a></div>
+</div>
+<div class="relinfo"><strong>Related information</strong><br/>
+<div><a class="link" href="../swoptions/opt.sw_abi.html">Application Binary Interfaces</a></div>
+</div>
+</div>
+
+</body>
+</html>

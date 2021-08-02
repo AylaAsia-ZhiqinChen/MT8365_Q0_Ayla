@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="config">
+        <item>Config Model Subscription Add</item>
+        <item>Config NetKey Add</item>
+        <item>Config AppKey Add</item>
+        <item>Config Composition Data Get</item>
+    </string-array>
+
+</resources>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<carrier_config>
+    <boolean name="show_apn_setting_cdma_bool" value="true"/>
+    <boolean name="carrier_volte_available_bool" value="true"/>
+    <boolean name="carrier_wfc_ims_available_bool" value="true"/>
+    <boolean name="ignore_data_enabled_changed_for_video_calls" value="true"/>
+    <boolean name="vilte_data_is_metered_bool" value="false"/>
+    <boolean name="mtk_volte_conference_enhanced_enable_bool" value="true"/>
+</carrier_config>

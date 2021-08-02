@@ -1,0 +1,61 @@
+// Customer ID=13943; Build=0x75f5e; Copyright (c) 2016-2017 by Cadence Design Systems, Inc.  ALL RIGHTS RESERVED.
+// These coded instructions, statements, and computer programs are the
+// copyrighted works and confidential proprietary information of
+// Cadence Design Systems, Inc.  They may be adapted and modified by bona fide
+// purchasers for internal use, but neither the original nor any adapted
+// or modified version may be disclosed or distributed to third parties
+// in any manner, medium, or form, in whole or in part, without the prior
+// written consent of Cadence Design Systems, Inc.
+
+/**
+ * The purpose of this script is to "intercept" each read to ADDR_UART_RD and run the
+ * got_uart_rd() Lua function before the read is actually handled in the xtsc_memory
+ * instance (uartregs).  Note: 0xC0000010 is the default ADDR_UART_RD.
+ *
+ * Each time the got_uart_rd() function is called it checks if there is a byte available
+ * in xtensa_rd_queue:
+ * a) If there is no byte available and BLOCK was specified, the Lua script spins until
+ *    there is a byte available using xtsc_host_sleep (which freezes the SystemC
+ *    simulation).
+ * b) If there is no byte available and BLOCK was not specified the script does a poke
+ *    of the failure indicator value 0xFFFFFFFF to ADDR_UART_RD.
+ * c) If there is a byte available in the queue, then the script pops the byte from the
+ *    queue and pokes it along with high order bytes of 0x00 to indicate success to
+ *    ADDR_UART_RD.
+ * The value poked by got_uart_rd() in (b) or (c) above is what the uartregs memory
+ * model will find in the memory array when it handles the read after got_uart_rd()
+ * returns.
+ *
+ * See "script_file" and lua_function in the documentation for xtsc_memory_parms in
+ * XTSC_RM.pdf or xtsc_memory.h.
+ */
+
+#include "common.h"
+
+#lua_beg
+  BLOCK = (xtsc.cmd("xtsc xtsc_user_state_get BLOCK") == "1")
+  --xtsc.cmd("xtsc note uart_rd.vec: BLOCK=" .. (BLOCK and "1" or "0") .. " ADDR_UART_RD=$(ADDR_UART_RD)")
+
+  function got_uart_rd(port, addr, type, last, dump)
+    -- print("got_uart_rd got request: " .. dump)
+    if BLOCK then
+      while xtsc.cmd("xtensa_rd_queue can_pop") == "0" do
+        xtsc.cmd("xtsc xtsc_host_sleep 10")
+      end
+    end
+    if xtsc.cmd("xtensa_rd_queue can_pop") == "0" then
+      xtsc.cmd("uartregs poke $(ADDR_UART_RD) 4 0xFF 0xFF 0xFF 0xFF")
+      return 0
+    else
+      byte = xtsc.cmd("xtensa_rd_queue pop")
+      xtsc.cmd("uartregs poke $(ADDR_UART_RD) 4 " .. byte  .. " 0x00 0x00 0x00")
+      return 1
+    end
+  end
+
+#lua_end
+
+
+lua_function got_uart_rd
+$(ADDR_UART_RD) * read okay
+

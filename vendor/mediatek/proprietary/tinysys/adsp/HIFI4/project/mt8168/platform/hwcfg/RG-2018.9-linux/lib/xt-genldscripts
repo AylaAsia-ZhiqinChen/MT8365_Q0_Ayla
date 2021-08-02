@@ -1,0 +1,3228 @@
+package GenLdScripts;
+use strict;
+use Getopt::Long;
+use FindBin;
+use FileHandle;
+use File::Path;
+use File::Basename;
+my $global_debug = 0;
+BEGIN {
+    $global_debug = 1 if ($ENV{"XTENSA_INTERNAL_DEBUG"} or "") =~ /^DEBUG/;
+    $SIG{__DIE__} = sub { require Carp; Carp::confess(@_) } if $global_debug;
+}
+my ($xttools, $tools, $prefix);
+BEGIN {
+    $xttools = $ENV{"XTENSA_TOOLS_ROOT"};
+    $tools   = $ENV{"XTENSA_STANDARD_TOOLS"};
+    $prefix  = $ENV{"XTENSA_CORE_ROOT"};
+    die("xt-genldscripts: This script must be invoked by the correct wrapper program")
+	unless defined($prefix);
+    $prefix =~ s|[/\\]+$||;
+    die("xt-genldscripts: invalid XTENSA_CORE_ROOT: cannot be the root of the filesystem")
+	unless $prefix ne "";
+    push @INC, $xttools."/lib/perl";
+}
+use Xtensa::Params;
+use Xtensa::AddressLayout;
+my %known_attributes = map { $_ => 1 } qw/writable executable device fulldata shared/;
+my %iface_attributes = map { $_ => 1 } qw/writable executable device fulldata/;
+my %local_types = map {$_=>1} qw/dataRam dataPort XLMI dataRom instRam instRom unifiedRam/;
+my %known_params = map { $_ => 1 } qw/ROMING ENTRY INCLUDE_DV_SECTIONS RESERVE_SEGMENT_AREA USE_SEGMENT_AREA
+					EXECUTABLE_SYMBOLS RTOS_STYLE EXCLUDE_ROMS BACKWARD_COMPATIBILITY
+					INCLUDE_XT2000_MEMORIES INCLUDE_XTBOARD_MEMORIES VECBASE VECRESET VECSELECT
+					SYSCORE RESET_TABLE_VADDR SHARED SYMBOL_PREFIX USE_PHYS_ADDR_FOR_LMA
+					OVERLAYS OVERLAY_ALIGN OVERLAY_LOAD_SEG OVERLAY_MAP_SEG FILL_PATTERN /;
+my %dev_types  = map {$_=>1} qw/Uart Led Ethernet EDM TraceBuffer FpgaRegs BusInt V3/;
+my %dv_mem_names = map {$_=>1} qw/reset0 reset1 cached noncached magic dynamic attrib dynMappedDVRegion/;
+sub isMemInstRam	{my($mem)=@_; memType($mem) eq 'instRam'; }
+sub isMemInstRom	{my($mem)=@_; memType($mem) eq 'instRom'; }
+sub isMemRom		{my($mem)=@_; ! memHasAttribute($mem, 'writable'); }
+sub isMemExecutable	{my($mem)=@_; memHasAttribute($mem, 'executable'); }
+sub isMemDevice		{my($mem)=@_; memHasAttribute($mem, 'device'); }
+sub isMemMemory		{my($mem)=@_; ! memHasAttribute($mem, 'device'); }
+sub isMemLocal		{my($mem)=@_; exists $local_types{memType($mem)}; }
+sub isMemTypeDevice	{my($type)=@_; exists $dev_types{$type}; }
+my $myname = "xt-genldscripts";
+my $verbose = 0;	
+my $quiet = 0;		
+my $warnonly = 0;	
+my $exitcode = 0;	
+my $debug = 0;		
+my $debugHandle;	
+my $alt_system_xmap = undef;
+my %noload_sections = (); 
+my %fillMap = ();       
+sub printError {
+  my ($msg) = @_;
+  $msg =~ s/\n/\nERROR: /g;	
+  print STDERR "xt-genldscripts:\n";
+  print STDERR "ERROR: $msg\n";
+  $exitcode = 1;
+}
+sub Error {
+  printError(@_);
+  die "oops" if $global_debug;
+  exit $exitcode;
+}
+sub printWarning {
+  my ($msg) = @_;
+  $msg =~ s/\n/\n         /g;	
+  print STDERR "WARNING: $msg\n";
+}
+sub printErrorW {
+  $warnonly ? printWarning(@_) : printError(@_);
+}
+sub ErrorW {
+  $warnonly ? printWarning(@_) : Error(@_);
+}
+sub readfile {
+  my ($filename, $whatdebug) = @_;
+  my $handle = new FileHandle $filename, '<';
+  die("xt-genldscripts: Can't open '$filename' for reading $whatdebug\n") unless $handle;
+  print $debugHandle "Reading $whatdebug from $filename ...\n" if $debug;
+  my @lines = $handle->getlines();
+  $handle->close();
+  foreach (@lines) { s|\r\n$|\n|g; }	
+  join('',@lines);
+}
+sub openwrite {
+  my ($outfile, $forwhat) = @_;
+  my $dstpath = $outfile;
+  if ($dstpath =~ s|[/\\][^/\\]*$||) {
+    if (! -d $dstpath) {
+      mkpath($dstpath, 0, 0777) or
+	die ("Error: cannot create destination directory $dstpath (for $forwhat)\n");
+    }
+  }
+  my $out = new FileHandle $outfile, '>';
+  die("$myname: can't open $outfile for $forwhat\n") unless $out;
+  return $out;
+}
+sub optionTrue {
+  my ($optionHash, $keyword, $default, $maybe) = @_;
+  $default = 0 unless defined($default);
+  my $value = $optionHash->{$keyword};
+  return $default unless defined($value);
+  return 0 if $value =~ /^false|0$/i;
+  return 1 if $value =~ /^true|1$/i;
+  return 2 if $value =~ /^maybe|try|2$/i and defined($maybe) and $maybe;
+  Error("invalid value '$value' for boolean parameter '$keyword'");
+}
+sub str2int {
+  my ($num, $errwhere) = @_;
+  $num =~ s/^\s+//;	
+  $num =~ s/\s+$//;
+  return oct($num) if $num =~ /^0[0-7]*$/;
+  return hex($num) if $num =~ /^0x[0-9a-f]+$/i;
+  return $num      if $num =~ /^[1-9][0-9]*$/;
+  Error("invalid syntax, integer expected, got '$num' in $errwhere\n"
+  	."Valid integer formats are [1-9][0-9]* (decimal), 0[0-7]* (octal), 0x[0-9a-f]+ (hex)");
+}
+sub extract (&\@;\@\@\@\@\@\@\@\@\@\@\@\@) {
+  my $code = shift;
+  my @result;
+  foreach my $aref (@_) {
+    push @result, &replaceall ($code, $aref);
+  }
+  @result;
+}
+sub move2start (&\@;\@\@\@\@\@\@\@\@\@\@\@\@) {
+  my $start = $_[1];
+  my @result = &extract(@_);
+  unshift @$start, @result;
+  @result;
+}
+sub move2end (&\@;\@\@\@\@\@\@\@\@\@\@\@\@) {
+  my $end = $_[$#_];
+  my @result = &extract(@_);
+  push @$end, @result;
+  @result;
+}
+sub replaceone (&\@@) {
+  my ($code, $aref, @newvalues) = @_;
+  my $i = 0;
+  foreach $_ (@$aref) {
+    return splice (@$aref, $i, 1, @newvalues) if &$code;
+    $i++;
+  }
+  return ();
+}
+sub replaceall (&\@@) {
+  my ($code, $aref, @newvalues) = @_;
+  my @indices = ();
+  my $i = 0;
+  foreach $_ (@$aref) {
+    unshift(@indices, $i) if &$code;
+    $i++;
+  }
+  my @result = ();
+  foreach $i (@indices) {
+    unshift @result, splice(@$aref, $i, 1, @newvalues);
+  }
+  return @result;
+}
+sub find (&@) {
+  my ($code, @array) = @_;
+  my $i = 0;
+  foreach $_ (@array) {
+    return $i if &$code;
+    $i++;
+  }
+  return undef;
+}
+if(0) {
+ print STDERR "*** TEST:\n";
+ my @foo = ('abc', 'def', 'ghi', 'zebu', 'abdip', 'what?');
+ my @fum = ('yup', 'beard', 'zoo');
+ my @bar = extract {/d/} @foo, @fum;
+ print "foo is (", join(", ", @foo), ")\n";
+ print "fum is (", join(", ", @fum), ")\n";
+ print "bar is (", join(", ", @bar), ")\n";
+ move2start {s/a/AA/g} @foo, @fum, @bar;
+ print "foo is (", join(", ", @foo), ")\n";
+ print "fum is (", join(", ", @fum), ")\n";
+ print "bar is (", join(", ", @bar), ")\n";
+ move2end {/e/} @foo, @fum, @bar;
+ print "foo is (", join(", ", @foo), ")\n";
+ print "fum is (", join(", ", @fum), ")\n";
+ print "bar is (", join(", ", @bar), ")\n";
+ print "done.\n";
+ exit 0;
+}
+my $have_mmu;
+my $have_mpu;
+my $use_mmu;
+my $have_xea1;
+my $have_writeback;
+my $have_writeback_noalloc;
+my $have_xthifi2;
+my $have_dualnoimemLS;
+my $have_noimemlits;
+my $symbol_prefix = "";
+sub newSection {
+  my ($name) = @_;
+  [$name, undef];
+}
+sub secName	{ my ($sec) = @_; $sec->[0]; }
+sub secSegment	{ my ($sec) = @_; $sec->[1]; }
+sub secSetName {
+  my ($sec, $name) = @_;
+  $sec->[0] = $name;
+}
+sub secSetSegment {
+  my ($sec, $seg) = @_;
+  $sec->[1] = $seg;
+}
+sub secRemoveFromSeg {
+  my ($section) = @_;
+  my $seg = secSegment($section);
+  @{segSectionsRef($seg)} = grep($_ ne $section, @{segSectionsRef($seg)})
+	if defined($seg);
+  secSetSegment($section, undef);
+}
+sub secRemove {
+  my ($secname, $secNamesHash) = @_;
+  my $sec = $secNamesHash->{$secname};	
+  return unless defined($sec);
+  delete $secNamesHash->{$secname};	
+  secRemoveFromSeg($sec);		
+}
+sub secRename {
+  my ($oldname, $newname, $secNamesRef);
+  return if $oldname eq $newname;
+  secRemove($newname, $secNamesRef);	
+  my $sec = $secNamesRef->{$oldname};
+  return unless defined($sec);		
+  delete $secNamesRef->{$oldname};
+  secSetName($sec, $newname);
+  $secNamesRef->{$newname} = $sec;
+}
+sub secMerge {
+  my ($destname, $sectionIncsRef, $secNamesRef, @sources) = @_;
+  foreach my $source (@sources) {
+    my $srcname = secName($source);
+    next if $srcname eq $destname;	
+    print STDERR "***  Merging $srcname with $destname ...\n" if $debug;
+    push  @{$sectionIncsRef->{$destname}}, @{$sectionIncsRef->{$srcname}};
+    secRemove($srcname, $secNamesRef);
+    $secNamesRef->{$srcname} = $secNamesRef->{$destname};
+  }
+}
+sub secSortOrder {
+  my ($name) = @_;
+  return 1 if $name =~ /\.rodata$/;
+  return 1 if $name =~ /\.lit4$/;
+  return 2 if $name =~ /\.literal$/;
+  return 3 if $name =~ /\.text$/;
+  return 4 if $name =~ /^\.overlay/;
+  return 5 if $name =~ /\.data$/;
+  return 7 if $name eq '.rom.store';
+  return 8 if $name =~ /\.bss$/;
+  return 6;		
+}
+sub newSegment {
+  my ($name, $baseAddress, $size, $stack, $heap, $fixed, $mem) = @_;
+  [$name, $baseAddress, $size, $stack, $heap, $fixed, 0, 0, $mem, [] ];
+}
+sub segName		{ my ($seg) = @_; $seg->[0]; }
+sub segBaseAddress	{ my ($seg) = @_; $seg->[1]; }
+sub segSize		{ my ($seg) = @_; $seg->[2]; }
+sub segContainsStack	{ my ($seg) = @_; ($seg->[3]) ? 1 : 0; }
+sub segContainsHeap	{ my ($seg) = @_; ($seg->[4]) ? 1 : 0; }
+sub setSegContainsStack { my ($seg, $value) = @_; ($seg->[3]) = $value; }
+sub setSegContainsHeap  { my ($seg, $value) = @_; ($seg->[4]) = $value; }
+sub segIsFixed		{ my ($seg) = @_; ($seg->[5]) ? 1 : 0; }
+sub segIsFloating	{ my ($seg) = @_; ($seg->[6]) ? 1 : 0; }
+sub segIsPacked		{ my ($seg) = @_; ($seg->[7]) ? 1 : 0; }
+sub segMemory		{ my ($seg) = @_; $seg->[8]; }
+sub segSectionsRef	{ my ($seg) = @_; $seg->[9]; }
+sub segSetBaseAddress	{ my ($seg, $addr)  = @_; $seg->[1] = $addr; }
+sub segSetSize		{ my ($seg, $size)  = @_; $seg->[2] = $size; }
+sub segSetFixed		{ my ($seg, $fixed) = @_; $seg->[5] = $fixed; }
+sub segSetFloating	{ my ($seg, $float) = @_; $seg->[6] = $float; }
+sub segSetPacked	{ my ($seg, $pack)  = @_; $seg->[7] = $pack; }
+sub segCopy {
+  my ($seg) = @_;
+  my @s = @$seg;
+  $s[9] = [@{$s[9]}];	
+  return [@s];		
+}
+sub segSections {
+  my ($seg) = @_;
+  defined(segSectionsRef($seg)) ? @{segSectionsRef($seg)} : ();
+}
+sub segSectionsSorted {
+  my ($seg) = @_;
+  sort { secName($a) cmp secName($b) } segSections($seg);
+}
+sub segAddSections {
+  my ($seg, @secs) = @_;
+  foreach my $section (@secs) {
+     push(@{segSectionsRef($seg)}, $section);
+     secSetSegment($section, $seg);
+  }
+}
+sub segAddSectionsInorder {
+  my ($seg, @secs) = @_;
+  foreach my $section (@secs) {
+    my $order = secSortOrder(secName($section));
+    my @sections = @{segSectionsRef($seg)};
+    my @skipped = ();
+    while (@sections > 0 and secSortOrder(secName($sections[$#sections])) > $order) {
+      unshift(@skipped, pop(@sections));
+    }
+    @{segSectionsRef($seg)} = (@sections, $section, @skipped);
+    secSetSegment($section, $seg);
+  }
+}
+sub segDump {
+  my ($seg, $outfile) = @_;
+  print $outfile " ", segName($seg), ' : ',
+	(segIsFixed($seg)) ? 'F : ' : 'C : ',
+	sprintf("0x%x - 0x%x : ", segBaseAddress($seg), segBaseAddress($seg)+segSize($seg)-1),
+	(segContainsStack($seg)) ? ' STACK : ' : '',
+	(segContainsHeap($seg)) ? ' HEAP : ' : '';
+  if (defined(segSectionsRef($seg))) {
+     print $outfile join (' ',  map (secName($_), @{segSectionsRef($seg)}));
+  }
+  print $outfile ";\n";
+}
+sub rangeOverlap {
+  my ($ba1, $sz1, $ba2, $sz2) = @_;
+  return 0 unless defined($ba1) and defined($sz1) and defined($ba2) and defined($sz2);
+  my $ea1 = $ba1 + ($sz1 - 1);
+  my $ea2 = $ba2 + ($sz2 - 1);
+  !(($ea2 < $ba1)||($ba2 > $ea1));
+}
+sub rangeContains {
+  my ($ba1, $sz1, $ba2, $ea2) = @_;
+  my $ea1 = $ba1 + $sz1 - 1;
+  (($ba1 <= $ba2)&&($ea2 <= $ea1));
+}
+sub newMemory {
+  my ($aType, $aName, $aSize, $attrRef, $segRef, $baseAddress, $basePAddress, $psize) = @_;
+  [$aType, $aName, $aSize, $attrRef, $segRef, $baseAddress, $basePAddress, $psize];
+}
+sub memType		{my ($mem) = @_; $mem->[0];}	
+sub memName		{my ($mem) = @_; $mem->[1];}	
+sub memSize		{my ($mem) = @_; $mem->[2];}	
+sub memAttributes	{my ($mem) = @_; $mem->[3];}	
+sub memSegments		{my ($mem) = @_; $mem->[4];}	
+sub memBaseAddress	{my ($mem) = @_; $mem->[5];}	
+sub memBasePAddress	{my ($mem) = @_; $mem->[6];}	
+sub memPSize		{my ($mem) = @_; $mem->[7];}	
+sub memSetType		{my ($mem,$type)   = @_; $mem->[0] = $type;}
+sub memSetSize		{my ($mem,$size)   = @_; $mem->[2] = $size;}
+sub memSetSegments	{my ($mem,$segref) = @_; $mem->[4] = $segref;}
+sub memSetPSize		{my ($mem,$psize)  = @_; $mem->[7] = $psize;}
+sub memEnd		{memBaseAddress(@_) + (memSize(@_) - 1);}	
+sub memHasAttribute {
+  my ($mem, $attr) = @_;
+  scalar(grep($_ eq $attr, @{memAttributes($mem)})) != 0;
+}
+sub memPrint {
+  my ($mem, $outfile) = @_;
+  print $outfile
+	"BEGIN ", memName($mem), "\n",
+	(defined(memBaseAddress($mem)) ? sprintf("0x%x", memBaseAddress($mem)) : ""),
+	((defined(memBasePAddress($mem)) and (!defined(memBaseAddress($mem))
+		or memBaseAddress($mem) != memBasePAddress($mem)))
+		? sprintf(",0x%x", memBasePAddress($mem)) : ""),
+	": ", memType($mem), " : ", memName($mem), " : ",
+	(defined(memSize($mem)) ? sprintf("0x%x ", memSize($mem))
+				: sprintf(",0x%x ", memPSize($mem))),
+	": ";
+  my $attrs = join (', ', @{memAttributes($mem)});
+  if ($attrs) {
+     print $outfile "$attrs ";
+  }
+  print $outfile ";\n";
+  foreach my $seg ( sort { segBaseAddress($a) <=> segBaseAddress($b) } @{memSegments($mem)} ) {
+     segDump($seg, $outfile);
+  }
+  print $outfile 'END ', memName($mem), "\n\n";
+}
+sub memOverlaps {
+  my ($memsRef, $addr, $size) = @_;
+  grep( rangeOverlap($addr, $size, memBaseAddress($_), memSize($_)), @$memsRef );
+}
+sub memSort {
+  my ($memsRef) = @_;
+  sort {(defined(memBaseAddress($a)) ? memBaseAddress($a) : memBasePAddress($a))
+    <=> (defined(memBaseAddress($b)) ? memBaseAddress($b) : memBasePAddress($b))} @$memsRef;
+}
+sub dumpMemories {
+  my ($outfile, $memsRef) = @_;
+  foreach my $mem (memSort($memsRef)) {
+     memPrint($mem, $outfile);
+  }
+}
+sub segHeapStackSymbols {
+  my ($seg, $endofseg_syms) = @_;
+  my $syms = "";
+  my $addr = segBaseAddress($seg);
+  my $size = segSize($seg);
+  if ($endofseg_syms) {
+    if ( segContainsHeap($seg) ) {
+      $syms .= sprintf("  ${symbol_prefix}_end = 0x%x;\n", $addr);
+      $syms .= sprintf("  PROVIDE(${symbol_prefix}end = 0x%x);\n", $addr);
+    }
+    if ( segContainsStack($seg) ) {
+      $syms .= sprintf("  ${symbol_prefix}_stack_sentry = 0x%x;\n", $addr);
+    }
+  }
+  if ( segContainsStack($seg) ) {
+    my $ss = ($addr + $size) & 0xfffffff0;
+    $syms .= sprintf("  PROVIDE(${symbol_prefix}__stack = 0x%x);\n", $ss);
+  }
+  if ( segContainsHeap($seg) ) {
+    $syms .= sprintf("  ${symbol_prefix}_heap_sentry = 0x%x;\n", $addr + $size);
+  }
+  $syms;
+}
+sub memRemove {
+  my ($memname, $memsRef, $memNamesHash, $segNamesHash, $secNamesHash, $extrasymsref) = @_;
+  my $mem = $memNamesHash->{$memname};
+  return unless defined($mem);
+  foreach my $seg (@{memSegments($mem)}) {
+    foreach my $sec (segSections($seg)) {
+      delete $secNamesHash->{secName($sec)};
+    }
+    delete $segNamesHash->{segName($seg)};
+    $$extrasymsref .= segHeapStackSymbols($seg,1) if defined($extrasymsref);
+  }
+  delete $memNamesHash->{$memname};
+  @$memsRef = grep($_ ne $mem, @$memsRef);
+}
+sub segRemove {
+  my ($segname, $segNamesHash, $secNamesHash, $extrasymsref) = @_;
+  my $seg = $segNamesHash->{$segname};
+  return unless defined($seg);
+  foreach my $sec (segSections($seg)) {
+    delete $secNamesHash->{secName($sec)};
+  }
+  delete $segNamesHash->{$segname};
+  $$extrasymsref .= segHeapStackSymbols($seg,1) if defined($extrasymsref);
+  my $mem = segMemory($seg);
+  @{memSegments($mem)} = grep($_ ne $seg, @{memSegments($mem)});
+}
+sub convert_section_dots {
+  my ($sec) = @_;
+  $sec =~ s/\./\_/g;
+  $sec;
+}
+sub findSegmentForSection {
+  my ($mems, $section) = @_;
+  my @mems = grep isMemMemory($_), @$mems;
+  my @segs = map (@{memSegments($_)}, @mems);
+  foreach my $seg (@segs) {
+    return $seg if grep (secName($_) eq $section, segSections($seg));
+  }
+  undef;
+}
+sub dumpSegmentsAndSections {
+  my ($outfile, $segRefs) = @_;
+  my @segs = @{$segRefs};
+  foreach my $seg (@segs) {
+     print $outfile (segIsFixed($seg)) ? 'F : ' : 'C : ',
+	   	    sprintf("0x%x", segBaseAddress($seg)), " - ",
+	   	    sprintf("0x%x", segBaseAddress($seg) + segSize($seg) - 1), ' : ',
+		    (segContainsStack($seg)) ? 'STACK : ' : '',
+		    (segContainsHeap($seg))  ? 'HEAP : '  : '';
+     foreach my $sec (segSections($seg)) {
+	print $outfile secName($sec), " ";
+      }
+     print $outfile " ;\n";
+   }
+}
+sub parseSegmentDefinition {
+  my ($buffer, $internal, $mem, $errwhere) = @_;
+  $errwhere = "for memory ".memName($mem)." in $errwhere";
+  print $debugHandle "parseSegmentDefinition: ", $buffer, "\n" if $debug;
+  if ($buffer !~ m{^
+                    \s*(\S+)\s*:	
+                    \s*(F|C)\s*:	
+                    \s*(0x[0-9A-F]+)\s*-\s*(0x[0-9a-f]+)\s*:	
+                    (\s*STACK\s*:)?	
+                    (\s*HEAP\s*:)?	
+                    \s*(.*)		
+		    $}ixs) {
+    Error("invalid segment definition $errwhere\n(" . $buffer . ")");
+  }
+  my ($segName,$fixedc,$basehex,$endhex,$stackstr,$heapstr,$secstr) = ($1,$2,$3,$4,$5,$6,$7);
+  my $fixed = ($fixedc =~ /[fF]/);
+  my $startAddress = hex($basehex);
+  my $endAddress = hex($endhex);
+  if ($endAddress < $startAddress) {
+     Error(sprintf("Start address (0x%x) of segment %s must be smaller or equal to end address (0x%x)\n$errwhere",
+		   $startAddress, $segName, $endAddress));
+  }
+  my $size = $endAddress - $startAddress + 1;
+  my $stack = defined($stackstr);
+  my $heap = defined($heapstr);
+  my $secString = join ' ', split /\s+/, $secstr;
+  if ($segName !~ /^[a-zA-Z_\.][a-zA-Z_\.0-9]*$/) {
+    Error("invalid segment name $segName $errwhere.\n"
+	 ."Segment names may contain alphanumerics, underscores, and periods,\n"
+	 ."and may not begin with a digit.");
+  }
+  print $debugHandle '  Base address: ', sprintf("0x%x", $startAddress), "\n",
+		   '  Size: ', $size, "\n",
+		   '  Stack: ', $stack, "\n",
+		   '  Heap: ', $heap, "\n",
+		   '  Fixed: ', $fixed, "\n",
+		   '  Sections: ', $secString, "\n\n\n" if $debug;
+  my $seg = newSegment($segName, $startAddress, $size, $stack, $heap, $fixed, $mem);
+  my @sectionNames = split / /, $secString;
+  my $firstSec = $sectionNames[0];
+  if (defined($firstSec) and ($firstSec eq 'HEAP' or $firstSec eq 'STACK')) {
+      printWarning("suspicious section name '$firstSec' in segment $segName\n"
+		  ."$errwhere\n"
+      		  ."(missing a colon after the $firstSec keyword?)");
+  }
+  my @sections;
+  foreach my $secName (@sectionNames) {
+    if ($secName !~ /^[a-zA-Z_\.][a-zA-Z_\.0-9]*$/) {
+      Error("invalid section name $secName in segment $segName $errwhere.\n"
+	   ."Section names may contain alphanumerics, underscores, and periods,\n"
+	   ."and may not begin with a digit.");
+    }
+    if ($internal) {
+    }
+    if ($secName =~ /^(.*)\.text\.literal$/) {
+      my $suggestedName = $1.".literal";
+      printWarning("section $secName in segment $segName $errwhere:\n"
+      		  ."obsolete .text.literal suffix now replaced with .literal suffix,\n"
+		  ."you may need to rename this section to $suggestedName");
+    }
+    my $sec = newSection($secName);
+    push(@sections, $sec);
+  }
+  segAddSections($seg, @sections);
+  if (!$use_mmu) {
+    if ( !rangeContains(memBaseAddress($mem),  memSize($mem), $startAddress, $endAddress)
+      ) {
+      Error(sprintf("segment %s (range 0x%x..0x%x) is not entirely contained in its memory (range 0x%x..0x%x%s)\n%s",
+		  $segName, $startAddress, $endAddress,
+		  memBaseAddress($mem), memBaseAddress($mem) + memSize($mem) - 1,
+		  "",	
+		  $errwhere));
+    }
+  }
+  return $seg;
+}
+sub parseMemoryMap {
+  my ($buffer, $replace, $check_overlap, $source,
+      $memsRef, $paramsHash, $actionsRef, $memNamesHash, $segNamesHash, $secNamesHash, $hush) = @_;
+  my @actions = ();
+  justParseMemoryMap($buffer, $replace, ($replace == 2), $source, $paramsHash, \@actions);
+  foreach my $action (@actions) {
+    my $ecode = processMemorySpec($action, $check_overlap,
+			$memsRef, $memNamesHash, $segNamesHash, $secNamesHash, $hush);
+    return $ecode if $ecode;
+  }
+  push @$actionsRef, @actions;
+  return 0;
+}
+sub processMemorySpec {
+    my ($action, $check_overlap, $memsRef, $memNamesHash, $segNamesHash, $secNamesHash, $hush) = @_;
+    my ($sourceline, $origlines, $act, $mem, $replace) = @$action;
+    return 0 unless $act eq 'memory';
+    my $memName = memName($mem);
+    if (exists(${$memNamesHash}{$memName})) {
+      if ($replace) {
+	print STDERR "$myname: Replacing memory $memName\n" if $verbose;
+	memRemove($memName, $memsRef, $memNamesHash, $segNamesHash, $secNamesHash, undef);
+      } else {
+	Error("duplicate memory name '$memName' in $sourceline.");
+      }
+    }
+    if (defined(memBaseAddress($mem)) and defined(memSize($mem))) {	
+      my @overlaps = memOverlaps($memsRef, memBaseAddress($mem), memSize($mem));
+      if (@overlaps) {
+	return 1 if $check_overlap;
+	Error("memory $memName in $sourceline overlaps with\n"
+		."existing memories:  ".join(', ', map(memName($_),@overlaps)))
+	    unless $hush;
+      }
+    }
+    push(@$memsRef, $mem);
+    ${$memNamesHash}{memName($mem)} = $mem;
+    my $errwhere = "for memory $memName in $sourceline";
+    foreach my $seg (@{memSegments($mem)}) {
+      my $segName = segName($seg);
+      if (exists(${$segNamesHash}{$segName})) {
+	if ($replace) {
+	  print STDERR "$myname: Redefining segment $segName into memory ".memName($mem)."\n" if $verbose;
+	  segRemove($segName, $segNamesHash, $secNamesHash, undef);
+	} else {
+	  Error("duplicate segment name $segName $errwhere.");
+	}
+      }
+      ${$segNamesHash}{$segName} = $seg;
+      foreach my $sec (segSections($seg)) {
+	my $secName = secName($sec);
+	if (exists(${$secNamesHash}{$secName})) {
+	  if ($replace) {
+	    print STDERR "$myname: Moving section $secName to segment $segName of memory ".memName($mem)."\n" if $verbose;
+	    secRemove($secName, $secNamesHash);
+	  } else {
+	    Error("multiple use of section name $secName in segment $segName $errwhere.");
+	  }
+	}
+	${$secNamesHash}{$secName} = $sec;
+      }
+    }
+    return 0;		
+}
+sub justParseMemoryMap {
+  my ($buffer, $replace, $skipmems, $source, $paramsHash, $actionsRef) = @_;
+  my $lineno = 1;		
+  my $whatparse = $skipmems ? "parameters" : "memory map";
+  print STDERR "Parsing $whatparse from $source\n" if $verbose;
+  print $debugHandle "Parsing $whatparse from $source\n" if $debug and !$verbose;
+  my $internal = ($source eq 'INTERNAL DEFAULT')+0;
+#  $buffer =~ s@\s*(//|\#).*$@@mg;	# remove "//" and "#" style comments
+  #$buffer =~ s@\#.*$@@mg;	# remove "#" style comments
+  while(1) {			
+    my $comments = "";  my $commentlineno = $lineno;
+    while ($buffer =~ s@^([ \t]*((//|\#)[^\n]*)?\n)@@s) {	# skip empty lines (accept "//" and "#" comments)
+	$comments .= $1;
+	$lineno++;
+    }
+    push @$actionsRef, ["line $commentlineno ($source)", $comments, 'comment', ''] if $comments ne "";
+    if ($buffer eq '') {	
+      last;			
+    }
+    if ($buffer =~ s/^[ \t]*BEGIN\b//s) {	
+      if ($buffer !~ s/\A(.*?)^[ \t]*(BEGIN|END)[ \t]+(\w+)//ms or $2 ne 'END') {
+        Error("missing 'END <name>' in memory description starting on line $lineno ($source).");
+      }
+      my ($memDesc,$endMemName) = ($1,$3);
+      my $end_lineno = $lineno + ($memDesc =~ tr/\n//) - 1;	
+      my $where = "lines $lineno .. $end_lineno ($source)";
+      $comments = "";
+      while ($buffer =~ s@(\s*(//|\#).*)$@@m) {	# remove "//" and "#" style comments
+	  $comments .= $1 . "\n";
+      }
+      push @$actionsRef, [$where, $comments, 'comment', $endMemName] if $comments ne "";
+      my @memParts = split /;/, $memDesc;
+      my $typeParams = shift (@memParts);
+      $typeParams =~ s/^\s+//;
+      $typeParams =~ s/\s+$//;
+      my @memTypeParams = split /\s*:\s*/, $typeParams;
+      if ( ($#memTypeParams != 3) && ($#memTypeParams != 4) ) {
+	Error("invalid memory description in $where.\n"
+	  ."Expecting: BEGIN <name> <addr> [,<paddr>] : <mem-type> : <mem-name> : <size> [,<psize>] : [ <attribute> {,<attribute>}* ] ;\n"
+	  ."Found:     BEGIN $typeParams");
+      }
+      my ($blkNameBaseAddr,$typeName,$memName,$sizes,$attribs) = @memTypeParams;
+      if ($blkNameBaseAddr !~ /^(\w+)\s+(\S.*)$/) {
+	Error("invalid memory description in $where.\n"
+	     ."Expected 'BEGIN <name> <addr> [,<paddr>] : ...'\n"
+	     ."Got 'BEGIN $blkNameBaseAddr : ...'");
+      }
+      my ($blkName,$baseAddrs) = ($1,$2);
+      if ($endMemName ne $blkName) {
+	Error("invalid memory description in $where.\n"
+	     ."Memory name in 'BEGIN $blkName' does not match 'END $endMemName'");
+      }
+      my @baseAddrs = split(/\s*,\s*/,$baseAddrs);
+      if (@baseAddrs > 2) {
+	Error("invalid memory description in $where.\n"
+	     ."Too many base addresses, 1 or 2 expected: '$baseAddrs'");
+      }
+      my ($baseAddr,$basePAddr) = @baseAddrs;
+      $baseAddr = undef if defined($baseAddr) and $baseAddr eq "";
+      $basePAddr = undef if defined($basePAddr) and $basePAddr eq "";
+      $basePAddr = $baseAddr unless defined($basePAddr) or $use_mmu;
+      if (!defined($baseAddr) and !$use_mmu) {
+	Error("missing memory address in $where");
+      }
+      if (!defined($baseAddr) and !defined($basePAddr)) {
+	Error("missing memory virtual and/or physical address in $where");
+      }
+      $baseAddr = str2int($baseAddr, $where) if defined($baseAddr);
+      $basePAddr = str2int($basePAddr, $where) if defined($basePAddr);
+      if ($typeName !~ /^[a-zA-Z_][a-zA-Z_0-9]*$/) {
+	Error("invalid memory type '$typeName' in $where.\n"
+	     ."Memory types may contain alphanumerics and underscores,\n"
+	     ."and may not begin with a digit.");
+      }
+      $typeName = "dataPort" if $typeName eq "XLMI";	
+      if ($memName !~ /^[a-zA-Z_][a-zA-Z_0-9]*$/) {
+	Error("invalid memory name '$memName' in $where.\n"
+	     ."Memory names may contain alphanumerics and underscores,\n"
+	     ."and may not begin with a digit.");
+      }
+      if ($internal) {
+      }
+      my @sizes = split(/\s*,\s*/,$sizes);
+      if (@sizes > 2) {
+	Error("invalid memory description in $where.\n"
+	     ."Too many sizes, 1 or 2 expected: '$sizes'");
+      }
+      my ($size, $psize) = @sizes;
+      $size = undef if defined($size) and $size eq "";
+      $psize = undef if defined($psize) and $psize eq "";
+      $psize = $size unless defined($psize);	
+      if (!defined($size) and !$use_mmu) {
+	Error("missing memory size in $where");
+      }
+      if (!defined($size) and !defined($psize)) {
+	Error("missing memory virtual and/or physical size in $where");
+      }
+      $size = str2int($size, $where) if defined($size);
+      $psize = str2int($psize, $where) if defined($psize);
+      my @attributes = ();
+      my %attributes = ();
+      if (defined($attribs)) {
+	%attributes = map { +"\L$_" => 1 } split( /\s*,\s*/, $attribs);
+	@attributes = sort keys %attributes;
+	foreach my $attrib (@attributes) {
+	  next if $attrib eq '';		
+	  if ($attrib !~ /^\w+$/) {
+	    Error("invalid attribute '$attrib' for memory $memName in $where\n"
+	    	."Attribute names may consist of alphanumerics and underscores only.");
+	  }
+	  $attrib = "device" if $attrib eq "destructive";	
+	  if (!exists($known_attributes{$attrib})) {
+	    printWarning("ignoring unrecognized attribute '$attrib' for memory $memName in $where");
+	  }
+	}
+      }
+      if (isMemTypeDevice($typeName) and !exists($attributes{'device'})) {
+	$attributes{'device'} = 1;
+	@attributes = sort keys %attributes;
+	printWarning("inferring 'device' attribute for memory $memName of type $typeName in $where\n"
+			."for backward compatibility with memory maps of previous releases.\n"
+			."Please use the 'device' attribute instead; or rename the type to 'mem'\n"
+			."if $memName is not a memory-mapped device.");
+      }
+      if (! $skipmems) {
+	my $mem = newMemory($typeName, $memName, $size, \@attributes, [], $baseAddr, $basePAddr, $psize);
+	my @segments = ();
+	foreach my $segDef (@memParts) {
+	  next if $segDef =~ /^\s*$/s;		
+	  if (isMemDevice($mem)) {
+	    Error("unexpected segment definition in memory $memName in $where\n"
+		 ."segments not allowed in memories with 'device' (or 'destructive') attribute");
+	  }
+	  push(@segments,
+		  parseSegmentDefinition($segDef,$internal,$mem,$where));
+	}
+	memSetSegments($mem, \@segments);
+	push @$actionsRef, [$where, undef, 'memory', $mem, $replace];
+      }	
+      $lineno = $end_lineno + 1;
+      while ($buffer =~ s@^[ \t]*\n@@s) { $lineno++; }
+    }	
+    elsif ($buffer =~ s/^([ \t]*(\w+)\s*=\s*("([^"\\]|\\.)*"|\w*))//s) {	
+      my ($all, $variable,$value) = ($1,$2,$3);
+      $value =~ s/^"(.*)"$/$1/;		
+      $value =~ s/\\"/"/g;		
+      print $debugHandle "*** '$variable' = '$value' in line $lineno ($source)\n" if $debug;
+      print STDERR "Setting parameter '$variable' = '$value' in line $lineno\n" if $verbose and !$debug;
+      printWarning("ignoring unrecognized parameter $variable")
+      	unless exists($known_params{$variable});
+      ${$paramsHash}{$variable} = $value;
+      push @$actionsRef, ["line $lineno ($source)", $all."\n", 'parameter', $variable, $value];
+      $lineno += ($value =~ tr/\n//);	
+    }
+    elsif ($buffer =~ s/^([ \t]*PLACE\s+SECTIONS\s*\(\s*([a-zA-Z_\.][a-zA-Z_\.0-9]*(\s+[a-zA-Z_\.][a-zA-Z_\.0-9]*)*\s*)?\))//s) {	
+      my $all1 = $1;
+      my @plcsections = split(' ', $2);
+      if ($buffer =~ s/^(\s*WITH_SECTION\s*\(\s*([a-zA-Z_\.][a-zA-Z_\.0-9]*)\s*\))//s) {		
+	push @$actionsRef, ["line $lineno ($source)", $all1.$1."\n", 'placesecs', 'section', $2, @plcsections];
+      } elsif ($buffer =~ s/^(\s*IN_SEGMENT\s*\(\s*([a-zA-Z_\.][a-zA-Z_\.0-9]*)\s*\))//s) {	
+	push @$actionsRef, ["line $lineno ($source)", $all1.$1."\n", 'placesecs', 'segment', $2, @plcsections];
+      } else {
+	$buffer =~ m/^(.*)/;
+	Error("unrecognized statement following PLACE SECTIONS on line $lineno ($source):  '$1'.");
+      }
+    }
+    elsif ($buffer =~ s/^([ \t]*OVERRIDE\s+MEMORY\s+(\w+)\s+MAXSIZE\s*\=\s*(\w+))//s) {	
+      push @$actionsRef, ["line $lineno ($source)", $1."\n", 'setmem', 'maxsize', $2, $3];
+    }
+    elsif ($buffer =~ s/^([ \t]*NOLOAD[ \t]+([a-zA-Z_\.][a-zA-Z_\.0-9]*([ \t]+[a-zA-Z_\.][a-zA-Z_\.0-9]*)*))//s) {
+      my @nlsections = split(' ', $2);
+      foreach my $nls (@nlsections) {
+        $noload_sections{$nls} = 1 unless $nls =~ /\.bss$/;
+      }
+    }
+    elsif ($buffer =~ s/^([ \t]*FILL\s+SECTIONS\s*\(\s*([a-zA-Z_\.][a-zA-Z_\.0-9]*(\s+[a-zA-Z_\.][a-zA-Z_\.0-9]*)*\s*)?\))//s) {
+      my @fillsections = split(' ', $2);
+      if ($buffer =~ s/^(\s*\(\s*([a-zA-Z_\.0-9][a-zA-Z_\.0-9]*)\s*\))//s) {
+        foreach my $fs (@fillsections) {
+          $fillMap{$fs} = $2;
+          print $debugHandle "*** fillsection '$fs' = '$2'\n" if $debug;
+        }
+      }
+      else {
+        $buffer =~ m/^(.*)/;
+        Error("unrecognized statement following FILL SECTIONS on line $lineno ($source):  '$1'.");
+      }
+    }
+    else {
+      $buffer =~ m/^(.*)/;
+      Error("unrecognized statement on line $lineno ($source):  '$1'.");
+    }
+    $lineno++ if $buffer =~ s@^[ \t]*\n@@s;
+  }		
+}		
+sub checkSegmentConsistency {
+  my ($sysSegs,
+      $allow_non_text_into_imem, $hush, $pconfig, $shared) = @_;
+  my $checkFailed = 0;
+  print $debugHandle "Checking correctness of segment definition ...\n" if $debug;
+  my @lSegments = sort { segBaseAddress($a) <=> segBaseAddress($b) } @$sysSegs;
+  my $lastSeg = undef;
+  my $stackSeen = 0;
+  my $heapSeen = 0;
+  my $litmsg = $pconfig->swextl32r ? "\n(ignore this warning if always using extended L32R mode with this LSP)" : "";
+  foreach my $seg (@lSegments) {
+      my $mem = segMemory($seg);
+      my $memname = memName($mem);
+      my $segname = segName($seg);
+      if (!$use_mmu) {
+	if (memBaseAddress($mem) + memSize($mem) < segBaseAddress($seg) + segSize($seg)) {
+	   printError("segment $segname split across memories");
+	   $checkFailed = 1;
+	}
+      }
+      foreach my $sec (segSections($seg)) {
+	my $secname = secName($sec);
+	if (isMemInstRam($mem) or isMemInstRom($mem)) {
+	  if ($secname =~ /\.literal/		
+	      or ($secname !~ /\.relocate/	
+	      and $secname !~ /\.text/)) {
+	    my $msg = "non-text section $secname placed in segment $segname of memory $memname\n";
+	    if (!$allow_non_text_into_imem and $secname !~ /Vector/) {
+	      my $iroam = isMemInstRam($mem) ? "iram" : "irom";
+	      if ($have_xea1) {
+		  $msg .= "Please see errata for potential hardware problems created by placing\n" .
+			  "literals or data in $iroam. Use --force-non-text-into-$iroam to suppress\n" .
+			  "this ";
+	      } else {
+		  $msg .= "A core configured with multiple loadstore units cannot use FLIX bundled\n" .
+			  "loads or stores to $iroam (to access literals or data).  Doing so results\n" .
+			  "in a loadstore exception.  If you are arranging to not FLIX accesses to\n" .
+			  "such literals (by avoiding L32R in FLIX, e.g. by TIE design, or by using\n" .
+			  "the xt-xcc -mno-l32r-flix flag and avoiding precompiled target libraries),\n" .
+			  "use --force-non-text-into-$iroam to suppress this ";
+	      }
+	      if (($secname =~ /\.literal/ and $pconfig->swextl32r) or $have_noimemlits) {
+		  printWarning($msg."warning.".$litmsg);
+	      } else {
+		  printError($msg."error.");
+		  $checkFailed = 1;
+	      }
+	    }
+	    if (!$pconfig->loadstore2imem) {
+	      printError($msg."Loads and stores to IRAM/IROM are disabled on this core.");
+	      $checkFailed = 1;
+	    }
+	  }
+	  if (!$hush) {
+	    if (($secname =~ /\.data/) or
+		($secname =~ /\.rodata/) or
+		($secname =~ /\.bss$/)) {
+	      printWarning("section $secname placed in segment $segname of memory $memname\n" .
+			   "which is an instruction memory.\n" .
+			   ($pconfig->fast_imem_l32r ? ""
+			    : "Any data placed in this section requires many cycles to access.\n") .
+			   "Accesses other than core 32-bit loads and stores (L32R, L32I, S32I)\n" .
+			   "cause an exception.");
+	    }
+	    if (!$pconfig->fast_imem_l32r and ($secname =~ /\.literal/ or $secname =~ /\.lit4/)) {
+	      printWarning("section $secname placed in segment $segname of memory $memname\n" .
+			   "which is an instruction memory.\n" .
+			   "Any literals placed in this section require many cycles to access.\n" .
+			   (($secname =~ /\.literal/) ? $litmsg : ""));
+	    }
+	  }
+	}
+	if (isMemRom($mem)) {
+	  if (($secname =~ /\.data/) ||
+	      ($secname =~ /\.bss$/)) {
+	    printWarning("section $secname placed in segment $segname of memory $memname\n" .
+			 "which is marked read-only. Any writes to data placed in this section\n" .
+			 (isMemLocal($mem)?"will":"may be ignored or")." cause an exception.");
+	  }
+	}
+	if (!isMemExecutable($mem)) {
+	  if (($secname =~ /\.text/) && !($secname =~ /\.text\.literal/)) {
+	    printWarning("section $secname placed in segment $segname of memory $memname\n" .
+			 "which is not marked executable. Code cannot be executed out of this memory.");
+	  }
+	}
+      }
+      my $sectionNames = join ' ', map(secName($_), segSections($seg));
+      if ($sectionNames =~ /^(.*?)(\s\S*\.bss)*$/) {
+	my $nobss = $1;		
+	if ($nobss =~ /(\S*\.bss) /) {
+	  printError("$1 is not the last section in segment $segname of memory $memname");
+	  $checkFailed = 1;
+	}
+      }
+      $sectionNames = ' ' . $sectionNames . ' ';
+      if ($sectionNames =~ / \.rom\.store / and !$hush) {
+        if ($sectionNames !~ / \.rom\.store( \S*\.bss)* $/) {
+	  printErrorW(".rom.store is not the last section in segment $segname of memory $memname");
+	  $checkFailed = 1;
+	}
+      }
+      if ($sectionNames =~ / \S*\.text / and ! memHasAttribute($mem, 'executable')) {
+	 printErrorW("Memory $memname contains code section(s) in segment $segname,\n"
+		    ."and thus needs to be executable");
+	 $checkFailed = 1;
+      }
+      if ($sectionNames =~ / \S*\.(bss|data) / and ! memHasAttribute($mem, 'writable')) {
+	 printErrorW("Memory $memname contains writable data section(s) in segment $segname,\n"
+		    ."and thus needs to be writable");
+	 $checkFailed = 1;
+      }
+      if (defined($lastSeg) &&
+	  ((segBaseAddress($lastSeg) + segSize($lastSeg)) > segBaseAddress($seg))) {
+	 printError("Segments " . segName($lastSeg) . " and $segname overlap");
+	 $checkFailed = 1;
+      }
+      if (segContainsStack($seg)) {
+	 if ($stackSeen) {
+	    printError("Stack contained in more than one segment");
+	    $checkFailed = 1;
+	 }
+	 $stackSeen = 1;
+	 if (isMemRom($mem)) {
+	    printWarning("STACK placed in segment $segname of memory $memname\n" .
+			 "which is read-only. Any writes to data placed in this section\n" .
+			 (isMemLocal($mem)?"will":"may")." cause an exception.");
+	 }
+      }
+      if (segContainsHeap($seg)) {
+	 if ($heapSeen) {
+	    printError("Heap contained in more than one segment");
+	    $checkFailed = 1;
+	 }
+	 $heapSeen = 1;
+	 if (isMemRom($mem)) {
+	    printWarning("HEAP placed in segment $segname of memory $memname\n" .
+			 "which is read-only. Any writes to data placed in this section\n" .
+			 (isMemLocal($mem)?"will":"may")." cause an exception.");
+	 }
+      }
+      $lastSeg = $seg;
+  }
+  if ( !$heapSeen && !$shared) {
+    printWarning("Segment containing HEAP not specified");
+  }
+  if ( !$stackSeen && !$shared) {
+    printWarning("Segment containing STACK not specified");
+  }
+  my %sectionsHash;
+  foreach my $sec (map (segSections($_), @lSegments)) {
+      $sectionsHash{secName($sec)} = 1;
+  }
+  if (! defined($sectionsHash{'.text'}))   { printWarning(".text section is missing"); }
+  if (! defined($sectionsHash{'.data'}))   { printWarning(".data section is missing"); }
+  if (! defined($sectionsHash{'.rodata'})) { printWarning(".rodata section is missing"); }
+  if (! defined($sectionsHash{'.bss'}))    { printWarning(".bss section is missing"); }
+  if (! defined($sectionsHash{'.lit4'}) and !$shared and $pconfig->swextl32r)
+					   { printWarning(".lit4 section is missing"); }
+  if (! defined($sectionsHash{'.literal'})) {
+    if (! defined($sectionsHash{'.rodata'})) {
+      printWarning(".literal section is missing$litmsg");
+    } else {
+      printWarning(".literal section is missing, placing .literal into .rodata$litmsg");
+    }
+  }
+  print $debugHandle "Correctness of segment definition checked ($checkFailed)\n" if $debug;
+  (! $checkFailed);
+}
+sub isSystemConsistent {
+  my ($memsRef, $pconfig, $check_vectors, $hush) = @_;
+  if (!$hush) {
+    my @errMems = memSort($memsRef);
+    my $mem1 = shift @errMems;
+    my $ba1 = memBaseAddress($mem1);
+    my $sz1 = memSize($mem1);
+    foreach my $mem2 (@errMems) {
+      my $ba2 = memBaseAddress($mem2);
+      my $sz2 = memSize($mem2);
+      if (rangeOverlap($ba1, $sz1, $ba2, $sz2)) {
+	printError("Memories " . memName($mem1) . " and " . memName($mem2) . " overlap");
+	return 0;
+      }
+      $mem1 = $mem2;
+      $ba1 = $ba2;
+      $sz1 = $sz2;
+    }
+  }
+  if ($check_vectors) {
+      my @vectors = sort {$a->vaddr <=> $b->vaddr} @{$pconfig->vectors};
+      my %allSegsHash = map { 0+segBaseAddress($_), $_ } (map (@{memSegments($_)}, @$memsRef));
+      my @deletedSegs = grep( !defined($allSegsHash{0 + $_->vaddr}), @vectors );
+      if (@deletedSegs) {
+	printErrorW("Segments (marked F) are expected at these vector addresses: " .
+		   join (' ', map (sprintf("0x%x",$_->vaddr), @deletedSegs)));
+	return 0 unless $warnonly;
+      }
+      my @fixedSegs = grep (defined($_), map($allSegsHash{0 + $_->vaddr}, @vectors));
+      my @fcSegs = grep (!segIsFixed($_), @fixedSegs);
+      if (@fcSegs) {
+	foreach my $seg (@fcSegs) { segSetFixed($seg, 1); }
+      }
+      my $ok = 1;
+      foreach my $vec (@vectors) {
+	my $secs_orig = ".".$vec->name.".text";
+	my ($first_sec, @rest) = map(secName($_), segSections($allSegsHash{0 + $vec->vaddr}));
+	next if $secs_orig eq $first_sec;
+	if ($secs_orig eq ".ResetVector.text") {
+	  next if $first_sec eq ".SharedResetVector.text";
+	  $secs_orig .= " OR .SharedResetVector.text";
+	}
+	my $secs_new  = join(' ', ($first_sec, @rest));
+	printErrorW(sprintf("Unexpected section(s) for segment at vector address 0x%x:\n"
+			."   expected: %s\n   actual:   %s", $vec->vaddr, $secs_orig, $secs_new));
+	$ok = 0;
+      }
+      return 0 unless $ok or $warnonly;
+  }
+  1;
+}
+sub checkFixedParameters {
+  my ($pconfig, $layout, $mems, $hush) = @_;
+  print $debugHandle "Verifying local memory spans ...\n" if $debug;
+  my @local_ifaces;
+  foreach my $iface ($layout->physical->map->a) {
+    my $mem = $iface->ref_mems->[0]->{mem};
+    if ($mem->name =~ /(\w+)_iface$/) {
+      my $name = $1;
+      my $mapmem = $layout->virtual->extract(0, 0xFFFFFFFF, 1, $mem);
+      $mapmem->setmap( grep(!$_->is('delay'), $mapmem->map->a) );	
+      my @vaddrs = $layout->virtual->addrs_of_space_in_map($mem, 0, $mem->sizem1, $mapmem);
+      if (@vaddrs == 0) {
+	printWarning(sprintf("No virtual address maps contiguously to local memory interface %s (at paddr 0x%x..0x%x)",
+		$name, $iface->addr, $iface->endaddr));
+	next;
+      }
+      my $ok = 1;
+      foreach my $vaddr (@vaddrs) {
+	my $errmsg = undef;
+	if ($name =~ /^dport\d*$/) {
+	  if ($vaddr ne $iface->addr) {
+	    $errmsg = sprintf("XLMI (%s memory) requires matching virtual and physical addresses,\n"
+			."but has paddr=0x%x and vaddr=0x%x", $name, $iface->addr, $vaddr);
+	    $ok = 0;
+	  }
+	}
+	push @local_ifaces, { name => $name, paddr => $iface->addr, pend => $iface->addr + $iface->sizem1,
+			      vaddr => $vaddr, vend => $vaddr + $iface->sizem1,
+			      size => $iface->sizem1 + 1, type => $mem->is('type'), mem => $mem,
+			      error => $errmsg,
+			      };
+      }
+      $ok or printWarning(sprintf("XLMI interface %s is mapped at one or more virtual addresses (%s)\n"
+				 ."that don't match its physical address 0x%x (size 0x%x):\n"
+				 ."ignoring these extra virtual mappings (avoid using them)",
+				 $name,
+				 join(", ", map(sprintf("0x%x",$_),grep($_ ne $iface->addr,@vaddrs))),
+				 $iface->addr, $iface->sizem1+1));
+    }
+  }
+  foreach my $mem (@$mems) {
+    my $mlo = memBaseAddress($mem);
+    my $mhi = memEnd($mem);
+    my @locals = grep( rangeOverlap($mlo, memSize($mem), $_->{vaddr}, $_->{size}), @local_ifaces );
+    if (@locals) {
+      my $loclo = $locals[0]->{vaddr};
+      my $lochi = $locals[-1]->{vend};
+      my $locnames = join(" & ", map($_->{name}, @locals));
+      my $locwhat = "local memory interface" . (@locals > 1 ? "s" : "") . " $locnames";
+      my $memwhat = "Memory ".memName($mem).(@locals > 1 ? " spans" : " is mapped in")." $locwhat\n";
+      my ($badlocal) = grep($_->{error}, @locals);
+      ErrorW($badlocal->{error}) if $badlocal;
+      if (grep($locals[$_]->{vend} != $locals[$_+1]->{vaddr}-1, 0 .. $#locals - 1)
+	  or $mlo < $loclo or $mhi > $lochi) {
+	ErrorW(sprintf("Memory %s (virt 0x%x..0x%x) spans both PIF and %s\n", memName($mem), $mlo, $mhi, $locwhat)
+		.join(", ", map( sprintf("%s interface: virt 0x%x..0x%x phys 0x%x..0x%x",
+			$_->{name}, $_->{vaddr}, $_->{vend}, $_->{paddr}, $_->{pend}), @locals )))
+	    unless $hush;
+      } else {
+	my %loctypes = map { $_->{type} => 1 } @locals;
+	my @loctypes = keys %loctypes;
+	if (@loctypes > 1) {
+	  ErrorW($memwhat."of different types (".join(", ",map($_->{type},@locals)).")");
+	} else {
+	  if (memType($mem) ne $loctypes[0]) {
+	    printWarning($memwhat."but had type '".memType($mem)."' instead of '".$loctypes[0]."' (corrected)")
+	    	unless $hush;
+	    memSetType($mem, $loctypes[0]);
+	  }
+	  my @oops_attrs = extract { exists($iface_attributes{$_}) && !$locals[0]->{mem}->has_attr($_,1) }
+					@{memAttributes($mem)};
+	  if (@oops_attrs) {
+	    ErrorW($memwhat."but has attributes not matching that interface (".join(", ", @oops_attrs).")")
+		unless $hush;		
+	  }
+	}
+      }
+    } else {
+      if (isMemLocal($mem)) {
+	my $newtype = isMemDevice($mem) ? "sysdev" : isMemRom($mem) ? "sysrom" : "sysram";
+	printWarning("Memory ".memName($mem).sprintf(" (at 0x%x size 0x%x)",$mlo,memSize($mem))
+		." is not mapped to any local memory interface,\n"
+		."but has the type of one (".memType($mem)."); corrected the type ($newtype)")
+		unless $hush;
+	memSetType($mem, $newtype);
+      }
+    }
+  }
+  print $debugHandle "Verifying exception/interrupt vector segments ...\n" if $debug;
+  if (! isSystemConsistent($mems, $pconfig, 1, $hush)) {
+     Error('Inconsistencies were found in the specified memory map file.');
+  }
+}
+sub conditionSatisfied {
+  my ($cond, $opts) = @_;
+  if ( defined($cond) ) {
+    defined($$opts{$cond});
+  } else {
+    1;
+  }
+}
+sub printDebug {
+  my ($msg, $memsRef) = @_;
+  if ($debug) {
+     print $debugHandle "-"x70, "\n", "$msg\n";
+     dumpMemories($debugHandle, $memsRef);
+     my @segs;
+     foreach my $mem (@$memsRef) {
+	push(@segs, @{memSegments($mem)});	
+      }
+     dumpSegmentsAndSections($debugHandle, \@segs);
+     print $debugHandle "-"x70, "\n";
+  }
+}
+sub print_section_inputs {
+  my ($out, $name, $sectionIncs) = @_;
+  return unless exists($$sectionIncs{$name});
+  foreach my $input_entry (@{$$sectionIncs{$name}}) {
+    my ($entry, $format) = split ('~', $input_entry.'~');
+    my $wild = ($format !~ /X/);
+    $$out .= "    ";
+    $$out .= "*("	if $wild;
+    $$out .= $entry;
+    $$out .= ")"	if $wild;
+    $$out .= "\n";
+  }
+}
+sub print_ldscript_memory_and_phdrs {
+  my ($out, $rtos_style, $romming, $paramOptionsRef, @segments) = @_;
+  @segments = sort { segBaseAddress($a) <=> segBaseAddress($b) } @segments;
+  $$out .=
+	"/*\n".
+	" *  Virtual memory ranges where sections can be directed\n".
+	" *  (these are called 'segments' in Xtensa internal documentation).\n".
+	" *\n".
+	" *  Entries are of the form:\n".
+	" *	name (attr) : ORIGIN = e, LENGTH = e\n".
+	" *	name (attr) : org = e, len = e\n".
+	" *	name (attr) : o = e, l = e\n".
+	" *  where attr is a combination of:\n".
+	" *	R=readonly\n".
+	" *	W=read/write\n".
+	" *	X=executable\n".
+	" *	A=allocated\n".
+	" *	I=L=initialized\n".
+	" *	!=invert sense of following attributes\n".
+	" */\n" if $rtos_style;
+  $$out .= "MEMORY\n{\n";
+  foreach my $seg ( @segments ) {
+    $$out .= sprintf("  %-36s\torg = 0x%08X, len = 0x%X\n",
+			segName($seg)."_seg :", segBaseAddress($seg), segSize($seg))
+	if segSections($seg);
+  }
+  $$out .= 
+	"  /*  Entry covering the entire address space, to avoid linker errors\n".
+	"      due to mixing sections that are directed to MEMORY regions and\n".
+	"      others that are not:  */\n".
+	"  ALLMEMORY :\t\t\t\torg = 0, len = 0xFFFFFFFF\n" if $rtos_style;
+  $$out .= "}\n\n";
+  $$out .= "PHDRS\n{\n";
+  if ($rtos_style) {
+    $$out .= <<'END';
+/*
+ *  ELF linker scripts can contain explicit program headers
+ *  (which tell the loader what to load where), eg.:
+ *	PHDRS { <entries>... }
+ *  where <entries> are of the form:
+ *	NAME TYPE [ FILEHDR ] [ PHDRS ] [ AT ( ADDRESS ) ] [ FLAGS ( FLAGS ) ] ;
+ */
+END
+    $$out .= "  packed_phdr PT_LOAD;\n" if $romming;
+  }
+  foreach my $seg ( @segments ) {
+    my $name = segName($seg);
+    $$out .= "  ${name}_phdr PT_LOAD;\n"
+	if (!segIsPacked($seg) && $rtos_style) || !$rtos_style;
+    $$out .= "  ${name}_bss_phdr PT_LOAD;\n"
+	if !$rtos_style && grep(secName($_) =~ /\.bss$/, segSections($seg));
+    if (have_overlays($paramOptionsRef)) {
+      my $oseg = get_overlay_load_seg($paramOptionsRef, @segments);
+      if (defined $oseg) {
+        if (segName($oseg) eq $name) {
+          $$out .= "  ${name}_ovly_phdr PT_LOAD;\n";
+        }
+      }
+    }
+  }
+  $$out .= "}\n\n";
+}
+sub print_ldscript_symbols {
+  my ($out, $paramOptionsRef, $memsRef, $extrasymbols, @segments) = @_;
+  $$out .= "\n/*  Memory boundary addresses:  */\n";
+  foreach my $mem ( @$memsRef ) {
+    my $memname = memName($mem);
+    next if $memname =~ /^(iocached|iobypass|rambypass)$/;
+    next unless defined(memBaseAddress($mem)) and memSize($mem) != 0;
+    my $endaddr = memBaseAddress($mem) + (memSize($mem) - 1);
+    $$out .= "${symbol_prefix}_memmap_mem_${memname}_start = ".sprintf("0x%x", memBaseAddress($mem)).";\n";
+    $$out .= "${symbol_prefix}_memmap_mem_${memname}_end   = ".sprintf("0x%x", 
+		      ($endaddr == 0xFFFFFFFF ? $endaddr : $endaddr+1)).";\n";
+  }
+  foreach my $mem ( grep(isMemDevice($_), @$memsRef) ) {
+    next if memName($mem) =~ /^(iocached|iobypass|rambypass)$/;
+    $$out .= $symbol_prefix.sprintf("%s = 0x%x;\n", memName($mem),
+		      memBaseAddress($mem)) if defined(memBaseAddress($mem));
+  }
+  @segments = sort { segBaseAddress($a) <=> segBaseAddress($b) } @segments;
+  $$out .= "\n/*  Memory segment boundary addresses:  */\n";
+  foreach my $seg ( @segments ) {
+    next unless segSections($seg) and segSize($seg) != 0;
+    my $segname = segName($seg);
+    $$out .= "${symbol_prefix}_memmap_seg_${segname}_start = ".sprintf("0x%x", segBaseAddress($seg)).";\n";
+    my $endaddr = segBaseAddress($seg) + (segSize($seg) - 1);
+    $$out .= "${symbol_prefix}_memmap_seg_${segname}_max   = ".sprintf("0x%x",
+    		($endaddr == 0xFFFFFFFF ? $endaddr : $endaddr+1)).";\n";
+  }
+  $$out .= "\n";
+  if ( !optionTrue($paramOptionsRef,'ROMING') ) {
+    $$out .= "${symbol_prefix}_rom_store_table = 0;\n";
+  }
+  my $reset_table_vaddr = $paramOptionsRef->{'RESET_TABLE_VADDR'};
+  if (defined($reset_table_vaddr)) {
+    $$out .= sprintf("_ResetTable_base = 0x%08x;\n", $reset_table_vaddr);
+  }
+  my $added_symbols = $paramOptionsRef->{'EXECUTABLE_SYMBOLS'};
+  $$out .= "\n$added_symbols\n" if defined($added_symbols);
+  $$out .= $extrasymbols;
+}
+sub print_ldscript_debug_sections {
+  my ($out) = @_;
+  $$out .= <<'END';
+  .debug  0 :  { *(.debug) }
+  .line  0 :  { *(.line) }
+  .debug_srcinfo  0 :  { *(.debug_srcinfo) }
+  .debug_sfnames  0 :  { *(.debug_sfnames) }
+  .debug_aranges  0 :  { *(.debug_aranges) }
+  .debug_pubnames  0 :  { *(.debug_pubnames) }
+  .debug_info  0 :  { *(.debug_info) }
+  .debug_abbrev  0 :  { *(.debug_abbrev) }
+  .debug_line  0 :  { *(.debug_line) }
+  .debug_frame  0 :  { *(.debug_frame) }
+  .debug_str  0 :  { *(.debug_str) }
+  .debug_loc  0 :  { *(.debug_loc) }
+  .debug_macinfo  0 :  { *(.debug_macinfo) }
+  .debug_weaknames  0 :  { *(.debug_weaknames) }
+  .debug_funcnames  0 :  { *(.debug_funcnames) }
+  .debug_typenames  0 :  { *(.debug_typenames) }
+  .debug_varnames  0 :  { *(.debug_varnames) }
+END
+}
+sub print_ldscript_property_sections {
+  my ($out) = @_;
+  $$out .= <<'END';
+  .xt.insn 0 :
+  {
+    KEEP (*(.xt.insn))
+    KEEP (*(.gnu.linkonce.x.*))
+  }
+  .xt.prop 0 :
+  {
+    KEEP (*(.xt.prop))
+    KEEP (*(.xt.prop.*))
+    KEEP (*(.gnu.linkonce.prop.*))
+  }
+  .xt.lit 0 :
+  {
+    KEEP (*(.xt.lit))
+    KEEP (*(.xt.lit.*))
+    KEEP (*(.gnu.linkonce.p.*))
+  }
+  .debug.xt.callgraph 0 :
+  {
+    KEEP (*(.debug.xt.callgraph .debug.xt.callgraph.* .gnu.linkonce.xt.callgraph.*))
+  }
+END
+}
+sub have_overlays {
+  my ($paramOptionsRef) = @_;
+  my $num_overlays = $paramOptionsRef->{'OVERLAYS'};
+  return 1 if defined($num_overlays) && ($num_overlays > 0);
+  return 0;
+}
+sub get_overlay_map_seg {
+  my ($paramOptionsRef, @segments) = @_;
+  my $sname = $paramOptionsRef->{'OVERLAY_MAP_SEG'};
+  if (defined $sname) {
+    foreach my $seg (@segments) {
+      return $seg if segName($seg) eq $sname;
+    }
+  }
+  foreach my $seg (@segments) {
+    return $seg if grep(secName($_) =~ /^\.overlay$/, segSections($seg));
+  }
+  return undef;
+}
+sub get_overlay_load_seg {
+  my ($paramOptionsRef, @segments) = @_;
+  my $sname = $paramOptionsRef->{'OVERLAY_LOAD_SEG'};
+  if (defined $sname) {
+    foreach my $seg (@segments) {
+      return $seg if segName($seg) eq $sname;
+    }
+  }
+  return undef;
+}
+sub create_overlay_table {
+  my ($out, $paramOptionsRef) = @_;
+  my $num_overlays = $paramOptionsRef->{'OVERLAYS'};
+  my $i;
+  $$out .= "    . = ALIGN(4);\n";
+  $$out .= "    /* Overlay table required by overlay manager and gdb */\n";
+  $$out .= "    _ovly_table = ABSOLUTE(.);\n";
+  for ($i = 0; $i < $num_overlays; $i++) {
+    $$out .= "    LONG(_overlay_vma)\n";
+    $$out .= "    LONG(SIZEOF(.overlay${i}.text))\n";
+    $$out .= "    LONG(LOADADDR(.overlay${i}.text))\n";
+    $$out .= "    LONG(0)\n";
+  }
+  $$out .= "    /* Table of stub sections for each overlay */\n";
+  $$out .= "    _overlay_stubs_table = ABSOLUTE(.);\n";
+  for ($i = 0; $i < $num_overlays; $i++) {
+    $$out .= "    LONG(_overlay_call_${i}_start)\n";
+    $$out .= "    LONG(_overlay_call_${i}_end)\n";
+  }
+}
+sub place_overlay_stubs {
+  my ($out, $paramOptionsRef) = @_;
+  my $num_overlays = $paramOptionsRef->{'OVERLAYS'};
+  $$out .= "    *(.overlay.call.literal .overlay.call.text)\n";
+  $$out .= "    _overlay_call_stubs_start = ABSOLUTE(.);\n";
+  my $i;
+  for ($i = 0; $i < $num_overlays; $i++) {
+    $$out .= "    *(.gnu.linkonce.t.overlay.call.${i}.literal .overlay.call.${i}.literal)\n";
+    $$out .= "    . = ALIGN(4);\n";
+    $$out .= "    _overlay_call_${i}_start = ABSOLUTE(.);\n";
+    $$out .= "    *(.gnu.linkonce.t.overlay.call.${i}.text .overlay.call.${i}.text)\n";
+    $$out .= "    _overlay_call_${i}_end = ABSOLUTE(.);\n";
+  }
+  $$out .= "    _overlay_call_stubs_end = ABSOLUTE(.);\n";
+}
+sub place_overlay_property_sections {
+  my ($out, $paramOptionsRef) = @_;
+  my $num_overlays = $paramOptionsRef->{'OVERLAYS'};
+  my $i;
+  for ($i = 0; $i < $num_overlays; $i++) {
+    $$out .= "  .xt.prop.overlay${i}.text 0 :\n";
+    $$out .= "  {\n";
+    $$out .= "    KEEP(*(.xt.prop.overlay.${i}.text))\n";
+    $$out .= "  }\n";
+  }
+}
+sub generate_overlay_info {
+  my ($out, $paramOptionsRef, $prevSec, $cur_seg_name, $last_sec_name, @segments) = @_;
+  my $num_overlays = $paramOptionsRef->{'OVERLAYS'};
+  my $overlay_align = $paramOptionsRef->{'OVERLAY_ALIGN'};
+  my $romming = optionTrue($paramOptionsRef, 'ROMING');
+  return if !defined($num_overlays) || ($num_overlays <= 0);
+  if (defined $overlay_align) {
+    if ($overlay_align & ($overlay_align - 1)) {
+      Error("Overlay alignment must be a power of 2.");
+      return;
+    }
+    if (($overlay_align < 16) || ($overlay_align > 0x100000)) {
+      Error("Overlay alignment must be a power of 2, min 0x10 to max 0x100000.");
+      return;
+    }
+  }
+  my $olmap_seg = get_overlay_map_seg($paramOptionsRef, @segments);
+  unless (defined $olmap_seg) {
+    printError("Overlay segment not defined, overlays cannot be placed.");
+    return;
+  }
+  $$out .= "\n  _NUM_OVERLAYS  = $num_overlays;\n";
+  $overlay_align = 16 unless defined($overlay_align);
+  $$out .= "  _OVERLAY_ALIGN = $overlay_align;\n";
+  my $mask = sprintf("0x%08x", ~($overlay_align - 1));
+  my $olmap_segname = segName($olmap_seg);
+  my $atexpr;
+  my $olld_segname = $paramOptionsRef->{'OVERLAY_LOAD_SEG'};
+  $olld_segname = $olmap_segname if !defined($olld_segname);
+  printWarning("Overlay load seg $olld_segname called in $cur_seg_name\n") if ($olld_segname ne $cur_seg_name);
+  my $sameseg = ($olmap_segname eq $olld_segname) ? 1 : 0;
+  if ($romming) {
+    $atexpr = "AT((LOADADDR($prevSec) + SIZEOF($prevSec) + _OVERLAY_ALIGN - 1) & $mask) ALIGN(4)";
+  }
+  elsif (!$sameseg) {
+    if ($last_sec_name eq "none") {
+      $atexpr = "AT((ABSOLUTE(_memmap_seg_" . $olld_segname . "_start) + _OVERLAY_ALIGN - 1) & $mask) ALIGN(4)";
+    }
+    else {
+      $atexpr = "AT((LOADADDR($last_sec_name) + SIZEOF($last_sec_name) + _OVERLAY_ALIGN - 1) & $mask) ALIGN(4)";
+    }
+  }
+  else {
+    $atexpr = "AT((ADDR(.overlay0.text) + _omax${num_overlays} + _OVERLAY_ALIGN - 1) & $mask) ALIGN(4)";
+  }
+  $$out .= "\n  /* Overlay sections */\n";
+  my $i;
+  for ($i = 0; $i < $num_overlays; $i++) {
+    if ($i == 0) {
+      $$out .= "\n  .overlay${i}.text : $atexpr\n  {\n";
+    }
+    else {
+      $$out .= "\n  .overlay${i}.text _overlay_vma : $atexpr\n  {\n";
+    }
+    $$out .= "    _ov${i}_lma = LOADADDR(.overlay${i}.text);\n";
+    $$out .= "    _ov${i}_len = SIZEOF(.overlay${i}.text);\n";
+    $$out .= "    _ov${i}_start = ABSOLUTE(.);\n";
+    my $val = sprintf("0x%x", 0x4f563030 + $i);
+    $$out .= "    LONG($val)\n";
+    $$out .= "    *(.overlay.${i}.literal .overlay.${i}.text)\n";
+    $$out .= "  } >${olmap_segname}_seg :${olld_segname}_ovly_phdr";
+    my $sn = ".overlay${i}.text";
+    if (defined($fillMap{$sn})) {
+      $$out .= " =$fillMap{$sn}";
+    } else {
+      if (defined($paramOptionsRef->{'FILL_PATTERN'})) {
+        $$out .= " =$paramOptionsRef->{'FILL_PATTERN'}";
+      }
+    }
+    $$out .= "\n";
+    $atexpr = "AT((LOADADDR(.overlay${i}.text) + SIZEOF(.overlay${i}.text) + _OVERLAY_ALIGN - 1) & $mask)";
+  }
+  $$out .= "\n  /* Compute the largest overlay section size */\n";
+  $$out .= "\n  _omax0 = 0;\n";
+  for ($i = 0; $i < $num_overlays; $i++) {
+    my $j = $i + 1;
+    $$out .= "  _omax${j} = MAX(_omax${i}, SIZEOF(.overlay${i}.text));\n";
+  }
+  $$out .= "\n  _overlay_vma = ABSOLUTE(ADDR(.overlay0.text));\n";
+  $$out .= "  _overlay_vma_len = _omax${num_overlays};\n";
+  $$out .= "  _overlay_vma_end = _overlay_vma + _overlay_vma_len;\n\n";
+  my $k = $num_overlays - 1;
+  if ($romming) {
+    $$out .= "  _dlma = (LOADADDR(.overlay${k}.text) + SIZEOF(.overlay${k}.text) + _OVERLAY_ALIGN - 1) & $mask;\n";
+    $$out .= "  _dvma = (_overlay_vma_end + 3) & 0xFFFFFFFC;\n";
+  }
+  else {
+    $$out .= "  _dlma = (LOADADDR(.overlay${k}.text) + SIZEOF(.overlay${k}.text) + 3) & 0xFFFFFFFC;\n";
+    $$out .= "  _dvma = (_overlay_vma_end + 3) & 0xFFFFFFFC;\n";
+  }
+  if ($sameseg) {
+    $$out .= "\n  .d1 _dlma : AT(_dlma) ALIGN(4)\n";
+    $$out .= "  {\n    LONG(0)\n  } >${olld_segname}_seg :${olld_segname}_phdr\n";
+  }
+  else {
+    $$out .= "\n  .d1 _dlma : AT(_dlma) ALIGN(4)\n";
+    $$out .= "  {\n    LONG(0)\n  } >${olld_segname}_seg :${olld_segname}_phdr\n";
+    $$out .= "\n  .d2 _dvma : AT(_dvma) ALIGN(4)\n";
+    $$out .= "  {\n    LONG(0)\n  } >${olmap_segname}_seg :${olmap_segname}_phdr\n";
+  }
+  return ".d1";
+}
+my $printed_ResetSync = 0;
+sub print_ldscript_sections_final {
+  my ($out, $paramOptionsRef,
+      $sectionIncsRef, $startSymbolsRef, $endSymbolsRef, $secNamesRef, @segments) = @_;
+  my $rtos_style = optionTrue($paramOptionsRef, 'RTOS_STYLE');
+  my $romming = optionTrue($paramOptionsRef, 'ROMING');
+  my $shared = optionTrue($paramOptionsRef, 'SHARED');
+  if ($romming and optionTrue($paramOptionsRef, 'USE_PHYS_ADDR_FOR_LMA')) {
+    Error("Cannot specify both ROMING and USE_PHYS_ADDR_FOR_LMA, see user manual.");
+  }
+  $$out .= <<'END' if $rtos_style;
+/*
+ *  Other commands and functions of interest:
+ *	PROVIDE(var = value);
+ *	ABSOLUTE(e)		non-section-relative expr
+ *	ADDR(e)			vaddr
+ *	LOADADDR(e)		paddr (=vaddr if not AT())
+ *	ALIGN(e)		(. + e - 1) & ~(e - 1)
+ *	NEXT(e)			like ALIGN(), but if MEMORY is used, may skip to next available region
+ *	DEFINED(sym)		1 if sym defined, else 0
+ *	SIZEOF(section)		size of section if allocated
+ *	SIZEOF_HEADERS		size in byte of output file's headers
+ *	MAX(e1,e2)
+ *	MIN(e1,e2)
+ */
+/*
+ *  Mapping of input sections to output sections when linking.
+ *
+ *  Entries are of the form:
+ *	SECNAME START BLOCK(ALIGN) (NOLOAD) : AT ( LDADR )
+ *		{ CONTENTS } >REGION :PHDR [... or :NONE] =FILL
+ *  or
+ *	/DISCARD/ : { IGNORED_SECTIONS... }
+ *
+ *  Also in sections:
+ *	BYTE(e) SHORT(e) LONG(e) QUAD(e) SQUAD(e)
+ */
+END
+  $$out .= "\nSECTIONS\n{\n";
+  my $prevSec = 'ASSERT(0,"xt-genldscripts: internal error, .rom.store pseudo-section got lost somewhere")';
+  my %segseen = ();		
+  my %segleft = map { segName($_) => scalar(segSections($_)) } @segments;	
+  my $romstore_section = $secNamesRef->{'.rom.store'};
+  if (defined($romstore_section)) {
+    $prevSec = secName($romstore_section);
+    my $pack_seg = secSegment($romstore_section);
+    my $i = find {$_ == $romstore_section} @{segSectionsRef($pack_seg)};
+    my $packseg_start = segCopy($pack_seg);
+    my $packseg_end   = segCopy($pack_seg);
+    @{segSectionsRef($packseg_end)} = splice @{segSectionsRef($packseg_start)}, $i+1;
+    extract {$_ == $pack_seg} @segments;
+    unshift @segments, $packseg_start;
+    push @segments, $packseg_end;
+  }
+  foreach my $seg ( @segments ) {
+    my $name = segName($seg);
+    my $orig = segBaseAddress($seg);
+    my $len = segSize($seg);
+    my $float_segment = segIsFloating($seg);
+    my $first_in_segment = 1;
+    my $last_secname = "none";
+    foreach my $output_sec ( segSections($seg) ) {
+      my $output_secname = secName($output_sec);
+      if ($output_secname eq ".overlay") {
+        if (have_overlays($paramOptionsRef)) {
+          my $xret = generate_overlay_info($out, $paramOptionsRef, $prevSec, $name, $last_secname, @segments);
+          if ($romming) {
+            $prevSec = $xret;
+          }
+        }
+        $segseen{$name} = 1;
+        $segleft{$name} -= 1;
+        next;
+      }
+      $$out .= "\n";
+      $$out .= "  /*  -T$1 moves vaddr of what follows:  */\n"
+ 	  if $float_segment and $output_secname =~ /^\.(text|data|bss)$/ ;
+      $$out .= "  $output_secname";
+      $$out .= sprintf(" 0x%X", $orig) if $float_segment and !exists($segseen{$name});
+      $$out .= " (NOLOAD)" if $output_secname =~ /\.bss$/;
+      $$out .= " (NOLOAD)" if exists $noload_sections{$output_secname};
+      $$out .= " :";
+      if ( segIsPacked($seg) and !($output_secname =~ /\.bss$/)) {
+	if ($first_in_segment) {
+	  $$out .= " AT(LOADADDR($prevSec) + ((SIZEOF($prevSec) + 3) & 0xFFFFFFFC))";
+	  $first_in_segment = 0;
+	}
+	else {
+	  $$out .= " AT(LOADADDR($prevSec) + (ADDR($output_secname) - ADDR($prevSec)))";
+	}
+	$prevSec = $output_secname;
+      }
+      elsif (!$romming and optionTrue($paramOptionsRef, 'USE_PHYS_ADDR_FOR_LMA')) {
+        my $smem = segMemory($seg);
+        if ( defined(memBasePAddress($smem)) and (memBaseAddress($smem) != memBasePAddress($smem)) ) {
+          if ($first_in_segment) {
+            my $ataddr = memBasePAddress($smem) + segBaseAddress($seg) - memBaseAddress($smem);
+            $$out .= sprintf(" AT(0x%x)", $ataddr);
+            $first_in_segment = 0;
+          }
+          else {
+            $$out .= " AT(LOADADDR($prevSec) + (ADDR($output_secname) - ADDR($prevSec)))";
+          }
+        }
+        $prevSec = $output_secname;
+      }
+      $$out .= " ALIGN(4)\n  {\n" if $output_secname !~ /\.bss$/;
+      $$out .= " ALIGN(8)\n  {\n" if $output_secname =~ /\.bss$/;
+      $$out .= "    . = ALIGN (8);\n"  if $output_secname =~ /\.bss$/;
+      print_section_inputs($out, $output_secname, $startSymbolsRef);
+      my $secNoDot = convert_section_dots($output_secname);
+      $$out .= "    ${symbol_prefix}${secNoDot}_start = ABSOLUTE(.);\n";
+      if ($output_secname eq ".text") {
+        if (have_overlays($paramOptionsRef)) {
+          place_overlay_stubs($out, $paramOptionsRef);
+        }
+      }
+      print_section_inputs($out, $output_secname, $sectionIncsRef);
+      if ($output_secname eq ".data") {
+        if (have_overlays($paramOptionsRef)) {
+          create_overlay_table($out, $paramOptionsRef);
+        }
+      }
+      $$out .= "    . = ALIGN (8);\n"  if $output_secname =~ /\.bss$/;
+      $$out .= "    BYTE(0);\n" if $output_secname eq ".text" && $shared;
+      $$out .= "    . = ALIGN (4);\n"  if $output_secname !~ /\.bss$/;
+      $$out .= "    ${symbol_prefix}${secNoDot}_end = ABSOLUTE(.);\n";
+      print_section_inputs($out, $output_secname, $endSymbolsRef);
+      $segseen{$name} = 1;
+      $segleft{$name} -= 1;
+      if ($segleft{$name} == 0) {
+	if ( segContainsHeap($seg) ) {
+	  $$out .= "    ${symbol_prefix}_end = ALIGN(0x8);\n";
+	  $$out .= "    PROVIDE(${symbol_prefix}end = ALIGN(0x8));\n";
+	}
+	if ( segContainsStack($seg) ) {
+	  $$out .= "    ${symbol_prefix}_stack_sentry = ALIGN(0x8);\n";
+	}
+	$$out .= "    ${symbol_prefix}_memmap_seg_${name}_end = ALIGN(0x8);\n";
+      }
+      if ($float_segment) {
+	$$out .= "  } >ALLMEMORY";
+      } else {
+	$$out .= "  } >${name}_seg";
+      }
+      if ($output_secname =~ /\.bss$/) {
+	if (!$rtos_style) {
+	  $$out .= " :${name}_bss_phdr";
+	} else {
+	  $$out .= " :NONE";
+	} 
+      } else {
+	if (segIsPacked($seg) && $rtos_style) {
+	  $$out .= " :packed_phdr";
+	} else {
+	  $$out .= " :${name}_phdr";
+	}
+      }
+      if (defined($fillMap{$output_secname})) {
+        $$out .= " =$fillMap{$output_secname}";
+      } else {
+        if (defined($paramOptionsRef->{'FILL_PATTERN'})) {
+          $$out .= " =$paramOptionsRef->{'FILL_PATTERN'}";
+        }
+      }
+      $$out .= "\n";
+      if ($output_secname =~ /.bss$/ && $shared && !$printed_ResetSync) {
+	$$out .= "    _ResetSync = .;\n";
+	$$out .= "    . += 4;\n";
+	$printed_ResetSync = 1;
+      }
+      $last_secname = $output_secname;
+    }
+    $$out .= segHeapStackSymbols($seg, !segSections($seg));
+  }
+  if ($romming) {
+    my $pack_seg = pop(@segments);
+    push(@segments, $pack_seg);
+    my $segName = segName($pack_seg);
+    $$out .= "  .rom_store_end LOADADDR($prevSec) + SIZEOF($prevSec) : \n";
+    $$out .= "  { \n";
+    $$out .= "    _rom_store_end = .;\n";
+    $$out .= "  } >${segName}_seg\n";
+  }
+  print_ldscript_debug_sections($out);
+  if (have_overlays($paramOptionsRef)) {
+    place_overlay_property_sections($out, $paramOptionsRef);
+  }
+  print_ldscript_property_sections($out);
+  $$out .= "}\n\n";
+}
+sub print_ldscript_sections_relocatable {
+  my ($out, $paramOptionsRef, $sectionIncsRef, @segments) = @_;
+  $$out .= "\nSECTIONS\n{\n";
+  foreach my $output_sec (map(segSections($_), @segments)) {
+    my $output_secname = secName($output_sec);
+    next unless defined($$sectionIncsRef{$output_secname});
+    $$out .= "\n  $output_secname 0 :\n  {\n";
+    print_section_inputs($out, $output_secname, $sectionIncsRef);
+    $$out .= "  }\n";
+  }
+  print_ldscript_debug_sections($out);
+  print_ldscript_property_sections($out);
+  $$out .= "}\n\n";
+}
+sub print_ldscript_to_file {
+  my ($outfile, $ldscript, $comment, $lspName) = @_;
+  my $out = openwrite($outfile, "writing");
+  $out->print(<<"END");
+/* This linker script generated from xt-genldscripts.tpp for LSP $lspName */
+/* Linker Script for $comment */
+END
+  $out->print($ldscript);
+  $out->close();
+}
+sub print_ldscript_unused {
+  my ($outfile, $paramOptionsRef,
+      $segmentsRef, $memsRef, $secNamesRef,
+      $sectionIncsRef, $extrasymbols,
+      $startSymbolsRef, $endSymbolsRef,
+      $comment, $lspName, $final_link) = @_;
+  my $outstr = "";
+  print_ldscript(\$outstr, $paramOptionsRef,
+      $segmentsRef, $memsRef, $secNamesRef,
+      $sectionIncsRef, $extrasymbols,
+      $startSymbolsRef, $endSymbolsRef,
+      $final_link);
+  print_ldscript_to_file($outfile, $outstr, $comment, $lspName);
+}
+sub print_ldscript {
+  my ($out, $paramOptionsRef,
+      $segmentsRef, $memsRef, $secNamesRef,
+      $sectionIncsRef, $extrasymbols,
+      $startSymbolsRef, $endSymbolsRef,
+      $final_link) = @_;
+  my $rtos_style = optionTrue($paramOptionsRef, 'RTOS_STYLE');
+  my $romming = optionTrue($paramOptionsRef, 'ROMING');
+  my $shared = optionTrue($paramOptionsRef, 'SHARED');
+  my $year = (localtime)[5]+1900;
+  $$out .= <<"END" if $rtos_style and $final_link;
+/*  Customer ID=13943; Build=0x75f5e; Copyright (c) 2005-$year Tensilica Inc.  */
+/*
+ *  This is one of four linker scripts generated for general-purpose,
+ *  and for use by RTOS in particular.
+ *
+ *  These scripts have the property that the -Ttext, -Tdata and -Tbss
+ *  linker options generally work as expected (unlike the default linker
+ *  scripts generated by xt-genldscripts).  That is, these options
+ *  move the text, data and/or bss sections in memory as specified.
+ *  This approach implies there is NO memory overflow or overlap checking
+ *  on the .text, .data and .bss sections because these are directed to
+ *  an unrestricted MEMORY region in the linker script (covering 4 GB).
+ *
+ *  Note:  these linker scripts do not yet have easy support of ROMs
+ *	other than the system ROM (eg. of instruction and data ROMs).
+ *  Note:  no configuration file *system* info is reflected in these linker
+ *	scripts except system ROM, system RAM, and vector locations/sizes.
+ *
+ *  The four linker scripts emit/pack sections as follows:
+ *
+ *			<> = vaddr = paddr
+ *			{} = vaddr (copied-from-packed or zeroed)
+ *			[] = paddr (packed)
+ *  rtos-ram LSP:
+ *	RAM contents:	<ramvecs>...  <text+rodata><data><bss>
+ *	ROM contents:	(none)
+ *	---
+ *	Linker script for RAM images.
+ *	This has no unpack table; the various discontiguous RAM sections
+ *	(vectors, etc) are loaded by an external ELF loader.
+ *
+ *  rtos-ramp LSP:
+ *	RAM contents:	{ramvecs}...  <text+rodata+unpack><data>[ramvecs] <bss>
+ *	ROM contents:	(none)
+ *	---
+ *	This script is similar to rtosram.ld, but packs RAM vectors after
+ *	the .data section.  The RAM vectors must be unpacked in the image's
+ *	initialization code (before any C code).  This arrangement is
+ *	necessary when the image gets loaded by anything more complicated
+ *	than an assembler loop that immediately jumps to the code, because
+ *	otherwise loading the RAM vectors would corrupt operation of
+ *	the loading process (eg. VxWorks bootrom has a full kernel
+ *	running during boot loading, with TFTP/FTP/RSH/TCP/IP/etc. tasks).
+ *	It is also necessary when one needs one contiguous block of bytes,
+ *	eg. for compression.
+ *
+ *  rtos-rom LSP:
+ *	RAM contents:	{ramvecs}...  {text+rodata}{data}{bss}
+ *	ROM contents:	<romvecs>...  <srom+unpack>[text+rodata][data][ramvecs]
+ *	---
+ *	Linker script for ROM images, where most sections are copied to RAM
+ *	before being executed.  This is a typical scenario when executing
+ *	directly from ROM is too slow for normal operation.  The unpacking
+ *	code is typically put in the .srom.* sections (or in the reset vector
+ *	if it is large enough).
+ *
+ *  rtos-res LSP:
+ *	RAM contents:	{ramvecs}...  {data}{bss}
+ *	ROM contents:	<romvecs>...  <srom+text+rodata+unpack>[data][ramvecs]
+ *	---
+ *	Linker script for ROM images, where code executes directly out of ROM.
+ *	Initialized data and RAM vectors need to be copied to RAM, so this
+ *	image also needs unpacking code early in initialization.
+ *
+ *
+ *  VxWorks uses these linker scripts as follows:
+ *	Image type:	Script			Flags   (lohi = RAM_LOW_ADRS
+ *	----------	------			-----        or RAM_HIGH_ADRS)
+ *	RAM:		rtosramp.ld	RAM	-Ttext=lohi
+ *	ROM-resident:	rtosres.ld	ROM	-Tdata=lohi -Ttext=ROM_TEXT_ADRS
+ *	ROM-uncmp:	rtosrom.ld	ROM	-Ttext=lohi
+ *	ROM-cmp-inner:	rtosramp.ld	RAM	-Ttext=lohi
+ *	ROM-cmp-outer:	rtosrom.ld	ROM	-Ttext=lohi
+ *
+ */
+END
+  if ($final_link) {
+    print_ldscript_memory_and_phdrs($out, $rtos_style, $romming, $paramOptionsRef, @$segmentsRef);
+  }
+  my $entry_symbol = $paramOptionsRef->{'ENTRY'};
+  if (defined($entry_symbol) && $final_link && !$shared) {
+    $$out .= "\n/*  Default entry point:  */\nENTRY($entry_symbol)\n";
+  }
+  if ($final_link) {
+    print_ldscript_symbols($out, $paramOptionsRef, $memsRef, $extrasymbols, @$segmentsRef);
+    print_ldscript_sections_final ($out, $paramOptionsRef, $sectionIncsRef,
+		$startSymbolsRef, $endSymbolsRef, $secNamesRef, @$segmentsRef);
+  } else {
+    print_ldscript_sections_relocatable ($out, $paramOptionsRef, $sectionIncsRef,
+		@$segmentsRef);
+  }
+}
+sub defer_error {
+  my ($lspName, $lspDir, $deferStdErrors, $reloc_ldscript, $final_ldscript, $msg) = @_;
+  chomp($msg);  chomp($msg);
+  if (!$deferStdErrors) {
+    $msg =~ s/^/"$myname: Error: "/emg;
+    print STDERR "$msg\n";
+    exit 1;
+  }
+  $lspName = "generated" unless defined($lspName);
+  return if defined($$reloc_ldscript) and defined($$final_ldscript);
+  my $emsg = "The $lspName LSP is unavailable\n"
+		.$msg."\n"
+		."Edit the LSP's memory map and rerun xt-genldscripts to correct this error.\n"
+		."Refer to the Xtensa LSP Reference Manual for more details.";
+  $emsg =~ s/^/ERROR: /mg;
+  $emsg = <<"END";
+/*  Some problem in the LSP memory map file used to generate this linker script
+    prevented generating a working linker script.  However, it is a common issue
+    that the user can correct by editing the memory map, so rather than not
+    include this standard LSP, the LSP is installed anyway and the linker issues
+    an error if any attempt is made to link using this LSP.  This linker error
+    is accomplished using the following linker ASSERT statement.  */
+_dummy_symbol_ = ASSERT(0,"$emsg");
+END
+  printWarning($msg) unless $deferStdErrors >= 2;
+  $$reloc_ldscript = $$final_ldscript = $emsg;
+}
+sub check_deferred_error {
+  my ($lspName, $lspDir, $reloc_ldscript, $final_ldscript, $outLdFile, $outLdFileReloc) = @_;
+  return unless defined($reloc_ldscript) and defined($final_ldscript);
+  if (defined($outLdFile)) {
+    if ($outLdFileReloc) {
+      print_ldscript_to_file($outLdFile, $reloc_ldscript, "ld -r or ld -i or ld -Ur", $lspName);
+    } else {
+      print_ldscript_to_file($outLdFile, $final_ldscript, "default link or ld -n or ld -N", $lspName);
+    }
+    print "New (non-functional) linker script generated in $outLdFile\n" unless $quiet;
+  } else {
+    print_ldscript_to_file("$lspDir/ldscripts/elf32xtensa.xr",  $reloc_ldscript, "ld -r or ld -i", $lspName);
+    print_ldscript_to_file("$lspDir/ldscripts/elf32xtensa.xu",  $reloc_ldscript, "ld -Ur",         $lspName);
+    print_ldscript_to_file("$lspDir/ldscripts/elf32xtensa.x",   $final_ldscript, "default link",   $lspName);
+    print_ldscript_to_file("$lspDir/ldscripts/elf32xtensa.xn",  $final_ldscript, "ld -n",          $lspName);
+    print_ldscript_to_file("$lspDir/ldscripts/elf32xtensa.xbn", $final_ldscript, "ld -N",          $lspName);
+    print "New (non-functional) linker scripts generated in $lspDir/ldscripts\n" unless $quiet;
+  }
+  exit $exitcode;
+}
+sub Xtensa::Vector::vaddr {
+  my ($self, $vecbase, $select) = @_;
+  my $p = $self->pconfig;
+  my $base;
+  if ($self->group eq "fixed") {
+    $base = 0;
+  } elsif ($self->group eq "dynamic") {
+    $vecbase = $p->vecbase_reset unless defined($vecbase);
+    $base = ($vecbase & ~($p->vecbase_align - 1));
+  } else {
+    if (defined($p->reset_address_from_pins)) {
+      $base = $p->reset_address_from_pins;
+    } else {
+      $select = $p->static_vector_select_sw unless defined($select);
+      $base = $p->static_vector_base->[$select];
+    }
+  }
+  return $base + $self->offset;
+}
+sub get_pconfig {
+    my %params = xtensa_params_init($prefix."/config", "default", []);
+    if (0) {
+	print "*** GOT PARAMS:\n";
+	sub niceshow {my($s)=@_; ($s =~ /^[0-9]+$/ and ($s < 0 or $s > 9)) ? sprintf("0x%x",$s) : $s;}
+	foreach my $key (sort keys %params) {
+	    my $val = $params{$key};
+	    print "*** $key = ", ((ref($val) eq "ARRAY") ? "[".join(", ",map(niceshow($_),@$val))."]" : "'".niceshow($params{$key})."'"), "\n";
+	}
+	print "*** DONE.\n";
+	exit 0;
+    }
+    use Class::Struct 'Xtensa::ProcessorConfig' => [
+	vectors => '$',
+	vectors_reloc => '$',
+	relocatable_vectors => '$',
+	vector_base_from_pins => '$',
+	reset_address_from_pins => '$',
+	static_vector_select_sw => '$',
+	static_vector_base => '$',
+	dv_static_vector_base => '$',
+	dv_vecbase_reset => '$',
+	vecbase_reset => '$',
+	vecbase_align => '$',
+	xea => '$',
+	dcache_writeback => '$',
+	fullmmu => '$',
+	mpu => '$',
+	regionprot => '$',
+	regionprot_xlt => '$',
+	loadstore2imem => '$',
+	lsunits_cnt => '$',
+	fast_imem_l32r => '$',
+	litbase_l32r => '$',
+	swextl32r => '$',
+	iram0_size => '$',
+	iram1_size => '$',
+	irom0_size => '$',
+	targhw_min_vnum => '$',
+	targhw_max_vnum => '$',
+	targhw_configid1 => '$',
+    ];          
+    use Class::Struct 'Xtensa::Vector' => [
+	name => '$',
+	offset => '$',
+	size => '$',
+	group => '$',
+	pconfig => '$',
+    ];          
+    my $pconfig = Xtensa::ProcessorConfig->new(
+	vectors_reloc => [],	
+	xea => ($params{'NewExceptionArch'} ? "XEA2"
+	      : $params{'ExternalExceptionArch'} ? "XEAX"
+	      : $params{'IsaUseExceptions'} ? "XEA1" : "XEAHALT"),
+	fast_imem_l32r => $params{'FastL32RFromIRam'},
+	litbase_l32r => $params{'IsaUseLitBase'},
+	regionprot_xlt => $params{'IsaUseRegionProtXlation'},
+	dcache_writeback => $params{'DataCacheWriteback'},
+	fullmmu => $params{'IsaUseLinuxMMU'},
+	mpu => $params{'MPU'}[0],
+	regionprot => $params{'IsaUseRegionProt'},
+	loadstore2imem => $params{'AllowImemLoadStore'},
+	lsunits_cnt => $params{'LoadStoreUnitsCount'},
+	swextl32r => $params{'IsaUseExtL32R'},
+	iram0_size => ($params{'ISSInstRAMCount'} >= 1 ? $params{'ISSInstRAMInfo'}[0] : 0),
+	iram1_size => ($params{'ISSInstRAMCount'} >= 2 ? $params{'ISSInstRAMInfo'}[11] : 0),
+	irom0_size => ($params{'ISSInstROMCount'} >= 1 ? $params{'ISSInstROMInfo'}[0] : 0),
+	targhw_min_vnum => $params{'HWMicroArchEarliest'},
+	targhw_max_vnum => $params{'HWMicroArchLatest'},
+	targhw_configid1 => $params{'HWConfigID1'},
+	relocatable_vectors => $params{'RelocatableVectors'},
+	vector_base_from_pins => $params{'VectorBase1FromPins'},
+	static_vector_select_sw => $params{'StaticVectorSelect'},
+	static_vector_base => [$params{'StaticVectorBase0'}, $params{'StaticVectorBase1'}],
+	dv_static_vector_base => [$params{'DV_StaticVectorBase0'}, $params{'DV_StaticVectorBase1'}],
+	dv_vecbase_reset => $params{'DV_DynVecBaseReset'},
+	vecbase_reset => $params{'DynVecBaseReset'},
+	vecbase_align => ($params{'DynVecBaseAlignBits'} < 32 ? (1 << $params{'DynVecBaseAlignBits'}) : 0),
+    );
+    my @vectors = ();
+    my @vecsizes = @{$params{'VectorSizes'}};
+    foreach my $vecname (@{$params{'Vectors'}}) {
+	push @vectors, Xtensa::Vector->new(
+			name => $vecname,
+			offset => $params{$vecname."Offset"},
+			size => shift @vecsizes,
+			group => ($pconfig->relocatable_vectors
+				? (($vecname eq 'ResetVector' or $vecname eq 'MemoryExceptionVector')
+				    ? "static" : "dynamic") : "fixed"),
+			pconfig => $pconfig,
+			);
+    }
+    if (0) {foreach my $vec (@vectors) {
+	printf STDERR "*** VEC vaddr=0x%08x ofs=0x%08x size=%-3d group=%s %s\n",
+		$vec->vaddr, $vec->offset, $vec->size, $vec->group, $vec->name;
+    }}
+    $pconfig->vectors(\@vectors);
+    return $pconfig;
+}
+my $diag_hack = 0;
+sub check_diag_hack {
+    my ($pconfig, $paramOptionsRef) = @_;
+    return if $diag_hack;
+    my $diags = optionTrue($paramOptionsRef, 'INCLUDE_DV_SECTIONS');
+    if ($diags and $have_mmu and $pconfig->regionprot) {
+	$pconfig->vecbase_reset($pconfig->dv_vecbase_reset);
+	$pconfig->static_vector_base->[0] = $pconfig->dv_static_vector_base->[0];
+	$pconfig->static_vector_base->[1] = $pconfig->dv_static_vector_base->[1];
+	$use_mmu = 1;
+	$diag_hack = 1;
+    }
+}
+sub init_core_layout {
+    my ($pconfig, $paramOptionsRef) = @_;
+    my $sys_layout = new Xtensa::AddressLayout;
+    my $layout;
+    my $emsg;
+    my $diags = optionTrue($paramOptionsRef, 'INCLUDE_DV_SECTIONS');
+    my $syscorename = $paramOptionsRef->{SYSCORE};
+    if (defined($syscorename)) {
+	printWarning("*** IGNORING DIAGS IN MP FOR NOW ***") if $diags;
+	my $sysxmap = defined($alt_system_xmap) ? $alt_system_xmap : $ENV{'XTENSA_SYSTEM'}."/../system.xmap";
+	$emsg = $sys_layout->read_addressables(1, $sysxmap) and Error($emsg);
+	$layout = $sys_layout->lookup_layer($syscorename);
+	my $admap = $layout->find_addressable("linkmap");
+	my $linkmap = Xtensa::System::LinkMap->new_from_space($admap, $layout->virtual, $layout->physical);
+	$linkmap->index_memories($layout);
+	$layout->linkmap( $linkmap );
+	delete $layout->ref_children->{linkmap};
+	$layout->add_addressable("linkmap", $linkmap);
+    } else {
+	$emsg = $sys_layout->read_addressables(1, "$prefix/lib/".($diags?"diag-":"")."core.xmap") and Error($emsg);
+	check_diag_hack($pconfig, $paramOptionsRef);
+	$layout = $sys_layout->lookup_layer("core");
+    }
+    return ($sys_layout, $layout);
+}
+sub init_reference_map {
+    my ($pconfig, $paramOptionsRef, $sys_layout, $layout) = @_;
+    my $emsg;
+    my $diags = optionTrue($paramOptionsRef, 'INCLUDE_DV_SECTIONS');
+    my $syscorename = $paramOptionsRef->{SYSCORE};
+    if (defined($syscorename)) {
+    } else {
+	my $sysxmap = defined($alt_system_xmap) ? $alt_system_xmap : "$prefix/lib/system.xmap";
+	$emsg = $sys_layout->read_addressables(0, $sysxmap) and Error($emsg);
+	$diags and $emsg = $sys_layout->read_addressables(0, "$prefix/lib/diag.xmap") and Error($emsg);
+	$layout->initLayout($pconfig, 0, undef, 'diags' => $diags);
+    }
+    my $map = $layout->linkmap->build_classical_memmap;
+    return $map;
+}
+sub oldusage {
+  return <<EOOLDUSAGE;
+The following syntax is deprecated.
+Old Usage:
+  xt-genldscripts [options] [-b lspDir] lspName parmFile     (implies -mref)
+  xt-genldscripts [options] lspName
+Equivalent new usage if -b used:
+  xt-genldscripts [options] -b lspDir -a parmFile
+Equivalent new usage if -b not used, but lspName contains a path separator:
+  xt-genldscripts [options] -b lspName [-a parmFile]
+Equivalent new usage if -b not used, and lspName has no path separator:
+  xt-genldscripts [options] -std lspName [-a parmFile]
+The latter case (using -std) modifies the installed core package software.
+Modifying the installed core package is generally discouraged.
+It is usually simpler and safer (e.g. to allow easier software upgrades)
+to create your own LSP.  The xt-regenlsps tool makes it easy to copy and
+modify standard LSPs.  See the LSP Reference Manual for details.
+EOOLDUSAGE
+}
+sub usage {
+  return <<EOUSAGE;
+Usage:
+  xt-genldscripts [options]
+Options are:
+  -b lspDir         Specify LSP directory.
+  -std lspName      Specify standard LSP directory by name. Sets <lspDir>
+                     to <xtensa_root>/xtensa-elf/lib/<lspName> .
+                     May not be combined with the -b option.   NOTE:  with the
+                     -u or default -ldscripts options, the -std option modifies
+                     the installed core package software, which is discouraged.
+                     It is usually simpler and safer (e.g. for easier software
+                     upgrades) to generate your own LSP.  The xt-regenlsps tool
+                     simplifies this task. See LSP Reference Manual for details.
+  -mref             Use the reference memory map as the main memory map.  The
+                     reference map is built from processor configuration info
+                     and reference options (-mvecbase, -mvecreset, and 
+                     -mvecselect) or their equivalent read from any specified 
+                     memory map parameters. To use LSP's memmap.xmm parameters, 
+                     you may also want -p.
+  -m mapFile        Specify <mapFile> as the main memory map.  Always processed
+                     before any -a, -r, or -ap options.  The default main
+                     memory map (without -mref or -m) is <lspDir>/memmap.xmm
+                     if -b or -std is specified, or the reference map otherwise.
+  -a mapFile        Specify an additional memory map file.  Does not allow
+                     redefining any memory, segment or section (by name).
+                     May be specified multiple times.
+  -r mapFile        Specify an additional memory map file.  Allows redefining
+                     any memory, segment or section (by name).
+                     May be specified multiple times.
+  -ap mapFile       Specify an additional memory map file.  Memory descriptions
+                     are ignored, only parameter assignments and other
+                     directives are processed.  May be specified multiple times.
+  -p                Like -ap <lspDir>/memmap.xmm, but processed before any -m.
+  -mvecbase addr    Specify the expected run-time value of the VECBASE register
+                     (same as parameter VECBASE=addr).
+  -mvecselect 0|1   Specify the expected static vector select pin value
+                     (same as parameter VECSELECT=n).
+  -mvecreset addr   Specify the expected reset-time value of the alternate reset 
+                     vector (same as parameter VECRESET=n).
+                    NOTE:  These three options imply -mref (they generate a new
+                    memory map).  They also imply -p if -b or -std is specified.
+                    The equivalent parameters don't have this effect.
+  -mrompack         Pack RAM contents to ROM (same as ROMING=true).
+  -mlocalmems       Put code and data in local memories by default
+                    (ignored if core has no local instruction or data RAM).
+  -o ldscriptfile   Output linker script in <ldscriptfile> instead of default.
+  -reloc            For -o, output relocatable (incremental) linker script.
+  -noldscripts      Don't output linker scripts in <lspDir>/ldscripts.
+  -u                Update: shorthand for -map <lspDir>/memmap.xmm
+                    (this option is generally recommended).
+  -map mapOut       Output resulting memory map to file <mapOut>.
+  -genmap mapOut    Older form of -map; implies -noldscripts and -memsonly.
+  -memsonly         Skip non-memory elements in memory map output.
+  -defer            Defer to link-time certain errors that commonly occur when
+                     regenerating all standard LSPs, issuing a warning instead.
+                     If a linker script is generated, it causes the linker to
+                     report the error.  Applies to the following errors:
+                     * ROMING=true specified but .rom.store section is missing
+                     * RESERVE_SEGMENT_AREA or USE_SEGMENT_AREA specifies
+                       a size that is too large for the segment
+                     * PLACE to segment which doesn't exist
+                     * INCLUDE_XTBOARD_MEMORIES=true but map overlaps xtboard devs
+                     * MEMORY MAXSIZE is too small to contain required vectors
+  -v                Slightly more verbose operation.
+  -q                Omit output other than errors and warnings and -v additions.
+  -help             Show this usage description and exit.
+  -helpold          Show deprecated usage description and exit.
+  --xtensa-core=<corename>         Specify Xtensa core/processor configuration.
+  --xtensa-system=<dir>[:<dir>]*   Specify Xtensa core registry(ies).
+Please refer to the Xtensa Linker Support Packages (LSP) Reference Manual
+for more information about using xt-genldscripts and xt-regenlsps.
+EOUSAGE
+}
+sub internalusage {
+  return <<EOINTERNALUSAGE;
+These undocumented options are unsupported and highly subject to change.
+(No, this text doesn't count as documentation, its existence is undocumented.)
+  -internal         Show this usage description and exit.
+  -debug            Turn on some internal debug output
+  -debugout file    For debugging output
+  -hush             Silence warnings about data in iram/irom
+  -warnonly         Turn certain errors into warnings -- eg. moving vectors
+  -force-non-text-into-iram     Some errors suggest to use this as workaround
+  -force-non-text-into-irom     Some errors suggest to use this as workaround
+  -mxmap file.xmap  Experimental (e.g. diag.xmap, xtav60.xmap, etc)
+  -mspanmems        Experimental
+  -mvecunsized      Experimental
+  -mcombinevecs     Experimental
+  -mspecs <lspname>|<lspdir>|<specspath>        [xt-regenlsps only?]
+EOINTERNALUSAGE
+}
+sub usage_die {
+  my ($msg) = @_;
+  Error($msg."\n(For usage details, see $myname -help)");
+}
+{
+  my $debug_outfile = '';
+  my $mainMapFile = undef;
+  my @addedMapFiles = ();
+  my $genMapFile = undef;
+  my $outMapFile = undef;
+  my $updateMapFile = 0;
+  my $outputMemsOnly = undef;
+  my $outputLdscripts = undef;
+  my $outLdFile = undef;
+  my $outLdFileReloc = 0;
+  my $lspDir = undef;
+  my $lspName = undef;
+  my $stdName = undef;
+  my $showHelp = 0;
+  my $showOldHelp = 0;
+  my $showInternal = 0;
+  my $getParmsOnly = 0;
+  my $deferStdErrors = 0;
+  my $hush = 0;
+  my @actions;
+  my %paramOptions = ();
+  my $useReferenceMap = 0;
+  my $romOpt = 0;
+  my $localMemOpt = 0;
+  my $syscorename = undef;		
+  my $reset_table_vaddr = undef;	
+  my $vecbase = undef;
+  my $vecreset = undef;
+  my $vecselect = undef;
+  my $reloc_ldscript = undef;
+  my $final_ldscript = undef;
+  my $shared;
+  my $sym_prefix;
+  my $pconfig = get_pconfig();
+  $have_mmu = $pconfig->fullmmu;
+  $have_mpu = $pconfig->mpu;
+  $use_mmu = $have_mmu && !$pconfig->regionprot;
+  $have_xea1 = ($pconfig->xea eq "XEA1");
+  $have_writeback = $pconfig->dcache_writeback;
+  $have_writeback_noalloc = $have_writeback && ($pconfig->targhw_min_vnum >= 230000);	
+  $have_xthifi2 = ($pconfig->targhw_configid1 == 0x06418B65);
+  $have_dualnoimemLS = ($pconfig->targhw_min_vnum < 250000 && $pconfig->lsunits_cnt >= 2);	
+  $have_noimemlits = ($have_dualnoimemLS && ($pconfig->iram0_size > 128*1024
+					  || $pconfig->iram1_size > 128*1024
+					  || $pconfig->irom0_size > 128*1024));
+  my $allow_non_text_into_imem = (!$have_xea1 and !$have_noimemlits);
+  Error("see $myname -help") unless &GetOptions(
+		"mref"		=> \$useReferenceMap,
+		"m=s"		=> \$mainMapFile,
+		"a=s@"		=> sub { shift; push @addedMapFiles, [0, shift]; },
+		"r=s@"		=> sub { shift; push @addedMapFiles, [1, shift]; },
+		"ap=s@"		=> sub { shift; push @addedMapFiles, [2, shift]; },
+		"p"		=> \$getParmsOnly,
+		"altsys=s"	=> \$alt_system_xmap,
+		"syscore=s"	=> \$syscorename,
+		"reset-table-vaddr=s"	=> \$reset_table_vaddr,
+		"b=s"		=> \$lspDir,
+		"std=s"		=> \$stdName,
+		"mvecbase=s"	=> \$vecbase,
+		"mvecreset=s"	=> \$vecreset,
+		"mvecselect=s"	=> \$vecselect,
+		"mrompack"	=> \$romOpt,
+		"rom"		=> \$romOpt,		
+		"mlocalmems"	=> \$localMemOpt,
+		"localmemories"	=> \$localMemOpt,	
+		"u"		=> \$updateMapFile,
+		"map=s"		=> \$outMapFile,
+		"genmap=s"	=> \$genMapFile,
+		"memsonly!"	=> \$outputMemsOnly,
+		"ldscripts!"	=> \$outputLdscripts,
+		"o=s"		=> \$outLdFile,
+		"reloc"		=> \$outLdFileReloc,
+		"v"		=> \$verbose,
+		"q"		=> \$quiet,
+		"defer!"	=> \$deferStdErrors,
+		"h"		=> \$showHelp,
+		"help"		=> \$showHelp,
+		"helpold"	=> \$showOldHelp,
+		"debug"		=> \$debug,
+		"debugout=s"	=> \$debug_outfile,
+		"force-non-text-into-iram!" => \$allow_non_text_into_imem,
+		"force-non-text-into-irom!" => \$allow_non_text_into_imem,
+		"internal!"	=> \$showInternal,
+		"hush"		=> \$hush,
+		"warnonly!"	=> \$warnonly,
+		"shared!"	=> \$shared,
+		"sym-prefix=s"	=> \$sym_prefix,
+		 );
+  if ($showHelp or $showOldHelp or $showInternal) {
+    print usage() if $showHelp;
+    print oldusage() if $showOldHelp;
+    print internalusage() if $showInternal;
+    exit 0;
+  }
+  my $newOptPresent = ($romOpt or $localMemOpt or $updateMapFile
+			or defined($outMapFile) or defined($outputMemsOnly)
+			or defined($outputLdscripts) or defined($stdName)
+			or defined($outLdFile) or $outLdFileReloc
+			or defined($vecbase) or defined($vecreset) or defined($vecselect)
+			or defined($syscorename) or defined($reset_table_vaddr)
+			or defined($shared) or defined($sym_prefix)
+			or $useReferenceMap
+			);
+  if (@ARGV == 2 and !defined($genMapFile) and !$newOptPresent) {
+    $lspName = $ARGV[0];
+    my $paramFile = $ARGV[1];
+    @ARGV = ();
+    $useReferenceMap = 2;	
+    push @addedMapFiles, [0, $paramFile];	
+    if (defined($lspDir)) {
+      printWarning("$myname: deprecated syntax; use this instead of '$lspName $paramFile':\n"
+		. "     -a $paramFile");
+    } else {
+      my $std = ($lspName !~ m|[/\\]|);
+      $lspDir = $std ? "$prefix/xtensa-elf/lib/$lspName" : $lspName;
+      printWarning("$myname: deprecated syntax; use this instead of '$lspName $paramFile':\n"
+		  . "     " . ($std ? "-std $lspName" : "-b $lspName")
+		  . " -a $paramFile");
+    }
+  }
+  if (@ARGV == 1 and !defined($lspDir) and !defined($genMapFile) and !$newOptPresent) {
+    $lspName = $ARGV[0];
+    @ARGV = ();
+    my $std = ($lspName !~ m|[/\\]|);
+    $lspDir = $std ? "$prefix/xtensa-elf/lib/$lspName" : $lspName;
+    printWarning("$myname: deprecated syntax; use this instead of '$lspName':\n     "
+		. ($std ? "-std" : "-b") . " $lspName");
+  }
+  if (@ARGV) {
+    usage_die("unexpected non-option parameters ('".$ARGV[0]."' ...)");
+  }
+  if (defined($vecbase) or defined($vecselect) or defined($vecreset)) {
+    $useReferenceMap = 1;
+    $getParmsOnly = 1 if defined($lspDir) or defined($stdName);
+  }
+  if (defined($genMapFile) and defined($outMapFile)
+      or defined($genMapFile) and $updateMapFile
+      or defined($outMapFile) and $updateMapFile) {
+    usage_die("-u, -map, and -genmap options are mutually exclusive");
+  }
+  if (defined($lspDir) and defined($stdName)) {
+    usage_die("-b and -std options are mutually exclusive");
+  }
+  if ($useReferenceMap == 1 and defined($mainMapFile)) {
+    usage_die("-m and -mref options are mutually exclusive");
+  }
+  if (defined($outputLdscripts) and defined($outLdFile)) {
+    usage_die("-o and -[no]ldscripts options are mutually exclusive");
+  }
+  $lspDir = "$prefix/xtensa-elf/lib/$stdName" if defined($stdName);
+  $lspDir =~ s|[/\\]+$|| if defined($lspDir);
+  $lspName = $lspDir unless defined($lspName);	
+  if (defined($genMapFile)) {
+    $outMapFile = $genMapFile;
+    $outputMemsOnly = 1 unless defined($outputMemsOnly);	
+    $outputLdscripts = 0 unless defined($outputLdscripts);	
+  } elsif ($updateMapFile) {
+    defined($lspDir)
+	or usage_die("the -u option requires that you specify the LSP directory (e.g. with -b)");
+    $outMapFile = "$lspDir/memmap.xmm";
+  }
+  $outputMemsOnly = 0 unless defined($outputMemsOnly);
+  $outputLdscripts = 1 unless defined($outputLdscripts);
+  if (defined($outLdFile)) {
+    $outputLdscripts = 1;
+  } elsif ($outputLdscripts) {
+    defined($lspDir)
+	or usage_die("please specify the LSP directory where linker scripts are to be generated (e.g. with -b)");
+  }
+  if (!defined($mainMapFile) and !$useReferenceMap) {	
+    if (defined($lspDir)) {
+      $mainMapFile = "$lspDir/memmap.xmm";
+      -r $mainMapFile or die("$myname: ERROR: memory map file memmap.xmm not found"
+      				." in specified LSP directory '$lspDir'\n");
+    } else {
+      $useReferenceMap = 1;
+    }
+  }
+  if (defined($mainMapFile)) {
+    $useReferenceMap = 0;			
+    unshift @addedMapFiles, [0, $mainMapFile];	
+  }
+  if ($getParmsOnly) {
+    defined($lspDir)
+	or usage_die("the -p option requires specifying the LSP directory (e.g. with -b or -std)");
+    unshift @addedMapFiles, [2, "$lspDir/memmap.xmm"];	
+  }
+  if ($debug_outfile ne '') {
+     $debugHandle = openwrite($debug_outfile, "debug output");
+  } else {
+     $debugHandle = new FileHandle ('>-');
+  }
+  foreach my $addedfile (@addedMapFiles) {
+    my ($replace, $mapFile) = @$addedfile;
+    my $buffer = readfile($mapFile, "memory map");
+    if ($replace != 2) {
+      my $tmpOpt = { };
+      my $tmpAct = [ ];
+      justParseMemoryMap($buffer, 1, 1, $mapFile, $tmpOpt, $tmpAct);
+      check_diag_hack($pconfig, $tmpOpt);
+    }
+    justParseMemoryMap($buffer, $replace, ($replace == 2), $mapFile, \%paramOptions, \@actions);
+  }
+  my ($vecbase_what, $vecreset_what, $vecselect_what, $rtv_what, $what);
+  my @pregen_params = (
+	["-mvecbase",		"VECBASE",		\$vecbase,		\$vecbase_what],
+	["-mvecreset",		"VECRESET",		\$vecreset,		\$vecreset_what],
+	["-mvecselect",		"VECSELECT",		\$vecselect,		\$vecselect_what],
+	["-syscore",		"SYSCORE",		\$syscorename,		\$what],
+	["-reset-table-vaddr",	"RESET_TABLE_VADDR",	\$reset_table_vaddr,	\$rtv_what],
+	["-shared",		"SHARED",		\$shared,		\$what],
+	["-sym-prefix",		"SYMBOL_PREFIX",	\$sym_prefix,		\$what],
+	);
+  foreach my $pregen (@pregen_params) {
+      my ($option, $param, $varref, $whatref) = @$pregen;
+      if (defined($$varref)) {
+	  $$whatref = "$option option";
+	  if (!defined($paramOptions{$param}) or $paramOptions{$param} ne $$varref) {
+	      $paramOptions{$param} = $$varref;
+	      my $found = 0;
+	      foreach my $a1 (@actions) {
+	          my @a2 = @{$a1};
+	          if ($a2[2] eq 'parameter' and $a2[3] eq $param) {
+	              $found = 1;
+	              $a2[4] = $$varref;
+	              $a2[1] = undef;
+	              $a1 = \@a2;
+	          }
+	      }
+	      if (!$found) {
+	          push @actions, ["(cmdline)", "\n// Additions for $option option:\n", 'comment'];
+	          push @actions, ["(cmdline)", undef, 'parameter', $param, $$varref];
+	          push @actions, ["(cmdline)", "\n", 'comment'];
+	      }
+	  }
+      } else {
+	  $$whatref = "$param parameter";
+	  $$varref = $paramOptions{$param};
+      }
+  }
+  $shared = 0 unless defined($shared);
+  $symbol_prefix = defined($sym_prefix) ? $sym_prefix : "";	
+  if (defined($reset_table_vaddr)) {
+      $reset_table_vaddr = str2int($reset_table_vaddr, $rtv_what);
+      $paramOptions{RESET_TABLE_VADDR} = $reset_table_vaddr;
+  }
+  if (defined($vecbase)) {
+      $pconfig->relocatable_vectors
+	  or usage_die("the $vecbase_what only works with processors configured with relocatable vectors");
+      $vecbase = str2int($vecbase, $vecbase_what);
+      (($vecbase & ($pconfig->vecbase_align-1)) == 0)
+	  or Error(sprintf("$vecbase_what value 0x%x is not an address aligned to the %d byte boundary required by the processor configuration", $vecbase, $pconfig->vecbase_align));
+      $pconfig->vecbase_reset($vecbase);	
+  }
+  if (defined($vecreset) && !($pconfig->vector_base_from_pins && defined($vecselect) && $vecselect == 0)) {
+      $vecreset = str2int($vecreset, $vecreset_what);
+      if (!$pconfig->vector_base_from_pins && defined($vecselect)) {
+      	usage_die("the $vecselect_what and $vecreset_what arguments are mutually exclusive unless the processor has the VectorBase1FromPins feature.");
+      }
+      if (!($pconfig->vector_base_from_pins or
+          $vecreset == $pconfig->static_vector_base->[0] or $vecreset == $pconfig->static_vector_base->[1])) {
+          printWarning(sprintf("$vecreset_what 0x%x is not supported for this processor.\nAribtrary reset addresses require the VectorBase1FromPins feature.", $vecreset));
+      }
+      if ($vecreset & 0x3) {
+          printWarning(sprintf("$vecreset_what value 0x%x is not aligned to 4 bytes.\nThis will cause problems unless the reset code is implemented\nto work without alignment.", $vecreset));
+      } else {
+          if ($vecreset & 0xf) {
+              printWarning(sprintf("$vecreset_what value 0x%x is not aligned to 16 bytes.", $vecreset));
+          }
+      }
+      $pconfig->reset_address_from_pins($vecreset);	
+   }
+  if (defined($vecselect)) {
+      $pconfig->relocatable_vectors
+	  or usage_die("the $vecselect_what only works with processors configured with relocatable vectors");
+      $vecselect = str2int($vecselect, $vecselect_what);
+      $vecselect == 0 or $vecselect == 1
+	  or usage_die("$vecselect_what must have a value of 0 or 1");
+      $pconfig->static_vector_select_sw($vecselect);	
+  }
+  my $extrasymbols = "";
+  if ($pconfig->relocatable_vectors) {
+    $extrasymbols .= sprintf("PROVIDE(_memmap_vecbase_reset = 0x%x);\n", $pconfig->vecbase_reset);
+  }
+  my ($reset_vector) = grep($_->name eq "ResetVector", @{$pconfig->vectors});
+  if (defined($reset_vector)) {
+    my $reset_vector_vaddr = $reset_vector->vaddr;
+    $extrasymbols .= sprintf("PROVIDE(_memmap_reset_vector = 0x%x);\n", $reset_vector_vaddr);
+  }
+  my ($sys_layout, $layout) = init_core_layout($pconfig, \%paramOptions);
+  if ($useReferenceMap) {
+    my $newmap = init_reference_map($pconfig, \%paramOptions, $sys_layout, $layout);
+    my $sysMems = [];		
+    my %sysMemNames = ();		
+    my %sysSegNames = ();		
+    my %sysSecNames = ();		
+    my @sysActions = ();		
+    parseMemoryMap($newmap, 0,0, "INTERNAL DEFAULT", $sysMems, \%paramOptions, \@sysActions,
+			  \%sysMemNames, \%sysSegNames, \%sysSecNames, $hush);
+    if ($debug) {
+       print $debugHandle "="x70, "\nDefault system memories:\n";
+       dumpMemories($debugHandle, $sysMems);
+       print $debugHandle "-"x70, "\nSystem segments and sections:\n";
+       my @allsegs = map( @{memSegments($_)}, @$sysMems );	
+       dumpSegmentsAndSections($debugHandle, \@allsegs);
+       print $debugHandle "="x70, "\n";
+    }
+    unshift @actions, @sysActions;	
+  }
+  my $memsRef = [];
+  my %memNames = ();
+  my %segNames = ();
+  my %secNames = ();
+  foreach my $action (@actions) {
+    processMemorySpec($action, 0, $memsRef, \%memNames, \%segNames, \%secNames, $hush);
+    dumpMemories($debugHandle, $memsRef) if $debug;
+    printDebug("After processing the memory map:", $memsRef);
+  }
+  checkFixedParameters($pconfig, $layout, $memsRef, $hush) unless $shared;
+  if (!defined ($paramOptions{"ENTRY"}) && !$shared) {
+    $paramOptions{"ENTRY"} = "_ResetVector";
+  }
+  if (!optionTrue(\%paramOptions,'INCLUDE_DV_SECTIONS')) {
+    foreach my $memname (keys %dv_mem_names) {
+      memRemove($memname, $memsRef, \%memNames, \%segNames, \%secNames, \$extrasymbols);
+    }
+  }
+  my $include_xtboard = (optionTrue(\%paramOptions,'INCLUDE_XTBOARD_MEMORIES',0,1)
+		      or optionTrue(\%paramOptions,'INCLUDE_XT2000_MEMORIES',0,1));
+  if ($include_xtboard) {
+    my $cioaddr = ($have_mmu ? "0x30000000" : "0x70000000");	
+    my $bioaddr = ($have_mmu ? "0xF0000000" : "0x90000000");	
+    my $xtboardMapIoCached = ($use_mmu ? "" : <<"__CIOMAP__");	
+BEGIN iocached
+  $cioaddr : io : iocached : 0x0DA00000 : writable,executable ;
+END iocached
+__CIOMAP__
+    my $xtboardMapIoBypass = ($use_mmu ? "" : <<"__IOMAP__");	
+BEGIN iobypass
+  $bioaddr : io : iobypass : 0x0DA00000 : writable,executable,device ;
+END iobypass
+__IOMAP__
+    my $xtboardMapAlternateRam = ($have_mmu ? "" : <<"__ALTRAMMAP__");	
+BEGIN rambypass
+  0x80000000 : sysram : rambypass : 0x10000000 : writable,executable,device ;
+END rambypass
+__ALTRAMMAP__
+    if ($have_xthifi2) {
+	$xtboardMapIoCached = "";
+	$xtboardMapIoBypass = <<"__XIOMAP__";	
+BEGIN iobypass
+  0x20000000: io : iobypass : 0x10000000 : writable,device ;
+END iobypass
+__XIOMAP__
+	$xtboardMapAlternateRam = "";
+    }
+    parseMemoryMap($xtboardMapIoBypass, 0,1, "XTBOARD MEMORY-MAPPED I/O BLOCK",
+		$memsRef, \%paramOptions, \@actions, \%memNames, \%segNames, \%secNames, $hush)
+	unless exists($memNames{'iobypass'});
+    parseMemoryMap($xtboardMapIoCached, 0,1, "XTBOARD MEMORY-MAPPED CACHED I/O BLOCK",
+		$memsRef, \%paramOptions, \@actions, \%memNames, \%segNames, \%secNames, $hush)
+	unless exists($memNames{'iocached'});
+    parseMemoryMap($xtboardMapAlternateRam, 0,1, "XTBOARD CACHE-BYPASS ALTERNATE RAM ADDRESS",
+		$memsRef, \%paramOptions, \@actions, \%memNames, \%segNames, \%secNames, $hush)
+	unless exists($memNames{'rambypass'});
+    if ($include_xtboard != 2) {		
+      if (!exists($memNames{'iobypass'}) and !$use_mmu) {
+	defer_error($lspName, $lspDir, $deferStdErrors, \$reloc_ldscript, \$final_ldscript,
+		  "This LSP's memory map does not support the Tensilica-supported FPGA boards (XTBOARD).\n"
+		  ."Memory overlap prevents mapping the board's I/O block as follows:\n"
+		  .$xtboardMapIoBypass);
+      }
+      if (!exists($memNames{'iocached'}) and !$use_mmu and !$have_xthifi2) {
+	defer_error($lspName, $lspDir, $deferStdErrors, \$reloc_ldscript, \$final_ldscript,
+		  "This LSP's memory map does not support the Tensilica-supported FPGA boards (XTBOARD).\n"
+		  ."Memory overlap prevents mapping the board's cached I/O block as follows:\n"
+		  .$xtboardMapIoCached);
+      }
+      my $maxmem = $have_mmu ? 1792 : 256;
+      if (grep(memType($_) eq 'sysram' && defined(memSize($_)) && memSize($_) > $maxmem*0x00100000, @$memsRef)) {
+	defer_error($lspName, $lspDir, $deferStdErrors, \$reloc_ldscript, \$final_ldscript,
+		  "This LSP's memory map does not support the Tensilica-supported FPGA boards (XTBOARD).\n"
+		  ."System RAM exceeds the nominal $maxmem MB max DRAM size for FPGA boards.");
+      }
+    }
+  }
+  if ($localMemOpt) {
+    my $localMemsUsed = 0;
+    push @actions, ["(cmdline)", "\n// Additions for -mlocalmems option:\n", 'comment'];
+    if (exists($memNames { "dram0" } )) {
+      push @actions, ["(cmdline)", undef, 'placesecs', 'section', ".dram0.bss", ".bss"];
+      push @actions, ["(cmdline)", undef, 'placesecs', 'section', ".dram0.data", ".data"];
+      push @actions, ["(cmdline)", undef, 'placesecs', 'section', ".dram0.rodata", ".rodata"];
+      push @actions, ["(cmdline)", undef, 'placesecs', 'section', ".dram0.bss", "STACK"];
+      push @actions, ["(cmdline)", undef, 'placesecs', 'section', ".dram0.bss", "HEAP"];
+      $localMemsUsed = 1;
+    }
+    if (exists($memNames { "iram0" } )) {
+      if (exists($memNames { "dram0" } ) and $pconfig->litbase_l32r) {
+	push @actions, ["(cmdline)", undef, 'placesecs', 'section', ".dram0.data", ".lit4"];
+      } 
+      push @actions, ["(cmdline)", undef, 'placesecs', 'section', ".iram0.literal", ".literal"];
+      push @actions, ["(cmdline)", undef, 'placesecs', 'section', ".iram0.text", ".text"];
+      $localMemsUsed = 1;
+    }
+    if ($localMemsUsed == 0) {
+      printWarning("$myname: core has no DataRAM or InstRAM, ignoring '-mlocalmems' option");
+    }
+    push @actions, ["(cmdline)", "\n", 'comment'];
+  }
+  if ($romOpt) {
+      if (!defined($paramOptions{'ROMING'}) or $paramOptions{'ROMING'} != 1) {
+	  $paramOptions{'ROMING'} = 1;
+	  push @actions, ["(cmdline)", "\n// Additions for -mrompack option:\n", 'comment'];
+	  push @actions, ["(cmdline)", undef, 'parameter', 'ROMING', '1'];
+	  push @actions, ["(cmdline)", "\n", 'comment'];
+      }
+  }
+  if ($shared and $paramOptions{'RTOS_STYLE'}) {
+    usage_die("linker scripts for shared memories cannot also be rtos-style linker scripts");
+  }
+  foreach my $action (@actions) {
+    my ($sourceline, $origlines, $act, $kind, $where, @plcsections) = @$action;
+    if ($act eq 'memory') {
+    } elsif ($act eq 'placesecs') {
+      my $seg;
+      if ($kind eq 'section') {
+	$seg = findSegmentForSection($memsRef, $where);
+	if (!defined($seg)) {
+	  my $msg = "section $where not found\n"
+		    ."for directive PLACE SECTIONS(...) WITH_SECTION($where)\n"
+		    ."in LSP memory map $sourceline";
+	  $msg .= "\nThis error normally occurs when no ROM was configured."
+	      if $where =~ /^\.srom\./;
+	  $msg .= "\nThis error normally occurs when no local memory is configured."
+	      if $where =~ /^\.[di]ram0\./;
+	  defer_error($lspName, $lspDir, $deferStdErrors, \$reloc_ldscript, \$final_ldscript, $msg);
+	  next;
+	}
+      } else {
+	die("$myname: $sourceline: segment $where not found\n") unless exists($segNames{$where});
+	$seg = $segNames{$where};
+      }
+      foreach my $sec (@plcsections) {
+	if ($sec ne "HEAP" && $sec ne "STACK") {
+	  my $secseg = findSegmentForSection($memsRef, $sec);
+	  my $section;
+	  if (defined($secseg)) {
+	    next if $secseg == $seg;		
+	    $section = $secNames{$sec};
+	    secRemoveFromSeg($section);
+	  } else {
+	    $section = newSection($sec);
+	    $secNames{$sec} = $section;
+	  }
+ 	  segAddSectionsInorder($seg, $section);
+	} else {
+	  my @mems = grep isMemMemory($_), @$memsRef;
+          my @segs = map (@{memSegments($_)}, @$memsRef);
+	  if ($sec eq "HEAP") {
+	    foreach my $clearseg (@segs) {
+	      setSegContainsHeap($clearseg, 0);
+            }
+	    setSegContainsHeap($seg, 1);
+	  } else {
+	    foreach my $clearseg (@segs) {
+	      setSegContainsStack($clearseg, 0);
+            }
+	    setSegContainsStack($seg, 1);
+	  }
+        }
+      }
+    } elsif ($act eq 'setmem') {
+      die("$myname: internal error") unless $kind eq 'maxsize';
+      if (!exists($memNames{$where})) {
+	  printWarning("$myname: $sourceline: memory '$where' not found");
+	  next;
+      }
+      my $mem = $memNames{$where};
+      if (!defined(memBaseAddress($mem)) or !defined(memSize($mem))) {
+	  printWarning("$myname: $sourceline: memory '$where' does not have a defined virtual address and/or size, ignoring MAXSIZE request");
+	  next;
+      }
+      my $tsize = str2int(shift(@plcsections), $sourceline);
+      die("$myname: $sourceline: can't truncate memory to zero\n")
+	unless $tsize > 0;
+      if (memSize($mem) > $tsize) {
+	my $newend = memBaseAddress($mem) + $tsize - 1;
+	my $newpend = defined(memBasePAddress($mem)) ? memBasePAddress($mem) + $tsize - 1 : undef;
+	my @lost_segs = ();
+	foreach my $seg (@{memSegments($mem)}) {
+	  if (defined($newpend) and $newpend != $newend) {
+	    my $segpaddr = $layout->linkmap->linkspace->addr_in_space(segBaseAddress($seg),
+			segBaseAddress($seg) + segSize($seg) - 1, $layout->physical);
+	    if (defined($segpaddr) and $segpaddr > $newpend) {		
+	      push @lost_segs, segName($seg);
+	    } elsif ($segpaddr + segSize($seg) - 1 > $newpend) {
+	      segSetSize($seg, $newpend - $segpaddr + 1);
+	    }
+	  } elsif (segBaseAddress($seg) > $newend) {		
+	    push @lost_segs, segName($seg);
+	  } elsif (segBaseAddress($seg) + segSize($seg) - 1 > $newend) {
+	    segSetSize($seg, $newend - segBaseAddress($seg) + 1);
+	  }
+	}
+	if (@lost_segs) {
+	  defer_error($lspName, $lspDir, $deferStdErrors, \$reloc_ldscript, \$final_ldscript,
+		  "some segments of memory '$where'\n"
+		  ."(".join(", ", @lost_segs).")\n"
+		  ."are outside the $tsize bytes truncated size\n"
+		  ."requested in $sourceline"
+		  );
+	  next;
+	} else {
+	  memSetSize($mem, $tsize);			
+	  memSetPSize($mem, $tsize) if defined(memPSize($mem)) and memPSize($mem) > $tsize;
+	}
+      }
+    } elsif ($act eq 'comment') {
+    } elsif ($act eq 'parameter') {
+    } else {
+	die("$myname: internal error: unknown action '$act'");
+    }
+  }
+  my @segments = map( @{memSegments($_)}, grep (isMemMemory($_), @$memsRef));
+  if ( !checkSegmentConsistency([@segments],
+				$allow_non_text_into_imem, $hush, $pconfig, $shared)) {
+    exit $exitcode;
+  }
+  if (defined($outMapFile)) {
+    my $dHandle = openwrite($outMapFile, "writing memory map");
+    if (!$outputMemsOnly) {
+      foreach my $action (@actions) {
+	my ($sourceline, $origlines, $act, $kind, $where, @plcsections) = @$action;
+#	print $dHandle "#--------------- $sourceline:\n";
+	if (defined($origlines)) {
+	  printf $dHandle $origlines;
+	} elsif ($act eq 'memory') {
+	} elsif ($act eq 'placesecs') {
+	  printf $dHandle "PLACE SECTIONS(%s) %s(%s)\n",
+	  	join(" ", @plcsections),
+		($kind eq 'section' ? "WITH_SECTION" : "IN_SEGMENT"),
+		$where;
+	} elsif ($act eq 'setmem') {
+	  printf $dHandle "OVERRIDE MEMORY %s MAXSIZE=%s\n", $where, $plcsections[0];
+	} elsif ($act eq 'parameter') {
+	  my $quote = ($where =~ /\s/) ? '"' : '';
+	  printf $dHandle "%s = %s%s%s\n", $kind, $quote, $where, $quote;
+	}
+      }
+#      print $dHandle "#===============\n";
+    }
+    print $dHandle <<COMMENT if $useReferenceMap and !$getParmsOnly;
+// A memory map is a sequence of memory descriptions and
+// optional parameter assignments.
+//
+// Each memory description has the following format:
+//   BEGIN <name>
+//     <addr> [,<paddr>] : <mem-type> : <mem-name> : <size> [,<psize>]
+//                       : [writable] [,executable] [,device] ;
+//     <segment>*
+//   END <name>
+//
+// where each <segment> description has the following format:
+//     <seg-name> : F|C : <start-addr> - <end-addr> [ : STACK ] [ : HEAP ]
+//                : <section-name>* ;
+//
+// Each parameter assignment is a keyword/value pair in the following format:
+//   <keyword> = <value>                (no spaces in <value>)
+// or
+//   <keyword> = "<value>"              (spaces allowed in <value>)
+//
+// The following primitives are also defined:
+//   PLACE SECTIONS( <section-name>* ) { WITH_SECTION(<section-name>)
+//                                       | IN_SEGMENT(<seg-name>) }
+//
+//   NOLOAD <section-name1> [ <section-name2> ... ]
+//
+// Please refer to the Xtensa LSP Reference Manual for more details.
+//
+COMMENT
+    dumpMemories($dHandle, $memsRef);
+    $dHandle->close();
+  }   
+  exit $exitcode unless $outputLdscripts;
+  check_deferred_error($lspName, $lspDir, $reloc_ldscript, $final_ldscript, $outLdFile, $outLdFileReloc);
+  if (!optionTrue(\%paramOptions,'ROMING')) {
+    segRemove('rom.store', \%segNames, \%secNames, \$extrasymbols);
+  }
+  if (optionTrue(\%paramOptions,'EXCLUDE_ROMS')) {
+    my @roms = grep(isMemRom($_), @$memsRef);
+    foreach my $mem (@roms) {
+      my $memname = memName($mem);
+      memRemove($memname, $memsRef, \%memNames, \%segNames, \%secNames, \$extrasymbols);
+    }
+  }
+  my @nodev_mems = grep (isMemMemory($_), @$memsRef);
+  @segments = map( @{memSegments($_)}, grep (isMemMemory($_), @$memsRef));
+  print $debugHandle "Memories:\n", dumpMemories($debugHandle, \@nodev_mems) if $debug;
+  dumpSegmentsAndSections($debugHandle, \@segments) if $debug;
+  my %sectionIncs;		
+  my %relocatableSectionIncs;	
+  foreach my $seg (@segments) {
+    my @secs = segSections($seg);
+    if (segIsFixed($seg) and scalar(@secs) > 0) {
+      my $firstsec = shift(@secs);
+      $sectionIncs{secName($firstsec)} = [ "KEEP (*(".secName($firstsec)."))~X" ];
+    }
+    foreach my $sec (@secs) {
+      $sectionIncs{secName($sec)} = [ secName($sec) ];
+    }
+  }
+  $sectionIncs{'.text'} =
+    [ '.entry.text',
+      'KEEP (*(.init))~X',
+      '.text',
+      '.text.*',
+      '.gnu.linkonce.t.*',
+      'KEEP (*(.text.*personality*))~X',
+      '.stub',
+      '.gnu.warning',
+      'KEEP (*(.fini))~X',
+      '.gnu.version' ];
+  $sectionIncs{'.literal'} =
+    [ '.init.literal',
+      '.literal',
+      '.literal.*',
+      '.gnu.linkonce.literal.*',
+      '.gnu.linkonce.t.*.literal',
+      '.fini.literal' ];
+  my $text_and_literal =
+    [ '.entry.text',
+      '.init.literal',
+      'KEEP(*(.init))~X',
+      '.literal .text .literal.* .text.* .stub .gnu.warning .gnu.linkonce.literal.* .gnu.linkonce.t.*.literal .gnu.linkonce.t.*',
+      '.fini.literal',
+      'KEEP(*(.fini))~X',
+      '.gnu.version' ];
+  $sectionIncs{'.lit4'} =
+    [ '*.lit4',
+      '.lit4.*',
+      '.gnu.linkonce.lit4.*' ] unless $shared;
+  $sectionIncs{'.rodata'} =
+    [ '.rodata',
+      '.rodata.*',
+      '.gnu.linkonce.r.*',
+      '.rodata1' ];
+  if (!$shared) {
+    push @{$sectionIncs{'.rodata'}}, (
+      '__XT_EXCEPTION_TABLE__ = ABSOLUTE(.);~X',
+      'KEEP (*(.xt_except_table))~X',
+      'KEEP (*(.gcc_except_table))~X',
+      '.gnu.linkonce.e.*',
+      '.gnu.version_r' );
+  }
+  $sectionIncs{'.data'} =
+    [ '.data',
+      '.data.*',
+      '.gnu.linkonce.d.*',
+      'KEEP(*(.gnu.linkonce.d.*personality*))~X',
+      '.data1',
+      '.sdata',
+      '.sdata.*',
+      '.gnu.linkonce.s.*',
+      '.sdata2',
+      '.sdata2.*',
+      '.gnu.linkonce.s2.*',
+      'KEEP(*(.jcr))~X'
+      ];
+  if (!$shared) {
+    push @{$sectionIncs{'.rodata'}}, (
+      'KEEP (*(.eh_frame))~X',
+      '/*  C++ constructor and destructor tables, properly ordered:  */~X',
+      'KEEP (*crtbegin.o(.ctors))~X',
+      'KEEP (*(EXCLUDE_FILE (*crtend.o) .ctors))~X',
+      'KEEP (*(SORT(.ctors.*)))~X',
+      'KEEP (*(.ctors))~X',
+      'KEEP (*crtbegin.o(.dtors))~X',
+      'KEEP (*(EXCLUDE_FILE (*crtend.o) .dtors))~X',
+      'KEEP (*(SORT(.dtors.*)))~X',
+      'KEEP (*(.dtors))~X',
+      '/*  C++ exception handlers table:  */~X',
+      '__XT_EXCEPTION_DESCS__ = ABSOLUTE(.);~X',
+      '.xt_except_desc',
+      '.gnu.linkonce.h.*',
+      '__XT_EXCEPTION_DESCS_END__ = ABSOLUTE(.);~X',
+      '.xt_except_desc_end',
+      '.dynamic',
+      '.gnu.version_d'
+      );
+ }
+  $sectionIncs{'.bss'} =
+    [ '.dynsbss',
+      '.sbss',
+      '.sbss.*',
+      '.gnu.linkonce.sb.*',
+      '.scommon',
+      '.sbss2',
+      '.sbss2.*',
+      '.gnu.linkonce.sb2.*',
+      '.dynbss',
+      '.bss',
+      '.bss.*',
+      '.gnu.linkonce.b.*',
+      'COMMON' ];
+  $relocatableSectionIncs{'.bss'} =
+    [ '.dynsbss',
+      '.sbss',
+      '.scommon',
+      '.dynbss',
+      '.bss',
+      'COMMON' ];
+  foreach my $secnames (
+      [".dport", ".rodata", ".literal", ".data"],
+      [".dram",  ".rodata", ".literal", ".data"],	
+      [".drom",  ".rodata", ".literal"],
+      [".iram",  ".text", ".literal"],
+      [".irom",  ".text", ".literal"]) {
+    my ($prefix, @suffixes) = @$secnames;
+    @suffixes = grep(exists($secNames{$prefix."0".$_}), @suffixes);
+    next unless @suffixes;
+    next if grep(exists($secNames{$prefix."1".$_}), @suffixes);
+    next if grep(exists($secNames{$prefix.$_}), @suffixes)
+        or exists($secNames{$prefix.".text.literal"});
+    foreach my $suffix (@suffixes) {
+      my $outname = $prefix."0".$suffix;	
+      my @innames = ($prefix.$suffix);		
+      push @innames, $prefix.".text.literal"	
+       if $suffix eq ".literal" and ($prefix eq ".iram" or $prefix eq ".irom");
+      push @{$sectionIncs{$outname}}, @innames;
+    }
+  }
+  my $litmsg = $pconfig->swextl32r ? "\n(ignore this warning if always using extended L32R mode with this LSP)" : "";
+  foreach my $textName ( keys %secNames )
+  {
+    my $litName = $textName;
+    next unless $litName =~ s/\.text$/.literal/;
+    my $textSeg = findSegmentForSection($memsRef, $textName);
+    my $litSeg  = findSegmentForSection($memsRef, $litName);
+    next unless defined($textSeg);	
+    if (! defined($litSeg)) {
+      my $rodataName = $textName;
+      $rodataName =~ s/\.text$/.rodata/ or die "Unexpected internal rodataName error\n";
+      my $rodataSeg = findSegmentForSection($memsRef, $rodataName);
+      if (defined($rodataSeg)) {
+	printWarning("Creating section $litName in same segment as section $rodataName$litmsg");
+	my $litSection = newSection($litName);
+	$sectionIncs{$litName} = [$litName] unless defined($sectionIncs{$litName});
+	$secNames{$litName} = $litSection;
+	segAddSectionsInorder($rodataSeg, $litSection);
+	$litSeg = $rodataSeg;		
+      } else {
+	printWarning("Could not find literal section corresponding to section $textName$litmsg")
+		unless $textName =~ /^\.(WindowVectors|ResetVector)\.text$/
+		or ($hush and $textName ne ".text" and $textName !~ /Vector\.text$/);
+	next;
+      }
+    }
+    my ($firstsec) = segSections($textSeg);	
+    my $fixed_first = (segIsFixed($textSeg) and secName($firstsec) eq $textName);
+    if ($textSeg == $litSeg) {
+      if ($fixed_first) {
+      } else {
+	if ($textName eq '.text') {
+	  $sectionIncs{'.text'} = $text_and_literal;
+	  $relocatableSectionIncs{'.text'} = [ '.literal .text' ];
+	} else {
+	  $sectionIncs{$textName} = [ join(" ", @{$sectionIncs{$litName}}, @{$sectionIncs{$textName}}) ];
+	}
+	secRemove($litName, \%secNames);	
+      }
+    } elsif ($litName eq '.ResetVector.literal' or $litName eq '.SharedResetVector.literal') {
+    } elsif (segBaseAddress($textSeg) <= segBaseAddress($litSeg)) {
+      printWarning("Section $litName does not precede corresponding section $textName$litmsg");
+    } elsif (segBaseAddress($textSeg) - (segBaseAddress($litSeg) + segSize($litSeg)) >= 256*1024) {
+      printWarning("Section $litName completely outside L32R range (256kB span) of corresponding section $textName$litmsg");
+    } elsif (segBaseAddress($textSeg) - segBaseAddress($litSeg) >= 256*1024) {
+      printWarning("Section $litName outside L32R range (256kB span) of corresponding section $textName$litmsg");
+    } elsif (!$fixed_first and segBaseAddress($textSeg) + segSize($textSeg) - segBaseAddress($litSeg) > 256*1024) {
+      printWarning("Section $litName not in full L32R range (256kB span) of corresponding section $textName$litmsg") unless $hush;
+    }
+  }
+  my %startSymbols;
+  my %endSymbols;
+  $startSymbols{'.text'} = [ $symbol_prefix . '_stext = .;~X' ];
+  $endSymbols{'.text'} = [ $symbol_prefix . '_etext = .;~X' ];
+  my $reserve_areas = $paramOptions{"RESERVE_SEGMENT_AREA"};
+  my $use_areas     = $paramOptions{"USE_SEGMENT_AREA"};
+  if (defined($reserve_areas) and defined($use_areas)) {
+    die("$myname: cannot specify both RESERVE_SEGMENT_AREA and USE_SEGMENT_AREA parameters\n");
+  }
+  if (defined($reserve_areas) or defined($use_areas)) {
+    my $areas = defined($reserve_areas) ? $reserve_areas : $use_areas;
+    my $param = defined($reserve_areas) ? "RESERVE_SEGMENT_AREA" : "USE_SEGMENT_AREA";
+    my @areas;
+    foreach my $area (split(':', $areas)) {
+      if ($area !~ /^\s*([a-z0-9_\.]+)\s+(0x[0-9a-f]+|[0-9]+)(\s*\+\s*(0x[0-9a-f]+|[0-9]+))?\s+(start|end)\s*$/i) {
+	die("$myname: $param parameter: invalid syntax\n"
+	   ."$myname: expected   <secname> <numbytes>[+<extrabytes>] {start|end} [ : ...]\n");
+      }
+      my ($secname, $reserve_size, $extra_size, $where) = ($1,$2,$4,$5);
+      $reserve_size = str2int($reserve_size, "$param parameter <numbytes> field");
+      $extra_size = defined($extra_size) ? str2int($extra_size, "$param parameter <extrabytes> field")
+					 : ($reserve_size >> 3);
+      my $reserve_seg = findSegmentForSection($memsRef, $secname);
+      if (!defined($reserve_seg)) {
+	die("$myname: $param parameter: section $secname not found\n");
+      }
+      if (segSize($reserve_seg) < $reserve_size + $extra_size) {
+	my $msg = sprintf("%s parameter of LSP memory map:\n"
+		. "segment containing section %s is too small\n"
+		. "(segment %s spans only 0x%X bytes,\n"
+		. " cannot reserve 0x%X + 0x%X bytes)",
+		$param, $secname, segName($reserve_seg), segSize($reserve_seg),
+		$reserve_size, $extra_size);
+	defer_error($lspName, $lspDir, $deferStdErrors, \$reloc_ldscript, \$final_ldscript, $msg);
+	check_deferred_error($lspName, $lspDir, $reloc_ldscript, $final_ldscript, $outLdFile, $outLdFileReloc);
+      }
+      if ($where =~ /end/i) {
+	segSetBaseAddress($reserve_seg, segBaseAddress($reserve_seg) + segSize($reserve_seg) - $reserve_size)
+	  unless defined($reserve_areas);
+      } else {
+	segSetBaseAddress($reserve_seg, segBaseAddress($reserve_seg) + $reserve_size)
+	  if defined($reserve_areas);
+      }
+      if (defined($reserve_areas)) {
+	segSetSize($reserve_seg, segSize($reserve_seg) - $reserve_size);	
+      } else {
+	segSetSize($reserve_seg, $reserve_size);				
+      }
+    }
+  }
+  @segments = sort { segBaseAddress($a) <=> segBaseAddress($b) } @segments;
+  my $text_seg_index = scalar(@segments);
+  my $iram_seg_index = scalar(@segments);
+  for( my $i = 0; $i < scalar(@segments); $i++){
+    my $seg = $segments[$i];
+    foreach my $sec (segSections($seg)) {
+      if (secName($sec) eq '.text') {
+	$text_seg_index = $i;
+	last;
+      }
+    }
+    if (isMemInstRam(segMemory($seg))) {
+      $iram_seg_index = $i;
+    }
+  }
+  if ($text_seg_index < $iram_seg_index and $iram_seg_index < scalar(@segments)) {
+    @segments = @segments[0..$text_seg_index-1, $text_seg_index+1..$iram_seg_index,  $text_seg_index, $iram_seg_index+1..scalar(@segments)-1];
+  }
+  $debugHandle->close();			
+  $reloc_ldscript = "";
+  print_ldscript(\$reloc_ldscript, \%paramOptions,
+		 \@segments, $memsRef, \%secNames,
+		 \%relocatableSectionIncs, $extrasymbols,
+		 \%startSymbols, \%endSymbols, 0);
+  if (!defined($outLdFile)) {
+    print_ldscript_to_file("$lspDir/ldscripts/elf32xtensa.xr", $reloc_ldscript,
+		  "ld -r or ld -i", $lspName);
+    print_ldscript_to_file("$lspDir/ldscripts/elf32xtensa.xu", $reloc_ldscript,
+		  "ld -Ur", $lspName);
+  } elsif ($outLdFileReloc) {
+    print_ldscript_to_file($outLdFile, $reloc_ldscript,
+			"ld -r or ld -i or ld -Ur", $lspName);
+    print "New linker script generated in $outLdFile\n" unless $quiet;
+    exit $exitcode;
+  }
+  my $rtos_style = optionTrue(\%paramOptions, 'RTOS_STYLE');
+  foreach my $seg (@segments) {
+    my @bss_secs = grep(secName($_) =~ /\.bss$/, segSections($seg));
+    next unless @bss_secs;
+    my ($short_bss) = sort {length($a) <=> length($b)} map(secName($_), @bss_secs);
+    secMerge($short_bss, \%sectionIncs, \%secNames, @bss_secs);
+  }
+  push (@{$sectionIncs{'.rodata'}}
+	,". = ALIGN(4);\t\t/* this table MUST be 4-byte aligned */~X"
+	,"${symbol_prefix}_bss_table_start = ABSOLUTE(.);~X"
+      );
+  foreach my $bss_sec (grep(/\.bss$/, map(secName($_),map(segSections($_), @segments)))) {
+    my $bss_nodot = $symbol_prefix . convert_section_dots($bss_sec);
+    push (@{$sectionIncs{'.rodata'}}
+	  ,"LONG(${bss_nodot}_start)~X"
+	  ,"LONG(${bss_nodot}_end)~X"
+	);
+  }
+  push (@{$sectionIncs{'.rodata'}},
+	"${symbol_prefix}_bss_table_end = ABSOLUTE(.);~X");
+  if ($rtos_style) {
+    my $bss_seg = findSegmentForSection($memsRef, '.bss');
+    my $dataseg = findSegmentForSection($memsRef, '.data');
+    my $textseg = findSegmentForSection($memsRef, '.text');
+    move2end   {$_ == $bss_seg} @segments if defined($bss_seg);
+    move2start {$_ == $dataseg} @segments if defined($dataseg);
+    move2start {$_ == $textseg} @segments if defined($textseg);
+    segSetFloating($bss_seg, 1) if defined($bss_seg);
+    segSetFloating($dataseg, 1) if defined($dataseg);
+    segSetFloating($textseg, 1) if defined($textseg);
+    my @text_secs;
+    my @data_secs;
+    if (defined($dataseg) and defined($textseg) and $dataseg == $textseg) {
+      @text_secs = segSections($textseg);
+      my $first_data = 0;	
+      while (secName($text_secs[$first_data]) !~ /\.data$/) { $first_data++; }
+      @data_secs = splice(@text_secs, $first_data);
+      printWarning("Found *.text section(s) after first *.data section in segment containing .data")
+		if grep(secName($_) =~ /\.text$/, @data_secs);
+      move2start {secName($_) eq '.lit4'} @{segSectionsRef($textseg)};
+    } else {
+      @data_secs = segSections($dataseg) if defined($dataseg);
+      @text_secs = segSections($textseg) if defined($textseg);
+      printWarning("Found *.text section(s) in segment containing .data")
+		if grep(secName($_) =~ /\.text$/ && secName($_) ne ".sram.text", @data_secs);
+      move2start {secName($_) eq '.data'} @{segSectionsRef($dataseg)}
+		if defined($dataseg);
+    }
+    extract {secName($_) =~ /\.bss$/}     @text_secs, @data_secs;
+    extract {secName($_) eq '.lit4'}      @text_secs, @data_secs;
+    extract {secName($_) eq '.rom.store'} @text_secs, @data_secs;
+    secMerge('.text', \%sectionIncs, \%secNames, @text_secs);
+    secMerge('.data', \%sectionIncs, \%secNames, @data_secs);
+    move2start {secName($_) eq '.text'} @{segSectionsRef($textseg)}
+	if defined($textseg);
+  }
+  if (optionTrue(\%paramOptions,'ROMING')) {
+    my $romstore_section = $secNames{'.rom.store'};
+    if (!defined($romstore_section)) {
+      defer_error($lspName, $lspDir, $deferStdErrors, \$reloc_ldscript, \$final_ldscript,
+		"ROMING option specified in LSP memory map but .rom.store section not found.\n"
+		."This error normally occurs when no ROM was configured.");
+      check_deferred_error($lspName, $lspDir, $reloc_ldscript, $final_ldscript, $outLdFile, $outLdFileReloc);
+    }
+    my $romstore_seg = secSegment($romstore_section);
+    my $reset_seg = findSegmentForSection($memsRef, '.ResetVector.text');
+    my @store = ( '. = ALIGN(4);~X',
+		  "${symbol_prefix}_rom_store_table = .;~X" );
+    foreach my $seg ( @segments ) {
+      next if isMemRom(segMemory($seg)) or $seg eq $romstore_seg or (defined($reset_seg) and $seg eq $reset_seg);
+      segSetPacked($seg, 1);
+      foreach my $sec ( segSections($seg) ) {
+	next if secName($sec) =~ /\.bss$/;
+        next if secName($sec) =~ /^\.overlay$/;
+        next if exists $noload_sections{secName($sec)};
+	my $secNoDot = $symbol_prefix . convert_section_dots(secName($sec));
+	push(@store,
+	     ("LONG(${secNoDot}_start);~X",
+	      "LONG(${secNoDot}_end);~X",
+	      "LONG(LOADADDR(" . secName($sec) . "));~X"));
+      }
+    }
+    push(@store, ('LONG(0);~X', 'LONG(0);~X', 'LONG(0);~X', '_rom_store = .;~X'));
+    replaceone {$_ eq '.rom.store'} @{$sectionIncs{secName($romstore_section)}}, @store;
+    my $i = find {$_ == $romstore_section} @{segSectionsRef($romstore_seg)};
+    if (defined($i) and $i > 0) {
+      my $prevname = secName((segSections($romstore_seg))[$i-1]);
+      secMerge($prevname, \%sectionIncs, \%secNames, $romstore_section)
+		if $prevname ne '.lit4';	
+    }
+  } else {
+    secRemove('.rom.store', \%secNames);	
+  }
+  my $found = 0;
+  my $olsName = $paramOptions{"OVERLAY_LOAD_SEG"};
+  foreach my $seg (@segments) {
+    foreach my $sec (segSections($seg)) {
+      if (secName($sec) eq ".overlay") {
+        if (defined $olsName) {
+          secRemoveFromSeg($sec);
+        }
+        else {
+          $found = 1;
+          $paramOptions{"OVERLAY_LOAD_SEG"} = segName($seg);
+        }
+      }
+    }
+  }
+  if (($found == 0) && defined($olsName)) {
+    foreach my $seg (@segments) {
+      if (segName($seg) eq $olsName) {
+        my $newSec = newSection(".overlay");
+        segAddSectionsInorder($seg, $newSec);
+        $found = 1;
+      }
+    }
+  }
+  if ($found == 0) {
+    foreach my $seg (@segments) {
+      foreach my $sec (segSections($seg)) {
+        if (secName($sec) eq ".text") {
+          my $newSec = newSection(".overlay");
+          segAddSectionsInorder($seg, $newSec);
+          $paramOptions{"OVERLAY_LOAD_SEG"} = segName($seg);
+        }
+      }
+    }
+  }
+  $paramOptions{"OVERLAY_MAP_SEG"} = $paramOptions{"OVERLAY_LOAD_SEG"}
+    unless defined $paramOptions{"OVERLAY_MAP_SEG"};
+  if (!$shared) {
+    if (!$use_mmu) {
+      my @regions = (0,0,0,0,0,0,0,0);
+      foreach my $mem (@$memsRef) {
+        my $level = (isMemDevice($mem) ? 4 : isMemLocal($mem) ? 1 : 2);
+        foreach my $region ((memBaseAddress($mem)>>29)
+	  		    .. ((memBaseAddress($mem)+memSize($mem)-1)>>29)) {
+	  $regions[$region] = $level if $regions[$region] < $level;
+        }
+      }
+      my $DEFAULT_WRITEBACK_NOALLOC = 0;	
+      my @camap;
+      if ($have_mpu) {
+        @camap = (0,4,[1,2],3,4);	
+      } elsif ($have_mmu) {
+        @camap = (12,3,7,11,3);		
+      } else {
+        my $wb = ($have_writeback ? ($have_writeback_noalloc ? [0x4,0x5] : 0x4) : 0x1);
+        @camap = (0xF,0x2,$wb,0x1,0x2);	
+      }
+      sub reg2attr {my $a=0; for my $i (0..7) {$a += ($_[$i]<<($i*4));} $a}
+      sub cachattr {
+        my ($min,$wbna,@unused) = @_;	
+        my $attr;
+        for my $i (0..7) {
+	  my $level = ($regions[$i] ? $regions[$i] : $unused[$i]);
+	  $level = 4 if $level == 1;	
+	  $level = $min if $level < $min and $level > 0;
+	  my $ca = $camap[$level];
+	  $ca = $ca->[$wbna < 0 ? $DEFAULT_WRITEBACK_NOALLOC : $wbna] if ref($ca) ne "";
+	  $attr += ($ca << ($i*4));
+        }
+        $attr;
+      }
+      sub addsym {$extrasymbols .= sprintf("%s = 0x%08X;\n", @_);}
+      my $u_mask = reg2attr(map((0xF,0x0,0x0,0x0,0x0)[$_],@regions));
+      $extrasymbols .= "/* Various memory-map dependent cache attribute settings: */\n";
+      addsym("_memmap_cacheattr_wb_base",      cachattr(2,-1, 0,0,0,0,0,0,0,0) & ~$u_mask);
+      addsym("_memmap_cacheattr_wt_base",      cachattr(3,-1, 0,0,0,0,0,0,0,0) & ~$u_mask);
+      addsym("_memmap_cacheattr_bp_base",      cachattr(4,-1, 0,0,0,0,0,0,0,0) & ~$u_mask);
+      addsym("_memmap_cacheattr_unused_mask",  $u_mask);
+      addsym("_memmap_cacheattr_wb_trapnull",  cachattr(2,-1, 0,4,4,4,4,4,4,4));
+      addsym("_memmap_cacheattr_wba_trapnull", cachattr(2, 0, 0,4,4,4,4,4,4,4));
+      addsym("_memmap_cacheattr_wbna_trapnull",cachattr(2, 1, 0,4,4,4,4,4,4,4));
+      addsym("_memmap_cacheattr_wt_trapnull",  cachattr(3,-1, 0,4,4,4,4,4,4,4));
+      addsym("_memmap_cacheattr_bp_trapnull",  cachattr(4,-1, 0,4,4,4,4,4,4,4));
+      addsym("_memmap_cacheattr_wb_strict",    cachattr(2,-1, 0,0,0,0,0,0,0,0));
+      addsym("_memmap_cacheattr_wt_strict",    cachattr(3,-1, 0,0,0,0,0,0,0,0));
+      addsym("_memmap_cacheattr_bp_strict",    cachattr(4,-1, 0,0,0,0,0,0,0,0));
+      addsym("_memmap_cacheattr_wb_allvalid",  cachattr(2,-1, 4,4,4,4,4,4,4,4));
+      addsym("_memmap_cacheattr_wt_allvalid",  cachattr(3,-1, 4,4,4,4,4,4,4,4));
+      addsym("_memmap_cacheattr_bp_allvalid",  cachattr(4,-1, 4,4,4,4,4,4,4,4));
+      $extrasymbols .= "PROVIDE(_memmap_cacheattr_reset = _memmap_cacheattr_wb_trapnull);\n";
+    } else {
+      $extrasymbols .= "PROVIDE(_memmap_cacheattr_reset = 0);\n";
+    }
+  }
+  else {
+    $extrasymbols = "";
+  }
+  $final_ldscript = "";
+  print_ldscript(\$final_ldscript, \%paramOptions,
+		 \@segments, $memsRef, \%secNames,
+		 \%sectionIncs, $extrasymbols,
+		 \%startSymbols, \%endSymbols, 1);
+  if (defined($outLdFile)) {
+    print_ldscript_to_file($outLdFile, $final_ldscript,
+		  "default link or ld -n or ld -N", $lspName);
+    print "New linker script generated in $outLdFile\n" unless $quiet;
+  } else {
+    print_ldscript_to_file("$lspDir/ldscripts/elf32xtensa.x", $final_ldscript,
+		  "default link", $lspName);
+    print_ldscript_to_file("$lspDir/ldscripts/elf32xtensa.xn", $final_ldscript,
+		  "ld -n", $lspName);
+    print_ldscript_to_file("$lspDir/ldscripts/elf32xtensa.xbn", $final_ldscript,
+		  "ld -N", $lspName);
+    print "New linker scripts generated in $lspDir/ldscripts\n" unless $quiet;
+  }
+  exit $exitcode;
+}

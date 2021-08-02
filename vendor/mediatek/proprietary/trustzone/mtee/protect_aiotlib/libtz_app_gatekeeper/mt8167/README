@@ -1,0 +1,9 @@
+Hardware-based Gatekeeper library for Mediatek In-house TEE.
+
+WHAT IT DOES?
+=============
+Hardware-based Gatekeeper library handles enroll and verify operation in Mediatek In-house TEE.
+
+HOW IT WAS BUILT?
+==================
+No needs libraries from AOSP.

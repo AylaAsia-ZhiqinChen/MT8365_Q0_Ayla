@@ -1,0 +1,9 @@
+Application of MTK driver HDCP computation library.
+
+WHAT IT DOES?
+=============
+MTK driver HDCP computation library handle the HDCP operation in trustzone.
+
+HOW IT WAS BUILT?
+==================
+No needs libraries from AOSP.

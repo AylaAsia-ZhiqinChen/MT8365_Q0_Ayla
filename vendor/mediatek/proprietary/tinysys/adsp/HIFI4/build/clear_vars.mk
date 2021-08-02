@@ -1,0 +1,32 @@
+ALLFLAGS                    :=
+CFLAGS                      :=
+CCFLAGS                     :=
+LDFLAGS                     :=
+LIBFLAGS                    :=
+INCLUDES                    :=
+C_FILES                     :=
+S_FILES                     :=
+TCM_C_FILES                 :=
+TCM_S_FILES                 :=
+TCM_CFLAGS                  :=
+NORMAL_SECTION_C_FILES      :=
+NORMAL_SECTION_LIBS         :=
+DRAM_CFLAGS                 :=
+DRAM_LIBFLAGS               :=
+DRIVERS_PLATFORM_DIR        :=
+OBJS                        :=
+DEPS                        :=
+$(PROCESSOR).CONFIG_OPTIONS :=
+BUILD_FROM_SOURCE           :=
+
+CC      :=
+CPP     :=
+AS      :=
+AR      :=
+OBJCOPY :=
+OBJDUMP :=
+DUMPELF :=
+SIZE    :=
+STRIP   :=
+READELF :=
+

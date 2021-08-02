@@ -1,0 +1,119 @@
+#// Customer ID=13943; Build=0x75f5e; Copyright (c) 2007-2012 by Tensilica Inc.  ALL RIGHTS RESERVED.
+#// These coded instructions, statements, and computer programs are the
+#// copyrighted works and confidential proprietary information of
+#// Tensilica Inc.  They may be adapted and modified by bona fide
+#// purchasers for internal use, but neither the original nor any adapted
+#// or modified version may be disclosed or distributed to third parties
+#// in any manner, medium, or form, in whole or in part, without the prior
+#// written consent of Tensilica Inc.
+
+
+system "sys"
+(
+  properties
+  (
+    type = "System";
+    version = "1.0";
+    variant = "";
+    loadfile_extension = "";
+    description = "";
+    onecyclevalue = "10.0";
+    onecycletime = "ns";
+    simulationresolution = "1 ps";
+    simulationdefaulttime = "1 ns";
+  )
+  parameters ()
+  components
+  (
+
+    instance "core0"
+    (
+      model   = "xtsc_core_sd";
+      version = "";
+      variant = "";
+
+      parameters
+      (
+        "SimTargetOutput" = "core0_output.log";
+      )
+
+    )
+
+    instance "core0_pif"
+    (
+      model   = "xtsc_memory_sd_1";
+      version = "";
+      variant = "";
+
+      parameters
+      (
+        "block_read_delay" = "1";
+        "block_write_delay" = "1";
+        "block_write_repeat" = "1";
+        "block_write_response" = "1";
+        "byte_width" = "8";
+        "rcw_response" = "1";
+        "read_delay" = "1";
+        "write_delay" = "1";
+      )
+
+    )
+
+    instance "core1"
+    (
+      model   = "xtsc_core_sd";
+      version = "";
+      variant = "";
+
+      parameters
+      (
+        "SimTargetOutput" = "core1_output.log";
+      )
+
+    )
+
+    instance "core1_pif"
+    (
+      model   = "xtsc_memory_sd_1";
+      version = "";
+      variant = "";
+
+      parameters
+      (
+        "block_read_delay" = "1";
+        "block_write_delay" = "1";
+        "block_write_repeat" = "1";
+        "block_write_response" = "1";
+        "byte_width" = "8";
+        "rcw_response" = "1";
+        "read_delay" = "1";
+        "write_delay" = "1";
+      )
+
+    )
+
+    instance "wire"
+    (
+      model   = "xtsc_wire_sd";
+      version = "";
+      variant = "";
+
+      parameters
+      (
+        "bit_width" = "50";
+      )
+
+    )
+
+  )
+  connections
+  (
+    "core0::m_pif_request_port<-->core0_pif::m_request_exports[0]" = "core0":"m_pif_request_port" to "core0_pif":"m_request_exports[0]";
+    "core0_pif::m_respond_ports[0]<-->core0::m_pif_respond_export" = "core0_pif":"m_respond_ports[0]" to "core0":"m_pif_respond_export";
+    "core1::m_pif_request_port<-->core1_pif::m_request_exports[0]" = "core1":"m_pif_request_port" to "core1_pif":"m_request_exports[0]";
+    "core1_pif::m_respond_ports[0]<-->core1::m_pif_respond_export" = "core1_pif":"m_respond_ports[0]" to "core1":"m_pif_respond_export";
+    "core0::m_wire_write_status<-->wire::m_write" = "core0":"m_wire_write_status" to "wire":"m_write";
+    "core1::m_wire_read_control<-->wire::m_read" = "wire":"m_read" to "core1":"m_wire_read_control";
+  )
+  portmaps ()
+)

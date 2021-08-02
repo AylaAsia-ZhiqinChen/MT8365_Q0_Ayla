@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en-us" lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="copyright" content="(C) Copyright 2005"/>
+<meta name="DC.rights.owner" content="(C) Copyright 2005"/>
+<meta name="DC.Type" content="tconcept"/>
+<meta name="DC.Title" content="Automatically Select Memory Addresses"/>
+<meta name="abstract" content="Xplorer can automatically position local memories for alignment and proximity needs"/>
+<meta name="description" content="Xplorer can automatically position local memories for alignment and proximity needs"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/nodes/g_cache_localmem.html"/>
+<meta name="DC.Relation" scheme="URI" content="opt.cfg_auto_vectors.html"/>
+<meta name="DC.Relation" scheme="URI" content="opt.mmuType.html"/>
+<meta name="DC.Format" content="XHTML"/>
+<meta name="DC.Identifier" content="opt-cfg_auto_mmap"/>
+<link rel="stylesheet" type="text/css" href="../../commonltr.css"/>
+<link rel="stylesheet" type="text/css" href="../../cadence.css"/>
+<title>Automatically Select Memory Addresses</title>
+</head>
+<body id="opt-cfg_auto_mmap">
+
+
+    <h1 class="title topictitle1">Automatically Select Memory Addresses</h1>
+
+    
+    <div class="body conbody"><p class="shortdesc">Xplorer can automatically position local memories for alignment and proximity
+        needs</p>
+
+        <dl class="dl">
+            
+                <dt class="dt dlterm">Automatically Select Local Memory Addresses</dt>
+
+                <dd class="dd"><span class="ph">Not Selected</span></dd>
+
+            
+        </dl>
+
+        <p class="p">By default the option <strong class="ph b">Automatically select memory addresses</strong> is enabled. In this
+            mode, the Configuration Editor chooses appropriate local memory addresses to keep them
+            naturally aligned and close together such that literals can be loaded from data memory
+            with L32R.</p>
+
+        <p class="p">If you want to ensure exact compatibility with addresses of some other processor
+            configuration it is appropriate to uncheck the auto-placement option so you can enter
+            specific addresses. Consider also the memory regions in which system and local memories
+            are placed such that your cache attributes and power considerations are met.</p>
+
+        <p class="p">Note also that exception vectors need to be placed inside valid memories. If vectors are
+            marked as being placed in an instruction memory, Xplorer's default behaviour is to
+            automatically match the vector location with that of the containing memory.</p>
+
+        <p class="p"><strong class="ph b">Local Memory root address</strong>: If the full MMU is selected, then the configuration
+            editor requires that local memories be "auto-placed" to ensure that there are no address
+            space collisions. This option lets you choose whether that local memory auto-placement
+            occurs in kernel space or user space. </p>
+
+    </div>
+
+    <div class="related-links">
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="../../config/nodes/g_cache_localmem.html">Caches and Local Memories</a></div>
+</div>
+<div class="relinfo"><strong>Related information</strong><br/>
+<div><a class="link" href="opt.cfg_auto_vectors.html">Automatically Position Vectors</a></div>
+<div><a class="link" href="opt.mmuType.html" title="Region protection options provide coarse protection at a low gate count The Full MMU provides resource management capabilities sufficient for running Linux">Memory Management Selection</a></div>
+</div>
+</div>
+
+</body>
+</html>

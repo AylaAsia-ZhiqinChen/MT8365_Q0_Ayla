@@ -1,0 +1,33 @@
+cc_prebuilt_library_shared {
+    arch: {
+        arm: {
+            shared_libs: [
+                "liblog",
+                "libcutils",
+                "libcmdl",
+            ],
+            srcs: [
+                "arm/libarmnn.so",
+            ],
+        },
+        arm64: {
+            shared_libs: [
+                "liblog",
+                "libcutils",
+                "libcmdl",
+            ],
+            srcs: [
+                "arm64/libarmnn.so",
+            ],
+        },
+    },
+    export_include_dirs: [
+        "armnn/include/mtk/wrapper",
+    ],
+    name: "libarmnn@MTK,mt8168",
+    proprietary: true,
+    strip: {
+        none: true,
+    },
+}
+

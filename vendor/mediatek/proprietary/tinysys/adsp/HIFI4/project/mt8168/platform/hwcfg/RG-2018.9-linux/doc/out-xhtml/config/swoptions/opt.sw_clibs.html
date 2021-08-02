@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en-us" lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="copyright" content="(C) Copyright 2005"/>
+<meta name="DC.rights.owner" content="(C) Copyright 2005"/>
+<meta name="DC.Type" content="tconcept"/>
+<meta name="DC.Title" content="C and Math Libraries"/>
+<meta name="abstract" content="Cadence offers the choice of three C and math libraries: newlib from Red Hat, Inc., the Xtensa C library and uClibc"/>
+<meta name="description" content="Cadence offers the choice of three C and math libraries: newlib from Red Hat, Inc., the Xtensa C library and uClibc"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/swoptions/page.software.html"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/swoptions/opt.sw_abi.html"/>
+<meta name="DC.Format" content="XHTML"/>
+<meta name="DC.Identifier" content="opt-sw_clibs"/>
+<link rel="stylesheet" type="text/css" href="../../commonltr.css"/>
+<link rel="stylesheet" type="text/css" href="../../cadence.css"/>
+<title>C and Math Libraries</title>
+</head>
+<body id="opt-sw_clibs">
+
+
+    <h1 class="title topictitle1">C and Math Libraries</h1>
+
+    
+    <div class="body conbody"><p class="shortdesc"><span class="ph">Cadence</span> offers the choice of three C and math libraries:
+            <samp class="ph codeph">newlib</samp> from Red Hat, Inc., the Xtensa C library and
+            <samp class="ph codeph">uClibc</samp></p>
+
+        <dl class="dl">
+            
+                <dt class="dt dlterm">C Libraries Selection</dt>
+
+                <dd class="dd"><span class="ph">Xtensa C Library</span></dd>
+
+            
+        </dl>
+
+        <p class="p">You choose between the libraries when building your software configuration through the
+            Xtensa Processor Generator. The libraries cannot be mixed.</p>
+
+        <ul class="ul">
+            <li class="li">The <samp class="ph codeph">newlib</samp> library is more complete, fully documented, higher
+                performance and supports reentrancy for multi-threaded environments.</li>
+
+            <li class="li">The Xtensa C library has similar performance to newlib and is smaller. It strictly
+                implements the C library as defined by the C standard and hence may not implement
+                all the extensions supported by <samp class="ph codeph">newlib</samp>. The philosophy of the
+                library is standards compliance and simplicity. So, for example, the malloc routine
+                is simple and hence fast but might cause more memory fragmentation on programs that
+                extensively malloc and free. The Xtensa C library places no open source restrictions
+                    <em class="ph i">on the C user (there are minor restrictions for the C++ user)</em>.</li>
+
+            <li class="li"><samp class="ph codeph">uClibc</samp> is significantly smaller. <samp class="ph codeph">uClibc</samp> can be
+                configured with or without support for floating point. Without floating point
+                support, it is not possible, for example, to print floating point numbers and it is
+                not possible to use C++ I/O streams, but the resultant library is significantly
+                smaller still. Note that <samp class="ph codeph">uClibc</samp> comes with more restrictive open
+                source licensing requirements than even <samp class="ph codeph">newlib</samp>.</li>
+
+        </ul>
+
+        <p class="p">Review your contract or the files in the <samp class="ph codeph">XtensaTools/misc</samp> directory for
+            details about the various licensing requirements.</p>
+
+    </div>
+
+<div class="related-links">
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="../../config/swoptions/page.software.html" title="Configuration options which only affect the target software">Software Configuration Options</a></div>
+<div class="nextlink"><strong>Next topic:</strong> <a class="link" href="../../config/swoptions/opt.sw_abi.html">Application Binary Interfaces</a></div>
+</div>
+</div>
+
+</body>
+</html>

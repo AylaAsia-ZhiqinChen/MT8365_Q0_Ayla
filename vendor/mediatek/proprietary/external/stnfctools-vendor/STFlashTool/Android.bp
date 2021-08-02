@@ -1,0 +1,37 @@
+cc_binary {
+  name: "STFlashTool",
+
+  defaults : ["hidl_defaults"],
+  cflags : [
+        "-DST21NFC",
+        "-DST21NFC_DTA",
+        "-Wall",
+        "-Werror",
+        "-Wextra",
+      ],
+
+  proprietary : true,
+
+  srcs : [ "STFlashTool-dummy.cc" ],
+
+  static_libs: [
+    "nfc_nci.st21nfc.static",
+    "libstnfc-nci-vendor",
+	  "libstnfcutils-vendor",
+  ],
+
+  shared_libs : [
+    "libcutils",
+    "libutils",
+    "liblog",
+    "libchrome",
+    "libbase",
+    "libdl",
+    "libhardware",
+    "libpower",
+    "libz",
+    "libhidlbase",
+  ],
+
+}
+

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--* Copyright Statement:
+ *
+ * This software/firmware and related documentation ("MediaTek Software") are
+ * protected under relevant copyright laws. The information contained herein
+ * is confidential and proprietary to MediaTek Inc. and/or its licensors.
+ * Without the prior written permission of MediaTek inc. and/or its licensors,
+ * any reproduction, modification, use or disclosure of MediaTek Software,
+ * and information contained herein, in whole or in part, shall be strictly prohibited.
+ *
+ * MediaTek Inc. (C) 2017. All rights reserved.
+ *
+ * BY OPENING THIS FILE, RECEIVER HEREBY UNEQUIVOCALLY ACKNOWLEDGES AND AGREES
+ * THAT THE SOFTWARE/FIRMWARE AND ITS DOCUMENTATIONS ("MEDIATEK SOFTWARE")
+ * RECEIVED FROM MEDIATEK AND/OR ITS REPRESENTATIVES ARE PROVIDED TO RECEIVER ON
+ * AN "AS-IS" BASIS ONLY. MEDIATEK EXPRESSLY DISCLAIMS ANY AND ALL WARRANTIES,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NONINFRINGEMENT.
+ * NEITHER DOES MEDIATEK PROVIDE ANY WARRANTY WHATSOEVER WITH RESPECT TO THE
+ * SOFTWARE OF ANY THIRD PARTY WHICH MAY BE USED BY, INCORPORATED IN, OR
+ * SUPPLIED WITH THE MEDIATEK SOFTWARE, AND RECEIVER AGREES TO LOOK ONLY TO SUCH
+ * THIRD PARTY FOR ANY WARRANTY CLAIM RELATING THERETO. RECEIVER EXPRESSLY ACKNOWLEDGES
+ * THAT IT IS RECEIVER'S SOLE RESPONSIBILITY TO OBTAIN FROM ANY THIRD PARTY ALL PROPER LICENSES
+ * CONTAINED IN MEDIATEK SOFTWARE. MEDIATEK SHALL ALSO NOT BE RESPONSIBLE FOR ANY MEDIATEK
+ * SOFTWARE RELEASES MADE TO RECEIVER'S SPECIFICATION OR TO CONFORM TO A PARTICULAR
+ * STANDARD OR OPEN FORUM. RECEIVER'S SOLE AND EXCLUSIVE REMEDY AND MEDIATEK'S ENTIRE AND
+ * CUMULATIVE LIABILITY WITH RESPECT TO THE MEDIATEK SOFTWARE RELEASED HEREUNDER WILL BE,
+ * AT MEDIATEK'S OPTION, TO REVISE OR REPLACE THE MEDIATEK SOFTWARE AT ISSUE,
+ * OR REFUND ANY SOFTWARE LICENSE FEES OR SERVICE CHARGE PAID BY RECEIVER TO
+ * MEDIATEK FOR SUCH MEDIATEK SOFTWARE AT ISSUE.
+ *
+ * The following software/firmware and/or related documentation ("MediaTek Software")
+ * have been modified by MediaTek Inc. All revisions are subject to any receiver's
+ * applicable license agreements with MediaTek Inc.
+ */  -->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_label">Operator Plugin APK</string>
+    <!-- OP07 customization: Change mobile data title and summary -->
+    <string name="mobile_data">Mobile Data</string>
+    <string name="mobile_data_summary_when_vilte_on">Enable mobile data services such as email, web browsing, AT&amp;T Video Call and push notifications over the cellular network.</string>
+    <string name="mobile_data_summary_default">Enable mobile data services such as email, web browsing and push notifications over the cellular network.</string>
+    <!-- OP07 customization: Change Data roaming title and summary -->
+    <string name="data_roaming_title">International roaming</string>
+    <string name="data_roaming_warning">Enable mobile data services such as email, web browsing and push notifications over the cellular network when roaming outside the U.S., Puerto Rico and USVI. International roaming data charges will apply.</string>
+    <string name="data_roaming_warning_vilte_capable">"Enable mobile data services such as email, web browsing, AT&amp;T Video Call and push notifications over the cellular network when roaming outside the U.S., Puerto Rico and USVI. International roaming data charges will apply.</string>
+    <!-- OP07 customization: Femtocell selection switch title and summary-->
+    <string name="femto_fail">Microcell selection failed</string>
+    <string name="femto_pass">Microcell selected</string>
+    <string name="fetching_femtocell_list">Searching for AT&amp;T MicroCell</string>
+    <string name="search_femtocell_list">Search for AT&amp;T MicroCell</string>
+    <!-- OP07 customization: Change VolTE switch title and summary-->
+    <string name="volte_switch_title">Enhanced LTE Services</string>
+    <string name="volte_switch_summary">Enable HD Voice and advanced communication services where available.</string>
+    <string name="network_button_disable_2g">Disable 2G</string>
+    <string name="disable_2g_Alert_title">Disable 2G?</string>
+    <string name="network_button_disable_2g_summary">This setting disables 2G services on the device. If 2G service is disabled, some apps and functions may not work in locations with limited coverage.</string>
+    <string name="disable_2g_alert_ok">Yes</string>
+    <string name="disable_2g_alert_cancel">No</string>
+    <string name="disable_2g_menu_on_alert">After you disable 2G, you will be unable to make emergency and non-emergency phone calls if you are in a location where only 2G is available. Do you wish to continue?</string>
+    <!-- OP07 UCE feature-->
+    <string name="video_capability_sharing_title">Video Capability Sharing</string>
+    <string name="video_capability_sharing_summary">Allow callers to see that your smartphone is capable of video calls</string>
+    <!-- OP07 Disconnect cause -->
+    <string name="ecc_na">Emergency calls not allowed</string>
+    <string name="service_na">Service not allowed</string>
+    <string name="ecc_over_wifi_na_location">Emergency calls over WiFi not allowed in this location</string>
+    <string name="service_na_location">Service not allowed in this location</string>
+
+</resources>

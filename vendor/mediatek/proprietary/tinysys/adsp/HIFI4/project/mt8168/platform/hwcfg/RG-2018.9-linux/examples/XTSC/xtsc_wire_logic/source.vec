@@ -1,0 +1,24 @@
+// Customer ID=13943; Build=0x75f5e; Copyright (c) 2009-2010 by Tensilica Inc.  ALL RIGHTS RESERVED.
+// These coded instructions, statements, and computer programs are the
+// copyrighted works and confidential proprietary information of
+// Tensilica Inc.  They may be adapted and modified by bona fide
+// purchasers for internal use, but neither the original nor any adapted
+// or modified version may be disclosed or distributed to third parties
+// in any manner, medium, or form, in whole or in part, without the prior
+// written consent of Tensilica Inc.
+
+#if 0
+<delay> <value> { <value> } ...
+<delay> <OutputName>=<value> { <OutputName>=<value> } ...
+<delay> STOP
+WAIT  <duration>
+SYNC  <time>
+NOTE  message
+INFO  message
+#endif
+
+10      A=0xAAAAAAAA    B=0x55555555
+10      A=0xFFFFFFFF    B=0xFFFFFFFF
+10                      B=0x00000000
+10      A=0x00000000    B=0xFFFFFFFF
+10 stop

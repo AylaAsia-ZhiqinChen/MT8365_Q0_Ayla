@@ -1,0 +1,196 @@
+# Makefile fragment which sets up various make variables to make
+# it easy to compile and link for XMP systems.
+
+# Customer ID=13943; Build=0x75f5e; Copyright (c) 2005-2009 Tensilica Inc.  ALL RIGHTS RESERVED.
+# These coded instructions, statements, and computer programs are the
+# copyrighted works and confidential proprietary information of
+# Tensilica Inc.  They may be adapted and modified by bona fide
+# purchasers for internal use, but neither the original nor any adapted
+# or modified version may be disclosed or distributed to third parties
+# in any manner, medium, or form, in whole or in part, without the prior
+# written consent of Tensilica Inc.
+
+# This is a makefile fragment that provides variables for building 
+# software to run on a subsystem. You should have generated the 
+# subsystem's memory map inside Xtensa Xplorer already.
+#
+# You use this file by defining certain variables in your own
+# makefile, then including this one, which will provide various
+# make variables which makes compiling and linking for a given
+# target easy. See the included example Makefile.
+#
+# You can then include this file in another makefile. When compiling
+# to target a particular core, add the makefile variable CORX_FLAGS
+# to the compile and link line, where "X" is the number of the desired 
+# core and the compiler will find the proper Xtensa System directory,
+# core name, and include paths.
+#
+# This makefile fragment also includes a variable called "RUNX_COMMAND"
+# which provides a complete command to have xtmp-run simulate your
+# system, where the X is the number of cores in your subsystem.
+#
+
+####################################################################
+# How To Use This File:
+#
+# This is a fragment of a makefile, meant to be included in another
+# makefile that programmer targetting an XMP system writes.
+#
+# Using this file requires the following steps:
+#
+# Step 1: Define several variables describing the sub-system
+# in your own makefile. These subsystem describing variables are:
+#
+# XMP_PATH_TO_WORKSPACE = The path to the Xtensa Xplorer workspace
+# XMP_PROJECT_NAME = The Xplorer name of the XMP Subsystem Project
+# XMP_MEMORY_MAP = The Xplorer memory map you wish to use
+# XMP_ISS_FLAGS = Any flags you wish the simulator to receive
+#
+# SHARED_DATA = The name of the binary that contains the subsystem's
+#               shared Data
+# CORE0_RESET = [0|1] Zero if core 0 resets at the primary reset vector, 
+#               one if it resets at the alternate reset vector.
+#                        
+# XMP_OTHER_CORE_RESET = [0|1] Zero if cores other than core 0 reset at 
+#                        the primary reset vector, one if they reset at
+#                        the alternate reset vector.
+#                        
+#
+# Step 2: Define variables that describe each core in the subsystem.
+# 
+# For each core in the subsystem, you should define the following 
+# three variables, replacing the "X" with a number.
+#
+# COREX_NAME = The name of core X in the subsystem
+# COREX_LSP = The name of the desired LSP for core X
+# PROGX_NAME = The name of the final binary to run on core X
+# 
+#
+# Step 3: Set some optional variables. The two variables are whether
+# to use the debugging version of the library and whether or not your
+# project has a shared-heap.
+#
+# You may want to switch this to -lxmp-debug for debugging
+XMP_LIB = -lxmp
+# Uncomment this line if your subsystem uses a shared heap
+#SHARED_HEAP = -Wl,--undefined=shared_heap_ptr
+#
+# Step 4: Include this makefile fragment in your own makefile.
+#
+# Step 5: Use any of the variables this makefile provides to target
+# a core or your subsystem.
+# 
+# These variables are:
+# 
+# XMP_SHARED_CFLAGS -- set XTENSA_SYSTEM and XTENSA_CORE to build the shared
+#                      data project.  Observe that all other programs will
+#                      depend on the shared-data project.
+#
+# XMP_COREX_CFLAGS -- set XTENSA_SYSTEM and XTENSA_CORE to target core X;
+#                     also, provide the shared-binary to the link-line
+#                     so that the linker can determine where the shared 
+#                     variables are stored.
+#
+# For example, to compile or link for core 0 of an XMP system, the 
+# user would add $(CORE0_FLAGS) to their command line, and the
+# correct XTENSA_CORE and system will be set, as well as other
+# miscellaneous details.
+
+
+XMP_PATH_TO_PROJECT = $(XMP_PATH_TO_WORKSPACE)/$(XMP_PROJECT_NAME)/$(XMP_PROJECT_NAME)
+XTENSA_XMP_SYSTEM = $(XMP_PATH_TO_PROJECT)/_bin/soc/$(XMP_MEMORY_MAP)/package
+XTENSA_XMP_CORES = $(XTENSA_XMP_SYSTEM)/cores
+XMP_XTENSA_SYSTEM = $(XTENSA_XMP_SYSTEM)/config
+
+XMP_ISS_FLAGS = --xtensa-system=$(XMP_XTENSA_SYSTEM)
+
+XMP_INCLUDES = -I$(XTENSA_XMP_SYSTEM)/xtensa-elf/include
+XMP_CFLAGS = $(XMP_INCLUDES) -Wl,--just-symbols,$(SHARED_DATA)
+
+XMP_CORE0_CFLAGS = --xtensa-core=$(CORE0_NAME) --xtensa-system=$(XMP_XTENSA_SYSTEM) \
+		   -mlsp=$(XTENSA_XMP_CORES)/$(CORE0_NAME)/xtensa-elf/lib/$(CORE0_LSP) \
+		   $(XMP_CFLAGS) $(XMP_LIB)
+
+XMP_CORE1_CFLAGS = --xtensa-core=$(CORE1_NAME) --xtensa-system=$(XMP_XTENSA_SYSTEM) \
+		   -mlsp=$(XTENSA_XMP_CORES)/$(CORE1_NAME)/xtensa-elf/lib/$(CORE1_LSP) \
+		   $(XMP_CFLAGS) $(XMP_LIB)
+
+XMP_CORE2_CFLAGS = --xtensa-core=$(CORE2_NAME) --xtensa-system=$(XMP_XTENSA_SYSTEM) \
+		   -mlsp=$(XTENSA_XMP_CORES)/$(CORE2_NAME)/xtensa-elf/lib/$(CORE2_LSP) \
+		   $(XMP_CFLAGS) $(XMP_LIB)
+
+XMP_CORE3_CFLAGS = --xtensa-core=$(CORE3_NAME) --xtensa-system=$(XMP_XTENSA_SYSTEM) \
+		   -mlsp=$(XTENSA_XMP_CORES)/$(CORE3_NAME)/xtensa-elf/lib/$(CORE3_LSP) \
+		   $(XMP_CFLAGS) $(XMP_LIB)
+
+XMP_CORE4_CFLAGS = --xtensa-core=$(CORE4_NAME) --xtensa-system=$(XMP_XTENSA_SYSTEM) \
+		   -mlsp=$(XTENSA_XMP_CORES)/$(CORE4_NAME)/xtensa-elf/lib/$(CORE4_LSP) \
+		   $(XMP_CFLAGS) $(XMP_LIB)
+
+XMP_CORE5_CFLAGS = --xtensa-core=$(CORE5_NAME) --xtensa-system=$(XMP_XTENSA_SYSTEM) \
+		   -mlsp=$(XTENSA_XMP_CORES)/$(CORE5_NAME)/xtensa-elf/lib/$(CORE5_LSP) \
+		   $(XMP_CFLAGS) $(XMP_LIB)
+
+XMP_CORE6_CFLAGS = --xtensa-core=$(CORE6_NAME) --xtensa-system=$(XMP_XTENSA_SYSTEM) \
+		   -mlsp=$(XTENSA_XMP_CORES)/$(CORE6_NAME)/xtensa-elf/lib/$(CORE6_LSP) \
+		   $(XMP_CFLAGS) $(XMP_LIB)
+
+XMP_CORE7_CFLAGS = --xtensa-core=$(CORE7_NAME) --xtensa-system=$(XMP_XTENSA_SYSTEM) \
+		   -mlsp=$(XTENSA_XMP_CORES)/$(CORE7_NAME)/xtensa-elf/lib/$(CORE7_LSP) \
+		   $(XMP_CFLAGS) $(XMP_LIB)
+
+XMP_SHARED_CFLAGS = --xtensa-core=$(CORE0_NAME) --xtensa-system=$(XMP_XTENSA_SYSTEM) \
+                    -mlsp=$(XTENSA_XMP_CORES)/shared/xtensa-elf/lib/shared $(XMP_CFLAGS)
+
+
+####################################################################
+# Run commands to simulate systems various numbers of cores
+
+RUN2_COMMAND = xtmp-run $(ISS_FLAGS) $(XMP_ISS_FLAGS) $(XMP_ISS_FLAGS) --num-cores=2 \
+	     	       --xtensa-core0=$(CORE0_NAME) --load0=$(PROG0_NAME) --vector0=$(CORE0_RESET) --load0=$(SHARED_DATA) \
+	     	       --xtensa-core1=$(CORE1_NAME) --load1=$(PROG1_NAME) --vector1=$(XMP_OTHER_CORE_RESET)
+
+RUN3_COMMAND = xtmp-run $(ISS_FLAGS) $(XMP_CORE_FLAGS) $(XMP_ISS_FLAGS) --num-cores=3 \
+	     	       --xtensa-core0=$(CORE0_NAME) --load0=$(PROG0_NAME) --vector0=$(CORE0_RESET) --load0=$(SHARED_DATA) \
+	     	       --xtensa-core1=$(CORE1_NAME) --load1=$(PROG1_NAME) --vector1=$(XMP_OTHER_CORE_RESET) \
+	     	       --xtensa-core2=$(CORE2_NAME) --load2=$(PROG2_NAME) --vector2=$(XMP_OTHER_CORE_RESET)
+
+RUN4_COMMAND = xtmp-run $(ISS_FLAGS) $(XMP_CORE_FLAGS) $(XMP_ISS_FLAGS) --num-cores=4 \
+	     	       --xtensa-core0=$(CORE0_NAME) --load0=$(PROG0_NAME) --vector0=$(CORE0_RESET) --load0=$(SHARED_DATA) \
+	     	       --xtensa-core1=$(CORE1_NAME) --load1=$(PROG1_NAME) --vector1=$(XMP_OTHER_CORE_RESET) \
+	     	       --xtensa-core2=$(CORE2_NAME) --load2=$(PROG2_NAME) --vector2=$(XMP_OTHER_CORE_RESET) \
+	     	       --xtensa-core3=$(CORE3_NAME) --load3=$(PROG3_NAME) --vector3=$(XMP_OTHER_CORE_RESET)
+
+RUN5_COMMAND = xtmp-run $(ISS_FLAGS) $(XMP_CORE_FLAGS) $(XMP_ISS_FLAGS) --num-cores=5 \
+	     	       --xtensa-core0=$(CORE0_NAME) --load0=$(PROG0_NAME) --vector0=$(CORE0_RESET) --load0=$(SHARED_DATA) \
+	     	       --xtensa-core1=$(CORE1_NAME) --load1=$(PROG1_NAME) --vector1=$(XMP_OTHER_CORE_RESET) \
+	     	       --xtensa-core2=$(CORE2_NAME) --load2=$(PROG2_NAME) --vector2=$(XMP_OTHER_CORE_RESET) \
+	     	       --xtensa-core3=$(CORE3_NAME) --load3=$(PROG3_NAME) --vector3=$(XMP_OTHER_CORE_RESET) \
+ 	     	       --xtensa-core4=$(CORE4_NAME) --load4=$(PROG4_NAME) --vector4=$(XMP_OTHER_CORE_RESET)
+
+RUN6_COMMAND = xtmp-run $(ISS_FLAGS) $(XMP_CORE_FLAGS) $(XMP_ISS_FLAGS) --num-cores=6 \
+	     	       --xtensa-core0=$(CORE0_NAME) --load0=$(PROG0_NAME) --vector0=$(CORE0_RESET) --load0=$(SHARED_DATA) \
+	     	       --xtensa-core1=$(CORE1_NAME) --load1=$(PROG1_NAME) --vector1=$(XMP_OTHER_CORE_RESET) \
+	     	       --xtensa-core2=$(CORE2_NAME) --load2=$(PROG2_NAME) --vector2=$(XMP_OTHER_CORE_RESET) \
+	     	       --xtensa-core3=$(CORE3_NAME) --load3=$(PROG3_NAME) --vector3=$(XMP_OTHER_CORE_RESET) \
+ 	     	       --xtensa-core4=$(CORE4_NAME) --load4=$(PROG4_NAME) --vector4=$(XMP_OTHER_CORE_RESET)  \
+ 	     	       --xtensa-core5=$(CORE5_NAME) --load5=$(PROG5_NAME) --vector5=$(XMP_OTHER_CORE_RESET)
+
+RUN7_COMMAND = xtmp-run $(ISS_FLAGS) $(XMP_CORE_FLAGS) $(XMP_ISS_FLAGS) --num-cores=7 \
+	     	       --xtensa-core0=$(CORE0_NAME) --load0=$(PROG0_NAME) --vector0=$(CORE0_RESET) --load0=$(SHARED_DATA) \
+	     	       --xtensa-core1=$(CORE1_NAME) --load1=$(PROG1_NAME) --vector1=$(XMP_OTHER_CORE_RESET) \
+	     	       --xtensa-core2=$(CORE2_NAME) --load2=$(PROG2_NAME) --vector2=$(XMP_OTHER_CORE_RESET) \
+	     	       --xtensa-core3=$(CORE3_NAME) --load3=$(PROG3_NAME) --vector3=$(XMP_OTHER_CORE_RESET) \
+ 	     	       --xtensa-core4=$(CORE4_NAME) --load4=$(PROG4_NAME) --vector4=$(XMP_OTHER_CORE_RESET) \
+ 	     	       --xtensa-core5=$(CORE5_NAME) --load5=$(PROG5_NAME) --vector5=$(XMP_OTHER_CORE_RESET) \
+ 	     	       --xtensa-core6=$(CORE6_NAME) --load6=$(PROG6_NAME) --vector6=$(XMP_OTHER_CORE_RESET)
+
+RUN8_COMMAND = xtmp-run $(ISS_FLAGS) $(XMP_CORE_FLAGS) $(XMP_ISS_FLAGS) --num-cores=8 \
+	     	       --xtensa-core0=$(CORE0_NAME) --load0=$(PROG0_NAME) --vector0=$(CORE0_RESET) --load0=$(SHARED_DATA) \
+	     	       --xtensa-core1=$(CORE1_NAME) --load1=$(PROG1_NAME) --vector1=$(XMP_OTHER_CORE_RESET) \
+	     	       --xtensa-core2=$(CORE2_NAME) --load2=$(PROG2_NAME) --vector2=$(XMP_OTHER_CORE_RESET) \
+	     	       --xtensa-core3=$(CORE3_NAME) --load3=$(PROG3_NAME) --vector3=$(XMP_OTHER_CORE_RESET) \
+ 	     	       --xtensa-core4=$(CORE4_NAME) --load4=$(PROG4_NAME) --vector4=$(XMP_OTHER_CORE_RESET) \
+ 	     	       --xtensa-core5=$(CORE5_NAME) --load5=$(PROG5_NAME) --vector5=$(XMP_OTHER_CORE_RESET) \
+ 	     	       --xtensa-core6=$(CORE6_NAME) --load6=$(PROG6_NAME) --vector6=$(XMP_OTHER_CORE_RESET) \
+ 	     	       --xtensa-core7=$(CORE7_NAME) --load7=$(PROG7_NAME) --vector7=$(XMP_OTHER_CORE_RESET)

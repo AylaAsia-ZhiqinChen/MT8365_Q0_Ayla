@@ -1,0 +1,23 @@
+The static library 'libtz_mt8173_dev_kdf' is a TA library which provide the API to do key derivation function by using per-device dependent data in MTK in-house TEE.
+
+
+WHAT IT DOES?
+=============
+
+The 'libtz_mt8173_dev_kdf' provides the API to perform key derivation functionality referring the per-device secret inside MTK in-house TEE.
+
+
+HOW IT WAS BUILT?
+==================
+
+All source/dependency modules of this module are already put in
+'vendor/mediatek/release_objs' folder.
+
+
+HOW TO USE IT?
+==============
+
+The libary 'libtz_mt8173_dev_kdf' is linked with the image of MTK in-house TEE.
+It will be used to do key derivation operation using per-device secret.
+
+All the source code of this library were written by MediaTek co..

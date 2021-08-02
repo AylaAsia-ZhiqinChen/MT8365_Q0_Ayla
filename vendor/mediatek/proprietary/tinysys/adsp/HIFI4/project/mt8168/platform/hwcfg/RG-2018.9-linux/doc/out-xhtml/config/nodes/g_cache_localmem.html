@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en-us" lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="copyright" content="(C) Copyright 2005"/>
+<meta name="DC.rights.owner" content="(C) Copyright 2005"/>
+<meta name="DC.Type" content="tconcept"/>
+<meta name="DC.Title" content="Caches and Local Memories"/>
+<meta name="abstract" content=""/>
+<meta name="description" content=""/>
+<meta name="DC.Relation" scheme="URI" content="../../config/pages/page.interfaces.html"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/nodes/g_intwidth.html"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/options/opt.ic.size.html"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/options/opt.dc.size.html"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/nodes/g_localmem.html"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/options/opt.cfg_auto_mmap.html"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/options/opt.loadStoreUnits.html"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/options/opt.cbox.html"/>
+<meta name="DC.Format" content="XHTML"/>
+<meta name="DC.Identifier" content="opt-gid_cache_localmem"/>
+<link rel="stylesheet" type="text/css" href="../../commonltr.css"/>
+<link rel="stylesheet" type="text/css" href="../../cadence.css"/>
+<title>Caches and Local Memories</title>
+</head>
+<body id="opt-gid_cache_localmem">
+
+
+    <h1 class="title topictitle1">Caches and Local Memories</h1>
+
+    
+    <div class="body conbody"><p class="shortdesc"/>
+
+        <p class="p">Subsections
+            describe the individual cache and local memory options in more detail.</p>
+
+        
+        
+        
+        
+        
+        <p class="p"><span class="ph">Cadence</span> allows up to six local memory interfaces on each of
+            the instructions and data sides. Each interface might be a local RAM, local ROM or
+            cache. Each way of a set-associative cache counts as one interface. The caches can be
+            anywhere from 1 Kilobyte to 128 Kilobytes, from direct-mapped to 4-way set associative,
+            with line sizes from 16 bytes to 256 bytes.</p>
+
+        <p class="p">Caches allow reasonably robust performance with minimal effort. Local memories
+            potentially allow higher performance and efficiency, but not always. Local memories
+            support external DMA engines through the processor’s inbound PIF port. DMA allows you to
+            work on one block of data while loading another block in the background. DMA potentially
+            completely avoids the penalties of a cache miss. Of course, this only works if the
+            working set sizes of the current block plus the block being loaded in parallel together
+            are small enough to fit inside the local memory.</p>
+
+        <p class="p">Caches work well when the total memory being used is significantly larger than the local
+            memory size but the working set at any given time is sufficiently small. Local memories
+            are much harder to use in such scenarios. Data must be explicitly and manually moved
+            into and out of the local memory. Partitioning code is not always easy. You may try to
+            use both local memories and caches, putting your frequently used data or code in local
+            memories while leaving caches to handle the rest. This can be very effective if some
+            code or data is small and used frequently, and other code or data is very large and is
+            being streamed into the processor. Frequently, however, making such a clean partition is
+            difficult; hardware does a better job of dynamically allocating memory to caches than
+            you can statically. Local memories require less power to access than equivalently sized
+            caches. Direct-mapped caches require significantly less power than set associative
+            caches. Direct-mapped caches can perform well, but performance can be less robust. Small
+            changes to an application can have a dramatic performance impact if two pieces of code
+            or data suddenly fall into the same cache location. With direct-mapped caches, be
+            certain to utilize some of the performance tuning and measuring methodologies described
+            in Chapter 2 to make sure that you are not thrashing the cache. In particular, the Cache
+            Explorer allows you to automatically simulate performance and power usage for various
+            cache systems on your actual application, and the Link Order tool allows you to
+            rearrange your code to minimize instruction cache misses.</p>
+
+        <p class="p">Two local memories of size n/2 require less power than one local memory of size n. Two
+            local memories can also increase the performance of DMA because the DMA engine writing
+            into one memory will not compete for bandwidth with the processor trying to access the
+            other memory. However, with two local memories, you must partition the data or code
+            between the two local memories. <span class="ph">Cadence</span> also supports line
+            locking of all but one way in a set associative cache. Line locking provides some of the
+            benefits of local memories in a cache. In order to effectively utilize line locking, you
+            must explicitly identify data or code that is small and frequently used. As with local
+            memories, it is often hard to statically partition as well as the hard- ware caching
+            mechanism is able to automatically partition.</p>
+
+        <p class="p">Caches and local data memories can be divided into one to four banks. The data memory is
+            divided into banks so that successive data memory width sized accesses go to different
+            banks. At most one load or store can go to any one bank in a cycle. On configurations
+            that support multiple loads or stores per cycle or on systems with DMA, using more banks
+            will minimize the number of stalls due to bank conflicts.</p>
+
+        
+        <p class="p">See the appropriate Data Book for more detailed information.</p>
+
+    </div>
+
+<div class="related-links">
+<ul class="ullinks">
+<li class="link ulchildlink"><strong><a href="../../config/options/opt.ic.size.html">Instruction Cache Details</a></strong><br/>
+</li>
+<li class="link ulchildlink"><strong><a href="../../config/options/opt.dc.size.html">Data Cache Details</a></strong><br/>
+</li>
+<li class="link ulchildlink"><strong><a href="../../config/nodes/g_localmem.html">Local Memories</a></strong><br/>
+</li>
+<li class="link ulchildlink"><strong><a href="../../config/options/opt.cfg_auto_mmap.html">Automatically Select Memory Addresses</a></strong><br/>
+Xplorer can automatically position local memories for alignment and proximity         needs</li>
+<li class="link ulchildlink"><strong><a href="../../config/options/opt.loadStoreUnits.html">Load/Store Units</a></strong><br/>
+</li>
+<li class="link ulchildlink"><strong><a href="../../config/options/opt.cbox.html">Connection Box</a></strong><br/>
+The Connection Box is useful for DSP's with X-Y memory         configurations</li>
+</ul>
+
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="../../config/pages/page.interfaces.html">Interface Options</a></div>
+<div class="previouslink"><strong>Previous topic:</strong> <a class="link" href="../../config/nodes/g_intwidth.html">Interface Width Options</a></div>
+</div>
+</div>
+
+</body>
+</html>

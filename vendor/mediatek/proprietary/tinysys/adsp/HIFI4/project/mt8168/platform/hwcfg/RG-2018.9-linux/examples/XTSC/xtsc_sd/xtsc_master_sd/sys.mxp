@@ -1,0 +1,61 @@
+#// Customer ID=13943; Build=0x75f5e; Copyright (c) 2007-2010 by Tensilica Inc.  ALL RIGHTS RESERVED.
+#// These coded instructions, statements, and computer programs are the
+#// copyrighted works and confidential proprietary information of
+#// Tensilica Inc.  They may be adapted and modified by bona fide
+#// purchasers for internal use, but neither the original nor any adapted
+#// or modified version may be disclosed or distributed to third parties
+#// in any manner, medium, or form, in whole or in part, without the prior
+#// written consent of Tensilica Inc.
+
+
+system "sys"
+(
+  properties
+  (
+    type = "System";
+    version = "1.0";
+    variant = "";
+    loadfile_extension = "";
+    description = "";
+    onecyclevalue = "10.0";
+    onecycletime = "ns";
+    simulationresolution = "1 ps";
+    simulationdefaulttime = "1 ns";
+  )
+  parameters ()
+  components
+  (
+
+    instance "master"
+    (
+      model   = "xtsc_master_sd";
+      version = "";
+      variant = "";
+
+      parameters
+      (
+        "script_file" = "../../xtsc-run/xtsc_master/request.vec";
+      )
+
+    )
+
+    instance "mem"
+    (
+      model   = "xtsc_memory_sd_1";
+      version = "";
+      variant = "";
+
+      parameters
+      (
+      )
+
+    )
+
+  )
+  connections
+  (
+    "master::m_request_port<-->mem::m_request_exports[0]" = "master":"m_request_port" to "mem":"m_request_exports[0]";
+    "mem::m_respond_ports[0]<-->master::m_respond_export" = "mem":"m_respond_ports[0]" to "master":"m_respond_export";
+  )
+  portmaps ()
+)

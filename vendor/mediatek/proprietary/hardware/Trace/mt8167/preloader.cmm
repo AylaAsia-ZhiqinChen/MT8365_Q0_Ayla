@@ -1,0 +1,53 @@
+do project.cmm
+
+system.reset
+SYSTEM.OPTION ENRESET ON
+SYStem.Option ResBreak OFF
+SYStem.Option WaitReset OFF
+SYStem.JtagClock 5.MHz
+SYStem.CPU CORTEXA53;
+SYStem.CONFIG CORENUMBER 1;
+SYStem.CONFIG COREBASE 0x80810000;
+SYStem.CONFIG CTIBASE  0x80820000;
+
+SYStem.Up
+MMU.OFF
+
+SETUP.IMASKHLL ON
+SETUP.IMASKASM ON
+
+;Register.REset
+
+;D.S C15:0x1 0				; Turn off MMU
+
+Break.SELect Program OnChip ; set_hw_breakpoint_by_def   Jau add
+;Break.SELect Hll OnChip     ; setting attribute of breakpoints
+;Break.SELect Spot OnChip
+Break.SELect Read OnChip
+Break.SELect Write OnChip
+
+D.S SD:0x102007F0 %LE %LONG 0x10100
+D.S SD:0x102007F0 %LE %LONG 0x10101
+
+print "loading mt8167 pre-loader"
+D.LOAD.BINARY   ../../../../../../out/target/product/&project/obj/PRELOADER_OBJ/bin/preloader_&project_NO_GFH.bin 0x201000
+D.LOAD.ELF      ../../../../../../out/target/product/&project/obj/PRELOADER_OBJ/bin/preloader_&project.elf /nocode /gnu
+r.s pc 0x201000
+
+Y.SPATH.RESET ; reset all source path
+Y.SPATH.SRD ../../../bootable/bootloader/preloader/platform/mt8167/src/init
+Y.SPATH.SRD ../../../bootable/bootloader/preloader/platform/mt8167/src/core
+Y.SPATH.SRD ../../../bootable/bootloader/preloader/platform/mt8167/src/drivers
+Y.SPATH.SRD ../../../bootable/bootloader/preloader/platform/mt8167/src/security
+Y.SPATH.SRD ../../../bootable/bootloader/preloader/platform/common
+
+Break.Select Program OnChip
+Break.Select Hll OnChip
+Break.Select Spot OnChip
+Break.Select Read OnChip
+Break.Select Write OnChip
+
+R.S T 0
+;winclear
+d.l
+enddo

@@ -1,0 +1,20 @@
+README for Binutils Source Files
+------------------------------------------------------------------------
+
+Recent versions of binutils can be built with support for Xtensa
+processors.  If for some reason you prefer to use these tools instead
+of the tools provided by Tensilica, you can obtain the standard
+binutils source files and build them yourself.  Note that these tools
+will not be exactly the same as the tools provided by Tensilica.
+
+The configuration-specific source files here are intended for use
+with binutils version 2.18.  After obtaining the binutils source
+files, you need to copy the files from this directory into the
+following locations in the binutils source tree:
+
+      bfd/xtensa-modules.c
+      include/xtensa-config.h
+
+After copying the configuration-specific files into the binutils
+source tree, follow the standard directions for building and
+installing binutils.

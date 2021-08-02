@@ -1,0 +1,22 @@
+The static library 'libtz_app_modular_drm' is the library provide basic widevine modular drm  functions in MTK in-house TEE.
+
+
+WHAT IT DOES?
+=============
+
+The libtz_app_modular_drm is the basic library provide the basic dec-enc mac algorithoms for widevine modular drm, so to protect the key and the clear content.
+
+
+HOW IT WAS BUILT?
+==================
+
+if you want to build this modular only, just use "mm", also source code is in this directory.
+
+
+HOW TO USE IT?
+==============
+
+Linked with trustzone image, and call the basic functions provided by it.
+
+
+Most of  the source code of this library were written by MediaTek co.., but it also used the open source algorithom lib---- libtom.

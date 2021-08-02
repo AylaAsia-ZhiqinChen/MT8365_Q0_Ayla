@@ -1,0 +1,27 @@
+// Customer ID=13943; Build=0x75f5e; Copyright (c) 2006-2010 Tensilica Inc.  ALL RIGHTS RESERVED.
+// 
+// These coded instructions, statements, and computer programs are the
+// copyrighted works and confidential proprietary information of
+// Tensilica Inc.  They may be adapted and modified by bona fide
+// purchasers for internal use, but neither the original nor any adapted
+// or modified version may be disclosed or distributed to third parties
+// in any manner, medium, or form, in whole or in part, without the prior
+// written consent of Tensilica Inc.
+
+info Self-description: &grep master.*RSP_NACC << Self-description
+/*
+delay WRITE address    sz rt id pr pc BE  byt0 byt1 byt2 byt3  */
+5     WRITE 0x80000000 4  0  0  0  0  0xF 0x01 0x02 0x03 0x04
+wait  rsp 0
+
+info Self-description: &grep master.*RSP_OK << Self-description
+5     WRITE 0x80000000 4  0  0  0  0  0xF 0x01 0x02 0x03 0x04
+wait  rsp 0
+
+info Self-description: &grep master.*ba d1 ba d1 
+/*
+delay READ  address    sz rt id pr pc  */
+2     READ  0x80000000 4  0  0  0  0  
+wait  rsp 0
+
+10 stop

@@ -1,0 +1,23 @@
+The static library 'libtz_app_rpmb' is a TA library which provide the service to packing the packet to access EMMC RPMB.
+
+
+WHAT IT DOES?
+=============
+
+The 'libtz_app_rpmb' provides the interface to pack the write packet or verify the read packet from EMMC RPMB inside MTK in-house TEE.
+
+
+HOW IT WAS BUILT?
+==================
+
+All source/dependency modules of this module are already put in
+'vendor/mediatek/libs' folder.
+
+
+HOW TO USE IT?
+==============
+
+The libary 'libtz_app_rpmb' is linked with the image of MTK in-house TEE.
+It will communicate with 'rpmb_svc' to access EMMC RPMB securely.
+
+All the source code of this library were written by MediaTek co..

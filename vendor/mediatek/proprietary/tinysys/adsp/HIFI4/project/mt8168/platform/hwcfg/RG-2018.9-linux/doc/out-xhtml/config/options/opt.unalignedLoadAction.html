@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en-us" lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="copyright" content="(C) Copyright 2005"/>
+<meta name="DC.rights.owner" content="(C) Copyright 2005"/>
+<meta name="DC.Type" content="tconcept"/>
+<meta name="DC.Title" content="Unaligned Load / Store Action Selection"/>
+<meta name="abstract" content="How unaligned loads / stores are handled."/>
+<meta name="description" content="How unaligned loads / stores are handled."/>
+<meta name="DC.Relation" scheme="URI" content="../../config/nodes/g_isaisa.html"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/options/opt.byteOrder.html"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/options/opt.instWidthBytes.html"/>
+<meta name="DC.Format" content="XHTML"/>
+<meta name="DC.Identifier" content="opt-unalignedLoadAction"/>
+<link rel="stylesheet" type="text/css" href="../../commonltr.css"/>
+<link rel="stylesheet" type="text/css" href="../../cadence.css"/>
+<title>Unaligned Load / Store Action Selection</title>
+</head>
+<body id="opt-unalignedLoadAction">
+
+
+    <h1 class="title topictitle1">Unaligned Load / Store Action Selection</h1>
+
+    
+    <div class="body conbody"><p class="shortdesc">How unaligned loads / stores are handled.</p>
+
+        <dl class="dl">
+            
+                <dt class="dt dlterm">Unaligned Load / Store action selection</dt>
+
+                <dd class="dd"><span class="ph">Take Exception</span></dd>
+
+            
+        </dl>
+
+        <p class="p">Traditional RISC processors expect that variables are aligned to their natural
+            boundaries. For example, a 32-bit int variable is expected to be aligned to 32-bits. The
+            C and C++ compilers will always align variables appropriately. However, through the use
+            of casts, parameters or pointers might point to unaligned data. The compiler will assume
+            that all data is properly aligned unless it’s obvious to the compiler that it is not.
+            For example, ((int *) 0x1), is obviously unaligned.</p>
+
+        <p class="p"><span class="ph">Cadence</span> offers three configuration options to deal with
+            circumstances where unaligned accesses occur. With Align address, the hardware will zero
+            the bottom bits of the address before performing the memory access. This is rarely the
+            desired behavior and is mainly provided for compatibility with earlier <span class="ph">Cadence</span> processors that only offered this option. This option
+            is also unsupported on configurations with a data memory interface of greater than
+            128-bits. With Take exception, the hardware will throw an exception whenever an
+            unaligned access is attempted. Typically, unaligned accesses should be treated as
+            programming errors and the exception is an aid to debugging. However, for those running
+            Linux on Xtensa processors, the exception handler in Linux will emulate an unaligned
+            hardware access using multiple-aligned accesses. Using the exception handler is slow,
+            but is useful when running open source drivers that are not performance critical and
+            assume support for unaligned accesses. Note that writing handlers that emulate unaligned
+            accesses is not easy or supported for configurations with FLIX. The third option,
+            Handled by hardware, has the hardware automatically support unaligned accesses. Note
+            that the hardware for handling these accesses takes several cycles so that
+            performance-critical code should still only issue aligned accesses. The advantage of
+            having the hardware handle the unaligned accesses is that it is faster than the
+            emulation routine available in the exception handler and is also able to work together
+            with FLIX. The advantage of the exception is that it makes it easier to identify and fix
+            unaligned accesses, leading to more efficient and reliable code. Diamond processors
+            provided by <span class="ph">Cadence</span> use the Take exception option. </p>
+
+    </div>
+
+<div class="related-links">
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="../../config/nodes/g_isaisa.html">ISA Configuration Options</a></div>
+<div class="previouslink"><strong>Previous topic:</strong> <a class="link" href="../../config/options/opt.byteOrder.html" title="Little or Big Endian">Byte Ordering Option</a></div>
+<div class="nextlink"><strong>Next topic:</strong> <a class="link" href="../../config/options/opt.instWidthBytes.html" title="Max instruction width. Xtensa core instructions are 2 or 3 bytes wide.">Max Instruction Width Option</a></div>
+</div>
+</div>
+
+</body>
+</html>

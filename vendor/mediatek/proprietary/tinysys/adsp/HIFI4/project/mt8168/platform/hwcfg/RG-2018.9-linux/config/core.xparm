@@ -1,0 +1,609 @@
+<!-- core.xparm  -  Xtensa core parameter values file
+
+     Customer ID=13943; Build=0x75f5e; Copyright (c) 2008 Tensilica Inc.  ALL RIGHTS RESERVED.
+     These coded instructions, statements, and computer programs are the
+     copyrighted works and confidential proprietary information of Tensilica Inc.
+     They may not be modified, copied, reproduced, distributed, or disclosed to
+     third parties in any manner, medium, or form, in whole or in part, without
+     the prior written consent of Tensilica Inc.
+
+     WARNING: This file has been automatically generated with values that are
+     specific to a particular Xtensa processor configuration.  Changing values
+     here will likely result in an inconsistent system.  Do not edit!
+  -->
+
+<sysdoc>
+  <!-- This XML sequence is in 'Stash' format - see Xtensa/share/Stash.pm -->
+
+<types b="hash" t="typedef_hash">
+ <hifi4_Aquila_E2_PROD_Environment b="hash" range="*" default="*" subtypes="*" sizerange="*" objmodel="1">
+  <type b="array" value="Environment"/>
+  <entries b="hash"/>
+ </hifi4_Aquila_E2_PROD_Environment>
+ <hifi4_Aquila_E2_PROD_Xtbench b="hash" range="*" default="*" subtypes="*" sizerange="*" objmodel="1">
+  <type b="array" value="Xtbench"/>
+  <entries b="hash"/>
+ </hifi4_Aquila_E2_PROD_Xtbench>
+ <hifi4_Aquila_E2_PROD_XT b="hash" range="*" default="*" subtypes="*" sizerange="*" objmodel="1">
+  <type b="array" value="ProcessorModule"/>
+  <entries b="hash"/>
+ </hifi4_Aquila_E2_PROD_XT>
+ <xpg_hifi4_Aquila_E2_PROD b="hash" range="*" default="*" subtypes="*" sizerange="*" objmodel="1" moduleName="xpg_hifi4_Aquila_E2_PROD">
+  <type b="array" value="Processor"/>
+  <entries b="hash"/>
+  <netlistVisible b="string"/>
+ </xpg_hifi4_Aquila_E2_PROD>
+</types>
+
+<xtb b="hash" t="hifi4_Aquila_E2_PROD_Xtbench" sysRomCount="0" sysRamCount="1" uartAccessWidth="0x20" SysIONonCachedPAddr="0" sysrom="*">
+ <pr b="hash" t="hifi4_Aquila_E2_PROD_XT" dcacheOption="1" icacheOption="1" numOfUnifiedRams="0" numOfDataRams="2" numOfDataRoms="0" numOfDataPorts="0" numOfInstRams="2" numOfInstRoms="0" unifiedRams="*" dataRoms="*" dataPorts="*" instRoms="*">
+  <xt b="hash" t="xpg_hifi4_Aquila_E2_PROD" uarchName="Barcelona" tieCheckLinuxNoPorts="1" debugOption="1" timersOption="1" interruptsOption="1" mac16Option="0" MAC16ImplementsMul16="0" userImplementsMul="0" userMul16ReadStage="1" userMul16WriteStage="1" userMul32ReadStage="1" userMul32WriteStage="1" ocdOption="1" mmuOption="0" density="1" TargetHWVersion="LX7.0.9" TargetHWEarliestVersion="LX7.0.9" TargetHWConfigID0="0" TargetHWConfigID1="0" TargetHWUniqueID="0" ConfigKey0="0" ConfigKey1="0" taskEngine="0" smallCore="0" bootLoader="0" MPCoherencySupport="0" name="Xm_hifi4_Aquila_E2_PROD" usePRID="1" prid="0" loadStoreUnitsCount="2" speculation="0" coprocessorCount="2" booleans="1" Mul16="1" Mul32="1" Mulh="0" VectorFPU2005="0" SW_Assumes_SPFPU="1" SW_Assumes_DPFPU="0" SW_FunctionalSafety="0" unalignedLoadAction="Exception" unalignedStoreAction="Exception" ClkGateFuncUnit="1" ClkGateGlobal="1" lowPower="0" PSODomains="none" PSOCoreRetention="none" semDataGating="user_defined" memDataGating="0" IRdropPort="0" Div32="1" writeBufferEntries="0x20" numOfTieModules="3" udmaTranspose="0" udmaBufferDepth="4" udmaOutstandingRows="4" udmaReorderBuffer="0" udmaReorderBufOutstandingReq="0x20" inboundRequestBufferDepth="2" pifBridgeType="AXI" pifAsync="0" traxEnabled="1" apbAccess="1" jtagAccess="1" erDebugAccess="1" coresightDAP="0" ArithmeticExceptionInterface="0" numOfDCacheIntfs="1" numOfUnifiedRamsIntfs="0" numOfDataRamsIntfs="0" numOfDataRomsIntfs="0" numOfDataPortsIntfs="0" numOfICacheIntfs="1" numOfInstRamIntfs="1" numOfInstRomIntfs="1" numOfTieOutQueueIntfs="0" numOfTieInQueueIntfs="0" numOfTieOutPortIntfs="0" numOfTieInPortIntfs="0" ahb="*" asyncPif="*" scattergather="*" global="*" pifSlaveIntfc="*" icacheCommonIntfc="*" icacheWayIntfc="*" itagCommonIntfc="*" itagWayIntfc="*" dcacheCommonIntfc="*" dcacheWayIntfc="*" dtagCommonIntfc="*" dtagWayIntfc="*" unifiedRamIntfc="*" dataRamIntfc="*" dataRamBusy="*" dataRomIntfc="*" dataRomBusy="*" dataPortIntfc="*" dataPortLoad="*" dataPortLoadRetired="*" dataPortRetireFlush="*" dataPortBusy="*" instRamIntfc="*" instRamLoadStore="*" instRamBusy="*" instRomIntfc="*" instRomLoad="*" instRomBusy="*" tieOutQueueIntfc="*" tieInQueueIntfc="*" tieOutPortIntfc="*" tieInPortIntfc="*" traceIntfc="*" tmodeIntfc="*" pwaitmodeIntfc="*" tapocdIntfc="*" jtdiIntfc="*" jtckIntfc="*" xocdmodeIntfc="*" tdebuginterruptIntfc="*" xocdmodepulseIntfc="*" interruptsIntfc="*" stallIntfc="*">
+   <env b="hash" t="hifi4_Aquila_E2_PROD_Environment">
+    <build b="hash" buildXTBoard="no" buildEmul="no" buildXTBoardFreq="0x1e" buildHW="1" buildDiags="1" useCoware="0" useSeamless="0" useXTOS="1" useVxworks="0" useLinux="0" useNucleus="0" useRedboot="0" uniqueID="0x75f5e" userCID="0x3677" expirationDate="0" licenseID="0" mode="Production" compatSeamless="0" compatCoware="0" compatVxworks="0" compatNucleus="1" compatRedboot="0" compatLinux="0" compatXTOS="1" compatCustomer="0"/>
+    <implementation b="hash" ImplTargetSpeed="0x37b" ImplTargetSize="0xc6058" ImplTargetPower="0x4b" ImplSpeedPriority="High" ImplPowerPriority="Medium" ImplSizePriority="Low" ImplTargetTechnology="28hm" ImplTargetLibraryType="TENSILICA_STD" ImplOperatingCondition="Worst" ImplVoltageCondition="Nominal" ImplRegFileBuildingBlock="FlipFlop" ImplResetFlops="1" ImplAsyncReset="1" ImplCDCSyncStages="3" ImplDecoder="and_or_mux"/>
+    <cadTools b="hash" CadHDL="Verilog" CadParUseAstro="1" CadSimUseVCS="1" CadSimUseVerilogXL="1" CadSimUseVerilogNC="1" CadSimUseVantage="0" CadSimUseMTI="0" CadStvUseMotive="0" CadStvUsePrimeTime="1" CadSiUseCeltic="1" CadSynUseDesignCompiler="1" CadPsynUsePhysicalCompiler="1" CadExtractUseQX="1"/>
+    <verification b="hash" dvarch="0" pageTableVAddr="0x20000000" pageTableBytes="0" pageTableLinkVAddr="0" pageTableLinkBytes="0" clockPeriod="0xa" clockDutyCycle="0.500000"/>
+    <fpga b="hash" ioCachedPAddr="0x70000000" ioCachedBytes="0xe000000" ioNonCachedPAddr="0x50000000" ioNonCachedBytes="0xe000000"/>
+   </env>
+   <core b="hash" memoryOrder="LittleEndian" addressWidth="0x20" newExceptionArch="1" externalExceptionArch="0" haltArch="0" exceptions="1" Loops="1" L0IBuffer="1" L0IBufferSize="0x100" maxInstructionSize="0xb" wideInstHoldingBuffer="1" tieUnrestrictedInstrWidths="0" Synchronization="1" ConditionalStore="0" masterExclusiveAccess="1" slaveExclusiveAccess="1" numExternalExclusiveMasters="2" earlyRestart="1" virtualAddressWidth="0x20" physicalAddressWidth="0x20" pifReadDataBits="0x40" pifWriteDataBits="0x40" pifWriteResponse="1" pifInboundWriteResponse="1" dataUsePIF="1" instUsePIF="1" pifInReqRouteIdBits="0" pifCriticalWordFirst="1" pifArbitraryByteEnables="1" numMaxPifWriteRequests="0x10" writeBufferBypassAddrBits="8" pifTracePort="1" pifDataTracePort="1" TIETracePort="0" usePerformanceCounter="0" usePerformanceCounterER="1" perfCounterCount="8" numOfMiscRegs="4" threadptr="1" tieUseStoreByteDisable="1" tieUseWideStore="1" ifetchLatency="2" pipeAStage="1" pipeBStage="1" pipeEStage="1" pipeMStage="3" pipeWStage="4" pipeDStage="9" numContexts="1" BranchPredictedTaken="0" DEPBITS="0" L32R="1" ExtL32R="0" Const16replacesMac16="0" Abs="1" Addx="1" Call4and12="1" InterruptDistributor="0" MPRunStall="0" ExportCoreStatesToUserTIE="0" SWExtL32R="0" SW_ABI="windowed" SW_CLibrary="xclib" SW_UseFloatingPoint="1" SW_FloatingPointABI="1" Const16="0" instructionWidth="0x58" WideInstr="1" pifReadDataBytes="8" pifWriteDataBytes="8" instfetchsize="0x10" numExclusiveMonitors="3">
+    <contextStateList b="hash" AR="1" WINDOWSTART="1" WINDOWBASE="1"/>
+    <SW_Erratum_Fix b="hash" 0="1"/>
+   </core>
+   <registerFile b="hash" nareg="0x40" windowsConfigured="1"/>
+   <cacheAttribute b="hash" id="0">
+    <fetchAttrMap b="array" value="*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*"/>
+    <loadAttrMap b="array" value="*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*"/>
+    <storeAttrMap b="array" value="*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*"/>
+    <pifAttrMap b="array" value="*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*"/>
+   </cacheAttribute>
+   <interrupts b="hash" count="0x19" levelmax="4" highLevel="1" excmLevel="2">
+    <interrupt b="array">
+     <hash type="ExtLevel" level="1" number="0" mask="1"/>
+     <hash type="ExtLevel" level="1" number="1" mask="2"/>
+     <hash type="ExtLevel" level="1" number="2" mask="4"/>
+     <hash type="ExtLevel" level="1" number="3" mask="8"/>
+     <hash type="ExtLevel" level="1" number="4" mask="0x10"/>
+     <hash type="ExtLevel" level="1" number="5" mask="0x20"/>
+     <hash type="ExtEdge" level="1" number="6" mask="0x40"/>
+     <hash type="ExtEdge" level="1" number="7" mask="0x80"/>
+     <hash type="ExtLevel" level="2" number="8" mask="0x100"/>
+     <hash type="ExtLevel" level="2" number="9" mask="0x200"/>
+     <hash type="ExtLevel" level="2" number="0xa" mask="0x400"/>
+     <hash type="ExtLevel" level="2" number="0xb" mask="0x800"/>
+     <hash type="ExtLevel" level="2" number="0xc" mask="0x1000"/>
+     <hash type="ExtLevel" level="2" number="0xd" mask="0x2000"/>
+     <hash type="ExtEdge" level="2" number="0xe" mask="0x4000"/>
+     <hash type="ExtEdge" level="2" number="0xf" mask="0x8000"/>
+     <hash type="Timer" level="1" number="0x10" mask="0x10000"/>
+     <hash type="Timer" level="2" number="0x11" mask="0x20000"/>
+     <hash type="Timer" level="3" number="0x12" mask="0x40000"/>
+     <hash type="WriteErr" level="1" number="0x13" mask="0x80000"/>
+     <hash type="Profiling" level="1" number="0x14" mask="0x100000"/>
+     <hash type="Software" level="1" number="0x15" mask="0x200000"/>
+     <hash type="Software" level="2" number="0x16" mask="0x400000"/>
+     <hash type="ExtLevel" level="1" number="0x17" mask="0x800000"/>
+     <hash type="ExtLevel" level="2" number="0x18" mask="0x1000000"/>
+    </interrupt>
+   </interrupts>
+   <debug b="hash" ivaTrapCount="2" dvaTrapCount="2" interruptLevel="4"/>
+   <timers b="hash" count="3">
+    <timer b="array">
+     <hash interrupt="0x10" number="0"/>
+     <hash interrupt="0x11" number="1"/>
+     <hash interrupt="0x12" number="2"/>
+    </timer>
+   </timers>
+   <OCD b="hash" DebugExternalInterrupt="1" DebugUseDIRArray="0" DebugLoadStoreDDR="1"/>
+   <trax b="hash" internalFifoSize="0x80" outputMemory="1" memorySize="0x40000" memoryWidth="0x20" memoryShared="1" outputATB="1" atbDataWidth="0x20" atbIdWidth="7" timestamps="0" timeWidth="0x40" intTimeWidth="0" grayTimeBus="0" asynchTimeBus="0"/>
+   <prefetch b="hash" prefetchEntries="0x10" prefetchCastoutCacheLines="1" prefetch2L1="0" prefetchBlock="0" prefetchBlockEntries="2" error="none"/>
+   <miscOperations b="hash" NormShiftAmount="1" MinMax="1" SignExtend="1" Clamps="1" CRC="0" PopCount="0"/>
+   <vectors b="hash" numOfVectors="8" relocatableVectorOption="1" relocatableVectorBaseResetVal="0x40020400" stationaryVectorBase0="0x40020000" stationaryVectorBase1="0x40000640" SW_stationaryVectorBaseSelect="1" vecBase1FromPins="1">
+    <vectorList b="array">
+     <hash name="ResetVector" baseAddress="0x40000640" size="0x2e0" alignment="4" level="1" hasHandler="0" group="stationary" offset="0"/>
+     <hash name="KernelExceptionVector" baseAddress="0x400205dc" size="0x1c" alignment="4" level="1" hasHandler="1" group="relocatable" offset="0x1dc"/>
+     <hash name="UserExceptionVector" baseAddress="0x400205fc" size="0x1c" alignment="4" level="1" hasHandler="1" group="relocatable" offset="0x1fc"/>
+     <hash name="DoubleExceptionVector" baseAddress="0x4002061c" size="0x1c" alignment="8" level="1" hasHandler="1" group="relocatable" offset="0x21c"/>
+     <hash name="WindowVectors" baseAddress="0x40020400" size="0x178" alignment="0x200" level="1" hasHandler="0" group="relocatable" offset="0"/>
+     <hash name="Level2InterruptVector" baseAddress="0x4002057c" size="0x1c" alignment="4" level="2" hasHandler="1" group="relocatable" offset="0x17c"/>
+     <hash name="Level3InterruptVector" baseAddress="0x4002059c" size="0x1c" alignment="4" level="3" hasHandler="1" group="relocatable" offset="0x19c"/>
+     <hash name="DebugExceptionVector" baseAddress="0x400205bc" size="0x1c" alignment="4" level="4" hasHandler="1" group="relocatable" offset="0x1bc"/>
+    </vectorList>
+   </vectors>
+   <_loadStoreUnits b="array">
+    <hash id="0" type="LoadStore" vaddrBits="0x20" paddrBits="0x20" numOfStoreBuffers="*" numOfStoreTagBuffers="4">
+     <lsInterfaces b="hash" DataCache="1" DataPIF="1" DataPort0="1" DataRAM0="1" DataRAM1="1" DataROM0="1" UnifiedRAM0="1"/>
+    </hash>
+    <hash id="1" type="LoadStore" vaddrBits="0x20" paddrBits="0x20" numOfStoreBuffers="*" numOfStoreTagBuffers="4">
+     <lsInterfaces b="hash" DataCache="1" DataPIF="1" DataPort0="1" DataRAM0="1" DataRAM1="1" DataROM0="1" UnifiedRAM0="1"/>
+    </hash>
+   </_loadStoreUnits>
+   <mmu b="hash" id="0" asidBits="0" ringCount="1" pteEntrySize="4" sizeRestrictionBits="0" noMatchAction="Exception" _invalidAsid="0" _kernelAsid="1" kernelAsid="0" invalidAsid="0">
+    <pageSizes b="array" value="0x1d,*,*,*,*,*,*,*"/>
+    <itlb b="hash" id="0" type="Inst" wayCount="1" vaddrBits="0x20" paddrBits="0x20">
+     <ways b="array">
+      <hash id="0">
+       <assoc b="hash" id="0" numOfEntries="8" autoRefill="0" sizeRestrictionBits="0" VPNMsb="0x1f" VPNLsb="0x1d" PPNMsb="0x1f" PPNLsb="0x1d">
+        <pageSizes b="array" value="0x1d,*,*,*,*,*,*,*"/>
+        <ASIDConstValues b="array" value="*,*,*,*,*,*,*,*"/>
+        <VPNConstValues b="array" value="0,0x20000000,0x40000000,0x60000000,0x80000000,0xa0000000,0xc0000000,0xe0000000"/>
+        <PPNConstValues b="array" value="0,0x20000000,0x40000000,0x60000000,0x80000000,0xa0000000,0xc0000000,0xe0000000"/>
+        <CAConstValues b="array" value="*,*,*,*,*,*,*,*"/>
+        <ASIDResetValues b="array" value="*,*,*,*,*,*,*,*"/>
+        <VPNResetValues b="array" value="*,*,*,*,*,*,*,*"/>
+        <PPNResetValues b="array" value="*,*,*,*,*,*,*,*"/>
+        <CAResetValues b="array" value="2,2,2,2,2,2,2,2"/>
+       </assoc>
+      </hash>
+     </ways>
+    </itlb>
+    <dtlb b="hash" id="0" type="Data" wayCount="1" vaddrBits="0x20" paddrBits="0x20">
+     <ways b="array">
+      <hash id="0">
+       <assoc b="hash" id="0" numOfEntries="8" autoRefill="0" sizeRestrictionBits="0" VPNMsb="0x1f" VPNLsb="0x1d" PPNMsb="0x1f" PPNLsb="0x1d">
+        <pageSizes b="array" value="0x1d,*,*,*,*,*,*,*"/>
+        <ASIDConstValues b="array" value="*,*,*,*,*,*,*,*"/>
+        <VPNConstValues b="array" value="0,0x20000000,0x40000000,0x60000000,0x80000000,0xa0000000,0xc0000000,0xe0000000"/>
+        <PPNConstValues b="array" value="0,0x20000000,0x40000000,0x60000000,0x80000000,0xa0000000,0xc0000000,0xe0000000"/>
+        <CAConstValues b="array" value="*,*,*,*,*,*,*,*"/>
+        <ASIDResetValues b="array" value="*,*,*,*,*,*,*,*"/>
+        <VPNResetValues b="array" value="*,*,*,*,*,*,*,*"/>
+        <PPNResetValues b="array" value="*,*,*,*,*,*,*,*"/>
+        <CAResetValues b="array" value="2,2,2,2,2,2,2,2"/>
+       </assoc>
+      </hash>
+     </ways>
+    </dtlb>
+   </mmu>
+   <immu b="hash" t="mpu_ca_4kpg" numOfMPUbgMapEntries="2" numOfMPUEntries="0x20" MPUvasLsb="0xc" numOfMTUEntries="0">
+    <MPUbgMapList b="array">
+     <hash address="0" size="0x80000000" accessRights="7" memoryType="6"/>
+     <hash address="0x80000000" size="0x80000000" accessRights="7" memoryType="6"/>
+    </MPUbgMapList>
+   </immu>
+   <testOptions b="hash" fullScan="1" latchesTransparent="0"/>
+   <tie b="hash" sourceFile="MATHFUN_V4.tie" internal="0" renamerFile="" renameMapFile="">
+    <_implements b="string"/>
+   </tie>
+   <tie_modules b="array">
+    <hash t="HiFi4" internal="1" renamerFile="" renameMapFile="" partialRegfileBypass="0" fp="1">
+     <sourceFile b="string" value="/home/xpgcust/tree/RG-2018.9/p4root/Xtensa/share/saridef/Processor/Coprocessor/../../../../../Coprocessors/HiFi3/Tie/HiFi4.tie"/>
+     <_implements b="string"/>
+    </hash>
+    <hash t="MUL32" internal="1" renamerFile="" renameMapFile="" _implements="mul16" mulh="0" mul16="1" iterativeMul32="0">
+     <sourceFile b="string" value="/home/xpgcust/tree/RG-2018.9/p4root/Xtensa/share/saridef/Processor/Coprocessor/../../../../../Coprocessors/MUL32/mul32.tie"/>
+    </hash>
+    <hash t="DCPortsQueues" internal="1" renamerFile="" renameMapFile="" ports="1" queues="0">
+     <sourceFile b="string" value="/home/xpgcust/tree/RG-2018.9/p4root/Xtensa/share/saridef/Processor/Coprocessor/../../../../../Coprocessors/DCPortsQueues/DCPortsQueues.tie.tpp"/>
+     <_implements b="string"/>
+    </hash>
+   </tie_modules>
+   <axi b="hash" axitype="AXI4" axiwidth="0x20" slaveReqCntlDepth="4" slaveReqDataDepth="8" slaveRespDepth="8" slaveIDwidth="0x10" registerPIF="0" aceLite="0" fullAce="0" axiSecInterface="0" axiECC="none"/>
+   <pifMasterIntfc b="hash" id="0" master="1" slave="0" burst="0" reqAttribute="1" poData="0x20" piData="0x20" testComp="VeraPifSlave" insertTestComp="ifNotPresent" testCompLevel="top" poAddr="0x20" poId="6" piId="6" poRouteId="0" piRouteId="0" poCohCntl="0" poCohVAdrsIndex="0" byteEnable="4" POReqValid="*" POReqCntl="*" POReqCohCntl="*" POReqCohVAdrsIndex="*" POReqAdrs="*" POReqData="*" POReqDataBE="*" POReqId="*" POReqPriority="*" POReqRouteId="*" PIReqRdy="*" PIRespValid="*" PIRespCntl="*" PIRespCohCntl="*" PIRespId="*" PIRespData="*" PIRespPriority="*" PIRespRouteId="*" PORespRdy="*"/>
+  </xt>
+  <dcache b="hash" type="Data" size="0x8000" lineSize="0x80" accessWidth="0x40" assoc="4" banks="2" latency="2" indexLock="1" error="none" errorWidth="1" wayLock="0" dynamicWayDisable="1" indexType="physical" maxMissCount="1" missStart="0x20" parityBits="0" sectorSize="0x10" tagParityBits="0" tagType="physical" prefetchNOP="1" isWriteBack="1" coherence="0" testInstr="1" busy="0" initDataPattern="0x1a2b3c4d" initTagPattern="0xbecada00" numBytes="8" dataWayIntfc="*" tagWayIntfc="*" tagRamWidth="0" dataAddrWidth="0xa" tagAddrWidth="6">
+   <global b="hash" dir="in" CLK="*"/>
+   <dataIntfc b="hash" addrWidth="0xa" ramWidth="0x40" numBytes="8" testComp="none" insertTestComp="ifNotPresent" testCompLevel="top" Addr="*" ByteEn="*" WrData="*"/>
+   <tagIntfc b="hash" addrWidth="6" ramWidth="0" numBytes="0" testComp="none" insertTestComp="ifNotPresent" testCompLevel="top" Addr="*" ByteEn="*" WrData="*"/>
+   <dataBanks b="array">
+    <hash addrWidth="0xa" ramWidth="0x40" numBytes="8" numWords="0">
+     <hardwareModel b="string" value="Xtensa/Hardware/common/verilog/SRam.v.tpp"/>
+     <sramPort b="hash" addrWidth="0xa" ramWidth="0x40" numBytes="8" numWords="0" testComp="none" insertTestComp="ifNotPresent" testCompLevel="top" Addr="*" En="*" Wr="*" ByteEn="*" WordEn="*" WrData="*" Data="*"/>
+     <global b="hash" dir="in" CLK="*"/>
+    </hash>
+    <hash addrWidth="0xa" ramWidth="0x40" numBytes="8" numWords="0">
+     <hardwareModel b="string" value="Xtensa/Hardware/common/verilog/SRam.v.tpp"/>
+     <sramPort b="hash" addrWidth="0xa" ramWidth="0x40" numBytes="8" numWords="0" testComp="none" insertTestComp="ifNotPresent" testCompLevel="top" Addr="*" En="*" Wr="*" ByteEn="*" WordEn="*" WrData="*" Data="*"/>
+     <global b="hash" dir="in" CLK="*"/>
+    </hash>
+    <hash addrWidth="0xa" ramWidth="0x40" numBytes="8" numWords="0">
+     <hardwareModel b="string" value="Xtensa/Hardware/common/verilog/SRam.v.tpp"/>
+     <sramPort b="hash" addrWidth="0xa" ramWidth="0x40" numBytes="8" numWords="0" testComp="none" insertTestComp="ifNotPresent" testCompLevel="top" Addr="*" En="*" Wr="*" ByteEn="*" WordEn="*" WrData="*" Data="*"/>
+     <global b="hash" dir="in" CLK="*"/>
+    </hash>
+    <hash addrWidth="0xa" ramWidth="0x40" numBytes="8" numWords="0">
+     <hardwareModel b="string" value="Xtensa/Hardware/common/verilog/SRam.v.tpp"/>
+     <sramPort b="hash" addrWidth="0xa" ramWidth="0x40" numBytes="8" numWords="0" testComp="none" insertTestComp="ifNotPresent" testCompLevel="top" Addr="*" En="*" Wr="*" ByteEn="*" WordEn="*" WrData="*" Data="*"/>
+     <global b="hash" dir="in" CLK="*"/>
+    </hash>
+   </dataBanks>
+   <tagBanks b="array">
+    <hash addrWidth="6" ramWidth="0" numBytes="0" numWords="0">
+     <hardwareModel b="string" value="Xtensa/Hardware/common/verilog/SRam.v.tpp"/>
+     <sramPort b="hash" addrWidth="6" ramWidth="0" numBytes="0" numWords="0" testComp="none" insertTestComp="ifNotPresent" testCompLevel="top" Addr="*" En="*" Wr="*" ByteEn="*" WordEn="*" WrData="*" Data="*"/>
+     <global b="hash" dir="in" CLK="*"/>
+    </hash>
+    <hash addrWidth="6" ramWidth="0" numBytes="0" numWords="0">
+     <hardwareModel b="string" value="Xtensa/Hardware/common/verilog/SRam.v.tpp"/>
+     <sramPort b="hash" addrWidth="6" ramWidth="0" numBytes="0" numWords="0" testComp="none" insertTestComp="ifNotPresent" testCompLevel="top" Addr="*" En="*" Wr="*" ByteEn="*" WordEn="*" WrData="*" Data="*"/>
+     <global b="hash" dir="in" CLK="*"/>
+    </hash>
+    <hash addrWidth="6" ramWidth="0" numBytes="0" numWords="0">
+     <hardwareModel b="string" value="Xtensa/Hardware/common/verilog/SRam.v.tpp"/>
+     <sramPort b="hash" addrWidth="6" ramWidth="0" numBytes="0" numWords="0" testComp="none" insertTestComp="ifNotPresent" testCompLevel="top" Addr="*" En="*" Wr="*" ByteEn="*" WordEn="*" WrData="*" Data="*"/>
+     <global b="hash" dir="in" CLK="*"/>
+    </hash>
+    <hash addrWidth="6" ramWidth="0" numBytes="0" numWords="0">
+     <hardwareModel b="string" value="Xtensa/Hardware/common/verilog/SRam.v.tpp"/>
+     <sramPort b="hash" addrWidth="6" ramWidth="0" numBytes="0" numWords="0" testComp="none" insertTestComp="ifNotPresent" testCompLevel="top" Addr="*" En="*" Wr="*" ByteEn="*" WordEn="*" WrData="*" Data="*"/>
+     <global b="hash" dir="in" CLK="*"/>
+    </hash>
+   </tagBanks>
+  </dcache>
+  <icache b="hash" type="Inst" size="0x8000" lineSize="0x80" accessWidth="0x80" assoc="4" banks="1" latency="2" indexLock="1" error="none" errorWidth="4" wayLock="0" dynamicWayDisable="1" indexType="physical" maxMissCount="1" missStart="0x20" parityBits="0" sectorSize="0x10" tagParityBits="0" tagType="physical" prefetchNOP="1" isWriteBack="0" coherence="0" testInstr="1" busy="0" initDataPattern="0xa5a5a5a5" initTagPattern="0xabcdef00" numBytes="0x10" dataWayIntfc="*" tagWayIntfc="*" tagRamWidth="0" dataAddrWidth="9" tagAddrWidth="6">
+   <global b="hash" dir="in" CLK="*"/>
+   <dataIntfc b="hash" addrWidth="9" ramWidth="0x80" numBytes="0" testComp="none" insertTestComp="ifNotPresent" testCompLevel="top" Addr="*" ByteEn="*" WrData="*"/>
+   <tagIntfc b="hash" addrWidth="6" ramWidth="0" numBytes="0" testComp="none" insertTestComp="ifNotPresent" testCompLevel="top" Addr="*" ByteEn="*" WrData="*"/>
+   <dataBanks b="array">
+    <hash addrWidth="9" ramWidth="0x80" numBytes="0" numWords="0">
+     <hardwareModel b="string" value="Xtensa/Hardware/common/verilog/SRam.v.tpp"/>
+     <sramPort b="hash" addrWidth="9" ramWidth="0x80" numBytes="0" numWords="0" testComp="none" insertTestComp="ifNotPresent" testCompLevel="top" Addr="*" En="*" Wr="*" ByteEn="*" WordEn="*" WrData="*" Data="*"/>
+     <global b="hash" dir="in" CLK="*"/>
+    </hash>
+    <hash addrWidth="9" ramWidth="0x80" numBytes="0" numWords="0">
+     <hardwareModel b="string" value="Xtensa/Hardware/common/verilog/SRam.v.tpp"/>
+     <sramPort b="hash" addrWidth="9" ramWidth="0x80" numBytes="0" numWords="0" testComp="none" insertTestComp="ifNotPresent" testCompLevel="top" Addr="*" En="*" Wr="*" ByteEn="*" WordEn="*" WrData="*" Data="*"/>
+     <global b="hash" dir="in" CLK="*"/>
+    </hash>
+    <hash addrWidth="9" ramWidth="0x80" numBytes="0" numWords="0">
+     <hardwareModel b="string" value="Xtensa/Hardware/common/verilog/SRam.v.tpp"/>
+     <sramPort b="hash" addrWidth="9" ramWidth="0x80" numBytes="0" numWords="0" testComp="none" insertTestComp="ifNotPresent" testCompLevel="top" Addr="*" En="*" Wr="*" ByteEn="*" WordEn="*" WrData="*" Data="*"/>
+     <global b="hash" dir="in" CLK="*"/>
+    </hash>
+    <hash addrWidth="9" ramWidth="0x80" numBytes="0" numWords="0">
+     <hardwareModel b="string" value="Xtensa/Hardware/common/verilog/SRam.v.tpp"/>
+     <sramPort b="hash" addrWidth="9" ramWidth="0x80" numBytes="0" numWords="0" testComp="none" insertTestComp="ifNotPresent" testCompLevel="top" Addr="*" En="*" Wr="*" ByteEn="*" WordEn="*" WrData="*" Data="*"/>
+     <global b="hash" dir="in" CLK="*"/>
+    </hash>
+   </dataBanks>
+   <tagBanks b="array">
+    <hash addrWidth="6" ramWidth="0" numBytes="0" numWords="0">
+     <hardwareModel b="string" value="Xtensa/Hardware/common/verilog/SRam.v.tpp"/>
+     <sramPort b="hash" addrWidth="6" ramWidth="0" numBytes="0" numWords="0" testComp="none" insertTestComp="ifNotPresent" testCompLevel="top" Addr="*" En="*" Wr="*" ByteEn="*" WordEn="*" WrData="*" Data="*"/>
+     <global b="hash" dir="in" CLK="*"/>
+    </hash>
+    <hash addrWidth="6" ramWidth="0" numBytes="0" numWords="0">
+     <hardwareModel b="string" value="Xtensa/Hardware/common/verilog/SRam.v.tpp"/>
+     <sramPort b="hash" addrWidth="6" ramWidth="0" numBytes="0" numWords="0" testComp="none" insertTestComp="ifNotPresent" testCompLevel="top" Addr="*" En="*" Wr="*" ByteEn="*" WordEn="*" WrData="*" Data="*"/>
+     <global b="hash" dir="in" CLK="*"/>
+    </hash>
+    <hash addrWidth="6" ramWidth="0" numBytes="0" numWords="0">
+     <hardwareModel b="string" value="Xtensa/Hardware/common/verilog/SRam.v.tpp"/>
+     <sramPort b="hash" addrWidth="6" ramWidth="0" numBytes="0" numWords="0" testComp="none" insertTestComp="ifNotPresent" testCompLevel="top" Addr="*" En="*" Wr="*" ByteEn="*" WordEn="*" WrData="*" Data="*"/>
+     <global b="hash" dir="in" CLK="*"/>
+    </hash>
+    <hash addrWidth="6" ramWidth="0" numBytes="0" numWords="0">
+     <hardwareModel b="string" value="Xtensa/Hardware/common/verilog/SRam.v.tpp"/>
+     <sramPort b="hash" addrWidth="6" ramWidth="0" numBytes="0" numWords="0" testComp="none" insertTestComp="ifNotPresent" testCompLevel="top" Addr="*" En="*" Wr="*" ByteEn="*" WordEn="*" WrData="*" Data="*"/>
+     <global b="hash" dir="in" CLK="*"/>
+    </hash>
+   </tagBanks>
+  </icache>
+  <dataRams b="array">
+   <hash type="dataRam" psize="0x40000" basePAddr="0x1e000000" accessWidth="0x40" extraBits="0" name="dram0" id="0" assoc="1" banks="2" highOrderBanking="0" latency="2" busy="1" dma="1" udma="0" tieLS="1" error="none" errorWidth="1" rcw="0" cbox="1" subbanks="1" lsAccess="1" splitReadWritePort="0" attributeWidth="0" initPattern="0x1234567" size="0x40000" addressWidth="0xf" numbytes="8" numwords="2" vsize="0x40000" baseVAddr="0x1e000000" global="*" dataIntfc="*" loadIntfc="*">
+    <attributes b="hash" writable="1" unaligned="1"/>
+    <softwareModel b="string"/>
+    <dram b="hash" addrWidth="0xf" ramWidth="0x40" numBytes="8" numWords="0">
+     <hardwareModel b="string" value="Xtensa/Hardware/common/verilog/SRam.v.tpp"/>
+     <sramPort b="hash" addrWidth="0xf" ramWidth="0x40" numBytes="8" numWords="0" testComp="none" insertTestComp="ifNotPresent" testCompLevel="top" Addr="*" En="*" Wr="*" ByteEn="*" WordEn="*" WrData="*" Data="*"/>
+     <global b="hash" dir="in" CLK="*"/>
+    </dram>
+   </hash>
+   <hash type="dataRam" psize="0x40000" basePAddr="0x1e040000" accessWidth="0x40" extraBits="0" name="dram1" id="1" assoc="1" banks="2" highOrderBanking="0" latency="2" busy="1" dma="1" udma="0" tieLS="1" error="none" errorWidth="1" rcw="0" cbox="1" subbanks="1" lsAccess="1" splitReadWritePort="0" attributeWidth="0" initPattern="0x1234567" size="0x40000" addressWidth="0xf" numbytes="8" numwords="2" vsize="0x40000" baseVAddr="0x1e040000" global="*" dataIntfc="*" loadIntfc="*">
+    <attributes b="hash" writable="1" unaligned="1"/>
+    <softwareModel b="string"/>
+    <dram b="hash" addrWidth="0xf" ramWidth="0x40" numBytes="8" numWords="0">
+     <hardwareModel b="string" value="Xtensa/Hardware/common/verilog/SRam.v.tpp"/>
+     <sramPort b="hash" addrWidth="0xf" ramWidth="0x40" numBytes="8" numWords="0" testComp="none" insertTestComp="ifNotPresent" testCompLevel="top" Addr="*" En="*" Wr="*" ByteEn="*" WordEn="*" WrData="*" Data="*"/>
+     <global b="hash" dir="in" CLK="*"/>
+    </dram>
+   </hash>
+  </dataRams>
+  <instRams b="array">
+   <hash type="instRam" psize="0x10000" basePAddr="0x40000000" accessWidth="0x80" extraBits="0" name="iram0" id="0" assoc="1" banks="1" highOrderBanking="0" latency="2" busy="1" dma="1" udma="0" tieLS="0" error="none" errorWidth="4" rcw="0" cbox="0" subbanks="1" lsAccess="1" splitReadWritePort="0" attributeWidth="0" initPattern="0x6c6cb6b6" size="0x10000" addressWidth="0xc" numbytes="0x10" numwords="4" vsize="0x10000" baseVAddr="0x40000000" global="*" dataIntfc="*" loadIntfc="*" busyIntfc="*">
+    <attributes b="hash" writable="1" executable="1"/>
+    <softwareModel b="string"/>
+    <iram b="hash" addrWidth="0xc" ramWidth="0x80" numBytes="0" numWords="4">
+     <hardwareModel b="string" value="Xtensa/Hardware/common/verilog/SRam.v.tpp"/>
+     <sramPort b="hash" addrWidth="0xc" ramWidth="0x80" numBytes="0" numWords="4" testComp="none" insertTestComp="ifNotPresent" testCompLevel="top" Addr="*" En="*" Wr="*" ByteEn="*" WordEn="*" WrData="*" Data="*"/>
+     <global b="hash" dir="in" CLK="*"/>
+    </iram>
+   </hash>
+   <hash type="instRam" psize="0x10000" basePAddr="0x40010000" accessWidth="0x80" extraBits="0" name="iram1" id="1" assoc="1" banks="1" highOrderBanking="0" latency="2" busy="1" dma="1" udma="0" tieLS="0" error="none" errorWidth="4" rcw="0" cbox="0" subbanks="1" lsAccess="1" splitReadWritePort="0" attributeWidth="0" initPattern="0x6c6cb6b6" size="0x10000" addressWidth="0xc" numbytes="0x10" numwords="4" vsize="0x10000" baseVAddr="0x40010000" global="*" dataIntfc="*" loadIntfc="*" busyIntfc="*">
+    <attributes b="hash" writable="1" executable="1"/>
+    <softwareModel b="string"/>
+    <iram b="hash" addrWidth="0xc" ramWidth="0x80" numBytes="0" numWords="4">
+     <hardwareModel b="string" value="Xtensa/Hardware/common/verilog/SRam.v.tpp"/>
+     <sramPort b="hash" addrWidth="0xc" ramWidth="0x80" numBytes="0" numWords="4" testComp="none" insertTestComp="ifNotPresent" testCompLevel="top" Addr="*" En="*" Wr="*" ByteEn="*" WordEn="*" WrData="*" Data="*"/>
+     <global b="hash" dir="in" CLK="*"/>
+    </iram>
+   </hash>
+  </instRams>
+ </pr>
+ <sysram b="array">
+  <hash type="sysram" psize="0x80000000" basePAddr="0x40020000" accessWidth="0x20" extraBits="0" name="sram" id="0" assoc="1" banks="1" highOrderBanking="0" latency="1" busy="0" dma="0" udma="0" tieLS="1" error="none" errorWidth="1" rcw="0" cbox="0" subbanks="1" lsAccess="1" splitReadWritePort="0" attributeWidth="0" initPattern="0" size="0x80000000" addressWidth="0x1d" numbytes="4" numwords="0" vsize="0x80000000" baseVAddr="0x40020000">
+   <attributes b="hash" writable="1" executable="1"/>
+   <softwareModel b="string"/>
+  </hash>
+ </sysram>
+ <Uart b="hash" type="Uart" name="UART_BASE" size="0x20" baseVAddr="*" basePAddr="*" accessWidth="0x20" psize="0x20" vsize="0x20">
+  <cmodel b="string"/>
+ </Uart>
+</xtb>
+
+<modulemap b="hash" t="modulemaps">
+ <hifi4_Aquila_E2_PROD_Xtbench b="array">
+  <refh link="xtb"/>
+ </hifi4_Aquila_E2_PROD_Xtbench>
+ <hifi4_Aquila_E2_PROD_XT b="array">
+  <refh link="xtb.pr"/>
+ </hifi4_Aquila_E2_PROD_XT>
+ <Memory b="array">
+  <refh link="xtb.sysram.0"/>
+ </Memory>
+ <Uart b="array">
+  <refh link="xtb.Uart"/>
+ </Uart>
+ <xpg_hifi4_Aquila_E2_PROD b="array">
+  <refh link="xtb.pr.xt"/>
+ </xpg_hifi4_Aquila_E2_PROD>
+ <DataCache b="array">
+  <refh link="xtb.pr.dcache"/>
+ </DataCache>
+ <InstCache b="array">
+  <refh link="xtb.pr.icache"/>
+ </InstCache>
+ <DataRam b="array">
+  <refh link="xtb.pr.dataRams.0"/>
+ </DataRam>
+ <DataRam_1 b="array">
+  <refh link="xtb.pr.dataRams.1"/>
+ </DataRam_1>
+ <InstRam b="array">
+  <refh link="xtb.pr.instRams.0"/>
+ </InstRam>
+ <InstRam_1 b="array">
+  <refh link="xtb.pr.instRams.1"/>
+ </InstRam_1>
+ <hifi4_Aquila_E2_PROD_Environment b="array">
+  <refh link="xtb.pr.xt.env"/>
+ </hifi4_Aquila_E2_PROD_Environment>
+ <Core b="array">
+  <refh link="xtb.pr.xt.core"/>
+ </Core>
+ <RegisterFile b="array">
+  <refh link="xtb.pr.xt.registerFile"/>
+ </RegisterFile>
+ <CacheAttribute b="array">
+  <refh link="xtb.pr.xt.cacheAttribute"/>
+ </CacheAttribute>
+ <Interrupts b="array">
+  <refh link="xtb.pr.xt.interrupts"/>
+ </Interrupts>
+ <Debug b="array">
+  <refh link="xtb.pr.xt.debug"/>
+ </Debug>
+ <Timers b="array">
+  <refh link="xtb.pr.xt.timers"/>
+ </Timers>
+ <OCD b="array">
+  <refh link="xtb.pr.xt.OCD"/>
+ </OCD>
+ <TRAX b="array">
+  <refh link="xtb.pr.xt.trax"/>
+ </TRAX>
+ <Prefetch b="array">
+  <refh link="xtb.pr.xt.prefetch"/>
+ </Prefetch>
+ <MiscOperations b="array">
+  <refh link="xtb.pr.xt.miscOperations"/>
+ </MiscOperations>
+ <Vectors b="array">
+  <refh link="xtb.pr.xt.vectors"/>
+ </Vectors>
+ <LoadStore b="array">
+  <refh link="xtb.pr.xt._loadStoreUnits.0"/>
+ </LoadStore>
+ <LoadStore_1 b="array">
+  <refh link="xtb.pr.xt._loadStoreUnits.1"/>
+ </LoadStore_1>
+ <MMU b="array">
+  <refh link="xtb.pr.xt.mmu"/>
+ </MMU>
+ <mpu_ca_4kpg b="array">
+  <refh link="xtb.pr.xt.immu"/>
+ </mpu_ca_4kpg>
+ <TestOptions b="array">
+  <refh link="xtb.pr.xt.testOptions"/>
+ </TestOptions>
+ <TIE b="array">
+  <refh link="xtb.pr.xt.tie"/>
+ </TIE>
+ <HiFi4 b="array">
+  <refh link="xtb.pr.xt.tie_modules.0"/>
+ </HiFi4>
+ <MUL32 b="array">
+  <refh link="xtb.pr.xt.tie_modules.1"/>
+ </MUL32>
+ <DCPortsQueues b="array">
+  <refh link="xtb.pr.xt.tie_modules.2"/>
+ </DCPortsQueues>
+ <AXI b="array">
+  <refh link="xtb.pr.xt.axi"/>
+ </AXI>
+ <SRam b="array">
+  <refh link="xtb.pr.dcache.dataBanks.0"/>
+  <refh link="xtb.pr.dcache.dataBanks.1"/>
+  <refh link="xtb.pr.dcache.dataBanks.2"/>
+  <refh link="xtb.pr.dcache.dataBanks.3"/>
+ </SRam>
+ <SRam_1 b="array">
+  <refh link="xtb.pr.dcache.tagBanks.0"/>
+  <refh link="xtb.pr.dcache.tagBanks.1"/>
+  <refh link="xtb.pr.dcache.tagBanks.2"/>
+  <refh link="xtb.pr.dcache.tagBanks.3"/>
+  <refh link="xtb.pr.icache.tagBanks.0"/>
+  <refh link="xtb.pr.icache.tagBanks.1"/>
+  <refh link="xtb.pr.icache.tagBanks.2"/>
+  <refh link="xtb.pr.icache.tagBanks.3"/>
+ </SRam_1>
+ <SRam_2 b="array">
+  <refh link="xtb.pr.icache.dataBanks.0"/>
+  <refh link="xtb.pr.icache.dataBanks.1"/>
+  <refh link="xtb.pr.icache.dataBanks.2"/>
+  <refh link="xtb.pr.icache.dataBanks.3"/>
+ </SRam_2>
+ <SRam_3 b="array">
+  <refh link="xtb.pr.dataRams.0.dram"/>
+  <refh link="xtb.pr.dataRams.1.dram"/>
+ </SRam_3>
+ <SRam_4 b="array">
+  <refh link="xtb.pr.instRams.0.iram"/>
+  <refh link="xtb.pr.instRams.1.iram"/>
+ </SRam_4>
+ <Build b="array">
+  <refh link="xtb.pr.xt.env.build"/>
+ </Build>
+ <DesignImplementation b="array">
+  <refh link="xtb.pr.xt.env.implementation"/>
+ </DesignImplementation>
+ <CadTools b="array">
+  <refh link="xtb.pr.xt.env.cadTools"/>
+ </CadTools>
+ <DesignVerification b="array">
+  <refh link="xtb.pr.xt.env.verification"/>
+ </DesignVerification>
+ <FPGABoard b="array">
+  <refh link="xtb.pr.xt.env.fpga"/>
+ </FPGABoard>
+ <Interrupt b="array">
+  <refh link="xtb.pr.xt.interrupts.interrupt.0"/>
+ </Interrupt>
+ <Interrupt_1 b="array">
+  <refh link="xtb.pr.xt.interrupts.interrupt.1"/>
+ </Interrupt_1>
+ <Interrupt_2 b="array">
+  <refh link="xtb.pr.xt.interrupts.interrupt.2"/>
+ </Interrupt_2>
+ <Interrupt_3 b="array">
+  <refh link="xtb.pr.xt.interrupts.interrupt.3"/>
+ </Interrupt_3>
+ <Interrupt_4 b="array">
+  <refh link="xtb.pr.xt.interrupts.interrupt.4"/>
+ </Interrupt_4>
+ <Interrupt_5 b="array">
+  <refh link="xtb.pr.xt.interrupts.interrupt.5"/>
+ </Interrupt_5>
+ <Interrupt_6 b="array">
+  <refh link="xtb.pr.xt.interrupts.interrupt.6"/>
+ </Interrupt_6>
+ <Interrupt_7 b="array">
+  <refh link="xtb.pr.xt.interrupts.interrupt.7"/>
+ </Interrupt_7>
+ <Interrupt_8 b="array">
+  <refh link="xtb.pr.xt.interrupts.interrupt.8"/>
+ </Interrupt_8>
+ <Interrupt_9 b="array">
+  <refh link="xtb.pr.xt.interrupts.interrupt.9"/>
+ </Interrupt_9>
+ <Interrupt_10 b="array">
+  <refh link="xtb.pr.xt.interrupts.interrupt.10"/>
+ </Interrupt_10>
+ <Interrupt_11 b="array">
+  <refh link="xtb.pr.xt.interrupts.interrupt.11"/>
+ </Interrupt_11>
+ <Interrupt_12 b="array">
+  <refh link="xtb.pr.xt.interrupts.interrupt.12"/>
+ </Interrupt_12>
+ <Interrupt_13 b="array">
+  <refh link="xtb.pr.xt.interrupts.interrupt.13"/>
+ </Interrupt_13>
+ <Interrupt_14 b="array">
+  <refh link="xtb.pr.xt.interrupts.interrupt.14"/>
+ </Interrupt_14>
+ <Interrupt_15 b="array">
+  <refh link="xtb.pr.xt.interrupts.interrupt.15"/>
+ </Interrupt_15>
+ <Interrupt_16 b="array">
+  <refh link="xtb.pr.xt.interrupts.interrupt.16"/>
+ </Interrupt_16>
+ <Interrupt_17 b="array">
+  <refh link="xtb.pr.xt.interrupts.interrupt.17"/>
+ </Interrupt_17>
+ <Interrupt_18 b="array">
+  <refh link="xtb.pr.xt.interrupts.interrupt.18"/>
+ </Interrupt_18>
+ <Interrupt_19 b="array">
+  <refh link="xtb.pr.xt.interrupts.interrupt.19"/>
+ </Interrupt_19>
+ <Interrupt_20 b="array">
+  <refh link="xtb.pr.xt.interrupts.interrupt.20"/>
+ </Interrupt_20>
+ <Interrupt_21 b="array">
+  <refh link="xtb.pr.xt.interrupts.interrupt.21"/>
+ </Interrupt_21>
+ <Interrupt_22 b="array">
+  <refh link="xtb.pr.xt.interrupts.interrupt.22"/>
+ </Interrupt_22>
+ <Interrupt_23 b="array">
+  <refh link="xtb.pr.xt.interrupts.interrupt.23"/>
+ </Interrupt_23>
+ <Interrupt_24 b="array">
+  <refh link="xtb.pr.xt.interrupts.interrupt.24"/>
+ </Interrupt_24>
+ <Timer b="array">
+  <refh link="xtb.pr.xt.timers.timer.0"/>
+ </Timer>
+ <Timer_1 b="array">
+  <refh link="xtb.pr.xt.timers.timer.1"/>
+ </Timer_1>
+ <Timer_2 b="array">
+  <refh link="xtb.pr.xt.timers.timer.2"/>
+ </Timer_2>
+ <Vector b="array">
+  <refh link="xtb.pr.xt.vectors.vectorList.0"/>
+ </Vector>
+ <Vector_1 b="array">
+  <refh link="xtb.pr.xt.vectors.vectorList.1"/>
+ </Vector_1>
+ <Vector_2 b="array">
+  <refh link="xtb.pr.xt.vectors.vectorList.2"/>
+ </Vector_2>
+ <Vector_3 b="array">
+  <refh link="xtb.pr.xt.vectors.vectorList.3"/>
+ </Vector_3>
+ <Vector_4 b="array">
+  <refh link="xtb.pr.xt.vectors.vectorList.4"/>
+ </Vector_4>
+ <Vector_5 b="array">
+  <refh link="xtb.pr.xt.vectors.vectorList.5"/>
+ </Vector_5>
+ <Vector_6 b="array">
+  <refh link="xtb.pr.xt.vectors.vectorList.6"/>
+ </Vector_6>
+ <Vector_7 b="array">
+  <refh link="xtb.pr.xt.vectors.vectorList.7"/>
+ </Vector_7>
+ <TLB b="array">
+  <refh link="xtb.pr.xt.mmu.itlb"/>
+ </TLB>
+ <TLB_1 b="array">
+  <refh link="xtb.pr.xt.mmu.dtlb"/>
+ </TLB_1>
+ <MPUbgMap b="array">
+  <refh link="xtb.pr.xt.immu.MPUbgMapList.0"/>
+ </MPUbgMap>
+ <MPUbgMap_1 b="array">
+  <refh link="xtb.pr.xt.immu.MPUbgMapList.1"/>
+ </MPUbgMap_1>
+ <TLBWay b="array">
+  <refh link="xtb.pr.xt.mmu.itlb.ways.0"/>
+  <refh link="xtb.pr.xt.mmu.dtlb.ways.0"/>
+ </TLBWay>
+ <TLBAssoc b="array">
+  <refh link="xtb.pr.xt.mmu.itlb.ways.0.assoc"/>
+  <refh link="xtb.pr.xt.mmu.dtlb.ways.0.assoc"/>
+ </TLBAssoc>
+</modulemap>
+
+</sysdoc>
+

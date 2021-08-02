@@ -1,0 +1,25 @@
+#mount all storages in meta mode
+on nonencrypted && property:ro.bootmode=meta
+    start mount_all_storages
+
+on property:vold.decrypt=trigger_restart_framework && property:ro.bootmode=meta
+    start mount_all_storages
+
+#mount all storages in factory mode
+on nonencrypted && property:ro.bootmode=factory
+    start mount_all_storages
+
+on property:vold.decrypt=trigger_restart_framework && property:ro.bootmode=factory
+    start mount_all_storages
+
+service mount_all_storages /system/bin/storagemanagerd --wait volume mount_all
+    class main
+    disabled
+    oneshot
+    group reserved_disk
+
+service mk_dirs_in_list /system/bin/storagemanagerd mk_dirs_in_list
+    class main
+    disabled
+    oneshot
+    group reserved_disk

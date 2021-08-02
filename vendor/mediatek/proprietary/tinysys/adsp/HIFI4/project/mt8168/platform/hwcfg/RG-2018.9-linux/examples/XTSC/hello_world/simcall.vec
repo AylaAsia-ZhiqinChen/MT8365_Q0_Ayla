@@ -1,0 +1,79 @@
+/*
+-- Customer ID=13943; Build=0x75f5e; Copyright (c) 2014-2017 by Cadence Design Systems, Inc.  ALL RIGHTS RESERVED.
+-- These coded instructions, statements, and computer programs are the
+-- copyrighted works and confidential proprietary information of
+-- Cadence Design Systems, Inc.  They may be adapted and modified by bona fide
+-- purchasers for internal use, but neither the original nor any adapted
+-- or modified version may be disclosed or distributed to third parties
+-- in any manner, medium, or form, in whole or in part, without the prior
+-- written consent of Cadence Design Systems, Inc.
+
+
+Note:  This script and instructions illustrate the recommended way of using Lua
+to service ISS user simcalls using a Lua function defined in an xtsc_script_file
+declared using xtsc_core_parms parameter "SimScriptFile".  For more information
+about this parameter, see its entry under the xtsc_core_parms entry in the
+XTSC RM (xtsc_rm.pdf) or in the xtsc_core.h header file.  For the old way of
+servicing ISS user simcalls using a Lua script which waits on an event, see the
+simcall.lua file (steps 1 and 2 below are the same in both files).
+
+
+                          Overview
+
+This script illustrates using ISS simcalls to communicate between an
+Xtensa program and Lua code running in the simulator.  For more 
+information see the simcall discussion in "The XTSC System Control and
+Debug Framework" section of the xtsc-run tutorial in the appendix of
+the XTSC User's Guide (xtsc_ug.pdf).
+
+
+                        Instructions
+
+1) ifdef-out the current content of target/hello.c and put the following
+   in its place:
+      #if 0
+        // Original content here
+      #else
+      #include <stdio.h>
+      #include <time.h>
+      #include <xtensa/sim.h>
+
+      #define TIMESTAMP fprintf(stdout, "%lu: ", clock());
+      #define LOG2(msg, arg1, arg2) \
+      { TIMESTAMP; fprintf(stdout, msg, arg1, arg2); fflush(stdout); }
+
+      int main(int argc, char *argv[]) {
+        int i, result;
+        for (i=0; i<3; ++i) {
+          result = xt_iss_simcall(0xbabeface, i, 2*i, i*i, 0, 0);
+          LOG2("simcall result #%d is %d \n", i, result);
+        }
+        return 0;
+      }
+      #endif
+
+2) Recompile the target program (use xt-make on MS Windows)
+        make target
+
+3) Run the simulation
+     xtsc-run -set_core_parm=SimScriptFile=simcall.vec -i=hello_world.inc
+
+*/
+
+#lua_beg
+function my_simcall(core, arg1, arg2, arg3, arg4, arg5, arg6)
+  delta_cycles = tonumber(xtsc.cmd("sc sc_delta_count"))
+  time = tostring(xtsc.cmd("sc sc_time_stamp") / 1000) .. "/" .. tostring(delta_cycles % 1000) .. ":"
+  arg1 = ((arg1 < 0) and 0x100000000 or 0) + arg1
+  note = time                                .. " " .. 
+         string.format("0x%08x", arg1)       .. " " .. 
+         arg2                                .. " " .. 
+         arg3                                .. " " .. 
+         arg4                               
+  xtsc.cmd("xtsc note " .. note);
+  return delta_cycles
+end
+#lua_end
+
+lua_function simcall my_simcall
+

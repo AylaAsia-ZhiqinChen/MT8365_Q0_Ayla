@@ -1,0 +1,256 @@
+<html>
+  <head>
+    <title>
+      XSR.EXCSAVE4 - Exchange Special Register EXCSAVE4
+    </title>
+    <style type="text/css">
+      <!--
+	body {
+	background: white;
+	color: black;
+	font-family: Arial, Verdana, Myriad Web, Syntax, sans-serif;
+	margin-left: 2em;
+	margin-right: 2em;
+	}
+	#boundingbox {
+	background: white;
+	color: black;
+	font-family: Arial, Verdana, Myriad Web, Syntax, sans-serif;
+	position: relative;
+	width: 865px;
+	margin: 0 auto;
+	padding: 20px;
+	border-style: dashed;
+	border-width: 1px;
+	border-spacing: 10px;
+	border-collapse: separate;
+	}
+	a {
+	text-decoration: none;
+	}
+	a:visited {
+	color: blue;
+	}
+	a:link {
+	color: green;
+	}
+	a:active {
+	color: green;
+	}
+	a:hover {
+	color: green;
+	}
+	a:offsite {
+	color: green;
+	}
+	h1 {
+	font-size: 14pt;
+	font-weight: bold;
+	}
+	h1.center {
+	font-size: 14pt;
+	font-weight: bold;
+	text-align: center;
+	}
+	h2 {
+	font-size: 12pt;
+	}
+	caption {
+	padding-top: 1em;
+	}
+	table.thin {
+	border-width: thin;
+	border-spacing: 0px;
+	border-style: inset;
+	border-color: gray;
+	border-collapse: collapse;
+	background-color: rgb(250, 240, 230);
+	}
+	table th.thin {
+	border-width: thin;
+	padding: 3px;
+	border-style: inset;
+	border-color: gray;
+	background-color: white;
+	-moz-border-radius: 0px 0px 0px 0px;
+	}
+	table th.thin2 {
+	border-width: thin;
+	padding: 3px;
+	border-style: inset;
+	border-color: gray;
+	background-color: rgb(250, 240, 230);
+	-moz-border-radius: 0px 0px 0px 0px;
+	}
+	table td.thin {
+	border-width: thin;
+	padding: 3px;
+	border-style: inset;
+	border-color: gray;
+	background-color: white;
+	-moz-border-radius: 0px 0px 0px 0px;
+	}
+	table td.thin2 {
+	border-width: thin;
+	padding: 3px;
+	border-style: inset;
+	border-color: gray;
+	background-color: rgb(250, 240, 230);
+	-moz-border-radius: 0px 0px 0px 0px;
+	}
+	pre {
+	font-family: Lucidatypewriter, monospace;
+	font-size: 10pt;
+	}
+	.proto {
+	font-family: Lucidatypewriter, monospace;
+	font-size: 10pt;
+	padding-left: 1em;
+	text-indent: -1em;
+	}
+	.protohead {
+	font-family: Lucidatypewriter, monospace;
+	font-size: 10pt;
+	padding-left: 2em;
+	text-indent: -2em;
+	}
+	.protobody {
+	font-family: Lucidatypewriter, monospace;
+	font-size: 10pt;
+	padding-left: 4em;
+	text-indent: -2em;
+	}
+	.rotate {
+	display: block;
+	-webkit-transform: rotate(-90deg); 
+        -moz-transform:
+	rotate(-90deg);
+	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+	padding-top: 20px;                       
+}
+	.light {
+	font-size: 75%;
+	color: SlateGrey;
+	}
+	table.format {
+	border-width: thin;
+	border-spacing: 0px;
+	border-style: inset;
+	border-color: gray;
+	border-collapse: collapse;
+	background-color: rgb(250, 240, 230);
+	font-size: 75%;
+	}
+	table.format th {
+	border-width: thin;
+	padding: 3px;
+	border-style: inset;
+	border-color: gray;
+	background-color: #FFF5EE;
+	-moz-border-radius: 0px 0px 0px 0px;
+	vertical-align: bottom;
+	font-size: 75%;
+	}
+	table.format td {
+	border-width: thin;
+	padding: 3px;
+	border-style: inset;
+	border-color: gray;
+	background-color: white;
+	-moz-border-radius: 0px 0px 0px 0px;
+	font-size: 75%;
+	}
+	table.format td.opcodeBit_present {
+	background-color: #FFE4E1;
+	text-align: center;
+	}
+	table.format td.formatBit_present {
+	background-color: #EEE8AA;
+	text-align: center;
+	}
+	table.format td.slotBit_present {
+	background-color: #B0E0E6;
+	text-align: center;
+	vertical-align: bottom;
+	}
+	
+        -->
+    </style>
+  </head>
+  <body>
+    <h1>
+      XSR.EXCSAVE4 &#8212; Exchange Special Register EXCSAVE4
+    </h1>
+    <h2>
+      Instruction Word
+    </h2>
+    
+<table border="1" class="format">
+<tr><th width="130" nowrap>Slot<br>Inst</th><th>8<br>7</th><th>8<br>6</th><th>8<br>5</th><th>8<br>4</th><th>8<br>3</th><th>8<br>2</th><th>8<br>1</th><th>8<br>0</th><th>7<br>9</th><th>7<br>8</th><th>7<br>7</th><th>7<br>6</th><th>7<br>5</th><th>7<br>4</th><th>7<br>3</th><th>7<br>2</th><th>7<br>1</th><th>7<br>0</th><th>6<br>9</th><th>6<br>8</th><th>6<br>7</th><th>6<br>6</th><th>6<br>5</th><th>6<br>4</th><th>6<br>3</th><th>6<br>2</th><th>6<br>1</th><th>6<br>0</th><th>5<br>9</th><th>5<br>8</th><th>5<br>7</th><th>5<br>6</th><th>5<br>5</th><th>5<br>4</th><th>5<br>3</th><th>5<br>2</th><th>5<br>1</th><th>5<br>0</th><th>4<br>9</th><th>4<br>8</th><th>4<br>7</th><th>4<br>6</th><th>4<br>5</th><th>4<br>4</th><th>4<br>3</th><th>4<br>2</th><th>4<br>1</th><th>4<br>0</th><th>3<br>9</th><th>3<br>8</th><th>3<br>7</th><th>3<br>6</th><th>3<br>5</th><th>3<br>4</th><th>3<br>3</th><th>3<br>2</th><th>3<br>1</th><th>3<br>0</th><th>2<br>9</th><th>2<br>8</th><th>2<br>7</th><th>2<br>6</th><th>2<br>5</th><th>2<br>4</th><th>2<br>3</th><th>2<br>2</th><th>2<br>1</th><th>2<br>0</th><th>1<br>9</th><th>1<br>8</th><th>1<br>7</th><th>1<br>6</th><th>1<br>5</th><th>1<br>4</th><th>1<br>3</th><th>1<br>2</th><th>1<br>1</th><th>1<br>0</th><th>9</th><th>8</th><th>7</th><th>6</th><th>5</th><th>4</th><th>3</th><th>2</th><th>1</th><th>0</th></tr>
+<tr><td nowrap>Format x24 - 24 bit(s)</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="formatBit_present">0</td><td> </td><td> </td><td> </td></tr>
+<tr><td nowrap>XSR.EXCSAVE4</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td></tr>
+<tr><td nowrap>t</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">3</td><td class="slotBit_present">2</td><td class="slotBit_present">1</td><td class="slotBit_present">0</td><td> </td><td> </td><td> </td><td> </td></tr>
+</table>
+<br>
+    <h2>
+      Assembler Syntax
+    </h2>
+    <p>
+      <code title="Instruction Mnemonic for Exchange Special Register EXCSAVE4">XSR.EXCSAVE4</code>
+      <span title="Read and write  of register file AR indexed by the t field of the instruction word"><code>a0..15(art)</code></span>
+    </p>
+    <h2>
+      C Syntax
+    </h2>
+    #include &lt;xtensa/tie/xt_core.h&gt;<P>extern void XT_XSR_EXCSAVE4(unsigned t /*inout*/);
+</P>
+    <h2>
+      Description
+    </h2>
+    <p><small>(please consult the <i>Xtensa &reg; Instruction Set Architecture Reference Manual</i> for any cross references and additional information)</small></p><P><code>XSR.*</code> simultaneously reads and writes the special registers that are described in <code> Processor Control Instructions</code>. See  Special Registers for more detailed information on the operation of this instruction for each Special Register.</P><P>The contents of address register <code>at</code> and the Special Register designated by the immediate in the 8-bit <code>sr</code> field of the instruction word are both read. The read address register value is then written to the Special Register, and the read Special Register value is written to <code>at</code>. The name of the Special Register is used in place of the '*' in the assembler syntax above and the translation is made to the 8-bit <code>sr</code> field by the assembler.</P><P><code>XSR</code> is an assembler macro for <code>XSR.*</code>, which provides compatibility with the older versions of the instruction containing either the name or the number of the Special Register.</P><P>The point at which <code>XSR.*</code> to certain registers affects subsequent instructions is not always defined (<code>SAR</code> and <code>ACC</code> are exceptions). In these cases, the Special Register Tables in  Special Registers explain how to ensure the effects are seen by a particular point in the instruction stream (typically involving the use of one of the <code>ISYNC</code>, <code>RSYNC</code>, <code>ESYNC</code>, or <code>DSYNC</code> instructions). An <code>XSR.*</code> followed by an <code>RSR.*</code> to the same register should be separated with an <code>ESYNC</code> to guarantee the value written is read back. An <code>XSR.PS</code> followed by <code>RSIL</code> also requires an <code>ESYNC</code>. In general, the restrictions on <code>XSR.*</code> include the union of the restrictions of the corresponding <code>RSR.*</code> and <code>WSR.*</code>.</P><P><code>XSR.*</code> with Special Register numbers <code>>=</code> 64 is privileged. An <code>XSR.* </code>for an unconfigured register generally will raise an illegal instruction exception.</P>    <h2>Operation</h2>      <pre>
+sr &#8592; if msbFirst then s||r else r||s
+if sr >= 64 and CRING != 0 then
+	Exception (PrivilegedCause)
+else
+	t0 &#8592; AR[t]
+	t1 &#8592; see RSR frame of the Tables in  Special Registers
+	see WSR frame of the Tables in  Special Registers &#8592; t0
+	AR[t] &#8592; t1
+endif</pre>    <h2>Exceptions</h2>      EveryInstR Group (see  EveryInstR Group:)GenExcep(IllegalInstructionCause) if Exception OptionGenExcep(PrivilegedCause) if Exception Option<P>&nbsp;</P><HR><P><SPAN>1.</SPAN><code>WindowOverflow4</code>, <code>WindowOverflow8</code>, or <code>WindowOverflow12</code>.</P><P><SPAN>2.</SPAN><code>WindowUnderflow4</code>, <code>WindowUnderflow8</code>, or <code>WindowUnderflow12</code>.</P></BODY></HTML>
+    <h2>
+      Implementation Pipeline
+    </h2>
+    <table class="thin">
+      <thead>
+	<tr>
+	  <th align="left" class="thin">
+	    In
+	  </th>
+	  <th align="left" class="thin">
+	    Out
+	  </th>
+	</tr>
+      </thead>
+      <tbody>
+	<tr>
+	  <td class="thin">
+	    <code>PSEXCM&nbsp;Rstage</code>, <code>PSRING&nbsp;Mstage</code>, <code>EXCSAVE4&nbsp;Mstage</code>,
+	    <code>art&nbsp;Wstage</code>
+	  </td>
+	  <td class="thin">
+	    <code>EXCSAVE4&nbsp;Wstage</code>, <code>art&nbsp;Mstage</code>
+	  </td>
+	</tr>
+      </tbody>
+    </table>
+    <h2>
+      Protos that use XSR.EXCSAVE4
+    </h2>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#XSR.EXCSAVE4>XSR.EXCSAVE4</a> { inout uint32 t
+      }{}{</div><div class=protobody><a href=XSREXCSAVE4.html>XSR.EXCSAVE4</a>
+      t;</div><div class=protohead>}</div>
+    </div>
+  </body>
+</html>

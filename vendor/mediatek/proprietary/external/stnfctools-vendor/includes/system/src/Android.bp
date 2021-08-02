@@ -1,0 +1,81 @@
+// START vendor version
+cc_library {
+    arch: {
+        arm: {
+            instruction_set: "arm",
+        },
+    },
+    name: "libstnfc-nci-vendor",
+    owner: "mtk",
+    vendor: true,
+    shared_libs: [
+        "libcutils",
+        "liblog",
+        "libdl",
+        "libhardware",
+        "libz",
+        "libchrome",
+        "libbase",
+    ],
+    export_include_dirs: [
+        "include",
+        "gki/ulinux",
+        "gki/common",
+        "nfc/include",
+        "nfa/include",
+    ],
+    export_static_lib_headers: [
+        "libstnfcutils-vendor",
+    ],
+    static_libs: [
+        "libstnfcutils-vendor",
+    ],
+    cflags: [
+        "-DBUILDCFG=1",
+        "-DST21NFC",
+        "-DST21NFC_DTA",
+        "-Wall",
+        "-Werror",
+        "-Wimplicit-fallthrough",
+		        "-DVENDOR_BUILD_FOR_FACTORY",
+    ],
+	header_libs : [
+		"libutils_headers",
+    ],
+	static: {
+		cflags: ["-fvisibility=hidden"],
+	},
+    local_include_dirs: [
+        "include",
+        "gki/ulinux",
+        "gki/common",
+        "nfa/include",
+        "nfc/include",
+    ],
+    srcs: [
+        "nfa/ce/*.cc",
+        "nfa/dm/*.cc",
+        "nfa/ee/*.cc",
+        "nfa/hci/*.cc",
+        "nfa/p2p/*.cc",
+        "nfa/rw/*.cc",
+        "nfa/sys/*.cc",
+        "nfc/llcp/*.cc",
+        "nfc/nci/*.cc",
+        "nfc/ndef/*.cc",
+        "nfc/nfc/*.cc",
+        "nfc/tags/*.cc",
+        "adaptation/*.cc",
+        "gki/common/*.cc",
+        "gki/ulinux/*.cc",
+    ],
+    product_variables: {
+        debuggable: {
+            cflags: [
+                "-DDCHECK_ALWAYS_ON"
+            ],
+        },
+    },
+}
+// END vendor version
+

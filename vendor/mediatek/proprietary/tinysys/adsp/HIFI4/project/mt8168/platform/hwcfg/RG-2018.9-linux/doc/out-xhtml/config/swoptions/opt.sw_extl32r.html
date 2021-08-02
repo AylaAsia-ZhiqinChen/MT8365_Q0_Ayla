@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en-us" lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="copyright" content="(C) Copyright 2005"/>
+<meta name="DC.rights.owner" content="(C) Copyright 2005"/>
+<meta name="DC.Type" content="tconcept"/>
+<meta name="DC.Title" content="Use Extended L32R Instruction (for Legacy Hardware)"/>
+<meta name="abstract" content=""/>
+<meta name="description" content=""/>
+<meta name="DC.Format" content="XHTML"/>
+<meta name="DC.Identifier" content="opt-sw_extl32r"/>
+<link rel="stylesheet" type="text/css" href="../../commonltr.css"/>
+<link rel="stylesheet" type="text/css" href="../../cadence.css"/>
+<title>Use Extended L32R Instruction (for Legacy Hardware)</title>
+</head>
+<body id="opt-sw_extl32r">
+
+
+    <h1 class="title topictitle1">Use Extended L32R Instruction (for Legacy Hardware)</h1>
+
+    
+    <div class="body conbody"><p class="shortdesc"/>
+
+        <p class="p">All <span class="ph">Cadence</span> processors from Xtensa LX and Xtensa6 through LX3
+            and Xtensa 8 include hardware to support two different kinds of L32R instruction: normal
+            (PC relative) and "based". This software selection chooses how the target software is
+            built (and how the compiler generates code) - whether it makes use of the standard PC
+            relative address mode, or whether it uses the extended L32R HW support for a larger
+            address range.</p>
+
+        <dl class="dl">
+            
+                <dt class="dt dlterm">Hardware support for Extended L32R</dt>
+
+                <dd class="dd"><span class="ph">Not
+                        Selected</span></dd>
+
+            
+            
+                <dt class="dt dlterm">Xtensa Tools should use Extended L32R</dt>
+
+                <dd class="dd"><span class="ph">No Hardware Support</span></dd>
+
+            
+        </dl>
+
+        <p class="p">A processor needs a mechanism for accessing literals; numbers with values known at
+            compile or link time. Literals are used for constants directly written in C and for the
+            address of global variables. For example, in order to implement the C statement
+                <samp class="ph codeph">x=123456</samp>, when x is a global variable, the compiler must put the
+            literal <samp class="ph codeph">123456</samp> into a register, put the address of the variable
+                <samp class="ph codeph">x</samp> into another register, and then store the value in the first
+            register into the address from the second register. For small literals, the literal can
+            be encoded directly inside a <samp class="ph codeph">movi</samp> instruction that moves the value of a
+            literal into a register. For larger literals, the compiler places the literal value in
+            memory and uses the <samp class="ph codeph">l32r</samp> instruction to load the literal from memory
+            into a register. Normally <samp class="ph codeph">l32r</samp> is a PC-relative instruction which can
+            load a literal from any memory location within 256 Kilobytes of the instruction invoking
+            the <samp class="ph codeph">l32r</samp>. The compiler, assembler and linker work together to ensure
+            that literals are placed in range of their invoking <samp class="ph codeph">l32r</samp> instruction,
+            and even combine multiple literals with the same value to save memory. If however, you
+            are using a local IRAM that is 256 KBytes or larger, the only place to put a literal
+            that is in range might be inside the IRAM itself. Prior to the RD release, loading
+            memory from an IRAM was slow and therefore undesirable. Therefore, <span class="ph">Cadence</span> offered the extended <samp class="ph codeph">l32r</samp> option for
+            users of large IRAMs. With this option, the <samp class="ph codeph">l32r</samp> instruction loads from
+            an offset of a global base register. This global base register can point to any memory
+            allowing literals to be placed anywhere. However, there are disadvantages to the use of
+            extended L32R instruction. In particular, this option is not supported by third-party
+            RTOSs. Furthermore, since the base register is global, all the literals used by the
+            program must be contiguous and therefore a program is limited to a total of 256 KBytes
+            of literals, or equivalently 64K literals. Additionally, <span class="ph">Cadence</span> does not support dynamically loading and unloading
+            code on software configurations that uses the extended L32R. Starting with the RD
+            release, the hardware is able to load literals quickly even when they are in IRAM.
+            Therefore, the extended L32R option is only supported for older hardware.</p>
+
+    </div>
+
+    
+
+</body>
+</html>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en-us" lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="copyright" content="(C) Copyright 2005"/>
+<meta name="DC.rights.owner" content="(C) Copyright 2005"/>
+<meta name="DC.Type" content="tconcept"/>
+<meta name="DC.Title" content="Master Exclusive Access Option"/>
+<meta name="abstract" content="Enable exclusive operations on the AXI master port to perform atomic access on a remote address."/>
+<meta name="description" content="Enable exclusive operations on the AXI master port to perform atomic access on a remote address."/>
+<meta name="DC.Relation" scheme="URI" content="../../config/nodes/g_intbridge.html"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/options/opt.bs.rsp.dep.html"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/options/opt.slave_exclaccess.html"/>
+<meta name="DC.Format" content="XHTML"/>
+<meta name="DC.Identifier" content="opt-master_exclaccess"/>
+<link rel="stylesheet" type="text/css" href="../../commonltr.css"/>
+<link rel="stylesheet" type="text/css" href="../../cadence.css"/>
+<title>Master Exclusive Access Option</title>
+</head>
+<body id="opt-master_exclaccess">
+
+
+    <h1 class="title topictitle1"><span class="ph">Master Exclusive Access</span> Option</h1>
+
+    
+    <div class="body conbody"><p class="shortdesc">Enable exclusive operations on the AXI master port to perform atomic access on a
+        remote address.</p>
+
+        <dl class="dl">
+            
+                <dt class="dt dlterm"><span class="ph">Master Exclusive Access</span></dt>
+
+                <dd class="dd"><span class="ph">Selected</span></dd>
+
+            
+        </dl>
+
+        <p class="p">If selected, then the processor can issue exclusive operations on its outbound AXI master
+            port to perform atomic access on a remote address.</p>
+
+
+        <p class="p"><strong class="ph b">Outbound Exclusive Load</strong></p>
+
+        <p class="p">The Xtensa processor does not allocate monitors for outbound (AXI master) exclusive
+            access transactions and expects the targeted AXI slave agent to handle the monitoring.
+                <samp class="ph codeph">L32EX</samp> instructions targeting the system memory will appear as
+            exclusive load transactions on AXI. All exclusive loads on AXI are expected to receive
+            an EXOKAY response, which indicates that exclusive accesses is supported for the address
+            of the transaction. If exclusive accesses are not supported by the targeted AXI slave,
+            then the transaction is expected to get an OKAY (failed) response, which will result in
+            the Xtensa processor taking an <samp class="ph codeph">ExclusiveErrorCause</samp> exception.</p>
+
+
+        <p class="p"><strong class="ph b">Outbound Exclusive Store</strong></p>
+
+        <p class="p">The behavior of <samp class="ph codeph">S32EX</samp> instructions depends on the state of the
+                <samp class="ph codeph">EXCLMON</samp> register. Normally, the preceding <samp class="ph codeph">L32EX</samp>
+            instruction would have set the <samp class="ph codeph">EXCLMON</samp> register. But if the
+                <samp class="ph codeph">EXCLMON</samp> register has been cleared with a <samp class="ph codeph">CLREX</samp>
+            instruction, the exclusive store will be suppressed. If <samp class="ph codeph">EXCLMON</samp> is set,
+            the <samp class="ph codeph">S32EX</samp> instruction is completed and an exclusive store transaction
+            is started on AXI. The pipeline does not wait for a response and will continue to
+            execute instructions. However, any load/store instruction bound for the AXI is held by
+            the pipeline until the response for the exclusive store is received from AXI.</p>
+
+        
+    </div>
+
+<div class="related-links">
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="../../config/nodes/g_intbridge.html">Bus and Bridge Selections</a></div>
+<div class="previouslink"><strong>Previous topic:</strong> <a class="link" href="../../config/options/opt.bs.rsp.dep.html">AXI Slave Response Depth option</a></div>
+<div class="nextlink"><strong>Next topic:</strong> <a class="link" href="../../config/options/opt.slave_exclaccess.html" title="Enable incoming exclusive access requests on the AXI slave port.">Slave Exclusive Access Option</a></div>
+</div>
+</div>
+
+</body>
+</html>

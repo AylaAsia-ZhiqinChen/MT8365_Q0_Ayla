@@ -1,0 +1,100 @@
+# Customer ID=13943; Build=0x75f5e; Copyright (c) 2006-2017 Cadence Design Systems, Inc.  ALL RIGHTS RESERVED.
+# These coded instructions, statements, and computer programs are the
+# copyrighted works and confidential proprietary information of
+# Cadence Design Systems, Inc.  They may be adapted and modified by bona fide
+# purchasers for internal use, but neither the original nor any adapted
+# or modified version may be disclosed or distributed to third parties
+# in any manner, medium, or form, in whole or in part, without the prior
+# written consent of Cadence Design Systems, Inc.
+
+
+ifndef XTENSA_SW_TOOLS
+XTENSA_SW_TOOLS = /mtkeda/xtensa/Xplorer-7.0.9/XtDevTools/install/tools/RG-2018.9-linux/XtensaTools
+endif
+
+ifeq ($(shell ncsim -version | grep -c xmsim),1)
+CADENCE_VER = $(shell ncsim -version | sed -e "s|TOOL:[ \t]*xmsim\((64)\)*[ \t]*||" -e "s|-.*||" -e "s|\.||" -e "s|\(....\).*|\1|")
+COMMAND_LINE_ARGS = -f xcelium.d/xmsc_obj/simplus.args -f xcelium.d/xmsc_obj/xmsim.args 
+else
+CADENCE_VER = $(shell ncsim -version | sed -e "s|TOOL:[ \t]*ncsim\((64)\)*[ \t]*||" -e "s|-.*||" -e "s|\.||" -e "s|\(...\).*|\1|")
+COMMAND_LINE_ARGS = -f INCA_libs/ncsc_obj/simplus.args -f INCA_libs/ncsc_obj/ncsim.args 
+endif
+CADENCE_XTSC_DIR = cadence-IUS$(CADENCE_VER)
+
+export XTENSA_SYSTEM = /proj/mtk05764/ALPS_Base/alps-dev-p0.mp1-mt8168.ep-adsp/vendor/mediatek/proprietary/tinysys/hifi_dsp/source/pub/project/mt8168/common/hwcfg/RG-2018.9-linux/config
+
+export XTENSA_CORE = hifi4_Aquila_E2_PROD
+unexport XTENSA_PARAMS
+XTENSA_PARAMS_CMD = 
+
+TDK_DIR = ../../TIE/example.tdk
+
+
+ifndef XTSC_TEXTLOGGER_CONFIG_FILE
+  export XTSC_TEXTLOGGER_CONFIG_FILE=../../TextLogger.txt
+endif
+
+ifdef RUNARGS
+FWD_RUNARGS=RUNARGS="$(RUNARGS)"
+endif
+
+TARGET_CXX = $(XTENSA_SW_TOOLS)/bin/xt-xcc
+TARGET_CFLAGS  = -g $(CUSTOM_TARGET_CFLAGS)
+TARGET_LIBS = -lm
+
+
+MV                = mv -f
+CP                = cp -p
+MKDIR             = mkdir -p
+RMDIR             = rm -rf
+
+CXX               = $(shell which g++)
+GCC_VERS          = UNKNOWN
+ifeq ($(findstring 4.8.,$(shell $(CXX) -dumpversion)),4.8.)
+GCC_VERS          = 4.8
+ISSDIR            = iss-GCC-4.8
+endif
+ifeq ($(findstring 4.4.,$(shell $(CXX) -dumpversion)),4.4.)
+GCC_VERS          = 4.4
+ISSDIR            = iss
+endif
+ifeq ($(findstring 4.1.,$(shell $(CXX) -dumpversion)),4.1.)
+GCC_VERS          = 4.1
+ISSDIR            = iss-GCC-4.1
+endif
+ifeq ($(GCC_VERS),UNKNOWN)
+  $(error UNKNOWN g++ version)
+endif
+
+ifdef XTSC_64BIT
+LIBDIR            = lib64
+SYSTEMC_LIBDIR    = lib/64bit
+ARCH_FLAGS        = -m64 -fPIC
+DSO_ARCH_FLAGS    = $(ARCH_FLAGS)
+else
+LIBDIR            = lib
+SYSTEMC_LIBDIR    = lib
+ARCH_FLAGS        = -m32
+DSO_ARCH_FLAGS    = $(ARCH_FLAGS) -m elf_i386
+endif
+
+CDS_INST_DIR      = $(shell ncroot)
+
+RLWRAP            = $(shell if [ $$(which rlwrap &> /dev/null; echo $$?) == "0" ]; then echo rlwrap; fi)
+#RLWRAP           = 
+
+XTSC_LIBRARY_PATH = $(XTENSA_SW_TOOLS)/$(LIBDIR)/$(ISSDIR)/$(CADENCE_XTSC_DIR)
+
+DEBUGFLAGS        = -U NDEBUG -D DEBUG -g -O0
+
+CXXFLAGS          = $(ARCH_FLAGS) -Wall -c -D NEED_CPU_H -fno-strict-aliasing \
+                    $(DEBUGFLAGS) \
+                    -I $(XTENSA_SW_TOOLS)/include/xtsc \
+                    -I $(XTENSA_SW_TOOLS)/include \
+                    -I $(CDS_INST_DIR)/tools/esl/include \
+                    -I $(CDS_INST_DIR)/tools/systemc/include/sysc/cosim \
+                    -I $(CDS_INST_DIR)/tools/systemc/include \
+                    -I $(CDS_INST_DIR)/tools/systemc/include/cci
+
+WRAPPER_DSO       = ./xtsc_core_vsp/xtsc_core_vsp.so
+

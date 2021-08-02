@@ -1,0 +1,56 @@
+
+cc_library_static {
+// START system version
+      name: "nfc_jni_files_for_factory",
+      static_libs : [
+          "libstnfc-nci",
+          "libstnfcutils",
+          "libxml2",
+      ],
+      shared_libs : [
+        "libnativehelper",
+        "libandroidicu",
+// END system version
+        "libcutils",
+        "libutils",
+        "liblog",
+        "libchrome",
+        "libbase",
+      ],
+
+      export_include_dirs :
+      [
+        ".",
+      ],
+
+      header_libs : [
+        "jni_headers",
+        "libhardware_headers",
+      ],
+
+      cflags :
+      [
+        "-DST21NFC",
+        "-DST21NFC_DTA",
+        "-Wall",
+        "-Werror",
+        "-Wextra",
+        "-Wno-unused-parameter",
+        "-fvisibility=hidden",
+      ],
+
+      srcs :
+      [
+        "CondVar.cpp",
+        "DataQueue.cpp",
+        "IntervalTimer.cpp",
+        "Mutex.cpp",
+        "NativeLlcpConnectionlessSocket.cpp",
+        "NativeLlcpServiceSocket.cpp",
+        "NativeLlcpSocket.cpp",
+        "NativeP2pDevice.cpp",
+        "PeerToPeer.cpp",
+        "RouteDataSet.cpp",
+      ],
+
+}

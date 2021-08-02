@@ -1,0 +1,23 @@
+The executable 'securetime' is a program to provide the functions to access securetime requested by mtk in-house tee.
+
+
+WHAT IT DOES?
+=============
+
+The 'securetime' can provide the securetime service for the MTK in-house TEE.
+
+
+HOW IT WAS BUILT?
+==================
+
+All source/dependency modules of this module are already put in
+'vendor/mediatek/proprietary_mt8163/external/trustzone' folder.
+
+
+HOW TO USE IT?
+==============
+
+Execute the securetime, it will wait for the command comes from TEE.
+
+
+All the source code of this library were written by MediaTek co..

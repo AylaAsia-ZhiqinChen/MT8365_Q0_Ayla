@@ -1,0 +1,26 @@
+// clocale standard header
+#ifndef _CLOCALE_
+#define _CLOCALE_
+#include <c99/yvals.h>
+
+#ifdef _STD_USING
+ #undef _STD_USING
+  #include <c99/locale.h>
+ #define _STD_USING
+
+#else /* _STD_USING */
+ #include <c99/locale.h>
+#endif /* _STD_USING */
+
+ #ifdef _GLOBAL_USING
+_STD_BEGIN
+using _CSTD lconv; using _CSTD localeconv; using _CSTD setlocale;
+_STD_END
+ #endif /* _GLOBAL_USING */
+
+#endif /* _CLOCALE_ */
+
+/*
+ * Copyright (c) by P.J. Plauger. All rights reserved.
+ * Consult your license regarding permissions and restrictions.
+V6.50:1611 */

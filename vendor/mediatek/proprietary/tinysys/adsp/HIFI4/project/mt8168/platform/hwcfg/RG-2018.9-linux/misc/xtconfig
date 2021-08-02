@@ -1,0 +1,61 @@
+#!/bin/sh
+#
+#  xtconfig -- return Xtensa software configuration information
+#
+#  Customer ID=13943; Build=0x75f5e; Copyright 2003-2004 Tensilica Inc.
+
+
+usage() {
+    cat <<_END_
+usage:  xtconfig option
+Valid options are:
+  binpath   path to Xtensa tools normally added to PATH
+            (/mtkeda/xtensa/Xplorer-7.0.9/XtDevTools/install/tools/RG-2018.9-linux/XtensaTools/bin)
+  config    path to Xtensa core configuration directory
+            (../../../../../../project/mt8168/common/hwcfg/RG-2018.9-linux)
+  core      path to Xtensa core main parameter file
+            (../../../../../../project/mt8168/common/hwcfg/RG-2018.9-linux/config/hifi4_Aquila_E2_PROD-params)
+  corename  name of core as could be assigned to XTENSA_CORE (hifi4_Aquila_E2_PROD)
+  release   Xtensa product release version (12.0.9
+)
+  system    path to core repository as could be assigned to XTENSA_SYSTEM
+            (../../../../../../project/mt8168/common/hwcfg/RG-2018.9-linux/config)
+  tctools   path to TIE compiler directory
+            (/mtkeda/xtensa/Xplorer-7.0.9/XtDevTools/install/tools/RG-2018.9-linux/XtensaTools/TIE)
+  tools     path to standard tools directory
+            (/mtkeda/xtensa/Xplorer-7.0.9/XtDevTools/install/tools/RG-2018.9-linux/XtensaTools/Tools)
+  xttools   path to Xtensa software tools directory
+            (/mtkeda/xtensa/Xplorer-7.0.9/XtDevTools/install/tools/RG-2018.9-linux/XtensaTools)
+_END_
+    exit 1
+}
+
+
+if [ "x$1" = "x" -o "x$2" != "x" ]; then
+    echo "Error: incorrect number of parameters."
+    usage
+fi
+
+value=""
+case "x$1" in
+xcore)		value=../../../../../../project/mt8168/common/hwcfg/RG-2018.9-linux/config/hifi4_Aquila_E2_PROD-params ;;
+xtools)		value=/mtkeda/xtensa/Xplorer-7.0.9/XtDevTools/install/tools/RG-2018.9-linux/XtensaTools/Tools ;;
+xtctools)	value=/mtkeda/xtensa/Xplorer-7.0.9/XtDevTools/install/tools/RG-2018.9-linux/XtensaTools/TIE ;;
+xxttools)	value=/mtkeda/xtensa/Xplorer-7.0.9/XtDevTools/install/tools/RG-2018.9-linux/XtensaTools ;;
+xconfig)	value=../../../../../../project/mt8168/common/hwcfg/RG-2018.9-linux ;;
+xbinpath)	value=/mtkeda/xtensa/Xplorer-7.0.9/XtDevTools/install/tools/RG-2018.9-linux/XtensaTools/bin ;;
+xsystem)	value=../../../../../../project/mt8168/common/hwcfg/RG-2018.9-linux/config ;;
+xcorename)	value=hifi4_Aquila_E2_PROD ;;
+xrelease)	value=12.0.9
+ ;;
+esac
+
+echo "$value"
+
+if [ "x$value" = "x" ]; then
+    echo "Error: unrecognized option '$1'"
+    usage
+fi
+
+exit 0;
+

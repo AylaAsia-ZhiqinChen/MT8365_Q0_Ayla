@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/bt_background"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:orientation="vertical" >
+
+                <Button
+                    android:id="@+id/bt_phonebook_clear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="70dp"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/btn_180_50_bg"
+                    android:text="@string/bt_phonebook_clear_string"
+                    android:textColor="@color/btn_textview"
+                    android:textSize="20dp" />
+
+                <Button
+                    android:id="@+id/bt_phonebook_pb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="70dp"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/btn_180_50_bg"
+                    android:text="@string/bt_phonebook_pb_string"
+                    android:textColor="@color/btn_textview"
+                    android:textSize="20dp" />
+                <Button
+                    android:id="@+id/bt_phonebook_search_mode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="70dp"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/btn_180_50_bg"
+                    android:text="@string/bt_phonebook_search_mode_name"
+                    android:textColor="@color/btn_textview"
+                    android:textSize="20dp" />
+                <EditText
+                    android:id="@+id/bt_phonebook_edit"
+                    android:layout_width="fill_parent"
+                    android:layout_height="80dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:textColor="@color/btn_textview"
+                    android:textSize="18dp"
+                    android:focusableInTouchMode="true"
+                    android:imeOptions="actionDone"/>
+                <Button
+                    android:id="@+id/bt_phonebook_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="70dp"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/btn_180_50_bg"
+                    android:text="@string/bt_phonebook_sear_string"
+                    android:textColor="@color/btn_textview"
+                    android:textSize="20dp" />
+            </LinearLayout>
+
+            <ListView
+                android:id="@+id/phonebook_listview"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginBottom="1dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="3dp"
+                android:cacheColorHint="#00000000"
+                android:choiceMode="singleChoice" >
+            </ListView>
+
+            <ListView
+                android:visibility="gone"
+                android:id="@+id/phonebook_result_listview"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginBottom="1dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="3dp"
+                android:cacheColorHint="#00000000"
+                android:choiceMode="singleChoice" >
+            </ListView>
+        </LinearLayout>
+    </LinearLayout>
+    <!-- waiting downloading layout -->
+
+    <LinearLayout
+        android:id="@+id/download_phonebook_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="gone" >
+
+        <ProgressBar
+            android:id="@+id/progressbar_download_phonebook"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminateDrawable="@drawable/blue_progressbar" />
+
+        <TextView
+            android:id="@+id/tv_download_phonebook_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="@string/str_download_phonebook" />
+    </LinearLayout>
+
+</FrameLayout>

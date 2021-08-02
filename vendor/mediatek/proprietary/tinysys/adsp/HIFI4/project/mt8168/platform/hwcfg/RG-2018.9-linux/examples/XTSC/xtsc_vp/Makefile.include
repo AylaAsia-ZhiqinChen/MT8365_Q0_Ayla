@@ -1,0 +1,52 @@
+# Customer ID=13943; Build=0x75f5e; Copyright (c) 2006-2016 Cadence Design Systems, Inc.  ALL RIGHTS RESERVED.
+# These coded instructions, statements, and computer programs are the
+# copyrighted works and confidential proprietary information of
+# Cadence Design Systems, Inc.  They may be adapted and modified by bona fide
+# purchasers for internal use, but neither the original nor any adapted
+# or modified version may be disclosed or distributed to third parties
+# in any manner, medium, or form, in whole or in part, without the prior
+# written consent of Cadence Design Systems, Inc.
+
+
+ifndef XTENSA_SW_TOOLS
+$(error You must define XTENSA_SW_TOOLS in order to use XTSC_VP)
+endif
+
+MV = mv -f
+CP = cp -p
+MKDIR = mkdir -p
+RMDIR = rm -rf
+NULL = < /dev/null
+
+SYNOPSYS_VIRTUAL_PROTOTYPING_VERSION = $(word 1,$(shell pcsh --version $(NULL)))
+ifeq ($(SYNOPSYS_VIRTUAL_PROTOTYPING_VERSION),N-2017.12)
+SYNOPSYS_VIRTUAL_PROTOTYPING_VERSION = N-2017.12-1
+endif
+export XTSC_VP_COWARE_VERSION = CoWare-$(SYNOPSYS_VIRTUAL_PROTOTYPING_VERSION)
+
+export XTENSA_SYSTEM = /proj/mtk05764/ALPS_Base/alps-dev-p0.mp1-mt8168.ep-adsp/vendor/mediatek/proprietary/tinysys/hifi_dsp/source/pub/project/mt8168/common/hwcfg/RG-2018.9-linux/config
+
+export XTENSA_CORE = hifi4_Aquila_E2_PROD
+unexport XTENSA_PARAMS
+XTENSA_PARAMS_CMD = 
+
+
+
+ifndef XTSC_TEXTLOGGER_CONFIG_FILE
+  export XTSC_TEXTLOGGER_CONFIG_FILE=../../TextLogger.txt
+endif
+
+ifdef RUNARGS
+FWD_RUNARGS=RUNARGS="$(RUNARGS)"
+endif
+
+STATIC=
+ifdef XTSC_VP_STATIC
+STATIC=-static
+endif
+
+TARGET_CXX = $(XTENSA_SW_TOOLS)/bin/xt-xcc
+TARGET_CFLAGS  = -g $(CUSTOM_TARGET_CFLAGS)
+TARGET_LIBS = -lm
+
+

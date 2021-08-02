@@ -1,0 +1,5 @@
+#if __cplusplus >= 201103
+#include <c++11/array>
+#else
+#include <c++98/array>
+#endif

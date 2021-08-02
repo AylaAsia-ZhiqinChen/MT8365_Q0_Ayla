@@ -1,0 +1,5 @@
+#if __cplusplus >= 201103
+#include <c++11/shared_mutex>
+#else
+#include <c++98/shared_mutex>
+#endif

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en-us" lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="copyright" content="(C) Copyright 2005"/>
+<meta name="DC.rights.owner" content="(C) Copyright 2005"/>
+<meta name="DC.Type" content="tconcept"/>
+<meta name="DC.Title" content="Processor ID Option"/>
+<meta name="abstract" content=""/>
+<meta name="description" content=""/>
+<meta name="DC.Relation" scheme="URI" content="../../config/nodes/g_isainst.html"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/options/opt.brs.html"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/options/opt.tieArbitraryByteEnable.html"/>
+<meta name="DC.Format" content="XHTML"/>
+<meta name="DC.Identifier" content="opt-prid"/>
+<link rel="stylesheet" type="text/css" href="../../commonltr.css"/>
+<link rel="stylesheet" type="text/css" href="../../cadence.css"/>
+<title>Processor ID Option</title>
+</head>
+<body id="opt-prid">
+
+
+    <h1 class="title topictitle1">Processor ID Option</h1>
+
+    
+    <div class="body conbody"><p class="shortdesc"/>
+
+        <dl class="dl">
+            
+                <dt class="dt dlterm">Processor ID option</dt>
+
+                <dd class="dd"><span class="ph">Selected</span></dd>
+
+            
+        </dl>
+
+        <div class="p">Processor ID enables external logic to set a unique identifier for each processor in a
+            system. This option is useful when a single piece of code executing on multiple
+            processors wants to know which processor is invoking the instruction. The value of the
+            id can be accessible in C as
+            follows:<pre class="pre codeblock">#include &lt;xtensa/tie/xt_core.h&gt;
+
+int my_id = XT_RSR_PRID();</pre>
+</div>
+
+        
+    </div>
+
+<div class="related-links">
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="../../config/nodes/g_isainst.html">Miscellaneous ISA Instruction Options</a></div>
+<div class="previouslink"><strong>Previous topic:</strong> <a class="link" href="../../config/options/opt.brs.html" title="Enable use of Boolean Register File (for TIE)">Boolean Registers option</a></div>
+<div class="nextlink"><strong>Next topic:</strong> <a class="link" href="../../config/options/opt.tieArbitraryByteEnable.html" title="Selecting the TIE arbitrary byte enables option allows you to use the StoreByteDisable interface in your TIE code">TIE Arbitrary Byte Enables Option</a></div>
+</div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,30 @@
+// Customer ID=13943; Build=0x75f5e; Copyright (c) 2006-2011 Tensilica Inc.  ALL RIGHTS RESERVED.
+// 
+// These coded instructions, statements, and computer programs are the
+// copyrighted works and confidential proprietary information of
+// Tensilica Inc.  They may be adapted and modified by bona fide
+// purchasers for internal use, but neither the original nor any adapted
+// or modified version may be disclosed or distributed to third parties
+// in any manner, medium, or form, in whole or in part, without the prior
+// written consent of Tensilica Inc.
+
+/*
+<delay> <address> [<timeout>]  */
+info Self-description: &grep data = 0xbabe12345678  << Self-description
+10      0x00
+wait 5
+info Self-description: &grep data = 0xbabefacecafe  << Self-description
+1       0x01
+wait 5
+info Self-description: &grep data = 0xbad1bad1bad1  << Self-description
+1       0x02
+wait 5
+info Self-description: &grep data = 0xbabe11111111  << Self-description
+1       0x10
+wait 5
+info Self-description: &grep data = 0xbabe22222222  << Self-description
+1       0x11
+wait 5
+info Self-description: &grep data = 0xbabe11111111  
+1       0x99
+100 stop

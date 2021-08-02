@@ -1,0 +1,197 @@
+#// Customer ID=13943; Build=0x75f5e; Copyright (c) 2007-2010 by Tensilica Inc.  ALL RIGHTS RESERVED.
+#// These coded instructions, statements, and computer programs are the
+#// copyrighted works and confidential proprietary information of
+#// Tensilica Inc.  They may be adapted and modified by bona fide
+#// purchasers for internal use, but neither the original nor any adapted
+#// or modified version may be disclosed or distributed to third parties
+#// in any manner, medium, or form, in whole or in part, without the prior
+#// written consent of Tensilica Inc.
+
+
+system "sys"
+(
+  properties
+  (
+    type = "System";
+    version = "1.0";
+    variant = "";
+    loadfile_extension = "";
+    description = "";
+    onecyclevalue = "10.0";
+    onecycletime = "ns";
+    simulationresolution = "1 ps";
+    simulationdefaulttime = "1 ns";
+  )
+  parameters ()
+  components
+  (
+
+    instance "source"
+    (
+      model   = "xtsc_wire_source_ext_sd";
+      version = "";
+      variant = "";
+
+      parameters
+      (
+        "script_file" = "../../xtsc_wire_logic/source.vec";
+      )
+
+    )
+
+    instance "logic"
+    (
+      model   = "xtsc_wire_logic_sd";
+      version = "";
+      variant = "";
+
+      parameters
+      (
+      )
+
+    )
+
+    instance "not_A"
+    (
+      model   = "xtsc_wire_sd";
+      version = "";
+      variant = "";
+
+      parameters
+      (
+        "bit_width" = "32";
+        "write_file" = "not_A.dat";
+      )
+
+    )
+
+    instance "A_and_B"
+    (
+      model   = "xtsc_wire_sd";
+      version = "";
+      variant = "";
+
+      parameters
+      (
+        "bit_width" = "32";
+        "write_file" = "A_and_B.dat";
+      )
+
+    )
+
+    instance "A_or_B"
+    (
+      model   = "xtsc_wire_sd";
+      version = "";
+      variant = "";
+
+      parameters
+      (
+        "bit_width" = "32";
+        "write_file" = "A_or_B.dat";
+      )
+
+    )
+
+    instance "A_xor_B"
+    (
+      model   = "xtsc_wire_sd";
+      version = "";
+      variant = "";
+
+      parameters
+      (
+        "bit_width" = "32";
+        "write_file" = "A_xor_B.dat";
+      )
+
+    )
+
+    instance "A0"
+    (
+      model   = "xtsc_wire_sd";
+      version = "";
+      variant = "";
+
+      parameters
+      (
+        "bit_width" = "1";
+        "write_file" = "A0.dat";
+      )
+
+    )
+
+    instance "A1"
+    (
+      model   = "xtsc_wire_sd";
+      version = "";
+      variant = "";
+
+      parameters
+      (
+        "bit_width" = "1";
+        "write_file" = "A1.dat";
+      )
+
+    )
+
+    instance "A_dup1"
+    (
+      model   = "xtsc_wire_sd";
+      version = "";
+      variant = "";
+
+      parameters
+      (
+        "bit_width" = "32";
+        "write_file" = "A_dup1.dat";
+      )
+
+    )
+
+    instance "A_dup2"
+    (
+      model   = "xtsc_wire_sd";
+      version = "";
+      variant = "";
+
+      parameters
+      (
+        "bit_width" = "32";
+        "write_file" = "A_dup2.dat";
+      )
+
+    )
+
+    instance "A_B"
+    (
+      model   = "xtsc_wire_sd";
+      version = "";
+      variant = "";
+
+      parameters
+      (
+        "bit_width" = "64";
+        "write_file" = "A_B.dat";
+      )
+
+    )
+
+  )
+  connections
+  (
+    "logic::m_A0<-->A0::m_write" = "logic":"m_A0" to "A0":"m_write";
+    "logic::m_A1<-->A1::m_write" = "logic":"m_A1" to "A1":"m_write";
+    "logic::m_A_B<-->A_B::m_write" = "logic":"m_A_B" to "A_B":"m_write";
+    "logic::m_A_and_B<-->A_and_B::m_write" = "logic":"m_A_and_B" to "A_and_B":"m_write";
+    "logic::m_A_dup1<-->A_dup1::m_write" = "logic":"m_A_dup1" to "A_dup1":"m_write";
+    "logic::m_A_dup2<-->A_dup2::m_write" = "logic":"m_A_dup2" to "A_dup2":"m_write";
+    "logic::m_A_or_B<-->A_or_B::m_write" = "logic":"m_A_or_B" to "A_or_B":"m_write";
+    "logic::m_A_xor_B<-->A_xor_B::m_write" = "logic":"m_A_xor_B" to "A_xor_B":"m_write";
+    "logic::m_not_A<-->not_A::m_write" = "logic":"m_not_A" to "not_A":"m_write";
+    "source::m_A<-->logic::m_A" = "source":"m_A" to "logic":"m_A";
+    "source::m_B<-->logic::m_B" = "source":"m_B" to "logic":"m_B";
+  )
+  portmaps ()
+)
+

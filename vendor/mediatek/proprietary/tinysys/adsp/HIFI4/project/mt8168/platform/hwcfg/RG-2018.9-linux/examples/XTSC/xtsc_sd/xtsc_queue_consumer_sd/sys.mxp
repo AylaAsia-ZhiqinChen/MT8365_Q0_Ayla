@@ -1,0 +1,78 @@
+#// Customer ID=13943; Build=0x75f5e; Copyright (c) 2007-2010 by Tensilica Inc.  ALL RIGHTS RESERVED.
+#// These coded instructions, statements, and computer programs are the
+#// copyrighted works and confidential proprietary information of
+#// Tensilica Inc.  They may be adapted and modified by bona fide
+#// purchasers for internal use, but neither the original nor any adapted
+#// or modified version may be disclosed or distributed to third parties
+#// in any manner, medium, or form, in whole or in part, without the prior
+#// written consent of Tensilica Inc.
+
+
+system "sys"
+(
+  properties
+  (
+    type = "System";
+    version = "1.0";
+    variant = "";
+    loadfile_extension = "";
+    description = "";
+    onecyclevalue = "10.0";
+    onecycletime = "ns";
+    simulationresolution = "1 ps";
+    simulationdefaulttime = "1 ns";
+  )
+  parameters ()
+  components
+  (
+
+    instance "producer"
+    (
+      model   = "xtsc_queue_producer_sd";
+      version = "";
+      variant = "";
+
+      parameters
+      (
+        "bit_width" = "48";
+        "script_file" = "../../xtsc-run/xtsc_queue_consumer/producer.vec";
+      )
+
+    )
+
+    instance "queue"
+    (
+      model   = "xtsc_queue_sd";
+      version = "";
+      variant = "";
+
+      parameters
+      (
+        "bit_width" = "48";
+        "depth" = "3";
+      )
+
+    )
+
+    instance "consumer"
+    (
+      model   = "xtsc_queue_consumer_sd";
+      version = "";
+      variant = "";
+
+      parameters
+      (
+        "bit_width" = "48";
+        "script_file" = "../../xtsc-run/xtsc_queue_consumer/consumer.vec";
+      )
+
+    )
+
+  )
+  connections
+  (
+    "producer::m_queue<-->queue::m_producer" = "producer":"m_queue" to "queue":"m_producer";
+    "consumer::m_queue<-->queue::m_consumer" = "queue":"m_consumer" to "consumer":"m_queue";
+  )
+  portmaps ()
+)

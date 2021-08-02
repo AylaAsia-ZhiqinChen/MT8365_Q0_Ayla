@@ -1,0 +1,5 @@
+#if __cplusplus >= 201103
+#include <c++11/cerrno>
+#else
+#include <c++98/cerrno>
+#endif

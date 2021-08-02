@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  	android:layout_width="fill_parent"
+  	android:layout_height="fill_parent"
+  	android:background="@drawable/bt_background"
+  	android:orientation="vertical">
+	<LinearLayout
+	  android:orientation="horizontal"
+	  android:layout_width="fill_parent"
+	  android:layout_height="fill_parent"
+	  >
+	  <LinearLayout 
+	  	android:orientation="vertical"
+	  	android:layout_width="wrap_content"
+	  	android:layout_height="wrap_content"
+	  	android:layout_gravity="center"
+	  	android:layout_marginLeft="15dp"
+		>
+	  	<Button android:id="@+id/btn_open_bt"
+	  		android:layout_width="wrap_content"
+	  		android:layout_height="70dp"
+	        android:layout_margin="10dp"
+	        android:layout_weight="1"
+	        android:background="@drawable/btn_180_50_bg"
+	  		android:textColor="@color/btn_textview"
+	  		android:textSize="20dp"
+	  		android:text="@string/open_bt_string"
+	  		android:layout_gravity="center"
+	  		android:layout_marginTop="10dp"
+	  		/>
+	  	<Button android:id="@+id/btn_scan_bt"
+	  		android:layout_width="wrap_content"
+	  		android:layout_height="70dp"
+	        android:layout_margin="10dp"
+	        android:layout_weight="1"
+	        android:textColor="@color/btn_textview"
+	  		android:textSize="20dp"
+	  		android:background="@drawable/btn_180_50_bg"
+	  		android:text="@string/scan_btdevice_string"
+	  		android:layout_gravity="center"
+	  		 />
+	  	<ToggleButton android:id="@+id/btn_discovery_bt"
+	  		android:layout_width="wrap_content"
+	  		android:layout_height="70dp"
+	        android:layout_margin="10dp"
+	        android:layout_weight="1"
+	        android:textColor="@color/btn_textview"
+	  		android:textSize="20dp"
+	  		android:background="@drawable/btn_toggle_bg"
+	  		android:textOn="@string/indiscovery_bt_string"
+	  		android:textOff="@string/discovery_bt_string"
+	  		android:checked="false"
+	  		android:layout_gravity="center"
+	  		/>	 	
+	  	<ToggleButton android:id="@+id/btn_autoanswer_bt"
+	  		android:layout_width="wrap_content"
+	  		android:layout_height="70dp"
+	        android:layout_margin="10dp"
+	        android:layout_weight="1"
+	        android:textSize="20dp"
+	  		android:textColor="@color/btn_textview"
+	  		android:background="@drawable/btn_toggle_bg"
+	 		android:textOn="@string/non_autoanswer_bt_string"
+	 		android:textOff="@string/autoanswer_bt_string"
+	 		android:checked="false" 
+	 		android:layout_gravity="center"
+	 		android:visibility="gone"
+	 		/>
+	  	<ToggleButton android:id="@+id/btn_autoconnect_bt"
+	  		android:layout_width="wrap_content"
+	  		android:layout_height="70dp"
+	        android:layout_margin="10dp"
+	        android:layout_weight="1"
+	        android:textColor="@color/btn_textview"
+	  		android:textSize="20dp"
+	  		android:background="@drawable/btn_toggle_bg"
+		  	android:textOn="@string/non_autoconnect_bt_string"
+		  	android:textOff="@string/autoconnect_bt_string"
+		  	android:checked="false" 
+		  	android:gravity="center"
+		  	android:visibility="gone"
+		  	/>	 
+		 <Button android:id="@+id/btn_edit_bt"
+	  		android:layout_width="wrap_content"
+	  		android:layout_height="70dp"
+	        android:layout_margin="10dp"
+	        android:layout_weight="1"
+	        android:textColor="@color/btn_textview"
+	  		android:textSize="20dp"
+	  		android:background="@drawable/btn_180_50_bg"
+	  		android:text="@string/edit_bt_string" 
+	  		android:layout_gravity="center"
+	  		/>
+	  	</LinearLayout>
+	  	
+	  	<ListView android:id="@+id/bluetooth_paired_devices"
+	        android:choiceMode="singleChoice"
+	        android:layout_width="fill_parent"
+	        android:layout_height="fill_parent"
+	        android:layout_margin="20dp"
+	        android:layout_weight="1"
+	        android:cacheColorHint="#00000000"
+	        /> 	
+	</LinearLayout>
+
+    <!-- waiting downloading layout -->
+    <LinearLayout
+         android:id="@+id/scan_device_layout"
+         android:layout_width="fill_parent"
+         android:layout_height="fill_parent"
+         android:orientation="horizontal"
+         android:gravity="center"
+         android:visibility="gone"
+         >
+         <ProgressBar
+             android:id="@+id/progressbar_scan_device"
+             android:indeterminateDrawable="@drawable/blue_progressbar"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content" />
+
+         <TextView
+             android:layout_marginLeft="5dp"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="@string/str_download_phonebook"
+             android:visibility="gone" />
+     </LinearLayout>
+</FrameLayout>

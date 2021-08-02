@@ -1,0 +1,449 @@
+<html>
+  <head>
+    <title>
+      ADDEXPM.S - Two-way SIMD Add Exponent from Mantissa Single
+    </title>
+    <style type="text/css">
+      <!--
+	body {
+	background: white;
+	color: black;
+	font-family: Arial, Verdana, Myriad Web, Syntax, sans-serif;
+	margin-left: 2em;
+	margin-right: 2em;
+	}
+	#boundingbox {
+	background: white;
+	color: black;
+	font-family: Arial, Verdana, Myriad Web, Syntax, sans-serif;
+	position: relative;
+	width: 865px;
+	margin: 0 auto;
+	padding: 20px;
+	border-style: dashed;
+	border-width: 1px;
+	border-spacing: 10px;
+	border-collapse: separate;
+	}
+	a {
+	text-decoration: none;
+	}
+	a:visited {
+	color: blue;
+	}
+	a:link {
+	color: green;
+	}
+	a:active {
+	color: green;
+	}
+	a:hover {
+	color: green;
+	}
+	a:offsite {
+	color: green;
+	}
+	h1 {
+	font-size: 14pt;
+	font-weight: bold;
+	}
+	h1.center {
+	font-size: 14pt;
+	font-weight: bold;
+	text-align: center;
+	}
+	h2 {
+	font-size: 12pt;
+	}
+	caption {
+	padding-top: 1em;
+	}
+	table.thin {
+	border-width: thin;
+	border-spacing: 0px;
+	border-style: inset;
+	border-color: gray;
+	border-collapse: collapse;
+	background-color: rgb(250, 240, 230);
+	}
+	table th.thin {
+	border-width: thin;
+	padding: 3px;
+	border-style: inset;
+	border-color: gray;
+	background-color: white;
+	-moz-border-radius: 0px 0px 0px 0px;
+	}
+	table th.thin2 {
+	border-width: thin;
+	padding: 3px;
+	border-style: inset;
+	border-color: gray;
+	background-color: rgb(250, 240, 230);
+	-moz-border-radius: 0px 0px 0px 0px;
+	}
+	table td.thin {
+	border-width: thin;
+	padding: 3px;
+	border-style: inset;
+	border-color: gray;
+	background-color: white;
+	-moz-border-radius: 0px 0px 0px 0px;
+	}
+	table td.thin2 {
+	border-width: thin;
+	padding: 3px;
+	border-style: inset;
+	border-color: gray;
+	background-color: rgb(250, 240, 230);
+	-moz-border-radius: 0px 0px 0px 0px;
+	}
+	pre {
+	font-family: Lucidatypewriter, monospace;
+	font-size: 10pt;
+	}
+	.proto {
+	font-family: Lucidatypewriter, monospace;
+	font-size: 10pt;
+	padding-left: 1em;
+	text-indent: -1em;
+	}
+	.protohead {
+	font-family: Lucidatypewriter, monospace;
+	font-size: 10pt;
+	padding-left: 2em;
+	text-indent: -2em;
+	}
+	.protobody {
+	font-family: Lucidatypewriter, monospace;
+	font-size: 10pt;
+	padding-left: 4em;
+	text-indent: -2em;
+	}
+	.rotate {
+	display: block;
+	-webkit-transform: rotate(-90deg); 
+        -moz-transform:
+	rotate(-90deg);
+	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+	padding-top: 20px;                       
+}
+	.light {
+	font-size: 75%;
+	color: SlateGrey;
+	}
+	table.format {
+	border-width: thin;
+	border-spacing: 0px;
+	border-style: inset;
+	border-color: gray;
+	border-collapse: collapse;
+	background-color: rgb(250, 240, 230);
+	font-size: 75%;
+	}
+	table.format th {
+	border-width: thin;
+	padding: 3px;
+	border-style: inset;
+	border-color: gray;
+	background-color: #FFF5EE;
+	-moz-border-radius: 0px 0px 0px 0px;
+	vertical-align: bottom;
+	font-size: 75%;
+	}
+	table.format td {
+	border-width: thin;
+	padding: 3px;
+	border-style: inset;
+	border-color: gray;
+	background-color: white;
+	-moz-border-radius: 0px 0px 0px 0px;
+	font-size: 75%;
+	}
+	table.format td.opcodeBit_present {
+	background-color: #FFE4E1;
+	text-align: center;
+	}
+	table.format td.formatBit_present {
+	background-color: #EEE8AA;
+	text-align: center;
+	}
+	table.format td.slotBit_present {
+	background-color: #B0E0E6;
+	text-align: center;
+	vertical-align: bottom;
+	}
+	
+        -->
+    </style>
+  </head>
+  <body>
+    <h1>
+      ADDEXPM.S &#8212; Two-way SIMD Add Exponent from Mantissa Single
+    </h1>
+    <h2>
+      Instruction Word
+    </h2>
+    
+<table border="1" class="format">
+<tr><th width="130" nowrap>Slot<br>ae_slot2</th><th>8<br>7</th><th>8<br>6</th><th>8<br>5</th><th>8<br>4</th><th>8<br>3</th><th>8<br>2</th><th>8<br>1</th><th>8<br>0</th><th>7<br>9</th><th>7<br>8</th><th>7<br>7</th><th>7<br>6</th><th>7<br>5</th><th>7<br>4</th><th>7<br>3</th><th>7<br>2</th><th>7<br>1</th><th>7<br>0</th><th>6<br>9</th><th>6<br>8</th><th>6<br>7</th><th>6<br>6</th><th>6<br>5</th><th>6<br>4</th><th>6<br>3</th><th>6<br>2</th><th>6<br>1</th><th>6<br>0</th><th>5<br>9</th><th>5<br>8</th><th>5<br>7</th><th>5<br>6</th><th>5<br>5</th><th>5<br>4</th><th>5<br>3</th><th>5<br>2</th><th>5<br>1</th><th>5<br>0</th><th>4<br>9</th><th>4<br>8</th><th>4<br>7</th><th>4<br>6</th><th>4<br>5</th><th>4<br>4</th><th>4<br>3</th><th>4<br>2</th><th>4<br>1</th><th>4<br>0</th><th>3<br>9</th><th>3<br>8</th><th>3<br>7</th><th>3<br>6</th><th>3<br>5</th><th>3<br>4</th><th>3<br>3</th><th>3<br>2</th><th>3<br>1</th><th>3<br>0</th><th>2<br>9</th><th>2<br>8</th><th>2<br>7</th><th>2<br>6</th><th>2<br>5</th><th>2<br>4</th><th>2<br>3</th><th>2<br>2</th><th>2<br>1</th><th>2<br>0</th><th>1<br>9</th><th>1<br>8</th><th>1<br>7</th><th>1<br>6</th><th>1<br>5</th><th>1<br>4</th><th>1<br>3</th><th>1<br>2</th><th>1<br>1</th><th>1<br>0</th><th>9</th><th>8</th><th>7</th><th>6</th><th>5</th><th>4</th><th>3</th><th>2</th><th>1</th><th>0</th></tr>
+<tr><td nowrap>Format ae_format88 - 88 bit(s)</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="formatBit_present">1</td><td class="formatBit_present">1</td><td class="formatBit_present">1</td><td class="formatBit_present">1</td><td class="formatBit_present">1</td></tr>
+<tr><td nowrap>ADDEXPM.S</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="opcodeBit_present">1</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="opcodeBit_present">1</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">1</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+<tr><td nowrap>fld_vfpu2_sem_spmisc_vsM</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">3</td><td class="slotBit_present">2</td><td class="slotBit_present">1</td><td class="slotBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+<tr><td nowrap>fld_vfpu2_sem_spmisc_vr</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">3</td><td class="slotBit_present">2</td><td class="slotBit_present">1</td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+</table>
+<br>
+    <h2>
+      Assembler Syntax
+    </h2>
+    <p>
+      <code title="Instruction Mnemonic for Two-way SIMD Add Exponent from Mantissa Single">ADDEXPM.S</code>
+      <span title="Read and write  of register file AE_DR indexed by the fld_vfpu2_sem_spmisc_vsM field of the instruction word"><code>aed0..15(opnd_vfpu2_sem_spmisc_vsM)</code></span>,
+      <span title="Read  of register file AE_DR indexed by the fld_vfpu2_sem_spmisc_vr field of the instruction word"><code>aed0..15(opnd_vfpu2_sem_spmisc_vr)</code></span>
+    </p>
+    <h2>
+      C Syntax
+    </h2>
+    #include &lt;xtensa/tie/xt_FP.h&gt;<P>extern void XT_ADDEXPM_S(xtfloat r /*inout*/, xtfloat s);
+</P>
+    <h2>
+      Description
+    </h2>
+    
+
+<P><small>(please consult the <i>Xtensa &reg; Instruction Set Architecture Reference Manual</i> for any cross references and additional information)</small></P>
+
+<P>
+
+<code>ADDEXPM.S</code> 
+
+adds bits of the mantissa of the single-precision number in each half of data register <code>frs</code> representing an unbiased exponent to the 
+
+exponent of the single-precision number in the corresponding half of data register <code>frr</code>. It also XORs a bit of the mantissa of the single-precision number in 
+
+each half of data register <code>frs</code> with the sign of the single-precision number in the corresponding half of data register <code>frr</code>. 
+
+It places these results back into each half of data register <code>frr</code>. 
+
+<code>ADDEXPM.S</code> is very similar to <code><a href="ADDEXPS.html">ADDEXP.S</a></code> except that bits of the <code>frs</code> mantissa are used in place of its sign and exponent.
+
+</P>
+
+<P>
+
+<code>ADDEXPM.S</code> 
+
+is used in divide and square root algorithms.
+
+</P>
+
+<h3>Operation</h3>
+
+For each corresponding half:
+
+<pre>
+
+AE_DR[r]<SUB>31</SUB> &#8592; AE_DR[r]<SUB>31</SUB> xor AE_DR[s]<SUB>22</SUB>
+
+AE_DR[r]<SUB>30..23</SUB> &#8592; AE_DR[r]<SUB>30..23</SUB> + AE_DR[s]<SUB>21..14</SUB> - 127
+
+AE_DR[r]<SUB>22..0</SUB> &#8592; AE_DR[r]<SUB>22..0</SUB>
+
+</pre>
+
+<h3>Exceptions</h3>
+
+<UL>
+
+<LI>
+
+EveryInst Group
+
+</LI>
+
+<LI>
+
+GenExcep(Coprocessor0Disabled) if Coprocessor Context Option
+
+</LI>
+
+</UL>
+
+
+    <h2>
+      Implementation Pipeline
+    </h2>
+    <table class="thin">
+      <thead>
+	<tr>
+	  <th align="left" class="thin">
+	    In
+	  </th>
+	  <th align="left" class="thin">
+	    Out
+	  </th>
+	</tr>
+      </thead>
+      <tbody>
+	<tr>
+	  <td class="thin">
+	    <code>opnd_vfpu2_sem_spmisc_vsM&nbsp;Mstage</code>, <code>opnd_vfpu2_sem_spmisc_vr&nbsp;Mstage</code>
+	  </td>
+	  <td class="thin">
+	    <code>opnd_vfpu2_sem_spmisc_vsM&nbsp;Mstage</code>
+	  </td>
+	</tr>
+      </tbody>
+    </table>
+    <h2>
+      Protos that use ADDEXPM.S
+    </h2>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ADDEXPM.S>ADDEXPM.S</a> { inout xtfloat r, in
+      xtfloat s }{}{</div><div class=protobody><a
+      href=ADDEXPMS.html>ADDEXPM.S</a> r, s;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ADDEXPM.SX2>ADDEXPM.SX2</a> { inout xtfloatx2 r, in
+      xtfloatx2 s }{}{</div><div class=protobody><a
+      href=ADDEXPMS.html>ADDEXPM.S</a> r, s;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a href=../protos.html#DIV.S>DIV.S</a> { out
+      xtfloat vd, in xtfloat vs, in xtfloat vr }{xtfloat f0, xtfloat f1,
+      xtfloat f2, xtfloat f22, xtfloat f3, xtfloat f4, xtfloat f5, xtfloat
+      f55, xtfloat f6, xtfloat f7, xtfloat f8}{</div><div class=protobody><a
+      href=DIV0S.html>DIV0.S</a> f3, vr;</div><div class=protobody><a
+      href=NEXP01S.html>NEXP01.S</a> f4, vr;</div><div class=protobody><a
+      href=CONSTS.html>CONST.S</a> f5, 1;</div><div class=protobody><a
+      href=MADDNS.html>MADDN.S</a> f5, f4, f3;</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> f6, f3;</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> f7, vr;</div><div class=protobody><a
+      href=NEXP01S.html>NEXP01.S</a> f2, vs;</div><div class=protobody><a
+      href=MADDNS.html>MADDN.S</a> f6, f5, f6;</div><div class=protobody><a
+      href=CONSTS.html>CONST.S</a> f55, 1;</div><div class=protobody><a
+      href=CONSTS.html>CONST.S</a> f0, 0;</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> f8, f2;</div><div class=protobody><a
+      href=MADDNS.html>MADDN.S</a> f55, f4, f6;</div><div class=protobody><a
+      href=MSUBNS.html>MSUBN.S</a> f0, f8, f3;</div><div class=protobody><a
+      href=MKDADJS.html>MKDADJ.S</a> f7, vs;</div><div class=protobody><a
+      href=MADDNS.html>MADDN.S</a> f6, f55, f6;</div><div class=protobody><a
+      href=MSUBNS.html>MSUBN.S</a> f8, f4, f0;</div><div class=protobody><a
+      href=CONSTS.html>CONST.S</a> f1, 1;</div><div class=protobody><a
+      href=MADDNS.html>MADDN.S</a> f1, f4, f6;</div><div class=protobody><a
+      href=MSUBNS.html>MSUBN.S</a> f0, f8, f6;</div><div class=protobody><a
+      href=NEGS.html>NEG.S</a> f22, f2;</div><div class=protobody><a
+      href=MADDNS.html>MADDN.S</a> f6, f1, f6;</div><div class=protobody><a
+      href=MADDNS.html>MADDN.S</a> f22, f4, f0;</div><div class=protobody><a
+      href=ADDEXPMS.html>ADDEXPM.S</a> f0, f7;</div><div class=protobody><a
+      href=ADDEXPS.html>ADDEXP.S</a> f6, f7;</div><div class=protobody><a
+      href=DIVNS.html>DIVN.S</a> f0, f22, f6;</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> vd, f0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a href=../protos.html#DIV.SX2>DIV.SX2</a> {
+      out xtfloatx2 vd, in xtfloatx2 vs, in xtfloatx2 vr }{xtfloatx2 f0,
+      xtfloatx2 f1, xtfloatx2 f2, xtfloatx2 f22, xtfloatx2 f3, xtfloatx2 f4,
+      xtfloatx2 f5, xtfloatx2 f55, xtfloatx2 f6, xtfloatx2 f7, xtfloatx2
+      f8}{</div><div class=protobody><a href=DIV0S.html>DIV0.S</a> f3,
+      vr;</div><div class=protobody><a href=NEXP01S.html>NEXP01.S</a> f4,
+      vr;</div><div class=protobody><a href=CONSTS.html>CONST.S</a> f5,
+      1;</div><div class=protobody><a href=MADDNS.html>MADDN.S</a> f5, f4,
+      f3;</div><div class=protobody><a href=AE_MOV.html>AE_MOV</a> f6,
+      f3;</div><div class=protobody><a href=AE_MOV.html>AE_MOV</a> f7,
+      vr;</div><div class=protobody><a href=NEXP01S.html>NEXP01.S</a> f2,
+      vs;</div><div class=protobody><a href=MADDNS.html>MADDN.S</a> f6, f5,
+      f6;</div><div class=protobody><a href=CONSTS.html>CONST.S</a> f55,
+      1;</div><div class=protobody><a href=CONSTS.html>CONST.S</a> f0,
+      0;</div><div class=protobody><a href=AE_MOV.html>AE_MOV</a> f8,
+      f2;</div><div class=protobody><a href=MADDNS.html>MADDN.S</a> f55, f4,
+      f6;</div><div class=protobody><a href=MSUBNS.html>MSUBN.S</a> f0, f8,
+      f3;</div><div class=protobody><a href=MKDADJS.html>MKDADJ.S</a> f7,
+      vs;</div><div class=protobody><a href=MADDNS.html>MADDN.S</a> f6, f55,
+      f6;</div><div class=protobody><a href=MSUBNS.html>MSUBN.S</a> f8, f4,
+      f0;</div><div class=protobody><a href=CONSTS.html>CONST.S</a> f1,
+      1;</div><div class=protobody><a href=MADDNS.html>MADDN.S</a> f1, f4,
+      f6;</div><div class=protobody><a href=MSUBNS.html>MSUBN.S</a> f0, f8,
+      f6;</div><div class=protobody><a href=NEGS.html>NEG.S</a> f22,
+      f2;</div><div class=protobody><a href=MADDNS.html>MADDN.S</a> f6, f1,
+      f6;</div><div class=protobody><a href=MADDNS.html>MADDN.S</a> f22, f4,
+      f0;</div><div class=protobody><a href=ADDEXPMS.html>ADDEXPM.S</a> f0,
+      f7;</div><div class=protobody><a href=ADDEXPS.html>ADDEXP.S</a> f6,
+      f7;</div><div class=protobody><a href=DIVNS.html>DIVN.S</a> f0, f22,
+      f6;</div><div class=protobody><a href=AE_MOV.html>AE_MOV</a> vd,
+      f0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a href=../protos.html#SQRT.S>SQRT.S</a> {
+      out xtfloat vd, in xtfloat vs }{xtfloat f0, xtfloat f1, xtfloat f2,
+      xtfloat f3, xtfloat f4, xtfloat f6, xtfloat f7}{</div><div
+      class=protobody><a href=SQRT0S.html>SQRT0.S</a> f2, vs;</div><div
+      class=protobody><a href=CONSTS.html>CONST.S</a> f3, 0;</div><div
+      class=protobody><a href=MADDNS.html>MADDN.S</a> f3, f2, f2;</div><div
+      class=protobody><a href=NEXP01S.html>NEXP01.S</a> f4, vs;</div><div
+      class=protobody><a href=CONSTS.html>CONST.S</a> f0, 3;</div><div
+      class=protobody><a href=ADDEXPS.html>ADDEXP.S</a> f4, f0;</div><div
+      class=protobody><a href=MADDNS.html>MADDN.S</a> f0, f3, f4;</div><div
+      class=protobody><a href=NEXP01S.html>NEXP01.S</a> f3, vs;</div><div
+      class=protobody><a href=MADDNS.html>MADDN.S</a> f2, f0, f2;</div><div
+      class=protobody><a href=CONSTS.html>CONST.S</a> f0, 0;</div><div
+      class=protobody><a href=CONSTS.html>CONST.S</a> f6, 0;</div><div
+      class=protobody><a href=CONSTS.html>CONST.S</a> f7, 0;</div><div
+      class=protobody><a href=MSUBNS.html>MSUBN.S</a> f0, f3, f2;</div><div
+      class=protobody><a href=MADDNS.html>MADDN.S</a> f6, f2, f4;</div><div
+      class=protobody><a href=CONSTS.html>CONST.S</a> f4, 3;</div><div
+      class=protobody><a href=MADDNS.html>MADDN.S</a> f7, f4, f2;</div><div
+      class=protobody><a href=MADDNS.html>MADDN.S</a> f3, f0, f0;</div><div
+      class=protobody><a href=MADDNS.html>MADDN.S</a> f4, f6, f2;</div><div
+      class=protobody><a href=NEGS.html>NEG.S</a> f2, f7;</div><div
+      class=protobody><a href=MADDNS.html>MADDN.S</a> f0, f3, f2;</div><div
+      class=protobody><a href=MADDNS.html>MADDN.S</a> f7, f4, f7;</div><div
+      class=protobody><a href=MKSADJS.html>MKSADJ.S</a> f2, vs;</div><div
+      class=protobody><a href=NEXP01S.html>NEXP01.S</a> f1, vs;</div><div
+      class=protobody><a href=MADDNS.html>MADDN.S</a> f1, f0, f0;</div><div
+      class=protobody><a href=NEGS.html>NEG.S</a> f3, f7;</div><div
+      class=protobody><a href=ADDEXPMS.html>ADDEXPM.S</a> f0, f2;</div><div
+      class=protobody><a href=ADDEXPS.html>ADDEXP.S</a> f3, f2;</div><div
+      class=protobody><a href=DIVNS.html>DIVN.S</a> f0, f1, f3;</div><div
+      class=protobody><a href=AE_MOV.html>AE_MOV</a> vd, f0;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a href=../protos.html#SQRT.SX2>SQRT.SX2</a>
+      { out xtfloatx2 vd, in xtfloatx2 vs }{xtfloatx2 f0, xtfloatx2 f1,
+      xtfloatx2 f2, xtfloatx2 f3, xtfloatx2 f4, xtfloatx2 f6, xtfloatx2
+      f7}{</div><div class=protobody><a href=SQRT0S.html>SQRT0.S</a> f2,
+      vs;</div><div class=protobody><a href=CONSTS.html>CONST.S</a> f3,
+      0;</div><div class=protobody><a href=MADDNS.html>MADDN.S</a> f3, f2,
+      f2;</div><div class=protobody><a href=NEXP01S.html>NEXP01.S</a> f4,
+      vs;</div><div class=protobody><a href=CONSTS.html>CONST.S</a> f0,
+      3;</div><div class=protobody><a href=ADDEXPS.html>ADDEXP.S</a> f4,
+      f0;</div><div class=protobody><a href=MADDNS.html>MADDN.S</a> f0, f3,
+      f4;</div><div class=protobody><a href=NEXP01S.html>NEXP01.S</a> f3,
+      vs;</div><div class=protobody><a href=MADDNS.html>MADDN.S</a> f2, f0,
+      f2;</div><div class=protobody><a href=CONSTS.html>CONST.S</a> f0,
+      0;</div><div class=protobody><a href=CONSTS.html>CONST.S</a> f6,
+      0;</div><div class=protobody><a href=CONSTS.html>CONST.S</a> f7,
+      0;</div><div class=protobody><a href=MSUBNS.html>MSUBN.S</a> f0, f3,
+      f2;</div><div class=protobody><a href=MADDNS.html>MADDN.S</a> f6, f2,
+      f4;</div><div class=protobody><a href=CONSTS.html>CONST.S</a> f4,
+      3;</div><div class=protobody><a href=MADDNS.html>MADDN.S</a> f7, f4,
+      f2;</div><div class=protobody><a href=MADDNS.html>MADDN.S</a> f3, f0,
+      f0;</div><div class=protobody><a href=MADDNS.html>MADDN.S</a> f4, f6,
+      f2;</div><div class=protobody><a href=NEGS.html>NEG.S</a> f2,
+      f7;</div><div class=protobody><a href=MADDNS.html>MADDN.S</a> f0, f3,
+      f2;</div><div class=protobody><a href=MADDNS.html>MADDN.S</a> f7, f4,
+      f7;</div><div class=protobody><a href=MKSADJS.html>MKSADJ.S</a> f2,
+      vs;</div><div class=protobody><a href=NEXP01S.html>NEXP01.S</a> f1,
+      vs;</div><div class=protobody><a href=MADDNS.html>MADDN.S</a> f1, f0,
+      f0;</div><div class=protobody><a href=NEGS.html>NEG.S</a> f3,
+      f7;</div><div class=protobody><a href=ADDEXPMS.html>ADDEXPM.S</a> f0,
+      f2;</div><div class=protobody><a href=ADDEXPS.html>ADDEXP.S</a> f3,
+      f2;</div><div class=protobody><a href=DIVNS.html>DIVN.S</a> f0, f1,
+      f3;</div><div class=protobody><a href=AE_MOV.html>AE_MOV</a> vd,
+      f0;</div><div class=protohead>}</div>
+    </div>
+  </body>
+</html>

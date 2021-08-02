@@ -1,0 +1,99 @@
+cc_library_shared {
+    name: "libstagefright_wfd_mtk", 
+		owner: "mtk",
+		
+    srcs: [
+    	"DataPathTrace.cpp",
+    	"MtkMediaSender.cpp",
+    	"MtkParameters.cpp",
+    	"SurfaceMediaSource.cpp",
+    	"rtp/MtkRTPSender.cpp",
+    	"source/MtkConverter.cpp",
+    	"source/MtkMediaPuller.cpp",
+    	"source/MtkPlaybackSession.cpp",
+    	"source/MtkRepeaterSource.cpp",
+    	"source/MtkTSPacketizer.cpp",
+    	"source/MtkWifiDisplaySource.cpp",
+    	"MtkVideoFormats.cpp",
+    	"MtkANetworkSession.cpp",
+    	"ParsedMessage.cpp",
+    	"RemoteDisplay.cpp",
+    	"uibc/UibcCapability.cpp",
+    	"uibc/UibcClientHandler.cpp",
+    	"uibc/UibcHandler.cpp",
+    	"uibc/UibcMessage.cpp",
+    	"uibc/UibcServerHandler.cpp",
+    ], 
+    static_libs: [
+	    "libstagefright_mpeg2support_mtk", 
+	],
+    shared_libs: [
+        "libbinder",
+        "libcutils",
+        "libgui",
+        "libmedia",
+        "liblog",
+        "libui",
+		"libstagefright",
+		"libstagefright_foundation",
+        "libutils",
+        "libdl",
+        "libaudioclient",
+        "libmedia_omx",
+        "libhidlbase",
+        "vendor.mediatek.hardware.gpu@1.0"
+    ],
+
+	
+    include_dirs: [
+        "frameworks/av/media/libstagefright",
+        "frameworks/native/include/media/openmax",
+        "vendor/mediatek/proprietary/frameworks/av/AVEnhance/mtkextractors",
+        "frameworks/native/include/media/hardware",
+        "vendor/mediatek/proprietary/frameworks/av/AVEnhance/libmtkavenhancements/wifi-display",
+        "vendor/mediatek/proprietary/frameworks/av/AVEnhance/libmtkavenhancements/wifi-display/uibc",
+        "frameworks/native/include/media/hardware",
+        "frameworks/av/include",
+        "frameworks/av/include/media",
+        "frameworks/av/include/media/stagefright",
+        "external/flac/include",
+        "external/tremolo",
+        "frameworks/av/media/libstagefright/include",
+        "system/core/include/system",
+        "hardware/libhardware_legacy/include/hardware_legacy",
+        "frameworks/native/include/input",
+        "vendor/mediatek/proprietary/frameworks/av/AVEnhance/libmtkavenhancements",
+        "frameworks/av/media/libmedia/include",
+        "vendor/mediatek/proprietary/hardware/gralloc_extra/include",
+    ],
+
+    cflags: [
+        "-Wno-multichar",
+        "-Werror",
+        "-Wall",
+    ],
+
+    defaults: [
+        "mtk_wifidisplay_defaults",
+    ],
+
+}
+
+
+
+bootstrap_go_package {
+    name:"soong-wifidisplay-mediatek",
+    pkgPath:"android/soong/wifidisplay/mediatek",
+    deps:[
+        "soong-android",
+        "soong-cc",
+    ],
+    srcs:[
+        "wifidisplay.go",
+    ],
+    pluginFor:["soong_build"],
+}
+
+mtk_wifidisplay_defaults {
+    name: "mtk_wifidisplay_defaults",
+}

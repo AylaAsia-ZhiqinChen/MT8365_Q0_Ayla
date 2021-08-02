@@ -1,0 +1,181 @@
+#// Customer ID=13943; Build=0x75f5e; Copyright (c) 2007-2012 by Tensilica Inc.  ALL RIGHTS RESERVED.
+#// These coded instructions, statements, and computer programs are the
+#// copyrighted works and confidential proprietary information of
+#// Tensilica Inc.  They may be adapted and modified by bona fide
+#// purchasers for internal use, but neither the original nor any adapted
+#// or modified version may be disclosed or distributed to third parties
+#// in any manner, medium, or form, in whole or in part, without the prior
+#// written consent of Tensilica Inc.
+
+
+system "sys"
+(
+  properties
+  (
+    type = "System";
+    version = "1.0";
+    variant = "";
+    loadfile_extension = "";
+    description = "";
+    onecyclevalue = "10.0";
+    onecycletime = "ns";
+    simulationresolution = "1 ps";
+    simulationdefaulttime = "1 ns";
+  )
+  parameters ()
+  components
+  (
+
+    instance "loader_driver"
+    (
+      model   = "xtsc_queue_producer_sd";
+      version = "";
+      variant = "";
+
+      parameters
+      (
+        "bit_width" = "32";
+        "script_file" = "../../xtsc_tx_loader/loader_driver.vec";
+      )
+
+    )
+
+    instance "loader"
+    (
+      model   = "xtsc_tx_loader_sd";
+      version = "";
+      variant = "";
+
+      parameters
+      (
+      )
+
+    )
+
+    instance "logic"
+    (
+      model   = "xtsc_wire_logic_sd";
+      version = "";
+      variant = "";
+
+      parameters
+      (
+      )
+
+    )
+
+    instance "core0"
+    (
+      model   = "xtsc_core_sd";
+      version = "";
+      variant = "";
+
+      parameters
+      (
+        "ProcessorID" = "0";
+      )
+
+    )
+
+    instance "core0_pif"
+    (
+      model   = "xtsc_memory_sd_1";
+      version = "";
+      variant = "";
+
+      parameters
+      (
+        "block_read_delay" = "1";
+        "block_write_delay" = "1";
+        "block_write_repeat" = "1";
+        "block_write_response" = "1";
+        "byte_width" = "8";
+        "rcw_response" = "1";
+        "read_delay" = "1";
+        "write_delay" = "1";
+      )
+
+    )
+
+    instance "core1"
+    (
+      model   = "xtsc_core_sd";
+      version = "";
+      variant = "";
+
+      parameters
+      (
+        "ProcessorID" = "1";
+      )
+
+    )
+
+    instance "core1_pif"
+    (
+      model   = "xtsc_memory_sd_1";
+      version = "";
+      variant = "";
+
+      parameters
+      (
+        "block_read_delay" = "1";
+        "block_write_delay" = "1";
+        "block_write_repeat" = "1";
+        "block_write_response" = "1";
+        "byte_width" = "8";
+        "rcw_response" = "1";
+        "read_delay" = "1";
+        "write_delay" = "1";
+      )
+
+    )
+
+    instance "Q01"
+    (
+      model   = "xtsc_queue_sd";
+      version = "";
+      variant = "";
+
+      parameters
+      (
+        "bit_width" = "96";
+        "depth" = "2";
+      )
+
+    )
+
+    instance "Q10"
+    (
+      model   = "xtsc_queue_sd";
+      version = "";
+      variant = "";
+
+      parameters
+      (
+        "bit_width" = "96";
+        "depth" = "2";
+      )
+
+    )
+
+  )
+  connections
+  (
+    "core0::m_pif_request_port<-->core0_pif::m_request_exports[0]" = "core0":"m_pif_request_port" to "core0_pif":"m_request_exports[0]";
+    "core0_pif::m_respond_ports[0]<-->core0::m_pif_respond_export" = "core0_pif":"m_respond_ports[0]" to "core0":"m_pif_respond_export";
+    "core1::m_pif_request_port<-->core1_pif::m_request_exports[0]" = "core1":"m_pif_request_port" to "core1_pif":"m_request_exports[0]";
+    "core1_pif::m_respond_ports[0]<-->core1::m_pif_respond_export" = "core1_pif":"m_respond_ports[0]" to "core1":"m_pif_respond_export";
+    "core0::m_CoreHalted<-->logic::m_CoreHalted0" = "core0":"m_CoreHalted" to "logic":"m_CoreHalted0";
+    "core0::m_pop_INQ1<-->Q10::m_consumer" = "core0":"m_pop_INQ1" to "Q10":"m_consumer";
+    "core0::m_push_OUTQ1<-->Q01::m_producer" = "Q01":"m_producer" to "core0":"m_push_OUTQ1";
+    "core0::m_tx_xfer_port<-->core1::m_tx_xfer_export" = "core0":"m_tx_xfer_port" to "core1":"m_tx_xfer_export";
+    "core1::m_CoreHalted<-->logic::m_CoreHalted1" = "core1":"m_CoreHalted" to "logic":"m_CoreHalted1";
+    "core1::m_pop_INQ1<-->Q01::m_consumer" = "core1":"m_pop_INQ1" to "Q01":"m_consumer";
+    "core1::m_push_OUTQ1<-->Q10::m_producer" = "core1":"m_push_OUTQ1" to "Q10":"m_producer";
+    "core1::m_tx_xfer_port<-->loader::m_tx_xfer_export" = "core1":"m_tx_xfer_port" to "loader":"m_tx_xfer_export";
+    "loader::m_tx_xfer_port<-->core0::m_tx_xfer_export" = "loader":"m_tx_xfer_port" to "core0":"m_tx_xfer_export";
+    "loader_driver::m_queue<-->loader::m_producer" = "loader_driver":"m_queue" to "loader":"m_producer";
+    "logic::m_JobDone<-->loader_driver::m_control" = "logic":"m_JobDone" to "loader_driver":"m_control";
+  )
+  portmaps ()
+)

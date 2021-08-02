@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en-us" lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="copyright" content="(C) Copyright 2005"/>
+<meta name="DC.rights.owner" content="(C) Copyright 2005"/>
+<meta name="DC.Type" content="tconcept"/>
+<meta name="DC.Title" content="Performance Counters Option"/>
+<meta name="abstract" content="Enable hardware based performance monitoring"/>
+<meta name="description" content="Enable hardware based performance monitoring"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/options/opt.debugEnabled.html"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/options/opt.breakInBreakOut.html"/>
+<meta name="DC.Format" content="XHTML"/>
+<meta name="DC.Identifier" content="opt-perfcounters"/>
+<link rel="stylesheet" type="text/css" href="../../commonltr.css"/>
+<link rel="stylesheet" type="text/css" href="../../cadence.css"/>
+<title>Performance Counters Option</title>
+</head>
+<body id="opt-perfcounters">
+
+
+    <h1 class="title topictitle1">Performance Counters Option</h1>
+
+    
+    <div class="body conbody"><p class="shortdesc">Enable hardware based performance monitoring</p>
+
+        <dl class="dl">
+            
+                <dt class="dt dlterm">Performance Counters option</dt>
+
+                <dd class="dd"><span class="ph">8</span></dd>
+
+            
+        </dl>
+
+        <p class="p">Configures how many counters are available for hardware based performance monitoring - to
+            count events such as cache misses. Each configured counter comprises a pair of
+            registers: control and status.</p>
+
+        <p class="p">The Xplorer Profile launch can make use of either performance counters or a hardware
+            timer for hardware based performance monitoring. Timer based monitoring can only count
+            cycles, but is available with earlier processor versions. Performance counters provide
+            for more sophisticated monitoring, and options within the launch dialog allow assignment
+            of different types of events to the available counters. Note that programs have to be
+            linked with a specific option (-hwpg) to make use of hardware performance monitoring
+            (see Build Properties -&gt; Linker Options).</p>
+
+        <div class="note remember"><span class="remembertitle">Remember:</span> This option requires that a profiling interrupt is configured.</div>
+
+        
+    </div>
+
+<div class="related-links">
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="../../config/options/opt.debugEnabled.html">Debug option</a></div>
+<div class="previouslink"><strong>Previous topic:</strong> <a class="link" href="../../config/options/opt.breakInBreakOut.html" title="Add external debug interrupt at debug level (break-in/break-out)">Break-in Break-out option</a></div>
+</div>
+</div>
+
+</body>
+</html>

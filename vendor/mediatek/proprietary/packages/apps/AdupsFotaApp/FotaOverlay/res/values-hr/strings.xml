@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Bežično ažuriranje</string>
+    <string name="check_now">Provjeri nova ažuriranja</string>
+    <string name="option_settings">Postavke</string>
+    <string name="current_version_text">Trenutna verzija:</string>
+    <string name="new_version_text">Nova verzija:</string>
+    <string name="download_progress">Preuzimanje:</string>
+    <string name="update_now">Ažuriraj sada</string>
+    <string name="update_later">Ažuriraj kasnije</string>
+    <string name="battery_remove_title">Upozorenje</string>
+    <string name="notification_content_title">Bežično ažuriranje softvera</string>
+    <string name="notification_content_newversion">Dostupna je nova inačica.</string>
+    <string name="new_version_query">Provjera ažuriranja&#8230;</string>
+    <string name="no_new_version">Softver vašeg uređaja je ažuriran.</string>
+    <string name="network_error">Mrežna veza nije uspjela</string>
+    <string name="unmount_sdcard">Pogreška SD kartice! Provjerite da je SD kartica umetnuta u uređaj.</string>
+    <string name="sdcard_crash_or_unmount">Nema SD kartice ili nema dovoljno slobodnog prostora na uređaju da biste dovršili ažuriranje.</string>
+    <string name="btn_pause">Pauziraj</string>
+    <string name="btn_resume">Nastavi</string>
+    <string name="btn_download">Preuzmi</string>
+    <string name="btn_ok">U redu</string>
+    <string name="btn_cancel">Odustani</string>
+    <string name="cancel_download_title">Odustani</string>
+    <string name="cancel_download_content">Ovaj će zahvat izbrisati preuzetu datoteku.</string>
+    <string name="cancel_download_positive_btn">Da</string>
+    <string name="cancel_download_negative_btn">Ne</string>
+    <string name="update_prompt">Uređaj će se ponovo pokrenuti i ući u režim nadogradnje, a ceo proces će trajati nekoliko minuta. Tokom ovog vremena ne izvršavajte nikakve operacije kako biste izbjegli neuspjeh nadogradnje.</string>
+    <string name="not_support_fota_title">Upozorenje</string>
+    <string name="not_support_version">FOTA nije podržana na ovom uređaju!</string>
+    <string name="package_error_title">Instalacija nije uspjela</string>
+    <string name="package_error_message_invalid">Pogreška u paketu. Provjerite ažuriranje te ga ponovno preuzmite.</string>
+    <string name="updateSuccessTitle">Instalacija je završena</string>
+    <string name="updateSuccess">Vaš je sustav uspješno ažuriran na najnoviju verziju %s</string>
+    <string name="package_unzip">Izdvajam instalacijski paket, nemojte prekidati ovu radnju&#8230;</string>
+    <string name="package_unzip_error">Greška kod izdvajanja</string>
+    <string name="upgrade_hint">Informacije o ažuriranju</string>
+    <string name="setting_autocheck">Automatski provjeravajte ažuriranja</string>
+    <string name="setting_autocheck_title">Postavke ciklusa</string>
+    <string name="setting_autocheck_hint">Postavite ciklus kako biste automatski provjerili dostupna ažuriranja</string>
+    <string name="setting_autocheck_schedule1">Dnevno</string>
+    <string name="setting_autocheck_schedule2">Trodnevno</string>
+    <string name="setting_autocheck_schedule3">Tjedno</string>
+    <string name="setting_only_wifi">Ažuriraj samo putem WiFi mreže</string>
+    <string name="setting_only_wifi_hint">Preuzmite pakete ažuriranja samo putem WiFi mreže</string>
+    <string name="setting_autodownload">Dopusti automatsko preuzimanje putem WiFi mreže</string>
+    <string name="setting_autodownload_hint">Paket ažuriranja će se preuzeti automatski</string>
+    <string name="setting_network_tip">WiFi veza je nedostupna, poništite odabir opcije [Ažuriraj samo putem WiFi mreže] i pokušajte ponovo.</string>
+    <string name="reboot">Ponovno pokretanje...</string>
+    <string name="option_file_select">Lokalna ažuriranja</string>
+    <string name="selected_update_zip">Odabrana datoteka:&#160;</string>
+    <string name="sdCard_update_tips_content"><Data><![CDATA[ <div style="font-size:13px;color:#4c4c4c"><p>1. Provjerite je li odabrana datoteka službena;</p>
+                                <p>2. Lokalno ažuriranje može izbrisati vaše podatke, prije ažuriranja napravite sigurnosnu kopiju podataka;</p>
+                                <p>3. Instalacija pogrešne datoteke ažuriranja može oštetiti vaš uređaj;</p>
+                                <p>4. Kliknite gumb [Ažuriraj sada], uređaj će ući u način rada za oporavak. Nemojte uklanjati bateriju, nemojte raditi ništa dok ažuriranje ne završi.</p></div> ]]> </Data>
+    </string>
+    <string name="sdCard_upgrade_hint">Obavijest:</string>
+    <string name="sdCard_upgrade_find_update_file_fail">Datoteke ažuriranja nisu dostupne</string>
+    <string name="sdCard_upgrade_update_file_fail_prompt">Datoteke ažuriranja ne postoje, odaberite ponovo.</string>
+    <string name="sdCard_upgrade_memory_space_not_enough">Greška</string>
+    <string name="sdCard_upgrade_copy_file_fail">Pogreška kod kopiranja</string>
+    <string name="sdCard_upgrade_copy_file_fail_prompt">Kopiranje nije uspjelo, pokušajte ponovo!</string>
+    <string name="sdCard_upgrade_copying">Kopiranje&#8230;</string>
+    <string name="download_completed_text">Preuzimanje je dovršeno, kliknite za instalaciju</string>
+    <string name="empty_directory">Nema zip datoteka u ovoj mapi!</string>
+    <string name="sdcard_update_prompt">Možete oštetiti vaš uređaj ukoliko odlučite instalirati neslužbenu ili nekompatibilnu zip datoteku! </string>
+    <string name="export_data">Preuzmite datoteku zapisnika</string>
+    <string name="start_catch_log">Pokreni snimanje zapisnika</string>
+    <string name="stop_catch_log">Završi snimanje zapisnika</string>
+
+
+    <string name="remind_last_time">Ponovno podsjeti</string>
+    <string name="pop_install_schedule1">za 1 sat</string>
+    <string name="pop_install_schedule2">za 4 sata</string>
+    <string name="pop_install_schedule3">za 8 sati</string>
+    <string name="pop_install_remind_title">Podsjetnik ažuriranja</string>
+    <string name="pop_install_remind_content">Nova verzija je preuzeta, instalirajte ju sada.</string>
+    <string name="option_exit">Izlaz</string>
+
+
+    <!--menu-->
+
+
+    <string name="htmlstring_version"><![CDATA[<div style=\'font-size:16px;color:#303030;\'><span style=\'word-break:break-all\'>]]></string>
+    <string name="htmlstring_version_end"><![CDATA[</span><br/>]]></string>
+    <string name="htmlstring_code_head"><![CDATA[<div style=\'font-size:14px;color:#8e8e8e;\'><span style=\'word-break:break-all\'>]]></string>
+    <string name="htmlstring_code_end"><![CDATA[</span><br/></div>]]></string>
+
+    <string name="ota_notify_download_pause_content">Preuzimanje je pauzirano, kliknite za nastavak</string>
+    <string name="ota_button_text_know">U redu</string>
+    <string name="ota_device_rooted_content">Root je otkriven, vaš uređaj se ne može ažurirati!</string>
+    <string name="ota_battery_low">Trenutna baterija je manja od %1$d%%, molimo vas napunite!</string>
+    <string name="ota_wifi_setting">Postavke WiFi-a</string>
+    <string name="ota_no_wifi_tip">WiFi nije dostupan, želite li ažurirati putem mobilne mreže?</string>
+
+    <string name="ota_full_rom_check">Provjera</string>
+    <string name="ota_optional_full_check">Provjera cijele nadogradnje</string>
+    <string name="ota_toast_no_network">Mreža nije dostupna</string>
+
+    <string name="out_sdcard">SD kartica</string>
+    <string name="inner_sdcard">Unutarnja pohrana</string>
+    <string name="match_imei">IMEI je nevažeći</string>
+
+    <string name="sdcard_crash_dir_un_build">SD kartica je nedostupna!</string>
+    <string name="post_pro">%</string>
+
+    <string name="ab_install_fail">Neuspješna instalacija!</string>
+    <string name="ab_install_success">Uspješna instalacija</string>
+    <string name="updated_need_reboot">Ponovo pokrenite mobitel da biste aktivirali ažuriranu verziju</string>
+    <string name="ab_isnatll_fail_reason">Razlog：</string>
+    <string name="ab_installing">Instaliranje</string>
+    <string name="ab_connect_fail">Neuspjelo ponovno pokretanje</string>
+    <string name="ab_battery_low">Ažuriranje će se instalirati automatski kada se baterija napuni više od %1$d%%</string>
+    <string name="ab_parms_illegal">Netočan parametar paketa nadogradnje</string>
+    <string name="ab_reboot_now">Ponovno pokrenite uređaj</string>
+
+    <string name="tips_abDownOrInstall">Nemojte istovremeno vršiti lokalnu te nadogradnju putem bežične mreže</string>
+    <string name="tips_abInstall">Tokom instalacije nemojte provjeravati cijeli paket.</string>
+    <string name="button_click_toast">Prebrzo, pokušajte ponovo kasnije.</string>
+
+    <!--GDPR-->
+    <string name="about_wireless_update">O bežičnom ažuriranju</string>
+    <string name="agree">PRIHVAĆAM</string>
+    <string name="analysis">Analiza aplikacije</string>
+    <string name="content">Dopustite kako biste poboljšali svoju aplikaciju dijeljenjem aktivnosti i podataka povezanih s pogreškama.</string>
+
+</resources>

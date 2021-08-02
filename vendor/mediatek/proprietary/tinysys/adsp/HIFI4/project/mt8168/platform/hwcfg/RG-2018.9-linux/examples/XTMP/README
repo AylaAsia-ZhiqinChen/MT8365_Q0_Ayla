@@ -1,0 +1,131 @@
+This directory contains XTMP examples described in Sections 2-7
+of the Xtensa Modeling Protocol (XTMP) User's Guide.
+
+------------------------
+Linux build instructions
+------------------------
+- Supported compilers are gcc/g++ versions 3.4.X and 4.1.X.
+
+- Libraries compiled with gcc/g++ 3.2.3 are still available,
+  but have been deprecated.
+
+- Makefile variables that you may need to change:
+  - GCC_DIR and GCC_LIBS if you are using gcc/g++ from a path other then /usr,
+  - USE_SYSTEMC to use SystemC (v2.2) threads (default is QuickThreads).
+
+- To build all the examples, just type 'make'.
+
+--------------------------
+Windows build instructions
+--------------------------
+- Supported compilers are Microsoft Visual C++ 2010 and 
+  Microsoft Visual C++ 2012.
+
+- In order for Windows to locate XTMP dynamic-link libraries (DLLs),
+  you must add the following directory to your PATH:
+    <xtensa_tools_root>\lib\iss       for MS VC++ 2010
+    <xtensa_tools_root>\lib\iss-vc110 for MS VC++ 2012
+
+- To build from a cmd shell using the provided Makefile:
+  - Set up the MS VC++ environment by running Microsoft's vsvars32.bat.
+  - Makefile variables that you may need to change:
+    - LIB_VARIANT to choose MS VC++ 2012 libraries (default is MS VC++ 2010),
+    - BUILD to choose Debug or Release build (default is Release),
+    - USE_SYSTEMC to use SystemC (v2.2) threads (default is Windows fibers).
+  - To build all the examples, just type
+    '<xtensa_tools_root>\Tools\bin\make'
+  
+- To build from the Microsoft Visual Studio IDE
+  - For MS VC++ 2010, open examples_fbr.vc100.sln (Windows fibers) or 
+    examples_sysc.vc100.sln (SystemC threads) solution files
+  - For MS VC++ 2012, open examples_fbr.vc110.sln (Windows fibers) or 
+    examples_sysc.vc110.sln (SystemC threads) solution files
+  - You can also open individual .vcxproj files.
+
+- You can also build from the cmd shell using Microsoft's MSBuild and the
+  desired *.sln or *.vcxproj file.
+
+------------------------
+Source file descriptions
+------------------------
+xtmp_config.h
+  Configuration-specific header file that describes various parameters
+  of the installed Xtensa processor configuration. You cannot include
+  two instances of this header file for different configurations in
+  the same source file.
+
+xtmp_options.c xtmp_options.h getopt.c getopt.h
+  Simple option processing shared by all examples.
+
+up_iss.c sieve.c
+  Uniprocessor example described in Section 2.6.1.
+  By default, it runs sieve.out Xtensa target program. 
+
+mp_iss.c mp_sync.c
+  Multiprocessor example described in Section 2.6.2.
+  One processor runs producer.out, the other consumer.out.
+  
+regtest_iss.c
+  Register test example that shows functionality described in Section 3.2.3.
+
+peekpoke_iss.c empty.c
+  A test for XTMP_{peek,poke}{Physical,Virtual} functions described in 
+  Section 3.2.4. Also uses device peek and poke callbacks from Section 5.4.
+  By default, it loads empty.out Xtensa target program. 
+  
+tieGroups_iss.c
+  An example that lists the TIE port groups, if any, that are defined
+  in this configuration (Section 4.1).
+
+tiePorts_iss.c export_import.tie export_import.c  [Only for Xtensa LX*]
+  An example that demonstrates the use of TIE state exports and import wires
+  (Sections 4.2.2 and 4.2.3). The two cores run the same target program, 
+  export_import.out.
+
+queue_iss.c queue.tie queue_reader.c queue_writer.c  [Only for Xtensa LX*]
+  An example of TIE queues described in Section 4.3.
+
+builtinQueue_iss.c  [Only for Xtensa LX*]
+  Same as queue_iss, but using the XTMP_queue component (Section 4.4).
+
+forward_iss.c
+  An example of forwarding transactions from a custom device to builtin
+  XTMP memories, described in Section 5.5.1.
+  By default, it runs sieve.out Xtensa target program. 
+
+localMemDevice_iss.c
+  An example of a local memory implemented as a custom device with a
+  periodic Busy signal, described in Section 5.8.
+  By default, it runs sieve.out Xtensa target program. 
+
+inbound_iss.c inbound.c inbound.h
+  An example of a custom device that generates inbound PIF transactions,
+  described in Section 5.9.1.
+  It runs inbound.out Xtensa target program. 
+
+pifMemDevice_iss.c
+  An example of a system memory implemented with a help of a ticker thread,
+  described in Section 6.4.1.
+  By default, it runs sieve.out Xtensa target program. 
+
+event_iss.c event.c
+  An example of user thread management using the event mechanism
+  described in Section 6.4.2. It runs event.out Xtensa target program.
+
+simModeSwitch_iss.c
+  An example of switching the simulation mode between cycle-accurate
+  and fast functional (TurboXim) to demonstrate the interfaces described
+  in Section 7.7. By default, it runs sieve_long.out Xtensa target program.
+
+byteDisable_iss.c byte_disable.tie byte_disable.c
+  An example that shows how byte disables must be handled in a device
+  model. It runs byte_disable.out Xtensa target program.
+  
+readCondWrite_iss.c rcw.c
+  An example of a custom device that handles RCW transactions.
+  It runs rcw.out Xtensa target program.
+  
+multClock_iss.c proc1.c proc2.c proc.h
+  A variation of the mp_iss example above, illustrating the 
+  cores simulating in separate clock domains.
+  

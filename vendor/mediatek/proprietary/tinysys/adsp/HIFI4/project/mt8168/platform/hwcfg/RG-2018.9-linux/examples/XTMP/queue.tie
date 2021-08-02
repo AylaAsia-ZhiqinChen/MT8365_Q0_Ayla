@@ -1,0 +1,34 @@
+/*
+ * Customer ID=13943; Build=0x75f5e; Copyright (c) 2004-2006 by Tensilica Inc.  ALL RIGHTS RESERVED.
+ * 
+ * These coded instructions, statements, and computer programs are the
+ * copyrighted works and confidential proprietary information of
+ * Tensilica Inc.  They may be adapted and modified by bona fide
+ * purchasers for internal use, but neither the original nor any adapted
+ * or modified version may be disclosed or distributed to third parties
+ * in any manner, medium, or form, in whole or in part, without the prior
+ * written consent of Tensilica Inc.
+ */
+
+queue FIFO_OUT 40 out
+queue FIFO_IN  40 in
+    
+
+state fifo_char 8
+
+operation WriteFifo {in AR letter, in AR number} {out FIFO_OUT}
+{
+   assign FIFO_OUT = {letter[7:0], number};
+}
+
+operation ReadFifoNumber {out AR number} {in FIFO_IN, out fifo_char}
+{
+   assign number = FIFO_IN[31:0];
+   assign fifo_char = FIFO_IN[39:32];
+}
+
+operation ReadFifoLetter {out AR letter} {in fifo_char}
+{
+   assign letter = {24'b0, fifo_char};
+}
+

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en-us" lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="copyright" content="(C) Copyright 2005"/>
+<meta name="DC.rights.owner" content="(C) Copyright 2005"/>
+<meta name="DC.Type" content="tconcept"/>
+<meta name="DC.Title" content="Build with Reset Handler at Alternate Reset Base"/>
+<meta name="abstract" content=""/>
+<meta name="description" content=""/>
+<meta name="DC.Relation" scheme="URI" content="../../config/swoptions/page.software.html"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/swoptions/opt.sw_abi.html"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/swoptions/opt.sw_floating_abi.html"/>
+<meta name="DC.Format" content="XHTML"/>
+<meta name="DC.Identifier" content="opt-sw_altreset"/>
+<link rel="stylesheet" type="text/css" href="../../commonltr.css"/>
+<link rel="stylesheet" type="text/css" href="../../cadence.css"/>
+<title>Build with Reset Handler at Alternate Reset Base</title>
+</head>
+<body id="opt-sw_altreset">
+
+
+    <h1 class="title topictitle1">Build with Reset Handler at Alternate Reset Base</h1>
+
+    
+    <div class="body conbody"><p class="shortdesc"/>
+
+        <dl class="dl">
+            
+                <dt class="dt dlterm">Use Alternate Reset Base option</dt>
+
+                <dd class="dd"><span class="ph">Selected</span></dd>
+
+            
+            
+                <dt class="dt dlterm">Alternate Static Vector Base Address</dt>
+
+                <dd class="dd"><span class="ph">0x40000640</span></dd>
+
+            
+        </dl>
+
+        <p class="p">For processor configurations that support relocatable vectors, at configuration time, a
+            primary and alternate "static vector group base address" can be configured. This address
+            is a base from which the reset vector and memory error vector (if configured) are
+            offset. Which address (primary / alternate) is used at processor reset is controlled by
+            an input pin which can be asserted to select the alternate base. By default, the
+            software configuration build will assume the primary static base is used, and will
+            generate reset code for those addresses. This option chooses whether to build software
+            with the reset code at the alternate address.</p>
+
+    </div>
+
+<div class="related-links">
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="../../config/swoptions/page.software.html" title="Configuration options which only affect the target software">Software Configuration Options</a></div>
+<div class="previouslink"><strong>Previous topic:</strong> <a class="link" href="../../config/swoptions/opt.sw_abi.html">Application Binary Interfaces</a></div>
+<div class="nextlink"><strong>Next topic:</strong> <a class="link" href="../../config/swoptions/opt.sw_floating_abi.html">Hardware Floating Point ABI</a></div>
+</div>
+</div>
+
+</body>
+</html>

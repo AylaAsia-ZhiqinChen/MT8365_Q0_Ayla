@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en-us" lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="copyright" content="(C) Copyright 2005"/>
+<meta name="DC.rights.owner" content="(C) Copyright 2005"/>
+<meta name="DC.Type" content="tconcept"/>
+<meta name="DC.Title" content="Hardware Floating Point ABI"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/swoptions/page.software.html"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/swoptions/opt.sw_altreset.html"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/swoptions/opt.sw_nucleus.html"/>
+<meta name="DC.Relation" scheme="URI" content="../options/opt.hifi4_vector_fp.html"/>
+<meta name="DC.Format" content="XHTML"/>
+<meta name="DC.Identifier" content="opt-sw_floating_abi"/>
+<link rel="stylesheet" type="text/css" href="../../commonltr.css"/>
+<link rel="stylesheet" type="text/css" href="../../cadence.css"/>
+<title>Hardware Floating Point ABI</title>
+</head>
+<body id="opt-sw_floating_abi">
+
+
+    <h1 class="title topictitle1"><span class="ph">Hardware Floating Point ABI</span></h1>
+
+    <div class="body conbody">
+        <dl class="dl">
+            
+                <dt class="dt dlterm"><span class="ph">Hardware Floating Point ABI</span></dt>
+
+                <dd class="dd"><span class="ph">Selected</span></dd>
+
+            
+            
+                <dt class="dt dlterm"><span class="ph">Hardware Floating Point ABI</span></dt>
+
+                <dd class="dd">Inferred by FP option selection</dd>
+
+            
+        </dl>
+
+        <p class="p"><span class="ph">Cadence</span> offers two familiar floating point options - namely
+            single and double precision, and also several coprocessors which optionally include
+            floating point hardware capabilities including HiFi3, HiFi4, and Fusion.</p>
+
+        <p class="p">The coprocessors which include floating point capabilities implicitly use the Floating
+            Point ABI which makes use of floating point registers for function calls.</p>
+
+        <p class="p">The familiar single and double precision options by default use the standard ABI which
+            makes use of AR registers for FP value passing. The Hardware Floating Point ABI is
+            available as an option for single and double precision FP. It will lead to more
+            efficient passing of floating point variables, especially for double precision, but
+            exercise caution when integrating with object code compiled for other configurations
+            because the ABI is not compatible.</p>
+
+    </div>
+
+    <div class="related-links">
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="../../config/swoptions/page.software.html" title="Configuration options which only affect the target software">Software Configuration Options</a></div>
+<div class="previouslink"><strong>Previous topic:</strong> <a class="link" href="../../config/swoptions/opt.sw_altreset.html">Build with Reset Handler at Alternate Reset Base</a></div>
+<div class="nextlink"><strong>Next topic:</strong> <a class="link" href="../../config/swoptions/opt.sw_nucleus.html" title="Generic RTOS Compatibility - ensures selection of a set of features required by many RTOSes">RTOS Compatibility Option</a></div>
+</div>
+<div class="relinfo"><strong>Related information</strong><br/>
+<div><a class="link" href="../options/opt.hifi4_vector_fp.html" title="Vector Floating Point extensions to HiFi 4 Audio Engine">HiFi4 Vector FP</a></div>
+</div>
+</div>
+
+</body>
+</html>

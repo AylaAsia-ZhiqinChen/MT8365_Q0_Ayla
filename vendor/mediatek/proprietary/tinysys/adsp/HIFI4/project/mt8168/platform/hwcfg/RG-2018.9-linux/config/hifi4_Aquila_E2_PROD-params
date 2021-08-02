@@ -1,0 +1,467 @@
+# Xtensa default parameter values
+
+# Customer ID=13943; Build=0x75f5e; Copyright (c) 2004-2015 Tensilica Inc.  ALL RIGHTS RESERVED.
+# These coded instructions, statements, and computer programs are the
+# copyrighted works and confidential proprietary information of Tensilica Inc.
+# They may not be modified, copied, reproduced, distributed, or disclosed to
+# third parties in any manner, medium, or form, in whole or in part, without
+# the prior written consent of Tensilica Inc.
+
+# WARNING: This file has been automatically generated with values that are
+# specific to a particular Xtensa processor configuration.  Changing values
+# here will likely result in an inconsistent system.  Do not edit!
+
+
+# Version information for software tools and target hardware
+SWToolsRelease = RG-2018.9
+SWToolsVername = 12.0.9
+SWToolsVersion = 1200009
+HWMicroArchLatest = 270009
+HWMicroArchEarliest = 270009
+TargetHWVersion = LX7.0.9
+ConfigName = Xm_hifi4_Aquila_E2_PROD
+IsPreconfiguredCore = 0
+uarchName = Barcelona
+
+# Preconfigured ISA parameters
+IsaIsBigEndian = 0
+IsaMaxInstructionSize = 11
+IsaUseWindowedRegisters = 1
+IsaUseDensityInstruction = 1
+IsaNumContexts = 1
+IsaUseL32R = 1
+IsaUseConst16 = 0
+IsaUseAbs = 1
+IsaUseAddx = 1
+IsaUsePredictedBranches = 0
+IsaUseNormShiftAmount = 1
+IsaUseMinMax = 1
+IsaUseSignExtend = 1
+IsaUseDepBits = 0
+IsaUseClamps = 1
+IsaUseMAC16 = 0
+IsaUseMul16 = 1
+MUL32ImplementsMul16 = 1
+MAC16ImplementsMul16 = 0
+IsaUseS32C1I = 0
+IsaUseTAPMaster = 0
+IsaUseVectorFPU2005 = 0
+IsaAssumesSPFPU = 1
+IsaAssumesDPFPU = 0
+IsaUseDoubleFP_accel = 0
+IsaUseFloatingPoint = 1
+IsaUseFloatingPointDiv = 1
+IsaUseFloatingPointRecip = 1
+IsaUseFloatingPointSqrt = 1
+IsaUseFloatingPointRSqrt = 1
+IsaUseDoubleFP = 0
+IsaUseDoubleFPDiv = 0
+IsaUseDoubleFPRecip = 0
+IsaUseDoubleFPSqrt = 0
+IsaUseDoubleFPRSqrt = 0
+IsaUseVectra1 = 0
+IsaUseVectra2 = 0
+IsaUseLinuxMMU = 0
+IsaUseLinuxMMUIIndexCount = 0
+IsaUseLinuxMMUDIndexCount = 0
+IsaUseRegionProt = 1
+IsaUseRegionProtXlation = 0
+IsaUseThreadPtr = 1
+IsaUseBBE16 = 0
+IsaUseBBENEP = 0
+IsaUsePDX = 0
+IsaUseFusionG = 0
+IsaUseVision = 0
+IsaUseFusion = 0
+IsaUseHiFi2 = 0
+IsaUseHiFi3 = 0
+IsaUseHiFi3Z = 0
+IsaUseHiFi4 = 1
+IsaUseHiFi5 = 0
+IsaUseHiFiPro = 0
+IsaUseHiFi2_32x24 = 0
+IsaUseHiFi2_40b = 0
+IsaUseConnXD2 = 0
+IsaUse32bitMul = 1
+IsaUse32bitMulh = 0
+IsaUseIterative32bitMul = 0
+IsaUse32bitDiv = 1
+IsaUseBooleans = 1
+IsaUseCoprocessor = 1
+IsaCoprocessorCount = 2
+IsaUseLeadingZeros = 1
+IsaUseLoops = 1
+IsaUseExtL32R = 0
+IsaUseLitBase = 0
+IsaUseInstPif = 1
+IsaUseDataPif = 1
+IsaUseExceptions = 1
+IsaUseHalt = 0
+IsaUsePrid = 1
+ProcessorID = 0
+HWConfigID0 = 0xC0F3FBFE
+HWConfigID1 = 0x22475F5E
+IsaMisAlignedLoadExc = 1
+IsaMisAlignedStoreExc = 1
+IsaUseSynchronization = 1
+IsaUsePerfCounters = 0
+perfCounterCount = 8
+IsaSysHandlesMisAlignedLoad = 0
+IsaSysHandlesMisAlignedStore = 0
+IsaHardwareHandlesMisAlignedLoad = 0
+IsaHardwareHandlesMisAlignedStore = 0
+IsaUseOCD = 1
+DebugLoadStoreDDR = 1
+DebugDataVAddrTrapCount = 2
+DebugInstVAddrTrapCount = 2
+DebugExternalInterrupt = 1
+ExternalRegistersInterface = 1
+ArithmeticException = 0
+NumMiscRegs = 4
+PIFReadDataBits = 64
+PIFWriteDataBits = 64
+PIFWriteResponse = 1
+PIFCriticalWordFirst = 1
+PIFArbitraryByteEnables = 1
+PIFInbound = 1
+PIFInboundBufferEntries = 2
+PIFReqAttribute = 1
+#PIFReqDomain: Implies if POReqDomain[1:0] signal is present.
+#Also implies data cache tag have 3 extra bits (Allocate/Shared/Inner). 
+PIFReqDomain = 0
+EarlyRestart = 1
+LoopBufferSize = 256
+MemoryErrorsEnabled = 0
+DataErrorWordWidth = 0
+TIEUseWideStore = 1
+WideInstHoldingBuffer = 1
+PrefetchBuffers = 16
+PrefetchToL1 = 0
+PrefetchCastoutLines = 0
+PrefetchBlock = 0
+PrefetchBlockEntries = 2 
+WriteBufferEntries = 32
+WriteBufferBypassAddrBits = 8
+DataCacheBytes = 32768
+DataCacheWayCount = 4
+DataCacheLineBytes = 128
+DataCacheAccessWidth = 64
+DataCacheWriteback = 1
+DataCacheLock = 1
+DataCacheTest = 1
+DataCacheDataParity = 0
+DataCacheDataECC = 0
+DataCacheTagParity = 0
+DataCacheTagECC = 0
+DataCacheCoherence = 0
+DataCacheBanks = 2
+DataCacheWayDisable = 1
+InstCacheBytes = 32768
+InstCacheWayCount = 4
+InstCacheLineBytes = 128
+InstCacheAccessWidth = 128
+InstCacheLock = 1
+InstCacheTest = 1
+InstCacheDataParity = 0
+InstCacheDataECC = 0
+InstCacheTagParity = 0
+InstCacheTagECC = 0
+InstCacheWayDisable = 1
+PhysicalAddressWidth = 32
+ByteEnableWidth = 8
+MasterExclAccess = 1
+SlaveExclAccess = 1
+ExtExclMasters = 2
+
+UnifiedRAMCount = 0
+InstRAMCount = 2
+InstRAM0Latency = 2
+InstRAM1Latency = 2
+InstROMCount = 0
+DataRAMCount = 2
+DataRAM0Latency = 2
+DataRAM1Latency = 2
+DataROMCount = 0
+DataPortCount = 0
+
+StoreBufferEntries = 3
+
+# Local memory info for ISS:  
+# Get the count for each local memory type, and if
+# the count is non-zero, return a list of parameters
+# [ size, base_address, access_width, busy, dma, cbox, rcw, parity, ecc, enable_mask, enable_code, udma ]
+# for each instance of that memory type.
+# 
+ISSEntriesPerRam = 12
+ISSUnifiedRAMCount = 0
+ISSDataRAMCount = 2
+ISSDataRAMBanks=2
+ISSDataRAMSubBanks=1
+DataRAMSplitRW=0
+DataRAMAttributeWidth=0
+ISSDataRAMInfo = [ 0x40000 0x1e000000 64 1 1 3 0 0 0 0xe0040000 0x00000000 0 0x40000 0x1e040000 64 1 1 3 0 0 0 0xe0040000 0x00040000 0 ]
+ISSDataROMCount = 0
+ISSInstRAMCount = 2
+ISSInstRAMBanks=1
+ISSInstRAMSubBanks=1
+InstRAMSplitRW=0
+InstRAMAttributeWidth=0
+ISSInstRAMInfo = [ 0x10000 0x40000000 128 1 1 0 0 0 0 0 0 0 0x10000 0x40010000 128 1 1 0 0 0 0 0 0 0 ]
+ISSInstROMCount = 0
+ISSDataPortCount = 0
+
+# C-Box
+CBox = 1
+
+# PC
+PC_Width = 32
+PC_UpperFixedBits = 0x00000000
+
+# Local memory latency
+InstCIFCycles = 2
+InstFetchWidth = 128
+DataCIFCycles = 2
+LoadStoreWidth = 64
+LoadStoreUnitsCount = 2
+AllowImemLoadStore = 1
+FastL32RFromIRam = 1
+
+ImplRegFileBuildingBlock = FlipFlop
+ImplResetFlops = 1
+ImplAsyncReset = 1
+ImplTargetSpeed = 891
+ImplTargetSize = 811096
+ImplTargetTechnology = 28hm
+ImplOperatingCondition = Worst
+ImplVoltageCondition = Nominal
+ClkGateFuncUnit = 1
+ClkGateGlobal = 1
+LatchesTransparent = 0
+FullScan = 1
+
+TracePort = 1
+TracePortData = 1
+TracePortMemBytes = 262144
+TRAX = 1
+
+PIFBridgeType = AXI
+PIFAsyncBusBridge = 1
+
+BootLoader = 0
+
+DCQueues = 0
+DCPorts = 1
+TIE_DC545CK = 0
+TIE_DC570T = 0
+TIE_MUL32 = 1
+TIE_MUL32_H = 0
+ConnXBBE16 = 0
+ConnXBBE16_VecDiv = 0
+ConnXBBE16_Rsqrt = 0
+ConnXBBE16_Despread = 0
+
+# Base vector addresses
+RelocatableVectors = 1
+VectorBase1FromPins = 1
+StaticVectorSelect = 1
+StaticVectorBase0 = 0x40020000
+StaticVectorBase1 = 0x40000640
+DynVecBaseReset = 0x40020400
+DynVecBaseAlignBits = 10
+
+# Vector offsets
+ResetVectorOffset           = 0x00000000
+MemoryExceptionVectorOffset = 0x00000000
+WindowVectorsOffset         = 0x00000000
+KernelExceptionVectorOffset = 0x000001dc
+UserExceptionVectorOffset   = 0x000001fc
+DoubleExceptionVectorOffset = 0x0000021c
+Level2InterruptVectorOffset = 0x0000017c
+Level3InterruptVectorOffset = 0x0000019c
+Level4InterruptVectorOffset = 0x000001bc
+Level5InterruptVectorOffset = 0x00000000
+Level6InterruptVectorOffset = 0x00000000
+Level7InterruptVectorOffset = 0x00000000
+DebugExceptionVectorOffset  = 0x000001bc
+NMIExceptionVectorOffset    = 0x00000000
+# Vectors configured
+Vectors = [ ResetVector KernelExceptionVector UserExceptionVector DoubleExceptionVector WindowVectors Level2InterruptVector Level3InterruptVector DebugExceptionVector ]
+VectorSizes = [ 736 28 28 28 376 28 28 28 ]
+StaticVectors = [ ResetVector ]
+
+# Interrupts
+InterruptCount = 25
+InterruptLevelMax = 4
+InterruptExtCount = 18
+IsaUseHighLevelInterrupt = 1
+
+ISSInterruptLevelMasks   = [ 0x0 0x00b900ff 0x0142ff00 0x00040000 0x00000000 ]
+InterruptVectorOffsets   = [ 0x0 0x0 0x0000017c 0x0000019c 0x000001bc ]
+
+IsNMIConfigured = 0
+
+ISSInterruptSoftwareMask = 0x00600000
+ISSInterruptExtLevelMask = 0x01803f3f
+ISSInterruptWriteErrMask = 0x00080000
+ISSInterruptExtEdgeMask  = 0x0000c0c0
+ISSInterruptNMIMask      = 0x00000000
+ISSInterruptUDmaDoneMask = 0x00000000
+ISSInterruptUDmaErrMask  = 0x00000000
+ISSInterruptGSErrMask    = 0x00000000
+ISSAllInterruptMask      = 0x01ffffff
+EXCMLevel = 2
+
+TimerCount = 3
+ISSTimerInterrupts = [ 16 17 18 ]
+
+# Debug info for ISS
+IsaUseDebug = 1
+DebugInterruptLevel = 4
+
+NewExceptionArch = 1
+ExternalExceptionArch = 0
+
+AXI = 1
+AxiECC = 0
+AceLite = 0
+
+MPU = [
+    # configured
+    1
+    # num of MPU background map entries
+    2
+    # num of MPU foreground map entries which software can write using WPTLB
+    32
+    # num of MTU entries
+    0
+    # Virtual address start LSB
+    12
+    # Is micro DMA configured
+    0
+    # Is block prefetch configured
+    0
+    # MPU Background Map Entries: Each line consists of an entry of the form:
+    #VirtStartAddr    SizeInBytes      AccessRights       MemoryType
+    0x00000000        0x80000000        0x00000007        0x00000006
+    0x80000000        0x80000000        0x00000007        0x00000006
+  ]
+
+
+
+MMU = [
+    # configured
+    0
+  ]
+
+# iDMA information
+iDMA = 0
+iDMATranspose = 0
+iDMAPifBufDepth = 0
+iDMAMaxOutstandingRows = 0
+
+# GatherScatter information: 0 for regs implies that this isn't present
+GatherScatter = 0
+GS_GatherRegs =  0
+GS_ScatterRegs = 0
+GS_Unalign = 0
+GS_ElementsPerCycle = 0
+
+# Special locations used by ISS
+SysUartPAddr = 0xffffffff
+DVMagicLocVAddr = 0x0cce5000
+DVMagicLocPAddr = 0x0cce5000
+DVPrintfPAddr = 0x0cce5004
+DVPrintfVAddr = 0x0cce5004
+# Bus errors
+BusAddressErrors = [ 0x361ff000 0x361ff100 0x361ff200 0x361ff300 0xf79ff000 0xf79ff100 0xf79ff108 0xf79ff210 0xf79ff310 0xf79ff318 ]
+BusAddressErrorCount = 10
+BusDataErrors = [ 0x361ff420 0x361ff528 0x361ff630 0x361ff738 0xf79ff420 0xf79ff528 0xf79ff630 0xf79ff738 ]
+BusDataErrorCount = 8
+BusErrorPattern = 0
+
+# System information
+SW_ABI = windowed
+SW_FloatingPointABI = 1
+SW_CLibrary = xclib
+default-lsp = sim
+alwaysPIC = 0
+maxPageSize = 1
+enableShared = 0
+sysroot =
+# for Linux:
+#   default-lsp = linux
+#   alwaysPIC = 1
+#   maxPageSize = 1
+#   enableShared = 1
+#   sysroot = <sysroot directory>
+BuildUniqueID = 483166
+ConfigKey0 = 0x406278BA
+ConfigKey1 = 0xA2D6DC1A
+
+# File locations
+# Note: Relative paths are relative to the location of the parameter file.
+install-prefix = /mtkeda/xtensa/Xplorer-7.0.9/XtDevTools/install/tools/RG-2018.9-linux/XtensaTools
+config-prefix = ../
+xtensa-tools = /mtkeda/xtensa/Xplorer-7.0.9/XtDevTools/install/tools/RG-2018.9-linux/XtensaTools/Tools
+tc-tools = /mtkeda/xtensa/Xplorer-7.0.9/XtDevTools/install/tools/RG-2018.9-linux/XtensaTools/TIE
+isa-base-dlls = [
+  libisa-core-hw.so
+  libisa-core.so
+]
+ctype-base-dll = libctype.so
+iss-base-dll = libcas-core.so
+iss-ref-base-dll = libcas-ref-core.so
+fiss-base-dll = libfiss-base.so
+fiss-ref-base-dll = libfiss-ref-base.so
+xml-base-dll = libtie-core.so
+xml-msem-dll=libtie-Xtensa-msem.so
+xtensa-base-header = ../xtensa-elf/arch/include/xtensa/config/defs.h
+tie-internal-module-headers = []
+
+# TIE parameters
+isa-tie-dll = libisa-MATHFUN_V4.so
+iss-tie-dll = libcas-MATHFUN_V4.so
+iss-ref-tie-dll = libcas-ref-MATHFUN_V4.so
+xml-tie-dll = libtie-MATHFUN_V4.so
+xtensa-tie-header = ../xtensa-elf/arch/include/xtensa/tie/MATHFUN_V4.h
+IsaUseWideBranches = 1
+tie-checksum-0 = 0x1ab87275
+tie-checksum-1 = 0x0260ef43
+tie-checksum-2 = 0x67f2f7c6
+tie-checksum-3 = 0x3be1bf84
+tie-includedir =
+tie-ident = 0
+
+# Register information
+num_aregs = 64
+
+# Pipeline stages
+ISSPipeBStage = 1
+ISSPipeEStage = 1
+ISSPipeMStage = 3
+ISSPipeWStage = 4
+ISSArchLicense = 0
+
+# Initial values for ISS rams
+iss_irom_init_value  = 0x00000000
+iss_iram_init_value  = 0x6c6cb6b6
+iss_dram_init_value  = 0x01234567
+iss_drom_init_value  = 0x00000000
+iss_dport_init_value = 0x00000000
+iss_uram_init_value  = 0x00000000
+
+# Initial values for ISS caches 
+iss_idata_init_value = 0xa5a5a5a5
+iss_itag_init_value  = 0xabcdef00
+iss_ddata_init_value = 0x1a2b3c4d
+iss_dtag_init_value  = 0xbecada00
+
+# System Ram and Rom parameters
+ISSSysRamBytes = 0x80000000
+ISSSysRamPAddr = 0x40020000
+
+# DV parameters
+DV_DynVecBaseReset = 0x40020400
+DV_StaticVectorBase0 = 0x40020000
+DV_StaticVectorBase1 = 0x40000640
+

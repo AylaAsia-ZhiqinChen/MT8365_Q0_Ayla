@@ -1,0 +1,2586 @@
+<html>
+  <head>
+    <title>
+      AE_MOV - Copy AE_DR register
+    </title>
+    <style type="text/css">
+      <!--
+	body {
+	background: white;
+	color: black;
+	font-family: Arial, Verdana, Myriad Web, Syntax, sans-serif;
+	margin-left: 2em;
+	margin-right: 2em;
+	}
+	#boundingbox {
+	background: white;
+	color: black;
+	font-family: Arial, Verdana, Myriad Web, Syntax, sans-serif;
+	position: relative;
+	width: 865px;
+	margin: 0 auto;
+	padding: 20px;
+	border-style: dashed;
+	border-width: 1px;
+	border-spacing: 10px;
+	border-collapse: separate;
+	}
+	a {
+	text-decoration: none;
+	}
+	a:visited {
+	color: blue;
+	}
+	a:link {
+	color: green;
+	}
+	a:active {
+	color: green;
+	}
+	a:hover {
+	color: green;
+	}
+	a:offsite {
+	color: green;
+	}
+	h1 {
+	font-size: 14pt;
+	font-weight: bold;
+	}
+	h1.center {
+	font-size: 14pt;
+	font-weight: bold;
+	text-align: center;
+	}
+	h2 {
+	font-size: 12pt;
+	}
+	caption {
+	padding-top: 1em;
+	}
+	table.thin {
+	border-width: thin;
+	border-spacing: 0px;
+	border-style: inset;
+	border-color: gray;
+	border-collapse: collapse;
+	background-color: rgb(250, 240, 230);
+	}
+	table th.thin {
+	border-width: thin;
+	padding: 3px;
+	border-style: inset;
+	border-color: gray;
+	background-color: white;
+	-moz-border-radius: 0px 0px 0px 0px;
+	}
+	table th.thin2 {
+	border-width: thin;
+	padding: 3px;
+	border-style: inset;
+	border-color: gray;
+	background-color: rgb(250, 240, 230);
+	-moz-border-radius: 0px 0px 0px 0px;
+	}
+	table td.thin {
+	border-width: thin;
+	padding: 3px;
+	border-style: inset;
+	border-color: gray;
+	background-color: white;
+	-moz-border-radius: 0px 0px 0px 0px;
+	}
+	table td.thin2 {
+	border-width: thin;
+	padding: 3px;
+	border-style: inset;
+	border-color: gray;
+	background-color: rgb(250, 240, 230);
+	-moz-border-radius: 0px 0px 0px 0px;
+	}
+	pre {
+	font-family: Lucidatypewriter, monospace;
+	font-size: 10pt;
+	}
+	.proto {
+	font-family: Lucidatypewriter, monospace;
+	font-size: 10pt;
+	padding-left: 1em;
+	text-indent: -1em;
+	}
+	.protohead {
+	font-family: Lucidatypewriter, monospace;
+	font-size: 10pt;
+	padding-left: 2em;
+	text-indent: -2em;
+	}
+	.protobody {
+	font-family: Lucidatypewriter, monospace;
+	font-size: 10pt;
+	padding-left: 4em;
+	text-indent: -2em;
+	}
+	.rotate {
+	display: block;
+	-webkit-transform: rotate(-90deg); 
+        -moz-transform:
+	rotate(-90deg);
+	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+	padding-top: 20px;                       
+}
+	.light {
+	font-size: 75%;
+	color: SlateGrey;
+	}
+	table.format {
+	border-width: thin;
+	border-spacing: 0px;
+	border-style: inset;
+	border-color: gray;
+	border-collapse: collapse;
+	background-color: rgb(250, 240, 230);
+	font-size: 75%;
+	}
+	table.format th {
+	border-width: thin;
+	padding: 3px;
+	border-style: inset;
+	border-color: gray;
+	background-color: #FFF5EE;
+	-moz-border-radius: 0px 0px 0px 0px;
+	vertical-align: bottom;
+	font-size: 75%;
+	}
+	table.format td {
+	border-width: thin;
+	padding: 3px;
+	border-style: inset;
+	border-color: gray;
+	background-color: white;
+	-moz-border-radius: 0px 0px 0px 0px;
+	font-size: 75%;
+	}
+	table.format td.opcodeBit_present {
+	background-color: #FFE4E1;
+	text-align: center;
+	}
+	table.format td.formatBit_present {
+	background-color: #EEE8AA;
+	text-align: center;
+	}
+	table.format td.slotBit_present {
+	background-color: #B0E0E6;
+	text-align: center;
+	vertical-align: bottom;
+	}
+	
+        -->
+    </style>
+  </head>
+  <body>
+    <h1>
+      AE_MOV &#8212; Copy AE_DR register
+    </h1>
+    <h2>
+      Instruction Word
+    </h2>
+    
+<table border="1" class="format">
+<tr><th width="130" nowrap>Slot<br>ae2_slot0</th><th>8<br>7</th><th>8<br>6</th><th>8<br>5</th><th>8<br>4</th><th>8<br>3</th><th>8<br>2</th><th>8<br>1</th><th>8<br>0</th><th>7<br>9</th><th>7<br>8</th><th>7<br>7</th><th>7<br>6</th><th>7<br>5</th><th>7<br>4</th><th>7<br>3</th><th>7<br>2</th><th>7<br>1</th><th>7<br>0</th><th>6<br>9</th><th>6<br>8</th><th>6<br>7</th><th>6<br>6</th><th>6<br>5</th><th>6<br>4</th><th>6<br>3</th><th>6<br>2</th><th>6<br>1</th><th>6<br>0</th><th>5<br>9</th><th>5<br>8</th><th>5<br>7</th><th>5<br>6</th><th>5<br>5</th><th>5<br>4</th><th>5<br>3</th><th>5<br>2</th><th>5<br>1</th><th>5<br>0</th><th>4<br>9</th><th>4<br>8</th><th>4<br>7</th><th>4<br>6</th><th>4<br>5</th><th>4<br>4</th><th>4<br>3</th><th>4<br>2</th><th>4<br>1</th><th>4<br>0</th><th>3<br>9</th><th>3<br>8</th><th>3<br>7</th><th>3<br>6</th><th>3<br>5</th><th>3<br>4</th><th>3<br>3</th><th>3<br>2</th><th>3<br>1</th><th>3<br>0</th><th>2<br>9</th><th>2<br>8</th><th>2<br>7</th><th>2<br>6</th><th>2<br>5</th><th>2<br>4</th><th>2<br>3</th><th>2<br>2</th><th>2<br>1</th><th>2<br>0</th><th>1<br>9</th><th>1<br>8</th><th>1<br>7</th><th>1<br>6</th><th>1<br>5</th><th>1<br>4</th><th>1<br>3</th><th>1<br>2</th><th>1<br>1</th><th>1<br>0</th><th>9</th><th>8</th><th>7</th><th>6</th><th>5</th><th>4</th><th>3</th><th>2</th><th>1</th><th>0</th></tr>
+<tr><td nowrap>Format ae_format88_2 - 88 bit(s)</td><td class="formatBit_present">0</td><td class="formatBit_present">0</td><td class="formatBit_present">0</td><td class="formatBit_present">0</td><td class="formatBit_present">0</td><td class="formatBit_present">0</td><td class="formatBit_present">0</td><td class="formatBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="formatBit_present">0</td><td class="formatBit_present">0</td><td class="formatBit_present">1</td><td class="formatBit_present">1</td><td class="formatBit_present">1</td><td class="formatBit_present">1</td></tr>
+<tr><td nowrap>AE_MOV</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">1</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">1</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+<tr><td nowrap>ae_fld_to_dr_v</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">3</td><td class="slotBit_present">2</td><td class="slotBit_present">1</td><td class="slotBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+<tr><td nowrap>ae_fld_to_dr_v0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">1</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">3</td><td class="slotBit_present">2</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+</table>
+<br>
+<table border="1" class="format">
+<tr><th width="130" nowrap>Slot<br>ae2_slot1</th><th>8<br>7</th><th>8<br>6</th><th>8<br>5</th><th>8<br>4</th><th>8<br>3</th><th>8<br>2</th><th>8<br>1</th><th>8<br>0</th><th>7<br>9</th><th>7<br>8</th><th>7<br>7</th><th>7<br>6</th><th>7<br>5</th><th>7<br>4</th><th>7<br>3</th><th>7<br>2</th><th>7<br>1</th><th>7<br>0</th><th>6<br>9</th><th>6<br>8</th><th>6<br>7</th><th>6<br>6</th><th>6<br>5</th><th>6<br>4</th><th>6<br>3</th><th>6<br>2</th><th>6<br>1</th><th>6<br>0</th><th>5<br>9</th><th>5<br>8</th><th>5<br>7</th><th>5<br>6</th><th>5<br>5</th><th>5<br>4</th><th>5<br>3</th><th>5<br>2</th><th>5<br>1</th><th>5<br>0</th><th>4<br>9</th><th>4<br>8</th><th>4<br>7</th><th>4<br>6</th><th>4<br>5</th><th>4<br>4</th><th>4<br>3</th><th>4<br>2</th><th>4<br>1</th><th>4<br>0</th><th>3<br>9</th><th>3<br>8</th><th>3<br>7</th><th>3<br>6</th><th>3<br>5</th><th>3<br>4</th><th>3<br>3</th><th>3<br>2</th><th>3<br>1</th><th>3<br>0</th><th>2<br>9</th><th>2<br>8</th><th>2<br>7</th><th>2<br>6</th><th>2<br>5</th><th>2<br>4</th><th>2<br>3</th><th>2<br>2</th><th>2<br>1</th><th>2<br>0</th><th>1<br>9</th><th>1<br>8</th><th>1<br>7</th><th>1<br>6</th><th>1<br>5</th><th>1<br>4</th><th>1<br>3</th><th>1<br>2</th><th>1<br>1</th><th>1<br>0</th><th>9</th><th>8</th><th>7</th><th>6</th><th>5</th><th>4</th><th>3</th><th>2</th><th>1</th><th>0</th></tr>
+<tr><td nowrap>Format ae_format88_2 - 88 bit(s)</td><td class="formatBit_present">0</td><td class="formatBit_present">0</td><td class="formatBit_present">0</td><td class="formatBit_present">0</td><td class="formatBit_present">0</td><td class="formatBit_present">0</td><td class="formatBit_present">0</td><td class="formatBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="formatBit_present">0</td><td class="formatBit_present">0</td><td class="formatBit_present">1</td><td class="formatBit_present">1</td><td class="formatBit_present">1</td><td class="formatBit_present">1</td></tr>
+<tr><td nowrap>AE_MOV</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+<tr><td nowrap>ae_fld_to_dr_v</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">3</td><td class="slotBit_present">2</td><td class="slotBit_present">1</td><td class="slotBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+<tr><td nowrap>ae_fld_to_dr_v0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">3</td><td class="slotBit_present">2</td><td class="slotBit_present">1</td><td class="slotBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+</table>
+<br>
+<table border="1" class="format">
+<tr><th width="130" nowrap>Slot<br>ae_slot2</th><th>8<br>7</th><th>8<br>6</th><th>8<br>5</th><th>8<br>4</th><th>8<br>3</th><th>8<br>2</th><th>8<br>1</th><th>8<br>0</th><th>7<br>9</th><th>7<br>8</th><th>7<br>7</th><th>7<br>6</th><th>7<br>5</th><th>7<br>4</th><th>7<br>3</th><th>7<br>2</th><th>7<br>1</th><th>7<br>0</th><th>6<br>9</th><th>6<br>8</th><th>6<br>7</th><th>6<br>6</th><th>6<br>5</th><th>6<br>4</th><th>6<br>3</th><th>6<br>2</th><th>6<br>1</th><th>6<br>0</th><th>5<br>9</th><th>5<br>8</th><th>5<br>7</th><th>5<br>6</th><th>5<br>5</th><th>5<br>4</th><th>5<br>3</th><th>5<br>2</th><th>5<br>1</th><th>5<br>0</th><th>4<br>9</th><th>4<br>8</th><th>4<br>7</th><th>4<br>6</th><th>4<br>5</th><th>4<br>4</th><th>4<br>3</th><th>4<br>2</th><th>4<br>1</th><th>4<br>0</th><th>3<br>9</th><th>3<br>8</th><th>3<br>7</th><th>3<br>6</th><th>3<br>5</th><th>3<br>4</th><th>3<br>3</th><th>3<br>2</th><th>3<br>1</th><th>3<br>0</th><th>2<br>9</th><th>2<br>8</th><th>2<br>7</th><th>2<br>6</th><th>2<br>5</th><th>2<br>4</th><th>2<br>3</th><th>2<br>2</th><th>2<br>1</th><th>2<br>0</th><th>1<br>9</th><th>1<br>8</th><th>1<br>7</th><th>1<br>6</th><th>1<br>5</th><th>1<br>4</th><th>1<br>3</th><th>1<br>2</th><th>1<br>1</th><th>1<br>0</th><th>9</th><th>8</th><th>7</th><th>6</th><th>5</th><th>4</th><th>3</th><th>2</th><th>1</th><th>0</th></tr>
+<tr><td nowrap>Format ae_format88 - 88 bit(s)</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="formatBit_present">1</td><td class="formatBit_present">1</td><td class="formatBit_present">1</td><td class="formatBit_present">1</td><td class="formatBit_present">1</td></tr>
+<tr><td nowrap>AE_MOV</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">1</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="opcodeBit_present">1</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td class="opcodeBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+<tr><td nowrap>ae_fld_to_dr_v</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">3</td><td class="slotBit_present">2</td><td class="slotBit_present">1</td><td class="slotBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+<tr><td nowrap>ae_fld_to_dr_v0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">3</td><td class="slotBit_present">2</td><td class="slotBit_present">1</td><td class="slotBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+</table>
+<br>
+<table border="1" class="format">
+<tr><th width="130" nowrap>Slot<br>ae_slot3</th><th>8<br>7</th><th>8<br>6</th><th>8<br>5</th><th>8<br>4</th><th>8<br>3</th><th>8<br>2</th><th>8<br>1</th><th>8<br>0</th><th>7<br>9</th><th>7<br>8</th><th>7<br>7</th><th>7<br>6</th><th>7<br>5</th><th>7<br>4</th><th>7<br>3</th><th>7<br>2</th><th>7<br>1</th><th>7<br>0</th><th>6<br>9</th><th>6<br>8</th><th>6<br>7</th><th>6<br>6</th><th>6<br>5</th><th>6<br>4</th><th>6<br>3</th><th>6<br>2</th><th>6<br>1</th><th>6<br>0</th><th>5<br>9</th><th>5<br>8</th><th>5<br>7</th><th>5<br>6</th><th>5<br>5</th><th>5<br>4</th><th>5<br>3</th><th>5<br>2</th><th>5<br>1</th><th>5<br>0</th><th>4<br>9</th><th>4<br>8</th><th>4<br>7</th><th>4<br>6</th><th>4<br>5</th><th>4<br>4</th><th>4<br>3</th><th>4<br>2</th><th>4<br>1</th><th>4<br>0</th><th>3<br>9</th><th>3<br>8</th><th>3<br>7</th><th>3<br>6</th><th>3<br>5</th><th>3<br>4</th><th>3<br>3</th><th>3<br>2</th><th>3<br>1</th><th>3<br>0</th><th>2<br>9</th><th>2<br>8</th><th>2<br>7</th><th>2<br>6</th><th>2<br>5</th><th>2<br>4</th><th>2<br>3</th><th>2<br>2</th><th>2<br>1</th><th>2<br>0</th><th>1<br>9</th><th>1<br>8</th><th>1<br>7</th><th>1<br>6</th><th>1<br>5</th><th>1<br>4</th><th>1<br>3</th><th>1<br>2</th><th>1<br>1</th><th>1<br>0</th><th>9</th><th>8</th><th>7</th><th>6</th><th>5</th><th>4</th><th>3</th><th>2</th><th>1</th><th>0</th></tr>
+<tr><td nowrap>Format ae_format88 - 88 bit(s)</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="formatBit_present">1</td><td class="formatBit_present">1</td><td class="formatBit_present">1</td><td class="formatBit_present">1</td><td class="formatBit_present">1</td></tr>
+<tr><td nowrap>AE_MOV</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+<tr><td nowrap>ae_fld_to_dr_v</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">3</td><td class="slotBit_present">2</td><td class="slotBit_present">1</td><td class="slotBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+<tr><td nowrap>ae_fld_to_dr_v0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">3</td><td class="slotBit_present">2</td><td class="slotBit_present">1</td><td class="slotBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+</table>
+<br>
+<table border="1" class="format">
+<tr><th width="130" nowrap>Slot<br>ae_slot0</th><th>8<br>7</th><th>8<br>6</th><th>8<br>5</th><th>8<br>4</th><th>8<br>3</th><th>8<br>2</th><th>8<br>1</th><th>8<br>0</th><th>7<br>9</th><th>7<br>8</th><th>7<br>7</th><th>7<br>6</th><th>7<br>5</th><th>7<br>4</th><th>7<br>3</th><th>7<br>2</th><th>7<br>1</th><th>7<br>0</th><th>6<br>9</th><th>6<br>8</th><th>6<br>7</th><th>6<br>6</th><th>6<br>5</th><th>6<br>4</th><th>6<br>3</th><th>6<br>2</th><th>6<br>1</th><th>6<br>0</th><th>5<br>9</th><th>5<br>8</th><th>5<br>7</th><th>5<br>6</th><th>5<br>5</th><th>5<br>4</th><th>5<br>3</th><th>5<br>2</th><th>5<br>1</th><th>5<br>0</th><th>4<br>9</th><th>4<br>8</th><th>4<br>7</th><th>4<br>6</th><th>4<br>5</th><th>4<br>4</th><th>4<br>3</th><th>4<br>2</th><th>4<br>1</th><th>4<br>0</th><th>3<br>9</th><th>3<br>8</th><th>3<br>7</th><th>3<br>6</th><th>3<br>5</th><th>3<br>4</th><th>3<br>3</th><th>3<br>2</th><th>3<br>1</th><th>3<br>0</th><th>2<br>9</th><th>2<br>8</th><th>2<br>7</th><th>2<br>6</th><th>2<br>5</th><th>2<br>4</th><th>2<br>3</th><th>2<br>2</th><th>2<br>1</th><th>2<br>0</th><th>1<br>9</th><th>1<br>8</th><th>1<br>7</th><th>1<br>6</th><th>1<br>5</th><th>1<br>4</th><th>1<br>3</th><th>1<br>2</th><th>1<br>1</th><th>1<br>0</th><th>9</th><th>8</th><th>7</th><th>6</th><th>5</th><th>4</th><th>3</th><th>2</th><th>1</th><th>0</th></tr>
+<tr><td nowrap>Format ae_format88 - 88 bit(s)</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="formatBit_present">1</td><td class="formatBit_present">1</td><td class="formatBit_present">1</td><td class="formatBit_present">1</td><td class="formatBit_present">1</td></tr>
+<tr><td nowrap>AE_MOV</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">1</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">1</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+<tr><td nowrap>ae_fld_to_dr_v</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">3</td><td class="slotBit_present">2</td><td class="slotBit_present">1</td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+<tr><td nowrap>ae_fld_to_dr_v0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">3</td><td class="slotBit_present">2</td><td class="slotBit_present">1</td><td class="slotBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+</table>
+<br>
+<table border="1" class="format">
+<tr><th width="130" nowrap>Slot<br>Inst</th><th>8<br>7</th><th>8<br>6</th><th>8<br>5</th><th>8<br>4</th><th>8<br>3</th><th>8<br>2</th><th>8<br>1</th><th>8<br>0</th><th>7<br>9</th><th>7<br>8</th><th>7<br>7</th><th>7<br>6</th><th>7<br>5</th><th>7<br>4</th><th>7<br>3</th><th>7<br>2</th><th>7<br>1</th><th>7<br>0</th><th>6<br>9</th><th>6<br>8</th><th>6<br>7</th><th>6<br>6</th><th>6<br>5</th><th>6<br>4</th><th>6<br>3</th><th>6<br>2</th><th>6<br>1</th><th>6<br>0</th><th>5<br>9</th><th>5<br>8</th><th>5<br>7</th><th>5<br>6</th><th>5<br>5</th><th>5<br>4</th><th>5<br>3</th><th>5<br>2</th><th>5<br>1</th><th>5<br>0</th><th>4<br>9</th><th>4<br>8</th><th>4<br>7</th><th>4<br>6</th><th>4<br>5</th><th>4<br>4</th><th>4<br>3</th><th>4<br>2</th><th>4<br>1</th><th>4<br>0</th><th>3<br>9</th><th>3<br>8</th><th>3<br>7</th><th>3<br>6</th><th>3<br>5</th><th>3<br>4</th><th>3<br>3</th><th>3<br>2</th><th>3<br>1</th><th>3<br>0</th><th>2<br>9</th><th>2<br>8</th><th>2<br>7</th><th>2<br>6</th><th>2<br>5</th><th>2<br>4</th><th>2<br>3</th><th>2<br>2</th><th>2<br>1</th><th>2<br>0</th><th>1<br>9</th><th>1<br>8</th><th>1<br>7</th><th>1<br>6</th><th>1<br>5</th><th>1<br>4</th><th>1<br>3</th><th>1<br>2</th><th>1<br>1</th><th>1<br>0</th><th>9</th><th>8</th><th>7</th><th>6</th><th>5</th><th>4</th><th>3</th><th>2</th><th>1</th><th>0</th></tr>
+<tr><td nowrap>Format x24 - 24 bit(s)</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="formatBit_present">0</td><td> </td><td> </td><td> </td></tr>
+<tr><td nowrap>AE_MOV</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td></tr>
+<tr><td nowrap>ae_fld_to_dr_v</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">3</td><td class="slotBit_present">2</td><td class="slotBit_present">1</td><td class="slotBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+<tr><td nowrap>ae_fld_to_dr_v0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">3</td><td class="slotBit_present">2</td><td class="slotBit_present">1</td><td class="slotBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+</table>
+<br>
+<table border="1" class="format">
+<tr><th width="130" nowrap>Slot<br>ae3_slot1</th><th>8<br>7</th><th>8<br>6</th><th>8<br>5</th><th>8<br>4</th><th>8<br>3</th><th>8<br>2</th><th>8<br>1</th><th>8<br>0</th><th>7<br>9</th><th>7<br>8</th><th>7<br>7</th><th>7<br>6</th><th>7<br>5</th><th>7<br>4</th><th>7<br>3</th><th>7<br>2</th><th>7<br>1</th><th>7<br>0</th><th>6<br>9</th><th>6<br>8</th><th>6<br>7</th><th>6<br>6</th><th>6<br>5</th><th>6<br>4</th><th>6<br>3</th><th>6<br>2</th><th>6<br>1</th><th>6<br>0</th><th>5<br>9</th><th>5<br>8</th><th>5<br>7</th><th>5<br>6</th><th>5<br>5</th><th>5<br>4</th><th>5<br>3</th><th>5<br>2</th><th>5<br>1</th><th>5<br>0</th><th>4<br>9</th><th>4<br>8</th><th>4<br>7</th><th>4<br>6</th><th>4<br>5</th><th>4<br>4</th><th>4<br>3</th><th>4<br>2</th><th>4<br>1</th><th>4<br>0</th><th>3<br>9</th><th>3<br>8</th><th>3<br>7</th><th>3<br>6</th><th>3<br>5</th><th>3<br>4</th><th>3<br>3</th><th>3<br>2</th><th>3<br>1</th><th>3<br>0</th><th>2<br>9</th><th>2<br>8</th><th>2<br>7</th><th>2<br>6</th><th>2<br>5</th><th>2<br>4</th><th>2<br>3</th><th>2<br>2</th><th>2<br>1</th><th>2<br>0</th><th>1<br>9</th><th>1<br>8</th><th>1<br>7</th><th>1<br>6</th><th>1<br>5</th><th>1<br>4</th><th>1<br>3</th><th>1<br>2</th><th>1<br>1</th><th>1<br>0</th><th>9</th><th>8</th><th>7</th><th>6</th><th>5</th><th>4</th><th>3</th><th>2</th><th>1</th><th>0</th></tr>
+<tr><td nowrap>Format ae_format48 - 48 bit(s)</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="formatBit_present">1</td><td class="formatBit_present">1</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="formatBit_present">1</td><td class="formatBit_present">1</td><td class="formatBit_present">1</td><td class="formatBit_present">0</td></tr>
+<tr><td nowrap>AE_MOV</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">1</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+<tr><td nowrap>ae_fld_to_dr_v</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">3</td><td class="slotBit_present">2</td><td class="slotBit_present">1</td><td class="slotBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+<tr><td nowrap>ae_fld_to_dr_v0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">3</td><td class="slotBit_present">2</td><td class="slotBit_present">1</td><td class="slotBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+</table>
+<br>
+<table border="1" class="format">
+<tr><th width="130" nowrap>Slot<br>ae3_slot0</th><th>8<br>7</th><th>8<br>6</th><th>8<br>5</th><th>8<br>4</th><th>8<br>3</th><th>8<br>2</th><th>8<br>1</th><th>8<br>0</th><th>7<br>9</th><th>7<br>8</th><th>7<br>7</th><th>7<br>6</th><th>7<br>5</th><th>7<br>4</th><th>7<br>3</th><th>7<br>2</th><th>7<br>1</th><th>7<br>0</th><th>6<br>9</th><th>6<br>8</th><th>6<br>7</th><th>6<br>6</th><th>6<br>5</th><th>6<br>4</th><th>6<br>3</th><th>6<br>2</th><th>6<br>1</th><th>6<br>0</th><th>5<br>9</th><th>5<br>8</th><th>5<br>7</th><th>5<br>6</th><th>5<br>5</th><th>5<br>4</th><th>5<br>3</th><th>5<br>2</th><th>5<br>1</th><th>5<br>0</th><th>4<br>9</th><th>4<br>8</th><th>4<br>7</th><th>4<br>6</th><th>4<br>5</th><th>4<br>4</th><th>4<br>3</th><th>4<br>2</th><th>4<br>1</th><th>4<br>0</th><th>3<br>9</th><th>3<br>8</th><th>3<br>7</th><th>3<br>6</th><th>3<br>5</th><th>3<br>4</th><th>3<br>3</th><th>3<br>2</th><th>3<br>1</th><th>3<br>0</th><th>2<br>9</th><th>2<br>8</th><th>2<br>7</th><th>2<br>6</th><th>2<br>5</th><th>2<br>4</th><th>2<br>3</th><th>2<br>2</th><th>2<br>1</th><th>2<br>0</th><th>1<br>9</th><th>1<br>8</th><th>1<br>7</th><th>1<br>6</th><th>1<br>5</th><th>1<br>4</th><th>1<br>3</th><th>1<br>2</th><th>1<br>1</th><th>1<br>0</th><th>9</th><th>8</th><th>7</th><th>6</th><th>5</th><th>4</th><th>3</th><th>2</th><th>1</th><th>0</th></tr>
+<tr><td nowrap>Format ae_format48 - 48 bit(s)</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="formatBit_present">1</td><td class="formatBit_present">1</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="formatBit_present">1</td><td class="formatBit_present">1</td><td class="formatBit_present">1</td><td class="formatBit_present">0</td></tr>
+<tr><td nowrap>AE_MOV</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+<tr><td nowrap>ae_fld_to_dr_v</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">3</td><td class="slotBit_present">2</td><td class="slotBit_present">1</td><td class="slotBit_present">0</td><td> </td><td> </td><td> </td><td> </td></tr>
+<tr><td nowrap>ae_fld_to_dr_v0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">3</td><td class="slotBit_present">2</td><td class="slotBit_present">1</td><td class="slotBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+</table>
+<br>
+<table border="1" class="format">
+<tr><th width="130" nowrap>Slot<br>ae5_slot0</th><th>8<br>7</th><th>8<br>6</th><th>8<br>5</th><th>8<br>4</th><th>8<br>3</th><th>8<br>2</th><th>8<br>1</th><th>8<br>0</th><th>7<br>9</th><th>7<br>8</th><th>7<br>7</th><th>7<br>6</th><th>7<br>5</th><th>7<br>4</th><th>7<br>3</th><th>7<br>2</th><th>7<br>1</th><th>7<br>0</th><th>6<br>9</th><th>6<br>8</th><th>6<br>7</th><th>6<br>6</th><th>6<br>5</th><th>6<br>4</th><th>6<br>3</th><th>6<br>2</th><th>6<br>1</th><th>6<br>0</th><th>5<br>9</th><th>5<br>8</th><th>5<br>7</th><th>5<br>6</th><th>5<br>5</th><th>5<br>4</th><th>5<br>3</th><th>5<br>2</th><th>5<br>1</th><th>5<br>0</th><th>4<br>9</th><th>4<br>8</th><th>4<br>7</th><th>4<br>6</th><th>4<br>5</th><th>4<br>4</th><th>4<br>3</th><th>4<br>2</th><th>4<br>1</th><th>4<br>0</th><th>3<br>9</th><th>3<br>8</th><th>3<br>7</th><th>3<br>6</th><th>3<br>5</th><th>3<br>4</th><th>3<br>3</th><th>3<br>2</th><th>3<br>1</th><th>3<br>0</th><th>2<br>9</th><th>2<br>8</th><th>2<br>7</th><th>2<br>6</th><th>2<br>5</th><th>2<br>4</th><th>2<br>3</th><th>2<br>2</th><th>2<br>1</th><th>2<br>0</th><th>1<br>9</th><th>1<br>8</th><th>1<br>7</th><th>1<br>6</th><th>1<br>5</th><th>1<br>4</th><th>1<br>3</th><th>1<br>2</th><th>1<br>1</th><th>1<br>0</th><th>9</th><th>8</th><th>7</th><th>6</th><th>5</th><th>4</th><th>3</th><th>2</th><th>1</th><th>0</th></tr>
+<tr><td nowrap>Format ae_format48_3 - 48 bit(s)</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="formatBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="formatBit_present">1</td><td class="formatBit_present">1</td><td class="formatBit_present">1</td><td class="formatBit_present">0</td></tr>
+<tr><td nowrap>AE_MOV</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+<tr><td nowrap>ae_fld_to_dr_v</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">3</td><td class="slotBit_present">2</td><td class="slotBit_present">1</td><td class="slotBit_present">0</td><td> </td><td> </td><td> </td><td> </td></tr>
+<tr><td nowrap>ae_fld_to_dr_v0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">3</td><td class="slotBit_present">2</td><td class="slotBit_present">1</td><td class="slotBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+</table>
+<br>
+    <h2>
+      Assembler Syntax
+    </h2>
+    <p>
+      <code title="Instruction Mnemonic for Copy AE_DR register">AE_MOV</code>
+      <span title="Write  of register file AE_DR indexed by the ae_fld_to_dr_v field of the instruction word"><code>aed0..15(ae_to_dr_v)</code></span>,
+      <span title="Read  of register file AE_DR indexed by the ae_fld_to_dr_v0 field of the instruction word"><code>aed0..15(ae_to_dr_v0)</code></span>
+    </p>
+    <h2>
+      C Syntax
+    </h2>
+    #include &lt;xtensa/tie/xt_hifi2.h&gt;<P>extern ae_int64 AE_MOV(ae_int64 d0);
+</P>
+    <h2>
+      Description
+    </h2>
+    <P><IREF>AE_MOV	
+
+copy the 64-bit contents of AE_DR register d0 to AE_DR register d.
+
+</P>
+    <h2>
+      Implementation Pipeline
+    </h2>
+    <table class="thin">
+      <thead>
+	<tr>
+	  <th align="left" class="thin">
+	    In
+	  </th>
+	  <th align="left" class="thin">
+	    Out
+	  </th>
+	</tr>
+      </thead>
+      <tbody>
+	<tr>
+	  <td class="thin">
+	    <code>ae_to_dr_v0&nbsp;Mstage</code>
+	  </td>
+	  <td class="thin">
+	    <code>ae_to_dr_v&nbsp;Mstage</code>
+	  </td>
+	</tr>
+      </tbody>
+    </table>
+    <h2>
+      Protos that use AE_MOV
+    </h2>
+    <div>
+      <div class=protohead>proto <a href=../protos.html#AE_MOV>AE_MOV</a> {
+      out ae_int64 d, in ae_int64 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a href=../protos.html#AE_MOV16>AE_MOV16</a>
+      { out ae_int16x4 d, in ae_int16x4 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a href=../protos.html#AE_MOV24>AE_MOV24</a>
+      { out ae_int24x2 d, in ae_int24x2 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a href=../protos.html#AE_MOV32>AE_MOV32</a>
+      { out ae_int32x2 d, in ae_int32x2 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a href=../protos.html#AE_MOV64>AE_MOV64</a>
+      { out ae_int64 d, in ae_int64 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF16X4_FROMF16>AE_MOVF16X4_FROMF16</a> { out
+      ae_f16x4 o, in ae_f16 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF16X4_FROMF24>AE_MOVF16X4_FROMF24</a> { out
+      ae_f16x4 o, in ae_f24 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF16X4_FROMF24X2>AE_MOVF16X4_FROMF24X2</a> {
+      out ae_f16x4 o, in ae_f24x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF16X4_FROMF32>AE_MOVF16X4_FROMF32</a> { out
+      ae_f16x4 o, in ae_f32 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF16X4_FROMF32X2>AE_MOVF16X4_FROMF32X2</a> {
+      out ae_f16x4 o, in ae_f32x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF16X4_FROMF64>AE_MOVF16X4_FROMF64</a> { out
+      ae_f16x4 o, in ae_f64 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF16X4_FROMINT16>AE_MOVF16X4_FROMINT16</a> {
+      out ae_f16x4 o, in ae_int16 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF16X4_FROMINT16X4>AE_MOVF16X4_FROMINT16X4</a>
+      { out ae_f16x4 o, in ae_int16x4 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF16X4_FROMINT24>AE_MOVF16X4_FROMINT24</a> {
+      out ae_f16x4 o, in ae_int24 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF16X4_FROMINT24X2>AE_MOVF16X4_FROMINT24X2</a>
+      { out ae_f16x4 o, in ae_int24x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF16X4_FROMINT32>AE_MOVF16X4_FROMINT32</a> {
+      out ae_f16x4 o, in ae_int32 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF16X4_FROMINT32X2>AE_MOVF16X4_FROMINT32X2</a>
+      { out ae_f16x4 o, in ae_int32x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF16X4_FROMINT64>AE_MOVF16X4_FROMINT64</a> {
+      out ae_f16x4 o, in ae_int64 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF16_FROMF16X4>AE_MOVF16_FROMF16X4</a> { out
+      ae_f16 o, in ae_f16x4 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF16_FROMF24>AE_MOVF16_FROMF24</a> { out ae_f16
+      o, in ae_f24 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF16_FROMF24X2>AE_MOVF16_FROMF24X2</a> { out
+      ae_f16 o, in ae_f24x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF16_FROMF32>AE_MOVF16_FROMF32</a> { out ae_f16
+      o, in ae_f32 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF16_FROMF32X2>AE_MOVF16_FROMF32X2</a> { out
+      ae_f16 o, in ae_f32x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF16_FROMF64>AE_MOVF16_FROMF64</a> { out ae_f16
+      o, in ae_f64 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF16_FROMINT16>AE_MOVF16_FROMINT16</a> { out
+      ae_f16 o, in ae_int16 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF16_FROMINT16X4>AE_MOVF16_FROMINT16X4</a> {
+      out ae_f16 o, in ae_int16x4 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF16_FROMINT24>AE_MOVF16_FROMINT24</a> { out
+      ae_f16 o, in ae_int24 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF16_FROMINT24X2>AE_MOVF16_FROMINT24X2</a> {
+      out ae_f16 o, in ae_int24x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF16_FROMINT32>AE_MOVF16_FROMINT32</a> { out
+      ae_f16 o, in ae_int32 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF16_FROMINT32X2>AE_MOVF16_FROMINT32X2</a> {
+      out ae_f16 o, in ae_int32x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF16_FROMINT64>AE_MOVF16_FROMINT64</a> { out
+      ae_f16 o, in ae_int64 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF24X2_FROMF16>AE_MOVF24X2_FROMF16</a> { out
+      ae_f24x2 o, in ae_f16 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF24X2_FROMF16X4>AE_MOVF24X2_FROMF16X4</a> {
+      out ae_f24x2 o, in ae_f16x4 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF24X2_FROMF24>AE_MOVF24X2_FROMF24</a> { out
+      ae_f24x2 o, in ae_f24 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF24X2_FROMF32>AE_MOVF24X2_FROMF32</a> { out
+      ae_f24x2 o, in ae_f32 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF24X2_FROMF32X2>AE_MOVF24X2_FROMF32X2</a> {
+      out ae_f24x2 o, in ae_f32x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF24X2_FROMF64>AE_MOVF24X2_FROMF64</a> { out
+      ae_f24x2 o, in ae_f64 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF24X2_FROMINT16>AE_MOVF24X2_FROMINT16</a> {
+      out ae_f24x2 o, in ae_int16 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF24X2_FROMINT16X4>AE_MOVF24X2_FROMINT16X4</a>
+      { out ae_f24x2 o, in ae_int16x4 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF24X2_FROMINT24>AE_MOVF24X2_FROMINT24</a> {
+      out ae_f24x2 o, in ae_int24 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF24X2_FROMINT24X2>AE_MOVF24X2_FROMINT24X2</a>
+      { out ae_f24x2 o, in ae_int24x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF24X2_FROMINT32>AE_MOVF24X2_FROMINT32</a> {
+      out ae_f24x2 o, in ae_int32 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF24X2_FROMINT32X2>AE_MOVF24X2_FROMINT32X2</a>
+      { out ae_f24x2 o, in ae_int32x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF24X2_FROMINT64>AE_MOVF24X2_FROMINT64</a> {
+      out ae_f24x2 o, in ae_int64 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF24_FROMF16>AE_MOVF24_FROMF16</a> { out ae_f24
+      o, in ae_f16 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF24_FROMF16X4>AE_MOVF24_FROMF16X4</a> { out
+      ae_f24 o, in ae_f16x4 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF24_FROMF24X2>AE_MOVF24_FROMF24X2</a> { out
+      ae_f24 o, in ae_f24x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF24_FROMF32>AE_MOVF24_FROMF32</a> { out ae_f24
+      o, in ae_f32 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF24_FROMF32X2>AE_MOVF24_FROMF32X2</a> { out
+      ae_f24 o, in ae_f32x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF24_FROMF64>AE_MOVF24_FROMF64</a> { out ae_f24
+      o, in ae_f64 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF24_FROMINT16>AE_MOVF24_FROMINT16</a> { out
+      ae_f24 o, in ae_int16 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF24_FROMINT16X4>AE_MOVF24_FROMINT16X4</a> {
+      out ae_f24 o, in ae_int16x4 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF24_FROMINT24>AE_MOVF24_FROMINT24</a> { out
+      ae_f24 o, in ae_int24 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF24_FROMINT24X2>AE_MOVF24_FROMINT24X2</a> {
+      out ae_f24 o, in ae_int24x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF24_FROMINT32>AE_MOVF24_FROMINT32</a> { out
+      ae_f24 o, in ae_int32 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF24_FROMINT32X2>AE_MOVF24_FROMINT32X2</a> {
+      out ae_f24 o, in ae_int32x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF24_FROMINT64>AE_MOVF24_FROMINT64</a> { out
+      ae_f24 o, in ae_int64 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF32X2_FROMF16>AE_MOVF32X2_FROMF16</a> { out
+      ae_f32x2 o, in ae_f16 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF32X2_FROMF16X4>AE_MOVF32X2_FROMF16X4</a> {
+      out ae_f32x2 o, in ae_f16x4 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF32X2_FROMF24>AE_MOVF32X2_FROMF24</a> { out
+      ae_f32x2 o, in ae_f24 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF32X2_FROMF24X2>AE_MOVF32X2_FROMF24X2</a> {
+      out ae_f32x2 o, in ae_f24x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF32X2_FROMF32>AE_MOVF32X2_FROMF32</a> { out
+      ae_f32x2 o, in ae_f32 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF32X2_FROMF64>AE_MOVF32X2_FROMF64</a> { out
+      ae_f32x2 o, in ae_f64 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF32X2_FROMINT16>AE_MOVF32X2_FROMINT16</a> {
+      out ae_f32x2 o, in ae_int16 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF32X2_FROMINT16X4>AE_MOVF32X2_FROMINT16X4</a>
+      { out ae_f32x2 o, in ae_int16x4 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF32X2_FROMINT24>AE_MOVF32X2_FROMINT24</a> {
+      out ae_f32x2 o, in ae_int24 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF32X2_FROMINT24X2>AE_MOVF32X2_FROMINT24X2</a>
+      { out ae_f32x2 o, in ae_int24x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF32X2_FROMINT32>AE_MOVF32X2_FROMINT32</a> {
+      out ae_f32x2 o, in ae_int32 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF32X2_FROMINT32X2>AE_MOVF32X2_FROMINT32X2</a>
+      { out ae_f32x2 o, in ae_int32x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF32X2_FROMINT64>AE_MOVF32X2_FROMINT64</a> {
+      out ae_f32x2 o, in ae_int64 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF32X2_FROMXTFLOATX2>AE_MOVF32X2_FROMXTFLOATX2</a>
+      { out ae_f32x2 o, in xtfloatx2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF32_FROMF16>AE_MOVF32_FROMF16</a> { out ae_f32
+      o, in ae_f16 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF32_FROMF16X4>AE_MOVF32_FROMF16X4</a> { out
+      ae_f32 o, in ae_f16x4 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF32_FROMF24>AE_MOVF32_FROMF24</a> { out ae_f32
+      o, in ae_f24 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF32_FROMF24X2>AE_MOVF32_FROMF24X2</a> { out
+      ae_f32 o, in ae_f24x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF32_FROMF32X2>AE_MOVF32_FROMF32X2</a> { out
+      ae_f32 o, in ae_f32x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF32_FROMF64>AE_MOVF32_FROMF64</a> { out ae_f32
+      o, in ae_f64 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF32_FROMINT16>AE_MOVF32_FROMINT16</a> { out
+      ae_f32 o, in ae_int16 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF32_FROMINT16X4>AE_MOVF32_FROMINT16X4</a> {
+      out ae_f32 o, in ae_int16x4 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF32_FROMINT24>AE_MOVF32_FROMINT24</a> { out
+      ae_f32 o, in ae_int24 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF32_FROMINT24X2>AE_MOVF32_FROMINT24X2</a> {
+      out ae_f32 o, in ae_int24x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF32_FROMINT32>AE_MOVF32_FROMINT32</a> { out
+      ae_f32 o, in ae_int32 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF32_FROMINT32X2>AE_MOVF32_FROMINT32X2</a> {
+      out ae_f32 o, in ae_int32x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF32_FROMINT64>AE_MOVF32_FROMINT64</a> { out
+      ae_f32 o, in ae_int64 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF64_FROMF16>AE_MOVF64_FROMF16</a> { out ae_f64
+      o, in ae_f16 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF64_FROMF16X4>AE_MOVF64_FROMF16X4</a> { out
+      ae_f64 o, in ae_f16x4 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF64_FROMF24>AE_MOVF64_FROMF24</a> { out ae_f64
+      o, in ae_f24 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF64_FROMF24X2>AE_MOVF64_FROMF24X2</a> { out
+      ae_f64 o, in ae_f24x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF64_FROMF32>AE_MOVF64_FROMF32</a> { out ae_f64
+      o, in ae_f32 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF64_FROMF32X2>AE_MOVF64_FROMF32X2</a> { out
+      ae_f64 o, in ae_f32x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF64_FROMINT16>AE_MOVF64_FROMINT16</a> { out
+      ae_f64 o, in ae_int16 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF64_FROMINT16X4>AE_MOVF64_FROMINT16X4</a> {
+      out ae_f64 o, in ae_int16x4 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF64_FROMINT24>AE_MOVF64_FROMINT24</a> { out
+      ae_f64 o, in ae_int24 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF64_FROMINT24X2>AE_MOVF64_FROMINT24X2</a> {
+      out ae_f64 o, in ae_int24x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF64_FROMINT32>AE_MOVF64_FROMINT32</a> { out
+      ae_f64 o, in ae_int32 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF64_FROMINT32X2>AE_MOVF64_FROMINT32X2</a> {
+      out ae_f64 o, in ae_int32x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVF64_FROMINT64>AE_MOVF64_FROMINT64</a> { out
+      ae_f64 o, in ae_int64 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT16X4_FROMF16>AE_MOVINT16X4_FROMF16</a> {
+      out ae_int16x4 o, in ae_f16 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT16X4_FROMF16X4>AE_MOVINT16X4_FROMF16X4</a>
+      { out ae_int16x4 o, in ae_f16x4 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT16X4_FROMF24>AE_MOVINT16X4_FROMF24</a> {
+      out ae_int16x4 o, in ae_f24 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT16X4_FROMF24X2>AE_MOVINT16X4_FROMF24X2</a>
+      { out ae_int16x4 o, in ae_f24x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT16X4_FROMF32>AE_MOVINT16X4_FROMF32</a> {
+      out ae_int16x4 o, in ae_f32 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT16X4_FROMF32X2>AE_MOVINT16X4_FROMF32X2</a>
+      { out ae_int16x4 o, in ae_f32x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT16X4_FROMF64>AE_MOVINT16X4_FROMF64</a> {
+      out ae_int16x4 o, in ae_f64 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT16X4_FROMINT16>AE_MOVINT16X4_FROMINT16</a>
+      { out ae_int16x4 o, in ae_int16 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT16X4_FROMINT24>AE_MOVINT16X4_FROMINT24</a>
+      { out ae_int16x4 o, in ae_int24 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT16X4_FROMINT24X2>AE_MOVINT16X4_FROMINT24X2</a>
+      { out ae_int16x4 o, in ae_int24x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT16X4_FROMINT32>AE_MOVINT16X4_FROMINT32</a>
+      { out ae_int16x4 o, in ae_int32 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT16X4_FROMINT32X2>AE_MOVINT16X4_FROMINT32X2</a>
+      { out ae_int16x4 o, in ae_int32x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT16X4_FROMINT64>AE_MOVINT16X4_FROMINT64</a>
+      { out ae_int16x4 o, in ae_int64 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT16_FROMF16>AE_MOVINT16_FROMF16</a> { out
+      ae_int16 o, in ae_f16 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT16_FROMF16X4>AE_MOVINT16_FROMF16X4</a> {
+      out ae_int16 o, in ae_f16x4 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT16_FROMF24>AE_MOVINT16_FROMF24</a> { out
+      ae_int16 o, in ae_f24 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT16_FROMF24X2>AE_MOVINT16_FROMF24X2</a> {
+      out ae_int16 o, in ae_f24x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT16_FROMF32>AE_MOVINT16_FROMF32</a> { out
+      ae_int16 o, in ae_f32 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT16_FROMF32X2>AE_MOVINT16_FROMF32X2</a> {
+      out ae_int16 o, in ae_f32x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT16_FROMF64>AE_MOVINT16_FROMF64</a> { out
+      ae_int16 o, in ae_f64 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT16_FROMINT16X4>AE_MOVINT16_FROMINT16X4</a>
+      { out ae_int16 o, in ae_int16x4 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT16_FROMINT24>AE_MOVINT16_FROMINT24</a> {
+      out ae_int16 o, in ae_int24 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT16_FROMINT24X2>AE_MOVINT16_FROMINT24X2</a>
+      { out ae_int16 o, in ae_int24x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT16_FROMINT32>AE_MOVINT16_FROMINT32</a> {
+      out ae_int16 o, in ae_int32 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT16_FROMINT32X2>AE_MOVINT16_FROMINT32X2</a>
+      { out ae_int16 o, in ae_int32x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT16_FROMINT64>AE_MOVINT16_FROMINT64</a> {
+      out ae_int16 o, in ae_int64 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT24X2_FROMF16>AE_MOVINT24X2_FROMF16</a> {
+      out ae_int24x2 o, in ae_f16 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT24X2_FROMF16X4>AE_MOVINT24X2_FROMF16X4</a>
+      { out ae_int24x2 o, in ae_f16x4 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT24X2_FROMF24>AE_MOVINT24X2_FROMF24</a> {
+      out ae_int24x2 o, in ae_f24 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT24X2_FROMF24X2>AE_MOVINT24X2_FROMF24X2</a>
+      { out ae_int24x2 o, in ae_f24x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT24X2_FROMF32>AE_MOVINT24X2_FROMF32</a> {
+      out ae_int24x2 o, in ae_f32 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT24X2_FROMF32X2>AE_MOVINT24X2_FROMF32X2</a>
+      { out ae_int24x2 o, in ae_f32x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT24X2_FROMF64>AE_MOVINT24X2_FROMF64</a> {
+      out ae_int24x2 o, in ae_f64 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT24X2_FROMINT16>AE_MOVINT24X2_FROMINT16</a>
+      { out ae_int24x2 o, in ae_int16 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT24X2_FROMINT16X4>AE_MOVINT24X2_FROMINT16X4</a>
+      { out ae_int24x2 o, in ae_int16x4 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT24X2_FROMINT24>AE_MOVINT24X2_FROMINT24</a>
+      { out ae_int24x2 o, in ae_int24 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT24X2_FROMINT32>AE_MOVINT24X2_FROMINT32</a>
+      { out ae_int24x2 o, in ae_int32 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT24X2_FROMINT32X2>AE_MOVINT24X2_FROMINT32X2</a>
+      { out ae_int24x2 o, in ae_int32x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT24X2_FROMINT64>AE_MOVINT24X2_FROMINT64</a>
+      { out ae_int24x2 o, in ae_int64 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT24_FROMF16>AE_MOVINT24_FROMF16</a> { out
+      ae_int24 o, in ae_f16 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT24_FROMF16X4>AE_MOVINT24_FROMF16X4</a> {
+      out ae_int24 o, in ae_f16x4 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT24_FROMF24>AE_MOVINT24_FROMF24</a> { out
+      ae_int24 o, in ae_f24 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT24_FROMF24X2>AE_MOVINT24_FROMF24X2</a> {
+      out ae_int24 o, in ae_f24x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT24_FROMF32>AE_MOVINT24_FROMF32</a> { out
+      ae_int24 o, in ae_f32 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT24_FROMF32X2>AE_MOVINT24_FROMF32X2</a> {
+      out ae_int24 o, in ae_f32x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT24_FROMF64>AE_MOVINT24_FROMF64</a> { out
+      ae_int24 o, in ae_f64 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT24_FROMINT16>AE_MOVINT24_FROMINT16</a> {
+      out ae_int24 o, in ae_int16 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT24_FROMINT16X4>AE_MOVINT24_FROMINT16X4</a>
+      { out ae_int24 o, in ae_int16x4 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT24_FROMINT24X2>AE_MOVINT24_FROMINT24X2</a>
+      { out ae_int24 o, in ae_int24x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT24_FROMINT32>AE_MOVINT24_FROMINT32</a> {
+      out ae_int24 o, in ae_int32 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT24_FROMINT32X2>AE_MOVINT24_FROMINT32X2</a>
+      { out ae_int24 o, in ae_int32x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT24_FROMINT64>AE_MOVINT24_FROMINT64</a> {
+      out ae_int24 o, in ae_int64 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT32X2_FROMF16>AE_MOVINT32X2_FROMF16</a> {
+      out ae_int32x2 o, in ae_f16 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT32X2_FROMF16X4>AE_MOVINT32X2_FROMF16X4</a>
+      { out ae_int32x2 o, in ae_f16x4 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT32X2_FROMF24>AE_MOVINT32X2_FROMF24</a> {
+      out ae_int32x2 o, in ae_f24 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT32X2_FROMF24X2>AE_MOVINT32X2_FROMF24X2</a>
+      { out ae_int32x2 o, in ae_f24x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT32X2_FROMF32>AE_MOVINT32X2_FROMF32</a> {
+      out ae_int32x2 o, in ae_f32 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT32X2_FROMF32X2>AE_MOVINT32X2_FROMF32X2</a>
+      { out ae_int32x2 o, in ae_f32x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT32X2_FROMF64>AE_MOVINT32X2_FROMF64</a> {
+      out ae_int32x2 o, in ae_f64 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT32X2_FROMINT16>AE_MOVINT32X2_FROMINT16</a>
+      { out ae_int32x2 o, in ae_int16 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT32X2_FROMINT16X4>AE_MOVINT32X2_FROMINT16X4</a>
+      { out ae_int32x2 o, in ae_int16x4 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT32X2_FROMINT24>AE_MOVINT32X2_FROMINT24</a>
+      { out ae_int32x2 o, in ae_int24 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT32X2_FROMINT24X2>AE_MOVINT32X2_FROMINT24X2</a>
+      { out ae_int32x2 o, in ae_int24x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT32X2_FROMINT32>AE_MOVINT32X2_FROMINT32</a>
+      { out ae_int32x2 o, in ae_int32 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT32X2_FROMINT64>AE_MOVINT32X2_FROMINT64</a>
+      { out ae_int32x2 o, in ae_int64 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT32X2_FROMXTFLOATX2>AE_MOVINT32X2_FROMXTFLOATX2</a>
+      { out ae_int32x2 o, in xtfloatx2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT32_FROMF16>AE_MOVINT32_FROMF16</a> { out
+      ae_int32 o, in ae_f16 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT32_FROMF16X4>AE_MOVINT32_FROMF16X4</a> {
+      out ae_int32 o, in ae_f16x4 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT32_FROMF24>AE_MOVINT32_FROMF24</a> { out
+      ae_int32 o, in ae_f24 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT32_FROMF24X2>AE_MOVINT32_FROMF24X2</a> {
+      out ae_int32 o, in ae_f24x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT32_FROMF32>AE_MOVINT32_FROMF32</a> { out
+      ae_int32 o, in ae_f32 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT32_FROMF32X2>AE_MOVINT32_FROMF32X2</a> {
+      out ae_int32 o, in ae_f32x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT32_FROMF64>AE_MOVINT32_FROMF64</a> { out
+      ae_int32 o, in ae_f64 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT32_FROMINT16>AE_MOVINT32_FROMINT16</a> {
+      out ae_int32 o, in ae_int16 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT32_FROMINT16X4>AE_MOVINT32_FROMINT16X4</a>
+      { out ae_int32 o, in ae_int16x4 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT32_FROMINT24>AE_MOVINT32_FROMINT24</a> {
+      out ae_int32 o, in ae_int24 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT32_FROMINT24X2>AE_MOVINT32_FROMINT24X2</a>
+      { out ae_int32 o, in ae_int24x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT32_FROMINT32X2>AE_MOVINT32_FROMINT32X2</a>
+      { out ae_int32 o, in ae_int32x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT32_FROMINT64>AE_MOVINT32_FROMINT64</a> {
+      out ae_int32 o, in ae_int64 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT64_FROMF16>AE_MOVINT64_FROMF16</a> { out
+      ae_int64 o, in ae_f16 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT64_FROMF16X4>AE_MOVINT64_FROMF16X4</a> {
+      out ae_int64 o, in ae_f16x4 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT64_FROMF24>AE_MOVINT64_FROMF24</a> { out
+      ae_int64 o, in ae_f24 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT64_FROMF24X2>AE_MOVINT64_FROMF24X2</a> {
+      out ae_int64 o, in ae_f24x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT64_FROMF32>AE_MOVINT64_FROMF32</a> { out
+      ae_int64 o, in ae_f32 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT64_FROMF32X2>AE_MOVINT64_FROMF32X2</a> {
+      out ae_int64 o, in ae_f32x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT64_FROMF64>AE_MOVINT64_FROMF64</a> { out
+      ae_int64 o, in ae_f64 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT64_FROMINT16>AE_MOVINT64_FROMINT16</a> {
+      out ae_int64 o, in ae_int16 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT64_FROMINT16X4>AE_MOVINT64_FROMINT16X4</a>
+      { out ae_int64 o, in ae_int16x4 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT64_FROMINT24>AE_MOVINT64_FROMINT24</a> {
+      out ae_int64 o, in ae_int24 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT64_FROMINT24X2>AE_MOVINT64_FROMINT24X2</a>
+      { out ae_int64 o, in ae_int24x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT64_FROMINT32>AE_MOVINT64_FROMINT32</a> {
+      out ae_int64 o, in ae_int32 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVINT64_FROMINT32X2>AE_MOVINT64_FROMINT32X2</a>
+      { out ae_int64 o, in ae_int32x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVP48>AE_MOVP48</a> { out ae_p24x2s d, in
+      ae_p24x2s d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVQ56>AE_MOVQ56</a> { out ae_q56s d, in ae_q56s
+      d0 }{}{</div><div class=protobody><a href=AE_MOV.html>AE_MOV</a> d,
+      d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVXTFLOATX2_FROMF32X2>AE_MOVXTFLOATX2_FROMF32X2</a>
+      { out xtfloatx2 o, in ae_f32x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOVXTFLOATX2_FROMINT32X2>AE_MOVXTFLOATX2_FROMINT32X2</a>
+      { out xtfloatx2 o, in ae_int32x2 i }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> o, i;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MOV_32>AE_MOV_32</a> { out ae_int32 a, in
+      ae_int32 b }{}{</div><div class=protobody><a href=AE_MOV.html>AE_MOV</a>
+      a, b;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULAF16X4SS_vector>AE_MULAF16X4SS_vector</a> {
+      out ae_int32x4 pout, in ae_int32x4 pin, in ae_int16x4 d0, in ae_int16x4
+      d1 }{ae_int32x2 t0, ae_int32x2 t1}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> t0, pin->d1;</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> t1, pin->d0;</div><div class=protobody><a
+      href=AE_MULAF16X4SS.html>AE_MULAF16X4SS</a> t0, t1, d0, d1;</div><div
+      class=protobody><a href=AE_MOV.html>AE_MOV</a> pout->d1, t0;</div><div
+      class=protobody><a href=AE_MOV.html>AE_MOV</a> pout->d0, t1;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULSF16X4SS_vector>AE_MULSF16X4SS_vector</a> {
+      out ae_int32x4 pout, in ae_int32x4 pin, in ae_int16x4 d0, in ae_int16x4
+      d1 }{ae_int32x2 t0, ae_int32x2 t1}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> t0, pin->d1;</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> t1, pin->d0;</div><div class=protobody><a
+      href=AE_MULSF16X4SS.html>AE_MULSF16X4SS</a> t0, t1, d0, d1;</div><div
+      class=protobody><a href=AE_MOV.html>AE_MOV</a> pout->d1, t0;</div><div
+      class=protobody><a href=AE_MOV.html>AE_MOV</a> pout->d0, t1;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_RLmac_rvec>AE_RLmac_rvec</a> { out ae_int32 dout,
+      in ae_int32 din, in ae_int16x4 d0, in ae_int16x4 d1 }{ae_int32x2
+      t}{</div><div class=protobody><a href=AE_MOV.html>AE_MOV</a> t,
+      din;</div><div class=protobody><a
+      href=AE_MULAAFD16SS33_22.html>AE_MULAAFD16SS.33_22</a> t, d0,
+      d1;</div><div class=protobody><a
+      href=AE_MULAAFD16SS11_00.html>AE_MULAAFD16SS.11_00</a> t, d0,
+      d1;</div><div class=protobody><a href=AE_MOV.html>AE_MOV</a> dout,
+      t;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_RLmsu_rvec>AE_RLmsu_rvec</a> { out ae_int32 dout,
+      in ae_int32 din, in ae_int16x4 d0, in ae_int16x4 d1 }{ae_int32x2
+      t}{</div><div class=protobody><a href=AE_MOV.html>AE_MOV</a> t,
+      din;</div><div class=protobody><a
+      href=AE_MULSSFD16SS33_22.html>AE_MULSSFD16SS.33_22</a> t, d0,
+      d1;</div><div class=protobody><a
+      href=AE_MULSSFD16SS11_00.html>AE_MULSSFD16SS.11_00</a> t, d0,
+      d1;</div><div class=protobody><a href=AE_MOV.html>AE_MOV</a> dout,
+      t;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_RLmula0_rvec>AE_RLmula0_rvec</a> { out ae_int32
+      dout, in ae_int32 din, in ae_int16x4 d0, in ae_int16x4 d1 }{ae_int32x2
+      t, ae_int32x2 t1, ae_int32x2 t2, ae_int32x2 t3, ae_int32x2
+      t4}{</div><div class=protobody><a href=AE_MOV.html>AE_MOV</a> t,
+      din;</div><div class=protobody><a href=AE_MUL16X4.html>AE_MUL16X4</a>
+      t1, t2, d0, d1;</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> t3, t1, t1, 1;</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> t4, t1, t1,
+      3;</div><div class=protobody><a href=AE_ADD32S.html>AE_ADD32S</a> t, t,
+      t3;</div><div class=protobody><a href=AE_ADD32S.html>AE_ADD32S</a> t, t,
+      t4;</div><div class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> t3,
+      t2, t2, 1;</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> t4, t2, t2, 3;</div><div
+      class=protobody><a href=AE_ADD32S.html>AE_ADD32S</a> t, t, t3;</div><div
+      class=protobody><a href=AE_ADD32S.html>AE_ADD32S</a> t, t, t4;</div><div
+      class=protobody><a href=AE_MOV.html>AE_MOV</a> dout, t;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_RLmuls0_rvec>AE_RLmuls0_rvec</a> { out ae_int32
+      dout, in ae_int32 din, in ae_int16x4 d0, in ae_int16x4 d1 }{ae_int32x2
+      t, ae_int32x2 t1, ae_int32x2 t2, ae_int32x2 t3, ae_int32x2
+      t4}{</div><div class=protobody><a href=AE_MOV.html>AE_MOV</a> t,
+      din;</div><div class=protobody><a href=AE_MUL16X4.html>AE_MUL16X4</a>
+      t1, t2, d0, d1;</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> t3, t1, t1, 1;</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> t4, t1, t1,
+      3;</div><div class=protobody><a href=AE_SUB32S.html>AE_SUB32S</a> t, t,
+      t3;</div><div class=protobody><a href=AE_SUB32S.html>AE_SUB32S</a> t, t,
+      t4;</div><div class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> t3,
+      t2, t2, 1;</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> t4, t2, t2, 3;</div><div
+      class=protobody><a href=AE_SUB32S.html>AE_SUB32S</a> t, t, t3;</div><div
+      class=protobody><a href=AE_SUB32S.html>AE_SUB32S</a> t, t, t4;</div><div
+      class=protobody><a href=AE_MOV.html>AE_MOV</a> dout, t;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a href=../protos.html#DIV.S>DIV.S</a> { out
+      xtfloat vd, in xtfloat vs, in xtfloat vr }{xtfloat f0, xtfloat f1,
+      xtfloat f2, xtfloat f22, xtfloat f3, xtfloat f4, xtfloat f5, xtfloat
+      f55, xtfloat f6, xtfloat f7, xtfloat f8}{</div><div class=protobody><a
+      href=DIV0S.html>DIV0.S</a> f3, vr;</div><div class=protobody><a
+      href=NEXP01S.html>NEXP01.S</a> f4, vr;</div><div class=protobody><a
+      href=CONSTS.html>CONST.S</a> f5, 1;</div><div class=protobody><a
+      href=MADDNS.html>MADDN.S</a> f5, f4, f3;</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> f6, f3;</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> f7, vr;</div><div class=protobody><a
+      href=NEXP01S.html>NEXP01.S</a> f2, vs;</div><div class=protobody><a
+      href=MADDNS.html>MADDN.S</a> f6, f5, f6;</div><div class=protobody><a
+      href=CONSTS.html>CONST.S</a> f55, 1;</div><div class=protobody><a
+      href=CONSTS.html>CONST.S</a> f0, 0;</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> f8, f2;</div><div class=protobody><a
+      href=MADDNS.html>MADDN.S</a> f55, f4, f6;</div><div class=protobody><a
+      href=MSUBNS.html>MSUBN.S</a> f0, f8, f3;</div><div class=protobody><a
+      href=MKDADJS.html>MKDADJ.S</a> f7, vs;</div><div class=protobody><a
+      href=MADDNS.html>MADDN.S</a> f6, f55, f6;</div><div class=protobody><a
+      href=MSUBNS.html>MSUBN.S</a> f8, f4, f0;</div><div class=protobody><a
+      href=CONSTS.html>CONST.S</a> f1, 1;</div><div class=protobody><a
+      href=MADDNS.html>MADDN.S</a> f1, f4, f6;</div><div class=protobody><a
+      href=MSUBNS.html>MSUBN.S</a> f0, f8, f6;</div><div class=protobody><a
+      href=NEGS.html>NEG.S</a> f22, f2;</div><div class=protobody><a
+      href=MADDNS.html>MADDN.S</a> f6, f1, f6;</div><div class=protobody><a
+      href=MADDNS.html>MADDN.S</a> f22, f4, f0;</div><div class=protobody><a
+      href=ADDEXPMS.html>ADDEXPM.S</a> f0, f7;</div><div class=protobody><a
+      href=ADDEXPS.html>ADDEXP.S</a> f6, f7;</div><div class=protobody><a
+      href=DIVNS.html>DIVN.S</a> f0, f22, f6;</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> vd, f0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a href=../protos.html#DIV.SX2>DIV.SX2</a> {
+      out xtfloatx2 vd, in xtfloatx2 vs, in xtfloatx2 vr }{xtfloatx2 f0,
+      xtfloatx2 f1, xtfloatx2 f2, xtfloatx2 f22, xtfloatx2 f3, xtfloatx2 f4,
+      xtfloatx2 f5, xtfloatx2 f55, xtfloatx2 f6, xtfloatx2 f7, xtfloatx2
+      f8}{</div><div class=protobody><a href=DIV0S.html>DIV0.S</a> f3,
+      vr;</div><div class=protobody><a href=NEXP01S.html>NEXP01.S</a> f4,
+      vr;</div><div class=protobody><a href=CONSTS.html>CONST.S</a> f5,
+      1;</div><div class=protobody><a href=MADDNS.html>MADDN.S</a> f5, f4,
+      f3;</div><div class=protobody><a href=AE_MOV.html>AE_MOV</a> f6,
+      f3;</div><div class=protobody><a href=AE_MOV.html>AE_MOV</a> f7,
+      vr;</div><div class=protobody><a href=NEXP01S.html>NEXP01.S</a> f2,
+      vs;</div><div class=protobody><a href=MADDNS.html>MADDN.S</a> f6, f5,
+      f6;</div><div class=protobody><a href=CONSTS.html>CONST.S</a> f55,
+      1;</div><div class=protobody><a href=CONSTS.html>CONST.S</a> f0,
+      0;</div><div class=protobody><a href=AE_MOV.html>AE_MOV</a> f8,
+      f2;</div><div class=protobody><a href=MADDNS.html>MADDN.S</a> f55, f4,
+      f6;</div><div class=protobody><a href=MSUBNS.html>MSUBN.S</a> f0, f8,
+      f3;</div><div class=protobody><a href=MKDADJS.html>MKDADJ.S</a> f7,
+      vs;</div><div class=protobody><a href=MADDNS.html>MADDN.S</a> f6, f55,
+      f6;</div><div class=protobody><a href=MSUBNS.html>MSUBN.S</a> f8, f4,
+      f0;</div><div class=protobody><a href=CONSTS.html>CONST.S</a> f1,
+      1;</div><div class=protobody><a href=MADDNS.html>MADDN.S</a> f1, f4,
+      f6;</div><div class=protobody><a href=MSUBNS.html>MSUBN.S</a> f0, f8,
+      f6;</div><div class=protobody><a href=NEGS.html>NEG.S</a> f22,
+      f2;</div><div class=protobody><a href=MADDNS.html>MADDN.S</a> f6, f1,
+      f6;</div><div class=protobody><a href=MADDNS.html>MADDN.S</a> f22, f4,
+      f0;</div><div class=protobody><a href=ADDEXPMS.html>ADDEXPM.S</a> f0,
+      f7;</div><div class=protobody><a href=ADDEXPS.html>ADDEXP.S</a> f6,
+      f7;</div><div class=protobody><a href=DIVNS.html>DIVN.S</a> f0, f22,
+      f6;</div><div class=protobody><a href=AE_MOV.html>AE_MOV</a> vd,
+      f0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a href=../protos.html#FSQRT.S>FSQRT.S</a> {
+      out xtfloat r, in xtfloat s }{xtbool2 b2, xtfloatx2 t0, xtfloatx2 zero,
+      xtfloatx2 t1, xtfloatx2 t2, xtfloatx2 t3, xtfloatx2 t4, xtfloatx2 t5,
+      xtfloatx2 t6, xtfloatx2 t7, xtfloatx2 t8}{</div><div class=protobody><a
+      href=CONSTS.html>CONST.S</a> zero, 0;</div><div class=protobody><a
+      href=CONSTS.html>CONST.S</a> t5, 1;</div><div class=protobody><a
+      href=OEQS.html>OEQ.S</a> b2, s, zero;</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> t0, s;</div><div class=protobody><a
+      href=AE_MOVT32X2.html>AE_MOVT32X2</a> t0, t5, b2;</div><div
+      class=protobody><a href=RSQRT0S.html>RSQRT0.S</a> t1, t0;</div><div
+      class=protobody><a href=MULS.html>MUL.S</a> t2, s, t1;</div><div
+      class=protobody><a href=CONSTS.html>CONST.S</a> t3, 3;</div><div
+      class=protobody><a href=MULS.html>MUL.S</a> t4, t3, t1;</div><div
+      class=protobody><a href=MSUBS.html>MSUB.S</a> t5, t2, t1;</div><div
+      class=protobody><a href=MADDNS.html>MADDN.S</a> t1, t4, t5;</div><div
+      class=protobody><a href=MULS.html>MUL.S</a> t6, s, t1;</div><div
+      class=protobody><a href=MULS.html>MUL.S</a> t7, t3, t1;</div><div
+      class=protobody><a href=CONSTS.html>CONST.S</a> t8, 1;</div><div
+      class=protobody><a href=MSUBS.html>MSUB.S</a> t8, t6, t1;</div><div
+      class=protobody><a href=MADDNS.html>MADDN.S</a> t1, t7, t8;</div><div
+      class=protobody><a href=MULS.html>MUL.S</a> r, t1, s;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#FSQRT.SX2>FSQRT.SX2</a> { out xtfloatx2 r, in
+      xtfloatx2 s }{xtbool2 b2, xtfloatx2 t0, xtfloatx2 zero, xtfloatx2 t1,
+      xtfloatx2 t2, xtfloatx2 t3, xtfloatx2 t4, xtfloatx2 t5, xtfloatx2 t6,
+      xtfloatx2 t7, xtfloatx2 t8}{</div><div class=protobody><a
+      href=CONSTS.html>CONST.S</a> zero, 0;</div><div class=protobody><a
+      href=CONSTS.html>CONST.S</a> t5, 1;</div><div class=protobody><a
+      href=OEQS.html>OEQ.S</a> b2, s, zero;</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> t0, s;</div><div class=protobody><a
+      href=AE_MOVT32X2.html>AE_MOVT32X2</a> t0, t5, b2;</div><div
+      class=protobody><a href=RSQRT0S.html>RSQRT0.S</a> t1, t0;</div><div
+      class=protobody><a href=MULS.html>MUL.S</a> t2, s, t1;</div><div
+      class=protobody><a href=CONSTS.html>CONST.S</a> t3, 3;</div><div
+      class=protobody><a href=MULS.html>MUL.S</a> t4, t3, t1;</div><div
+      class=protobody><a href=MSUBS.html>MSUB.S</a> t5, t2, t1;</div><div
+      class=protobody><a href=MADDNS.html>MADDN.S</a> t1, t4, t5;</div><div
+      class=protobody><a href=MULS.html>MUL.S</a> t6, s, t1;</div><div
+      class=protobody><a href=MULS.html>MUL.S</a> t7, t3, t1;</div><div
+      class=protobody><a href=CONSTS.html>CONST.S</a> t8, 1;</div><div
+      class=protobody><a href=MSUBS.html>MSUB.S</a> t8, t6, t1;</div><div
+      class=protobody><a href=MADDNS.html>MADDN.S</a> t1, t7, t8;</div><div
+      class=protobody><a href=MULS.html>MUL.S</a> r, t1, s;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a href=../protos.html#MOV.S>MOV.S</a> { out
+      xtfloat r, in xtfloat s }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> r, s;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a href=../protos.html#MOV.SX2>MOV.SX2</a> {
+      out xtfloatx2 r, in xtfloatx2 s }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> r, s;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a href=../protos.html#RECIP.S>RECIP.S</a> {
+      out xtfloat r, in xtfloat s }{xtfloat t1, xtfloat t2, xtfloat
+      t3}{</div><div class=protobody><a href=RECIP0S.html>RECIP0.S</a> t1,
+      s;</div><div class=protobody><a href=CONSTS.html>CONST.S</a> t2,
+      1;</div><div class=protobody><a href=MSUBS.html>MSUB.S</a> t2, s,
+      t1;</div><div class=protobody><a href=MADDNS.html>MADDN.S</a> t1, t1,
+      t2;</div><div class=protobody><a href=CONSTS.html>CONST.S</a> t3,
+      1;</div><div class=protobody><a href=MSUBS.html>MSUB.S</a> t3, s,
+      t1;</div><div class=protobody><a href=MADDNS.html>MADDN.S</a> t1, t1,
+      t3;</div><div class=protobody><a href=AE_MOV.html>AE_MOV</a> r,
+      t1;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#RECIP.SX2>RECIP.SX2</a> { out xtfloatx2 r, in
+      xtfloatx2 s }{xtfloatx2 t1, xtfloatx2 t2, xtfloatx2 t3}{</div><div
+      class=protobody><a href=RECIP0S.html>RECIP0.S</a> t1, s;</div><div
+      class=protobody><a href=CONSTS.html>CONST.S</a> t2, 1;</div><div
+      class=protobody><a href=MSUBS.html>MSUB.S</a> t2, s, t1;</div><div
+      class=protobody><a href=MADDNS.html>MADDN.S</a> t1, t1, t2;</div><div
+      class=protobody><a href=CONSTS.html>CONST.S</a> t3, 1;</div><div
+      class=protobody><a href=MSUBS.html>MSUB.S</a> t3, s, t1;</div><div
+      class=protobody><a href=MADDNS.html>MADDN.S</a> t1, t1, t3;</div><div
+      class=protobody><a href=AE_MOV.html>AE_MOV</a> r, t1;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a href=../protos.html#RSQRT.S>RSQRT.S</a> {
+      out xtfloat r, in xtfloat s }{xtfloat t1, xtfloat t2, xtfloat t3,
+      xtfloat t4, xtfloat t5, xtfloat t6, xtfloat t7, xtfloat t8}{</div><div
+      class=protobody><a href=RSQRT0S.html>RSQRT0.S</a> t1, s;</div><div
+      class=protobody><a href=MULS.html>MUL.S</a> t2, s, t1;</div><div
+      class=protobody><a href=CONSTS.html>CONST.S</a> t3, 3;</div><div
+      class=protobody><a href=MULS.html>MUL.S</a> t4, t3, t1;</div><div
+      class=protobody><a href=CONSTS.html>CONST.S</a> t5, 1;</div><div
+      class=protobody><a href=MSUBS.html>MSUB.S</a> t5, t2, t1;</div><div
+      class=protobody><a href=MADDNS.html>MADDN.S</a> t1, t4, t5;</div><div
+      class=protobody><a href=MULS.html>MUL.S</a> t6, s, t1;</div><div
+      class=protobody><a href=MULS.html>MUL.S</a> t7, t3, t1;</div><div
+      class=protobody><a href=CONSTS.html>CONST.S</a> t8, 1;</div><div
+      class=protobody><a href=MSUBS.html>MSUB.S</a> t8, t6, t1;</div><div
+      class=protobody><a href=MADDNS.html>MADDN.S</a> t1, t7, t8;</div><div
+      class=protobody><a href=AE_MOV.html>AE_MOV</a> r, t1;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#RSQRT.SX2>RSQRT.SX2</a> { out xtfloatx2 r, in
+      xtfloatx2 s }{xtfloatx2 t1, xtfloatx2 t2, xtfloatx2 t3, xtfloatx2 t4,
+      xtfloatx2 t5, xtfloatx2 t6, xtfloatx2 t7, xtfloatx2 t8}{</div><div
+      class=protobody><a href=RSQRT0S.html>RSQRT0.S</a> t1, s;</div><div
+      class=protobody><a href=MULS.html>MUL.S</a> t2, s, t1;</div><div
+      class=protobody><a href=CONSTS.html>CONST.S</a> t3, 3;</div><div
+      class=protobody><a href=MULS.html>MUL.S</a> t4, t3, t1;</div><div
+      class=protobody><a href=CONSTS.html>CONST.S</a> t5, 1;</div><div
+      class=protobody><a href=MSUBS.html>MSUB.S</a> t5, t2, t1;</div><div
+      class=protobody><a href=MADDNS.html>MADDN.S</a> t1, t4, t5;</div><div
+      class=protobody><a href=MULS.html>MUL.S</a> t6, s, t1;</div><div
+      class=protobody><a href=MULS.html>MUL.S</a> t7, t3, t1;</div><div
+      class=protobody><a href=CONSTS.html>CONST.S</a> t8, 1;</div><div
+      class=protobody><a href=MSUBS.html>MSUB.S</a> t8, t6, t1;</div><div
+      class=protobody><a href=MADDNS.html>MADDN.S</a> t1, t7, t8;</div><div
+      class=protobody><a href=AE_MOV.html>AE_MOV</a> r, t1;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a href=../protos.html#SQRT.S>SQRT.S</a> {
+      out xtfloat vd, in xtfloat vs }{xtfloat f0, xtfloat f1, xtfloat f2,
+      xtfloat f3, xtfloat f4, xtfloat f6, xtfloat f7}{</div><div
+      class=protobody><a href=SQRT0S.html>SQRT0.S</a> f2, vs;</div><div
+      class=protobody><a href=CONSTS.html>CONST.S</a> f3, 0;</div><div
+      class=protobody><a href=MADDNS.html>MADDN.S</a> f3, f2, f2;</div><div
+      class=protobody><a href=NEXP01S.html>NEXP01.S</a> f4, vs;</div><div
+      class=protobody><a href=CONSTS.html>CONST.S</a> f0, 3;</div><div
+      class=protobody><a href=ADDEXPS.html>ADDEXP.S</a> f4, f0;</div><div
+      class=protobody><a href=MADDNS.html>MADDN.S</a> f0, f3, f4;</div><div
+      class=protobody><a href=NEXP01S.html>NEXP01.S</a> f3, vs;</div><div
+      class=protobody><a href=MADDNS.html>MADDN.S</a> f2, f0, f2;</div><div
+      class=protobody><a href=CONSTS.html>CONST.S</a> f0, 0;</div><div
+      class=protobody><a href=CONSTS.html>CONST.S</a> f6, 0;</div><div
+      class=protobody><a href=CONSTS.html>CONST.S</a> f7, 0;</div><div
+      class=protobody><a href=MSUBNS.html>MSUBN.S</a> f0, f3, f2;</div><div
+      class=protobody><a href=MADDNS.html>MADDN.S</a> f6, f2, f4;</div><div
+      class=protobody><a href=CONSTS.html>CONST.S</a> f4, 3;</div><div
+      class=protobody><a href=MADDNS.html>MADDN.S</a> f7, f4, f2;</div><div
+      class=protobody><a href=MADDNS.html>MADDN.S</a> f3, f0, f0;</div><div
+      class=protobody><a href=MADDNS.html>MADDN.S</a> f4, f6, f2;</div><div
+      class=protobody><a href=NEGS.html>NEG.S</a> f2, f7;</div><div
+      class=protobody><a href=MADDNS.html>MADDN.S</a> f0, f3, f2;</div><div
+      class=protobody><a href=MADDNS.html>MADDN.S</a> f7, f4, f7;</div><div
+      class=protobody><a href=MKSADJS.html>MKSADJ.S</a> f2, vs;</div><div
+      class=protobody><a href=NEXP01S.html>NEXP01.S</a> f1, vs;</div><div
+      class=protobody><a href=MADDNS.html>MADDN.S</a> f1, f0, f0;</div><div
+      class=protobody><a href=NEGS.html>NEG.S</a> f3, f7;</div><div
+      class=protobody><a href=ADDEXPMS.html>ADDEXPM.S</a> f0, f2;</div><div
+      class=protobody><a href=ADDEXPS.html>ADDEXP.S</a> f3, f2;</div><div
+      class=protobody><a href=DIVNS.html>DIVN.S</a> f0, f1, f3;</div><div
+      class=protobody><a href=AE_MOV.html>AE_MOV</a> vd, f0;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a href=../protos.html#SQRT.SX2>SQRT.SX2</a>
+      { out xtfloatx2 vd, in xtfloatx2 vs }{xtfloatx2 f0, xtfloatx2 f1,
+      xtfloatx2 f2, xtfloatx2 f3, xtfloatx2 f4, xtfloatx2 f6, xtfloatx2
+      f7}{</div><div class=protobody><a href=SQRT0S.html>SQRT0.S</a> f2,
+      vs;</div><div class=protobody><a href=CONSTS.html>CONST.S</a> f3,
+      0;</div><div class=protobody><a href=MADDNS.html>MADDN.S</a> f3, f2,
+      f2;</div><div class=protobody><a href=NEXP01S.html>NEXP01.S</a> f4,
+      vs;</div><div class=protobody><a href=CONSTS.html>CONST.S</a> f0,
+      3;</div><div class=protobody><a href=ADDEXPS.html>ADDEXP.S</a> f4,
+      f0;</div><div class=protobody><a href=MADDNS.html>MADDN.S</a> f0, f3,
+      f4;</div><div class=protobody><a href=NEXP01S.html>NEXP01.S</a> f3,
+      vs;</div><div class=protobody><a href=MADDNS.html>MADDN.S</a> f2, f0,
+      f2;</div><div class=protobody><a href=CONSTS.html>CONST.S</a> f0,
+      0;</div><div class=protobody><a href=CONSTS.html>CONST.S</a> f6,
+      0;</div><div class=protobody><a href=CONSTS.html>CONST.S</a> f7,
+      0;</div><div class=protobody><a href=MSUBNS.html>MSUBN.S</a> f0, f3,
+      f2;</div><div class=protobody><a href=MADDNS.html>MADDN.S</a> f6, f2,
+      f4;</div><div class=protobody><a href=CONSTS.html>CONST.S</a> f4,
+      3;</div><div class=protobody><a href=MADDNS.html>MADDN.S</a> f7, f4,
+      f2;</div><div class=protobody><a href=MADDNS.html>MADDN.S</a> f3, f0,
+      f0;</div><div class=protobody><a href=MADDNS.html>MADDN.S</a> f4, f6,
+      f2;</div><div class=protobody><a href=NEGS.html>NEG.S</a> f2,
+      f7;</div><div class=protobody><a href=MADDNS.html>MADDN.S</a> f0, f3,
+      f2;</div><div class=protobody><a href=MADDNS.html>MADDN.S</a> f7, f4,
+      f7;</div><div class=protobody><a href=MKSADJS.html>MKSADJ.S</a> f2,
+      vs;</div><div class=protobody><a href=NEXP01S.html>NEXP01.S</a> f1,
+      vs;</div><div class=protobody><a href=MADDNS.html>MADDN.S</a> f1, f0,
+      f0;</div><div class=protobody><a href=NEGS.html>NEG.S</a> f3,
+      f7;</div><div class=protobody><a href=ADDEXPMS.html>ADDEXPM.S</a> f0,
+      f2;</div><div class=protobody><a href=ADDEXPS.html>ADDEXP.S</a> f3,
+      f2;</div><div class=protobody><a href=DIVNS.html>DIVN.S</a> f0, f1,
+      f3;</div><div class=protobody><a href=AE_MOV.html>AE_MOV</a> vd,
+      f0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_f16_move>ae_f16_move</a> { out ae_f16 d, in
+      ae_f16 d0 }{}{</div><div class=protobody><a href=AE_MOV.html>AE_MOV</a>
+      d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_f16_rtor_ae_f16x4>ae_f16_rtor_ae_f16x4</a> { out
+      ae_f16x4 d, in ae_f16 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_f16_rtor_ae_int16>ae_f16_rtor_ae_int16</a> { out
+      ae_int16 d, in ae_f16 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_f16_rtor_ae_int16x4>ae_f16_rtor_ae_int16x4</a> {
+      out ae_int16x4 d, in ae_f16 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_f16x4_move>ae_f16x4_move</a> { out ae_f16x4 d, in
+      ae_f16x4 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_f16x4_rtor_ae_int16x4>ae_f16x4_rtor_ae_int16x4</a>
+      { out ae_int16x4 d, in ae_f16x4 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_f24_move>ae_f24_move</a> { out ae_f24 d, in
+      ae_f24 d0 }{}{</div><div class=protobody><a href=AE_MOV.html>AE_MOV</a>
+      d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_f24_rtor_ae_f24x2>ae_f24_rtor_ae_f24x2</a> { out
+      ae_f24x2 d, in ae_f24 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_f24_rtor_ae_f32>ae_f24_rtor_ae_f32</a> { out
+      ae_f32 d, in ae_f24 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_f24_rtor_ae_f32x2>ae_f24_rtor_ae_f32x2</a> { out
+      ae_f32x2 a, in ae_f24 b }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> a, b;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_f24_rtor_ae_int24>ae_f24_rtor_ae_int24</a> { out
+      ae_int24 d, in ae_f24 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_f24_rtor_ae_int24x2>ae_f24_rtor_ae_int24x2</a> {
+      out ae_int24x2 a, in ae_f24 b }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> a, b;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_f24_rtor_ae_int32>ae_f24_rtor_ae_int32</a> { out
+      ae_int32 d, in ae_f24 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_f24_rtor_ae_int32x2>ae_f24_rtor_ae_int32x2</a> {
+      out ae_int32x2 a, in ae_f24 b }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> a, b;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_f24x2_move>ae_f24x2_move</a> { out ae_f24x2 d, in
+      ae_f24x2 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_f24x2_rtor_ae_f32x2>ae_f24x2_rtor_ae_f32x2</a> {
+      out ae_f32x2 d, in ae_f24x2 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_f24x2_rtor_ae_int24x2>ae_f24x2_rtor_ae_int24x2</a>
+      { out ae_int24x2 d, in ae_f24x2 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_f24x2_rtor_ae_int32x2>ae_f24x2_rtor_ae_int32x2</a>
+      { out ae_int32x2 d, in ae_f24x2 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_f24x2_rtor_ae_p16s>ae_f24x2_rtor_ae_p16s</a> {
+      out ae_p16s d, in ae_f24x2 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_f24x2_rtor_ae_p16x2s>ae_f24x2_rtor_ae_p16x2s</a>
+      { out ae_p16x2s d, in ae_f24x2 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_f24x2_rtor_ae_p24f>ae_f24x2_rtor_ae_p24f</a> {
+      out ae_p24f d, in ae_f24x2 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_f24x2_rtor_ae_p24s>ae_f24x2_rtor_ae_p24s</a> {
+      out ae_p24s d, in ae_f24x2 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_f24x2_rtor_ae_p24x2f>ae_f24x2_rtor_ae_p24x2f</a>
+      { out ae_p24x2f d, in ae_f24x2 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_f24x2_rtor_ae_p24x2s>ae_f24x2_rtor_ae_p24x2s</a>
+      { out ae_p24x2s d, in ae_f24x2 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_f32_move>ae_f32_move</a> { out ae_f32 d, in
+      ae_f32 d0 }{}{</div><div class=protobody><a href=AE_MOV.html>AE_MOV</a>
+      d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_f32_rtor_ae_f32x2>ae_f32_rtor_ae_f32x2</a> { out
+      ae_f32x2 d, in ae_f32 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_f32_rtor_ae_f32x4>ae_f32_rtor_ae_f32x4</a> { out
+      ae_f32x4 a, in ae_f32 b }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> a->d0, b;</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> a->d1, b;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_f32_rtor_ae_int32>ae_f32_rtor_ae_int32</a> { out
+      ae_int32 d, in ae_f32 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_f32_rtor_ae_int32x2>ae_f32_rtor_ae_int32x2</a> {
+      out ae_int32x2 a, in ae_f32 b }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> a, b;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_f32x2_move>ae_f32x2_move</a> { out ae_f32x2 d, in
+      ae_f32x2 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_f32x2_rtor_ae_int32x2>ae_f32x2_rtor_ae_int32x2</a>
+      { out ae_int32x2 d, in ae_f32x2 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_f32x4_move>ae_f32x4_move</a> { out ae_f32x4 d, in
+      ae_f32x4 b }{}{</div><div class=protobody><a href=AE_MOV.html>AE_MOV</a>
+      d->d0, b->d0;</div><div class=protobody><a href=AE_MOV.html>AE_MOV</a>
+      d->d1, b->d1;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_f64_move>ae_f64_move</a> { out ae_f64 d, in
+      ae_f64 d0 }{}{</div><div class=protobody><a href=AE_MOV.html>AE_MOV</a>
+      d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_f64_rtor_ae_int64>ae_f64_rtor_ae_int64</a> { out
+      ae_int64 d, in ae_f64 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_f64_rtor_ae_q56s>ae_f64_rtor_ae_q56s</a> { out
+      ae_q56s d, in ae_f64 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int16_move>ae_int16_move</a> { out ae_int16 d, in
+      ae_int16 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int16_rtor_ae_f16>ae_int16_rtor_ae_f16</a> { out
+      ae_f16 d, in ae_int16 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int16_rtor_ae_int16u>ae_int16_rtor_ae_int16u</a>
+      { out ae_int16u a, in ae_int16 b }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> a, b;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int16_rtor_ae_int16x4>ae_int16_rtor_ae_int16x4</a>
+      { out ae_int16x4 d, in ae_int16 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int16u_move>ae_int16u_move</a> { out ae_int16u a,
+      in ae_int16u b }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> a, b;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int16u_rtor_ae_int16>ae_int16u_rtor_ae_int16</a>
+      { out ae_int16 a, in ae_int16u b }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> a, b;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int16x4_move>ae_int16x4_move</a> { out ae_int16x4
+      d, in ae_int16x4 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int16x4_rtor_ae_f16x4>ae_int16x4_rtor_ae_f16x4</a>
+      { out ae_f16x4 d, in ae_int16x4 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int24_move>ae_int24_move</a> { out ae_int24 d, in
+      ae_int24 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int24_rtor_ae_f24>ae_int24_rtor_ae_f24</a> { out
+      ae_f24 d, in ae_int24 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int24_rtor_ae_f24x2>ae_int24_rtor_ae_f24x2</a> {
+      out ae_f24x2 a, in ae_int24 b }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> a, b;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int24_rtor_ae_f32>ae_int24_rtor_ae_f32</a> { out
+      ae_f32 d, in ae_int24 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int24_rtor_ae_f32x2>ae_int24_rtor_ae_f32x2</a> {
+      out ae_f32x2 a, in ae_int24 b }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> a, b;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int24_rtor_ae_int24x2>ae_int24_rtor_ae_int24x2</a>
+      { out ae_int24x2 d, in ae_int24 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int24_rtor_ae_int32>ae_int24_rtor_ae_int32</a> {
+      out ae_int32 d, in ae_int24 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int24_rtor_ae_int32x2>ae_int24_rtor_ae_int32x2</a>
+      { out ae_int32x2 a, in ae_int24 b }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> a, b;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int24x2_move>ae_int24x2_move</a> { out ae_int24x2
+      d, in ae_int24x2 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int24x2_rtor_ae_f24x2>ae_int24x2_rtor_ae_f24x2</a>
+      { out ae_f24x2 d, in ae_int24x2 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int24x2_rtor_ae_f32x2>ae_int24x2_rtor_ae_f32x2</a>
+      { out ae_f32x2 d, in ae_int24x2 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int24x2_rtor_ae_int32x2>ae_int24x2_rtor_ae_int32x2</a>
+      { out ae_int32x2 d, in ae_int24x2 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int24x2_rtor_ae_p16s>ae_int24x2_rtor_ae_p16s</a>
+      { out ae_p16s d, in ae_int24x2 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int24x2_rtor_ae_p16x2s>ae_int24x2_rtor_ae_p16x2s</a>
+      { out ae_p16x2s d, in ae_int24x2 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int24x2_rtor_ae_p24f>ae_int24x2_rtor_ae_p24f</a>
+      { out ae_p24f d, in ae_int24x2 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int24x2_rtor_ae_p24s>ae_int24x2_rtor_ae_p24s</a>
+      { out ae_p24s d, in ae_int24x2 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int24x2_rtor_ae_p24x2f>ae_int24x2_rtor_ae_p24x2f</a>
+      { out ae_p24x2f d, in ae_int24x2 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int24x2_rtor_ae_p24x2s>ae_int24x2_rtor_ae_p24x2s</a>
+      { out ae_p24x2s d, in ae_int24x2 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int32_move>ae_int32_move</a> { out ae_int32 d, in
+      ae_int32 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int32_rtor_ae_f32>ae_int32_rtor_ae_f32</a> { out
+      ae_f32 d, in ae_int32 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int32_rtor_ae_f32x2>ae_int32_rtor_ae_f32x2</a> {
+      out ae_f32x2 a, in ae_int32 b }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> a, b;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int32_rtor_ae_int32u>ae_int32_rtor_ae_int32u</a>
+      { out ae_int32u a, in ae_int32 b }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> a, b;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int32_rtor_ae_int32x2>ae_int32_rtor_ae_int32x2</a>
+      { out ae_int32x2 d, in ae_int32 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int32_rtor_ae_int32x4>ae_int32_rtor_ae_int32x4</a>
+      { out ae_int32x4 a, in ae_int32 b }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> a->d0, b;</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> a->d1, b;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int32u_move>ae_int32u_move</a> { out ae_int32u a,
+      in ae_int32u b }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> a, b;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int32u_rtor_ae_int32>ae_int32u_rtor_ae_int32</a>
+      { out ae_int32 a, in ae_int32u b }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> a, b;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int32u_rtor_ae_int32x2>ae_int32u_rtor_ae_int32x2</a>
+      { out ae_int32x2 d, in ae_int32u d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int32x2_move>ae_int32x2_move</a> { out ae_int32x2
+      d, in ae_int32x2 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int32x2_rtor_ae_f32x2>ae_int32x2_rtor_ae_f32x2</a>
+      { out ae_f32x2 d, in ae_int32x2 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int32x4_move>ae_int32x4_move</a> { out ae_int32x4
+      d, in ae_int32x4 b }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d->d0, b->d0;</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d->d1, b->d1;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int64_move>ae_int64_move</a> { out ae_int64 d, in
+      ae_int64 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int64_rtor_ae_f64>ae_int64_rtor_ae_f64</a> { out
+      ae_f64 d, in ae_int64 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int64_rtor_ae_q56s>ae_int64_rtor_ae_q56s</a> {
+      out ae_q56s d, in ae_int64 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int64x2_move>ae_int64x2_move</a> { out ae_int64x2
+      d, in ae_int64x2 b }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d->d0, b->d0;</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d->d1, b->d1;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_p16s_move>ae_p16s_move</a> { out ae_p16s d, in
+      ae_p16s d0 }{}{</div><div class=protobody><a href=AE_MOV.html>AE_MOV</a>
+      d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_p16s_rtor_ae_f24x2>ae_p16s_rtor_ae_f24x2</a> {
+      out ae_f24x2 d, in ae_p16s d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_p16s_rtor_ae_int24x2>ae_p16s_rtor_ae_int24x2</a>
+      { out ae_int24x2 d, in ae_p16s d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_p16x2s_move>ae_p16x2s_move</a> { out ae_p16x2s d,
+      in ae_p16x2s d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_p16x2s_rtor_ae_f24x2>ae_p16x2s_rtor_ae_f24x2</a>
+      { out ae_f24x2 d, in ae_p16x2s d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_p16x2s_rtor_ae_int24x2>ae_p16x2s_rtor_ae_int24x2</a>
+      { out ae_int24x2 d, in ae_p16x2s d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_p24f_move>ae_p24f_move</a> { out ae_p24f d, in
+      ae_p24f d0 }{}{</div><div class=protobody><a href=AE_MOV.html>AE_MOV</a>
+      d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_p24f_rtor_ae_f24x2>ae_p24f_rtor_ae_f24x2</a> {
+      out ae_f24x2 d, in ae_p24f d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_p24f_rtor_ae_int24x2>ae_p24f_rtor_ae_int24x2</a>
+      { out ae_int24x2 d, in ae_p24f d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_p24f_rtor_ae_p24x2f>ae_p24f_rtor_ae_p24x2f</a> {
+      out ae_p24x2f d, in ae_p24f d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_p24f_rtor_ae_p24x2s>ae_p24f_rtor_ae_p24x2s</a> {
+      out ae_p24x2s d, in ae_p24f d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_p24s_move>ae_p24s_move</a> { out ae_p24s d, in
+      ae_p24s d0 }{}{</div><div class=protobody><a href=AE_MOV.html>AE_MOV</a>
+      d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_p24s_rtor_ae_f24x2>ae_p24s_rtor_ae_f24x2</a> {
+      out ae_f24x2 d, in ae_p24s d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_p24s_rtor_ae_int24x2>ae_p24s_rtor_ae_int24x2</a>
+      { out ae_int24x2 d, in ae_p24s d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_p24s_rtor_ae_p24x2f>ae_p24s_rtor_ae_p24x2f</a> {
+      out ae_p24x2f d, in ae_p24s d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_p24s_rtor_ae_p24x2s>ae_p24s_rtor_ae_p24x2s</a> {
+      out ae_p24x2s d, in ae_p24s d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_p24x2f_move>ae_p24x2f_move</a> { out ae_p24x2f d,
+      in ae_p24x2f d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_p24x2f_rtor_ae_f24x2>ae_p24x2f_rtor_ae_f24x2</a>
+      { out ae_f24x2 d, in ae_p24x2f d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_p24x2f_rtor_ae_int24x2>ae_p24x2f_rtor_ae_int24x2</a>
+      { out ae_int24x2 d, in ae_p24x2f d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_p24x2f_rtor_ae_p16s>ae_p24x2f_rtor_ae_p16s</a> {
+      out ae_p16s d, in ae_p24x2f d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_p24x2f_rtor_ae_p16x2s>ae_p24x2f_rtor_ae_p16x2s</a>
+      { out ae_p16x2s d, in ae_p24x2f d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_p24x2f_rtor_ae_p24f>ae_p24x2f_rtor_ae_p24f</a> {
+      out ae_p24f d, in ae_p24x2f d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_p24x2f_rtor_ae_p24s>ae_p24x2f_rtor_ae_p24s</a> {
+      out ae_p24s d, in ae_p24x2f d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_p24x2f_rtor_ae_p24x2s>ae_p24x2f_rtor_ae_p24x2s</a>
+      { out ae_p24x2s d, in ae_p24x2f d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_p24x2s_move>ae_p24x2s_move</a> { out ae_p24x2s d,
+      in ae_p24x2s d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_p24x2s_rtor_ae_f24x2>ae_p24x2s_rtor_ae_f24x2</a>
+      { out ae_f24x2 d, in ae_p24x2s d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_p24x2s_rtor_ae_int24x2>ae_p24x2s_rtor_ae_int24x2</a>
+      { out ae_int24x2 d, in ae_p24x2s d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_p24x2s_rtor_ae_p16s>ae_p24x2s_rtor_ae_p16s</a> {
+      out ae_p16s d, in ae_p24x2s d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_p24x2s_rtor_ae_p16x2s>ae_p24x2s_rtor_ae_p16x2s</a>
+      { out ae_p16x2s d, in ae_p24x2s d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_p24x2s_rtor_ae_p24f>ae_p24x2s_rtor_ae_p24f</a> {
+      out ae_p24f d, in ae_p24x2s d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_p24x2s_rtor_ae_p24s>ae_p24x2s_rtor_ae_p24s</a> {
+      out ae_p24s d, in ae_p24x2s d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_p24x2s_rtor_ae_p24x2f>ae_p24x2s_rtor_ae_p24x2f</a>
+      { out ae_p24x2f d, in ae_p24x2s d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_q32s_move>ae_q32s_move</a> { out ae_q32s d, in
+      ae_q32s d0 }{}{</div><div class=protobody><a href=AE_MOV.html>AE_MOV</a>
+      d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_q56s_move>ae_q56s_move</a> { out ae_q56s d, in
+      ae_q56s d0 }{}{</div><div class=protobody><a href=AE_MOV.html>AE_MOV</a>
+      d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_q56s_rtor_ae_f64>ae_q56s_rtor_ae_f64</a> { out
+      ae_f64 d, in ae_q56s d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_q56s_rtor_ae_int64>ae_q56s_rtor_ae_int64</a> {
+      out ae_int64 d, in ae_q56s d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_q56s_rtor_ae_q32s>ae_q56s_rtor_ae_q32s</a> { out
+      ae_q32s d, in ae_q56s d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#int32_mtor_ae_f32x4>int32_mtor_ae_f32x4</a> { out
+      ae_f32x4 d, in const int32 * a, in immediate i }{ae_int32
+      tmp}{</div><div class=protobody><a href=AE_L32I.html>AE_L32.I</a> tmp,
+      a, i + 0;</div><div class=protobody><a href=AE_MOV.html>AE_MOV</a>
+      d->d0, tmp;</div><div class=protobody><a href=AE_MOV.html>AE_MOV</a>
+      d->d1, tmp;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#int32_mtor_ae_int32x4>int32_mtor_ae_int32x4</a> {
+      out ae_int32x4 d, in const int32 * a, in immediate i }{ae_int32
+      tmp}{</div><div class=protobody><a href=AE_L32I.html>AE_L32.I</a> tmp,
+      a, i + 0;</div><div class=protobody><a href=AE_MOV.html>AE_MOV</a>
+      d->d0, tmp;</div><div class=protobody><a href=AE_MOV.html>AE_MOV</a>
+      d->d1, tmp;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#int32_rtor_ae_f32x4>int32_rtor_ae_f32x4</a> { out
+      ae_f32x4 d, in int32 a }{ae_int32 tmp}{</div><div class=protobody><a
+      href=AE_MOVDA32.html>AE_MOVDA32</a> tmp, a;</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d->d0, tmp;</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d->d1, tmp;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#int32_rtor_ae_int32x4>int32_rtor_ae_int32x4</a> {
+      out ae_int32x4 d, in int32 a }{ae_int32 tmp}{</div><div
+      class=protobody><a href=AE_MOVDA32.html>AE_MOVDA32</a> tmp, a;</div><div
+      class=protobody><a href=AE_MOV.html>AE_MOV</a> d->d0, tmp;</div><div
+      class=protobody><a href=AE_MOV.html>AE_MOV</a> d->d1, tmp;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#uint32_rtor_ae_f32x4>uint32_rtor_ae_f32x4</a> { out
+      ae_f32x4 d, in uint32 a }{ae_int32 tmp}{</div><div class=protobody><a
+      href=AE_MOVDA32.html>AE_MOVDA32</a> tmp, a;</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d->d0, tmp;</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d->d1, tmp;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#uint32_rtor_ae_int32x4>uint32_rtor_ae_int32x4</a> {
+      out ae_int32x4 d, in uint32 a }{ae_int32 tmp}{</div><div
+      class=protobody><a href=AE_MOVDA32.html>AE_MOVDA32</a> tmp, a;</div><div
+      class=protobody><a href=AE_MOV.html>AE_MOV</a> d->d0, tmp;</div><div
+      class=protobody><a href=AE_MOV.html>AE_MOV</a> d->d1, tmp;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#xtfloat_move>xtfloat_move</a> { out xtfloat d, in
+      xtfloat d0 }{}{</div><div class=protobody><a href=AE_MOV.html>AE_MOV</a>
+      d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#xtfloat_rtor_xtfloatx2>xtfloat_rtor_xtfloatx2</a> {
+      out xtfloatx2 d, in xtfloat d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#xtfloatx2_move>xtfloatx2_move</a> { out xtfloatx2 d,
+      in xtfloatx2 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#xthalfx4_move>xthalfx4_move</a> { out xthalfx4 d, in
+      xthalfx4 d0 }{}{</div><div class=protobody><a
+      href=AE_MOV.html>AE_MOV</a> d, d0;</div><div class=protohead>}</div>
+    </div>
+  </body>
+</html>

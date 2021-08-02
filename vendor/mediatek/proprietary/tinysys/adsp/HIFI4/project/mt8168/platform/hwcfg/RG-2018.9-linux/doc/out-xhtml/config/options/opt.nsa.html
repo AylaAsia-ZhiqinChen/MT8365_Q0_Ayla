@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en-us" lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="copyright" content="(C) Copyright 2005"/>
+<meta name="DC.rights.owner" content="(C) Copyright 2005"/>
+<meta name="DC.Type" content="tconcept"/>
+<meta name="DC.Title" content="NSA/NSAU Option"/>
+<meta name="abstract" content="Normalize shift amount"/>
+<meta name="description" content="Normalize shift amount"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/nodes/g_isainst.html"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/options/opt.minMax.html"/>
+<meta name="DC.Format" content="XHTML"/>
+<meta name="DC.Identifier" content="opt-nsa"/>
+<link rel="stylesheet" type="text/css" href="../../commonltr.css"/>
+<link rel="stylesheet" type="text/css" href="../../cadence.css"/>
+<title>NSA/NSAU Option</title>
+</head>
+<body id="opt-nsa">
+
+
+    <h1 class="title topictitle1">NSA/NSAU Option</h1>
+
+    
+    <div class="body conbody"><p class="shortdesc">Normalize shift amount</p>
+
+        <dl class="dl">
+            
+                <dt class="dt dlterm">NSA/NSAU option</dt>
+
+                <dd class="dd"><span class="ph">Selected</span></dd>
+
+            
+        </dl>
+
+        <p class="p">The NSA (normalize shift amount) instruction returns the number of contiguous sign bits
+            in the most significant bits of a 32-bit signed value. The NSAU instruction returns the
+            number of contiguous zero bits in the most significant bits of a 32-bit unsigned value.
+            These instructions are not inferred by the compiler. However, library routines provided
+            by Xtensa, in particular integer division and modulo, make heavy use of these
+            instructions when present. 
+            The instructions can be accessed via intrinsics as follows:</p>
+
+        <pre class="pre codeblock">#include &lt;xtensa/tie/xt_misc.h&gt;
+int a, b;
+unsigned ub;
+...
+a = XT_NSA(b);
+a = XT_NSAU(ub);</pre>
+
+    </div>
+
+<div class="related-links">
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="../../config/nodes/g_isainst.html">Miscellaneous ISA Instruction Options</a></div>
+<div class="nextlink"><strong>Next topic:</strong> <a class="link" href="../../config/options/opt.minMax.html">MinMax Option</a></div>
+</div>
+</div>
+
+</body>
+</html>

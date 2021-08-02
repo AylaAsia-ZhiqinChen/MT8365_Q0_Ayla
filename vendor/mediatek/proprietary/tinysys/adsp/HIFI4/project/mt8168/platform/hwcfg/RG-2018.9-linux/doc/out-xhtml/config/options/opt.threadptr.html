@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en-us" lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="copyright" content="(C) Copyright 2005"/>
+<meta name="DC.rights.owner" content="(C) Copyright 2005"/>
+<meta name="DC.Type" content="tconcept"/>
+<meta name="DC.Title" content="Thread Pointer"/>
+<meta name="abstract" content="Thread pointer to facilitate tools/RTOS support of thread local storage"/>
+<meta name="description" content="Thread pointer to facilitate tools/RTOS support of thread local storage"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/nodes/g_isainst.html"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/options/opt.miscSpecRegs.html"/>
+<meta name="DC.Format" content="XHTML"/>
+<meta name="DC.Identifier" content="opt-threadptr"/>
+<link rel="stylesheet" type="text/css" href="../../commonltr.css"/>
+<link rel="stylesheet" type="text/css" href="../../cadence.css"/>
+<title>Thread Pointer</title>
+</head>
+<body id="opt-threadptr">
+
+
+    <h1 class="title topictitle1">Thread Pointer</h1>
+
+    
+    <div class="body conbody"><p class="shortdesc">Thread pointer to facilitate tools/RTOS support of thread local storage </p>
+
+        <dl class="dl">
+            
+                <dt class="dt dlterm">Thread Pointer</dt>
+
+                <dd class="dd"><span class="ph">Selected</span></dd>
+
+            
+        </dl>
+
+        <p class="p">If the option is selected, your Xtensa core will include an
+            additional 32-bit register called THREADPTR (user register 231). This is a dedicated
+            register that will be used by the target Linux OS to support thread-local storage in
+            NPTL (the Native POSIX Thread Library).</p>
+
+    </div>
+
+<div class="related-links">
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="../../config/nodes/g_isainst.html">Miscellaneous ISA Instruction Options</a></div>
+<div class="previouslink"><strong>Previous topic:</strong> <a class="link" href="../../config/options/opt.miscSpecRegs.html">Misc Special registers option</a></div>
+</div>
+</div>
+
+</body>
+</html>

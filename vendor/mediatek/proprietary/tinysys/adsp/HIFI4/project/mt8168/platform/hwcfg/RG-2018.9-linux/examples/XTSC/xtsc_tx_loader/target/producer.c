@@ -1,0 +1,32 @@
+// Customer ID=13943; Build=0x75f5e; Copyright (c) 2005-2010 Tensilica Inc.  ALL RIGHTS RESERVED.
+// These coded instructions, statements, and computer programs are the
+// copyrighted works and confidential proprietary information of
+// Tensilica Inc.  They may be adapted and modified by bona fide
+// purchasers for internal use, but neither the original nor any adapted
+// or modified version may be disclosed or distributed to third parties
+// in any manner, medium, or form, in whole or in part, without the prior
+// written consent of Tensilica Inc.
+
+
+#include <xtensa/tie/example.h>
+
+typedef unsigned int            u32;
+
+int main() {
+  u32 i;
+  WUR_QBUF_0(0xFFFFFFFF);
+  WUR_QBUF_1(0xFFFFFFFE);
+  WUR_QBUF_2(0xFFFFFFFD);
+
+  for (i=0; i<10; ++i) {
+    WUR_QBUF_2(RUR_QBUF_1());
+    WUR_QBUF_1(RUR_QBUF_0());
+    WUR_QBUF_0(RUR_QBUF_0() + 1);
+    WRITE_Q1();
+  }
+
+  // Halt ourself
+  asm("halt");
+
+  return 0;
+}

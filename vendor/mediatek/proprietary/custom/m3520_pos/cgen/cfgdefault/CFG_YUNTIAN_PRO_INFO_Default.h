@@ -1,0 +1,10 @@
+#ifndef _CFG_YUNTIAN_PRO_INFO_D_H
+#define _CFG_YUNTIAN_PRO_INFO_D_H
+
+
+
+YUNTIAN_PRO_INFO stYUNTIAN_PRO_INFOConfigDefault =
+{
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
+};
+#endif /* _CFG_YUNTIAN_PRO_INFO_D_H */

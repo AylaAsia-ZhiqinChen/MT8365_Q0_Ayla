@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html ng-app="tiedocApp">
+<head>
+    <title>ISA HTML</title>
+    <meta charset="utf-8" http-equiv="X-UA-Compatible" content="IE=edge;"/>
+
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="css/component.css" />
+    <link rel="stylesheet" href="css/tiedoc.css" />
+</head>
+
+<body ng-controller="tiedocCtrl">
+    <div class="tie-startup">
+        <div class="tie-loading-spinner"> </div>
+    </div>
+
+	<div class="mp-container">
+    <div class="mp-pusher" id="mp-pusher">
+        <nav id="mp-menu" class="mp-menu">
+            <div class="mp-level" tie-doc-url="/" ng-bind-html="genSideMenu('Home')| trusted">
+   
+            </div>
+        </nav>
+
+        <div class="scroller">
+    		<div class="scroller-inner">
+                <div class="navbar navbar-default">
+        			<a href="#" id="trigger" class="tie-menu-toggle menu-trigger"></a>
+        			<span class="title-bar-title"> ISA HTML </span>
+                </div>
+
+            	<div class="content" ng-view>
+    	        </div>
+    		</div>
+        </div>
+
+    </div>
+	</div>
+
+
+    <script src="js/jquery-2.2.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script> 
+    <script src="js/angular.min.js"></script>
+    <script src="js/angular-route.min.js"></script>
+    <script src="js/modernizr.custom.js"></script>
+    <script src="js/classie.js"></script>
+    <script src="js/mlpushmenu.js"></script>
+
+    <script src="js/tiedocTemp.min.js"></script>
+    <script src="js/tiedocData.js"></script>
+    <script src="js/tiedocCoreData.js"> </script>
+    <script src="js/tiedocSignalList.js"> </script>
+    <script src="js/tiedoc.min.js"></script>
+</body>
+</html>
+

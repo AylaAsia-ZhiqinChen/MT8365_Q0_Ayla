@@ -1,0 +1,119 @@
+// ctime standard header
+#ifndef _CTIME_
+#define _CTIME_
+#include <yvals.h>
+
+#ifdef _STD_USING
+ #undef _STD_USING
+  #include <time.h>
+ #define _STD_USING
+
+#else /* _STD_USING */
+ #include <time.h>
+
+ #if _IS_GHS
+// OSE 4.x and earlier have C header files that contain
+// preprocessor macro definitions such as #define clock zzclock,
+// but the functions here need standard names.
+
+ #if defined(__OSE) 
+
+  #if defined(clock)
+inline clock_t clock_ose() { return clock(); }
+#undef clock
+inline clock_t clock() { return clock_ose(); }
+  #endif /* defined(clock) */
+
+ #if defined(asctime)
+inline char *asctime_ose( const struct tm *_T ) { return asctime( _T ); }
+#undef asctime
+inline char *asctime( const struct tm *_T ) { return asctime_ose( _T ); }
+ #endif /* defined(asctime) */
+
+ #if defined(gmtime)
+inline struct tm *gmtime_ose( const time_t *_C ) { return gmtime( _C ); }
+#undef gmtime
+inline struct tm *gmtime( const time_t *_C ) { return gmtime_ose( _C ); }
+ #endif /* defined(gmtime) */
+
+ #if defined(mktime)
+inline time_t mktime_ose( struct tm *_T ) { return mktime( _T ); }
+#undef mktime
+inline time_t mktime( struct tm *_T ) { return mktime_ose( _T ); }
+ #endif /* defined(mktime) */
+
+ #if defined(strftime)
+inline size_t strftime_ose(char*_S, size_t _M, const char*_F,
+	const struct tm*_T) {
+    return strftime( _S, _M, _F, _T ); }
+#undef strftime
+inline size_t strftime(char*_S, size_t _M, const char*_F,
+	const struct tm*_T) {
+    return strftime_ose( _S, _M, _F, _T ); }
+ #endif /* defined(strftime) */
+
+ #if defined(time)
+#define time_ose time
+inline time_t time_ose(time_t *_T) { return time( _T ); }
+#undef time
+inline time_t time(time_t *_T) { return time_ose( _T ); }
+ #endif /* defined(time) */
+
+ #if defined(ctime)
+inline char * ctime_ose(const time_t *_C) { return ctime( _C ); }
+#undef ctime
+inline char * ctime(const time_t *_C) { return ctime_ose( _C ); }
+ #endif /* defined(ctime) */
+
+ #if defined(localtime)
+#define localtime_ose localtime
+inline struct tm *localtime_ose( const time_t *_C )
+	{ return localtime( _C );
+	}
+#undef localtime
+inline struct tm *localtime( const time_t *_C )
+	{ return localtime_ose( _C );
+	}
+ #endif /* defined(localtime) */
+
+#undef get_time
+ #endif /* defined(__OSE) */
+
+ #if defined(difftime)
+#undef difftime
+extern "C" inline double difftime(time_t _T1, time_t _T0)
+	{ return( (double)_T1 - (double)_T0);
+	}
+ #endif /* defined(difftime) */
+
+ #endif /* _IS_GHS */
+#endif /* _STD_USING */
+
+ #ifdef _GLOBAL_USING
+_STD_BEGIN
+using _CSTD clock_t; using _CSTD size_t;
+using _CSTD time_t; using _CSTD tm;
+using _CSTD asctime; using _CSTD clock; using _CSTD ctime;
+
+ #if _IS_GHS
+
+ #if !(defined(__ghs) || defined(__SC3__)) || !defined(__NoFloat)
+using _CSTD difftime; 
+ #endif /* !__ghs || !__NoFloat */
+
+using _CSTD gmtime; using _CSTD localtime;
+
+ #else /* _IS_GHS */
+using _CSTD difftime; using _CSTD gmtime; using _CSTD localtime;
+ #endif /* _IS_GHS */
+
+using _CSTD mktime; using _CSTD strftime; using _CSTD time;
+_STD_END
+ #endif /* _GLOBAL_USING */
+
+#endif /* _CTIME_ */
+
+/*
+ * Copyright (c) by P.J. Plauger. All rights reserved.
+ * Consult your license regarding permissions and restrictions.
+V6.50:1611 */

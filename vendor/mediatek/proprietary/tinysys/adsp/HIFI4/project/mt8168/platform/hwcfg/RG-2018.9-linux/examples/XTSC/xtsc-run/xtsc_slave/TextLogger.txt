@@ -1,0 +1,35 @@
+#
+# Customer ID=13943; Build=0x75f5e; Copyright (c) 2006-2010 Tensilica Inc.  ALL RIGHTS RESERVED.
+# 
+# These coded instructions, statements, and computer programs are the
+# copyrighted works and confidential proprietary information of
+# Tensilica Inc.  They may be adapted and modified by bona fide
+# purchasers for internal use, but neither the original nor any adapted
+# or modified version may be disclosed or distributed to third parties
+# in any manner, medium, or form, in whole or in part, without the prior
+# written consent of Tensilica Inc.
+
+log4xtensa.rootLogger=VERBOSE, all, console
+
+# Cause INFO_LOG_LEVEL messages from master and slave to also appear on the console
+log4xtensa.logger.slave=VERBOSE, all, consoleINFO
+log4xtensa.additivity.slave=false
+log4xtensa.logger.master=VERBOSE, all, consoleINFO
+log4xtensa.additivity.master=false
+
+log4xtensa.appender.all=log4xtensa::FileAppender
+log4xtensa.appender.all.File=xtsc.log
+log4xtensa.appender.all.Append=false
+log4xtensa.appender.all.layout=log4xtensa::PatternLayout
+log4xtensa.appender.all.layout.ConversionPattern=%-7p %-26c - %m%n
+
+log4xtensa.appender.console=log4xtensa::ConsoleAppender
+log4xtensa.appender.console.Threshold=NOTE
+log4xtensa.appender.console.layout=log4xtensa::PatternLayout
+log4xtensa.appender.console.layout.ConversionPattern=%-7p %-26c - %m%n
+
+log4xtensa.appender.consoleINFO=log4xtensa::ConsoleAppender
+log4xtensa.appender.consoleINFO.Threshold=INFO
+log4xtensa.appender.consoleINFO.layout=log4xtensa::PatternLayout
+log4xtensa.appender.consoleINFO.layout.ConversionPattern=%-7p %-6c - %m%n
+

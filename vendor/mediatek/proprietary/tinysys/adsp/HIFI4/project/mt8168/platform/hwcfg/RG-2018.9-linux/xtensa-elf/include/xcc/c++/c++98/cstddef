@@ -1,0 +1,27 @@
+// cstddef standard header
+#ifndef _CSTDDEF_
+#define _CSTDDEF_
+#include <c99/yvals.h>
+
+#ifdef _STD_USING
+ #undef _STD_USING
+  #include <c99/stddef.h>
+ #define _STD_USING
+
+#else /* _STD_USING */
+ #include <c99/stddef.h>
+#endif /* _STD_USING */
+
+ #ifdef _GLOBAL_USING
+_STD_BEGIN
+using _CSTD ptrdiff_t; using _CSTD size_t;
+using _CSTD max_align_t;
+_STD_END
+ #endif /* _GLOBAL_USING */
+
+#endif /* _CSTDDEF_ */
+
+/*
+ * Copyright (c) by P.J. Plauger. All rights reserved.
+ * Consult your license regarding permissions and restrictions.
+V6.40:1611 */

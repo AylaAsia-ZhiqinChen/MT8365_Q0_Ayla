@@ -1,0 +1,9 @@
+
+# These instructions need to be run by init process, not vendor_init
+# so they are moved from init.$(platform).rc to here.
+
+# This is for NFC support in EM mode.
+
+on post-fs-data
+    mkdir /data/nfc_socket 0771 nfc radio
+    restorecon_recursive /data/nfc_socket

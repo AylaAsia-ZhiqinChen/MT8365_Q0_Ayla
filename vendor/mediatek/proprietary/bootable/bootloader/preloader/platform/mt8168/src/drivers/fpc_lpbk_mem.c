@@ -1,0 +1,4297 @@
+//#define LPBK_RUN_DSIM
+#ifndef LP3_IO
+#define DDRPHY_LPBK_CAL_EN
+#endif
+//ETT_LOG provide by SA? need SA's final settings on soc
+//#define ETT_LOG
+#define BIANCO_E3
+
+#define INT_CLK_PAD
+#define LPBK_ODT_ON
+
+#define ALL_TEST
+
+#define HANG_HERE  while(1) ;
+
+#ifdef LPBK_RUN_DSIM
+#include "project.h"
+#include "cmessage.h"
+
+//#define DDRPHY0AO_BASE DRAMC_CH0_TOP0_BASE
+//#define DRAMC0_AO_BASE DRAMC_CH0_TOP1_BASE
+//#define DDRPHY1AO_BASE DRAMC_CH1_TOP0_BASE
+//#define DRAMC1_AO_BASE DRAMC_CH1_TOP1_BASE
+#else
+#include "dramc_common.h"
+
+#endif
+
+#define DDRPHY0AO_BASE (0x10228000)
+#define DRAMC0_AO_BASE (0x1022C000)
+#define DDRPHY1AO_BASE (0x10234000)
+#define DRAMC1_AO_BASE (0x10232000)
+#define DDRPHY0NAO_BASE (0x10230000)
+#define DDRPHY1NAO_BASE (0x1023A000)
+
+#define INTERNAL_LPBK_PASS 10
+#define INTERNAL_LPBK_FAIL 11
+#define INTERNAL_LPBK_NODONE 1
+#define INTERNAL_B0_FAIL 2
+#define INTERNAL_B1_FAAL 3
+#define INTERNAL_B2_FAIL 4
+#define INTERNAL_CA_FAIL 5
+#define INTERNAL_ALL_FAIL 6
+//#define INTERNAL_B2_NODONE 0
+//#define INTERNAL_B0_B1_CA_NODONE 1
+//#define INTERNAL_B2_FAIL 2
+#define INTERNAL_B0_B1_CA_FAIL 7
+
+#define LPBK_INTERNAL_EN
+
+#ifdef LPBK_RUN_DSIM
+//extern void DELAY_US      (unsigned int) ;
+void DELAY_US(unsigned int dly_us)
+{
+#ifdef FPC_TEST
+ delay_us(dly_us);
+#else
+ if(dly_us > 0) {
+  *MDM_TM_WAIT_US = dly_us;  // WAIT xxus
+  while (*MDM_TM_WAIT_US>0); // 30ns
+ }
+#endif 
+}
+#define mcSHOW_DBG_MSG(_x_)
+#else
+#define DELAY_US(x) delay_us(x)
+#define mcSHOW_DBG_MSG(_x_)  printf _x_
+#endif
+
+/* dummy SET_GPIO_DOUT */
+#define SET_GPIO_DOUT(a, b)
+
+void ett_log ();
+int  ddrphy_lpbk_cal_top      () ;
+int  ddrphy_lpbk_cal_top_perch      ( int ) ;
+int  ddrphy_lpbk_chk_result   () ;
+int  ddrphy_ext_lpbk_test_seq ( unsigned int);
+void ddrphy_lpbk_test_ctrl( );
+int  ddrphy_int_lpbk_test_seq( int );
+int  ddrphy_int_lpbk_test_seq_perch( int, int );
+void ddrphy_SetRXInputDelay_B0(unsigned int,unsigned int) ;
+void ddrphy_SetRXInputDelay_B1(unsigned int,unsigned int) ;
+void ddrphy_SetRXInputDelay_B2(unsigned int,unsigned int) ;
+void ddrphy_SetRXInputDelay_CA(unsigned int,unsigned int) ;
+void ddrphy_SetRXVref         (unsigned int) ;
+void ddrphy_SetImp            ( unsigned int , unsigned int , unsigned int ) ;
+void ddrphy_RxReset_seq       () ;
+
+static int MDM_TM_TINFOMSG_ORIG;
+static int *MDM_TM_TINFOMSG = &MDM_TM_TINFOMSG_ORIG;
+
+static int MDM_TM_TPAR_ORIG;
+static int *MDM_TM_TPAR = &MDM_TM_TPAR_ORIG;
+
+//! ---------------------
+//! ddrphy loopback test
+//! ---------------------
+void fpc_lpbk_mem_init()
+{
+  int   lpbk_tx     = 0 ;
+  int   fpc_result  = 0 ;
+
+    
+#ifdef LPBK_RUN_DSIM
+  // gpio setting
+  //*GPIO_MODE5 = *GPIO_MODE5 & 0xFFFFF88F; 
+  //*GPIO_DIR2  = 0x00000600;
+  //*GPIO_DOUT2 = 0x00000200; //PAD_IDDIG use as data mode start flag
+  /*TINFO="pattern start"*/ *MDM_TM_TINFOMSG = 1211;
+  // gpio setting for dram status
+  //*GPIO_MODE9 = *GPIO_MODE9 & 0xffff8888;
+  //*GPIO_DIR3 = 0x00000f00;
+
+ //SET_GPIO_MODE (135, 0); //WATCHDOG : use indicator as done
+ //SET_GPIO_DIR  (135, 1); //WATCHDOG
+ //SET_GPIO_DOUT (135, 0); //WATCHDOG
+
+ //SET_GPIO_MODE (29, 0);	//MSDC1_CLK : use indicator as pass
+ //SET_GPIO_DIR  (29, 1);	//MSDC1_CLK
+ //SET_GPIO_DOUT (29, 0);	//MSDC1_CLK
+  
+#endif
+
+  /*TINFO="[LPBK] start to do ddrphy initial setting ..."*/ *MDM_TM_TINFOMSG = 1212;
+  /*TINFO="[LPBK] 2CH simultaneous configuration"*/ *MDM_TM_TINFOMSG = 1213;
+#ifdef LPBK_RUN_DSIM
+  *DRAMC_WBR = 0x0000000f;
+#else
+      *((UINT32P)(DRAMC_WBR)) = 0x0000000f;
+#endif
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0040)) = 0x00000001;// change to DDRPHY control 3 to 1 ckmux, fix suspend issue
+   #ifdef ETT_LOG
+     ett_log();
+   #else 
+  //lpddr4_3200_init
+    init_golden_mini_dpy_init_flow_vseq();
+    init_golden_mini_freq_related_vseq_0();
+    init_golden_mini_common_settings_vseq();
+    #if 0
+    lp4_dram_init_vseq();
+    modify_phypll_mode();
+    //init_golden_mini_freq_related_vseq_1();
+    //init_golden_mini_freq_related_vseq_2();
+    freq_group_mapping_init_vseq();
+    indiv_rand_reg_settings_vseq();
+    #endif
+    pinmux_config();
+  #endif
+
+  DELAY_US(1);
+
+  //APB write broadcast OFF
+//xqzhu mask #ifdef LPBK_RUN_DSIM
+//xqzhu mask   *DRAMC_WBR = 0x00000000;
+//xqzhu mask #else
+//xqzhu mask   *((UINT32P)(DRAMC_WBR)) = 0x00000000;
+//xqzhu mask #endif
+//xqzhu mask 
+//xqzhu mask   //APB write broadcast ON
+//xqzhu mask #ifdef LPBK_RUN_DSIM
+//xqzhu mask   *DRAMC_WBR = 0x0000000f;
+//xqzhu mask #else
+//xqzhu mask   *((UINT32P)(DRAMC_WBR)) = 0x0000000f;
+//xqzhu mask #endif
+//xqzhu mask 
+//xqzhu mask 
+//xqzhu mask #ifdef LPBK_RUN_DSIM
+//xqzhu mask         *DRAMC_WBR = 0x00000000;
+//xqzhu mask #else
+//xqzhu mask         *((UINT32P)(DRAMC_WBR)) = 0x00000000;
+//xqzhu mask #endif
+    
+    
+  #ifdef FPC_LPBK_TEST
+    //! After initial done, start to do lpbk test
+    /*TINFO="[LPBK_INFO] Start to do DDRPHY loopback test !!!"*/ *MDM_TM_TINFOMSG = 1214;
+    ddrphy_lpbk_test_ctrl() ; 
+  #endif
+
+
+}//! end of ddrphy_lpbk_test_seq
+
+void ett_log (void)
+{
+  /*TINFO="[LPBK_INFO] Use ETT setting !!!"*/ *MDM_TM_TINFOMSG = 1215;
+*((UINT32P)(0x100010B4)) = 0x0; //broad_off
+//drmac init *((UINT32P)(0x1022A04C)) = 0x75774001;
+//drmac init *((UINT32P)(0x1023204C)) = 0x75774001;
+DELAY_US(3);
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502480;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502480;
+DELAY_US(1);
+*((UINT32P)(0x100010B4)) = 0x0; //broad_off
+*((UINT32P)(0x100010B4)) = 0x0; //broad_off
+*((UINT32P)(0x10228308)) = 0x3;
+*((UINT32P)(0x10230308)) = 0x3;
+*((UINT32P)(0x100010B4)) = 0x1F; //broad_on
+//*((UINT32P)(0x10228284)) = 0x1F;
+*((UINT32P)(0x10228284)) = 0xF;
+*((UINT32P)(0x1022829C)) = 0xB1190200;
+*((UINT32P)(0x10228278)) = 0x0;
+*((UINT32P)(0x1022827C)) = 0x0;
+*((UINT32P)(0x10228274)) = 0x0;
+*((UINT32P)(0x1022828C)) = 0x6003BF;
+*((UINT32P)(0x10228294)) = 0x333F3F00;
+*((UINT32P)(0x10228D84)) = 0x1F;
+*((UINT32P)(0x10228C1C)) = 0x13008091;
+*((UINT32P)(0x10228C9C)) = 0x13008081;
+*((UINT32P)(0x10228D90)) = 0xE5780000;
+*((UINT32P)(0x10228D98)) = 0xE5780000;
+*((UINT32P)(0x10228DB8)) = 0x0;
+*((UINT32P)(0x10228DD0)) = 0x0;
+*((UINT32P)(0x102281A0)) = 0x0;
+*((UINT32P)(0x102280A0)) = 0x0;
+*((UINT32P)(0x10228120)) = 0x0;
+*((UINT32P)(0x102280BC)) = 0x10100431;
+*((UINT32P)(0x1022813C)) = 0x10100431;
+#ifdef DR3600_LPBK
+*((UINT32P)(0x102281C0)) = 0x20;
+#else
+*((UINT32P)(0x102281C0)) = 0x31;
+#endif
+*((UINT32P)(0x102285F0)) = 0x11000222;
+*((UINT32P)(0x10228670)) = 0x11000222;
+*((UINT32P)(0x102285F0)) = 0x11000222;
+*((UINT32P)(0x10228670)) = 0x11000222;
+*((UINT32P)(0x10228608)) = 0x20000000;
+*((UINT32P)(0x10228808)) = 0x20000000;
+*((UINT32P)(0x10228688)) = 0x20000000;
+*((UINT32P)(0x10228888)) = 0x20000000;
+*((UINT32P)(0x10228C14)) = 0x30000B;
+*((UINT32P)(0x10228C94)) = 0x30000B;
+*((UINT32P)(0x10228604)) = 0x20002;
+*((UINT32P)(0x10228804)) = 0x20002;
+*((UINT32P)(0x10228684)) = 0x20002;
+*((UINT32P)(0x10228884)) = 0x20002;
+*((UINT32P)(0x10228608)) = 0xB0800000;
+*((UINT32P)(0x10228808)) = 0xB0800000;
+*((UINT32P)(0x10228688)) = 0xB0800000;
+*((UINT32P)(0x10228888)) = 0xB0800000;
+*((UINT32P)(0x102285F0)) = 0x1000222;
+*((UINT32P)(0x10228670)) = 0x1000222;
+*((UINT32P)(0x102280BC)) = 0x10100731;
+*((UINT32P)(0x1022813C)) = 0x10100731;
+*((UINT32P)(0x10228F00)) = 0xAAAAAAAA;
+*((UINT32P)(0x10228F04)) = 0xA;
+*((UINT32P)(0x10228F50)) = 0xAAAAAAAA;
+*((UINT32P)(0x10228F54)) = 0xA;
+*((UINT32P)(0x10228E1C)) = 0x1F1F00;
+*((UINT32P)(0x10228E6C)) = 0x1F1F00;
+*((UINT32P)(0x10228F1C)) = 0x1F1F00;
+*((UINT32P)(0x10228F6C)) = 0x1F1F00;
+*((UINT32P)(0x102280A8)) = 0x1010;
+*((UINT32P)(0x102280AC)) = 0x82110E10;
+*((UINT32P)(0x102280B0)) = 0x10312E9;
+*((UINT32P)(0x102280AC)) = 0x82110E00;
+*((UINT32P)(0x10228128)) = 0x1010;
+*((UINT32P)(0x1022812C)) = 0x82110E10;
+*((UINT32P)(0x10228130)) = 0x10312E9;
+*((UINT32P)(0x1022812C)) = 0x82110E00;
+*((UINT32P)(0x102281A4)) = 0x4AC;
+*((UINT32P)(0x102281B0)) = 0x212A9;
+*((UINT32P)(0x10228008)) = 0x10;
+*((UINT32P)(0x102280A4)) = 0x4EC;
+*((UINT32P)(0x10228124)) = 0x4EC;
+DELAY_US(1);
+*((UINT32P)(0x10228DA0)) = 0x40000;
+DELAY_US(1);
+*((UINT32P)(0x10228DA4)) = 0x0;
+*((UINT32P)(0x10228DAC)) = 0x0;
+DELAY_US(1);
+*((UINT32P)(0x10228DA8)) = 0x40000;
+DELAY_US(1);
+*((UINT32P)(0x1022800C)) = 0x4D0000;
+DELAY_US(1);
+*((UINT32P)(0x10228D80)) = 0x3;
+DELAY_US(1);
+*((UINT32P)(0x10228184)) = 0x300000;
+*((UINT32P)(0x102280A4)) = 0x4EE;
+*((UINT32P)(0x10228124)) = 0x4EE;
+*((UINT32P)(0x100010B4)) = 0x0; //broad_off
+*((UINT32P)(0x10228D34)) = 0x698619;
+*((UINT32P)(0x10230D34)) = 0xC0778609;
+*((UINT32P)(0x100010B4)) = 0x1F; //broad_on
+*((UINT32P)(0x10228C34)) = 0xC0778609;
+*((UINT32P)(0x10228CB4)) = 0xC0778609;
+*((UINT32P)(0x10228D14)) = 0x0;
+*((UINT32P)(0x10228D00)) = 0x144010;
+*((UINT32P)(0x100010B4)) = 0x0; //broad_off
+*((UINT32P)(0x10228D18)) = 0x64000C0;
+*((UINT32P)(0x10230D18)) = 0x6400040;
+*((UINT32P)(0x100010B4)) = 0x1F; //broad_on
+*((UINT32P)(0x10228C18)) = 0x6400040;
+*((UINT32P)(0x10228C98)) = 0x6400040;
+*((UINT32P)(0x100010B4)) = 0x0; //broad_off
+*((UINT32P)(0x10228270)) = 0x50909;
+*((UINT32P)(0x10230270)) = 0x90909;
+*((UINT32P)(0x100010B4)) = 0x1F; //broad_on
+DELAY_US(9);
+*((UINT32P)(0x100010B4)) = 0x0; //broad_off
+*((UINT32P)(0x10228D38)) = 0x9E104;
+*((UINT32P)(0x10230D38)) = 0x9E101;
+*((UINT32P)(0x100010B4)) = 0x1F; //broad_on
+*((UINT32P)(0x10228C38)) = 0x22401;
+*((UINT32P)(0x10228CB8)) = 0x22401;
+DELAY_US(1);
+*((UINT32P)(0x10228004)) = 0x0;
+*((UINT32P)(0x10228284)) = 0xF;
+DELAY_US(1);
+*((UINT32P)(0x100010B4)) = 0x0; //broad_off
+*((UINT32P)(0x10228D18)) = 0x64604C0;
+*((UINT32P)(0x10230D18)) = 0x6460440;
+*((UINT32P)(0x10228D38)) = 0x4E104;
+*((UINT32P)(0x10230D38)) = 0x4E101;
+*((UINT32P)(0x10228C18)) = 0x6460440;
+*((UINT32P)(0x10230C18)) = 0x6460440;
+*((UINT32P)(0x10228C98)) = 0x6460440;
+*((UINT32P)(0x10230C98)) = 0x6460440;
+*((UINT32P)(0x10228C38)) = 0x22401;
+*((UINT32P)(0x10230C38)) = 0x22401;
+*((UINT32P)(0x10228CB8)) = 0x22401;
+*((UINT32P)(0x10230CB8)) = 0x22401;
+//*((UINT32P)(0x100010B4)) = 0x1F; //broad_on
+//*((UINT32P)(0x100010B4)) = 0x0; //broad_off
+*((UINT32P)(0x10228D90)) = 0xE5780000;
+*((UINT32P)(0x10230D90)) = 0x0;
+*((UINT32P)(0x10228D98)) = 0xE5780000;
+*((UINT32P)(0x10230D98)) = 0x0;
+*((UINT32P)(0x10228270)) = 0x50909;
+*((UINT32P)(0x10230270)) = 0x90909;
+*((UINT32P)(0x10228308)) = 0x3;
+*((UINT32P)(0x10230308)) = 0x3;
+*((UINT32P)(0x10228D00)) = 0x144010;
+*((UINT32P)(0x10230D00)) = 0x144010;
+//drmac init *((UINT32P)(0x1022A210)) = 0x21;
+//drmac init *((UINT32P)(0x10232210)) = 0x21;
+*((UINT32P)(0x10228D34)) = 0x698619;
+*((UINT32P)(0x10228D38)) = 0x4E104;
+*((UINT32P)(0x10228D18)) = 0x64604C0;
+*((UINT32P)(0x10230D34)) = 0xC0778609;
+*((UINT32P)(0x10230D38)) = 0x4E101;
+*((UINT32P)(0x10230D18)) = 0x6460440;
+*((UINT32P)(0x10228274)) = 0x0;
+*((UINT32P)(0x10230274)) = 0x0;
+*((UINT32P)(0x1022827C)) = 0x0;
+*((UINT32P)(0x1023027C)) = 0x0;
+*((UINT32P)(0x10228278)) = 0xF;
+*((UINT32P)(0x10230278)) = 0xF;
+*((UINT32P)(0x10228284)) = 0xF;
+*((UINT32P)(0x10230284)) = 0xF;
+#ifdef DDR3200_LPBK
+*((UINT32P)(0x10228C18)) = 0x2460440;
+*((UINT32P)(0x10230C18)) = 0x2460440;
+*((UINT32P)(0x10228C98)) = 0x2460440;
+*((UINT32P)(0x10230C98)) = 0x2460440;
+*((UINT32P)(0x10228D18)) = 0x24604C0;
+*((UINT32P)(0x10230D18)) = 0x2460440;
+#else
+  #ifdef DDR3733_LPBK
+  //*((UINT32P)(0x10228C18)) = 0x7000440;
+  //*((UINT32P)(0x10230C18)) = 0x7000440;
+  //*((UINT32P)(0x10228C98)) = 0x7000440;
+  //*((UINT32P)(0x10230C98)) = 0x7000440;
+  //*((UINT32P)(0x10228D18)) = 0x7000440;
+  //*((UINT32P)(0x10230D18)) = 0x7000440;
+  *((UINT32P)(0x10228C18)) = 0x2060440;
+  *((UINT32P)(0x10230C18)) = 0x2060440;
+  *((UINT32P)(0x10228C98)) = 0x2060440;
+  *((UINT32P)(0x10230C98)) = 0x2060440;
+  *((UINT32P)(0x10228D18)) = 0x2060440;
+  *((UINT32P)(0x10230D18)) = 0x2060440;  
+  #else  
+    #ifdef DDR2400_LPBK
+    *((UINT32P)(0x10228C18)) = 0x7600740;
+    *((UINT32P)(0x10230C18)) = 0x7600740;
+    *((UINT32P)(0x10228C98)) = 0x7600740;
+    *((UINT32P)(0x10230C98)) = 0x7600740;
+    *((UINT32P)(0x10228D18)) = 0x7660740;
+    *((UINT32P)(0x10230D18)) = 0x7600740;    
+    #else //1600 
+    *((UINT32P)(0x10228C18)) = 0xBC00140;
+    *((UINT32P)(0x10228C98)) = 0xBC00140;
+    *((UINT32P)(0x10228D18)) = 0xBC00140;
+    *((UINT32P)(0x10230C18)) = 0xBC00140;
+    *((UINT32P)(0x10230C98)) = 0xBC00140;
+    *((UINT32P)(0x10230D18)) = 0xBC00140;    
+    #endif
+  #endif
+#endif
+#ifdef DDR3600_LPBK
+  *((UINT32P)(0x10228C18)) = 0x2460440;
+  *((UINT32P)(0x10230C18)) = 0x2460440;
+  *((UINT32P)(0x10228C98)) = 0x2460440;
+  *((UINT32P)(0x10230C98)) = 0x2460440;
+  *((UINT32P)(0x10228D18)) = 0x2460440;
+  *((UINT32P)(0x10230D18)) = 0x2460440;  
+#endif
+*((UINT32P)(0x1022800C)) = 0xC0000;
+*((UINT32P)(0x1023000C)) = 0x0;
+*((UINT32P)(0x10228000)) = 0x0;
+*((UINT32P)(0x10230000)) = 0x0;
+*((UINT32P)(0x10228004)) = 0x0;
+*((UINT32P)(0x10230004)) = 0x0;
+*((UINT32P)(0x10228188)) = 0x800;
+*((UINT32P)(0x10230188)) = 0x800;
+*((UINT32P)(0x10228088)) = 0x0;
+*((UINT32P)(0x10230088)) = 0x0;
+*((UINT32P)(0x10228108)) = 0x0;
+*((UINT32P)(0x10230108)) = 0x0;
+*((UINT32P)(0x10228088)) = 0x880AEC00;
+*((UINT32P)(0x10230088)) = 0x880AEC00;
+*((UINT32P)(0x10228108)) = 0x880AEC00;
+*((UINT32P)(0x10230108)) = 0x880AEC00;
+*((UINT32P)(0x10228188)) = 0x880BAC00;
+*((UINT32P)(0x10230188)) = 0x880BAC00;
+*((UINT32P)(0x10228180)) = 0x2;
+*((UINT32P)(0x10230180)) = 0x2;
+*((UINT32P)(0x10228080)) = 0x2;
+*((UINT32P)(0x10230080)) = 0x2;
+*((UINT32P)(0x10228100)) = 0x2;
+*((UINT32P)(0x10230100)) = 0x2;
+DELAY_US(1);
+*((UINT32P)(0x10228DA0)) = 0x40000;
+*((UINT32P)(0x10230DA0)) = 0x40000;
+*((UINT32P)(0x10228DA8)) = 0x40000;
+*((UINT32P)(0x10230DA8)) = 0x40000;
+#ifdef DDR3200_LPBK
+*((UINT32P)(0x10228D94)) = 0x7B000002;
+*((UINT32P)(0x10230D94)) = 0x7B000002;
+*((UINT32P)(0x10228D9C)) = 0x7B000002;
+*((UINT32P)(0x10230D9C)) = 0x7B000002;
+#else 
+  #ifdef DDR2400_LPBK
+  *((UINT32P)(0x10228D94)) = 0x5C000002;
+  *((UINT32P)(0x10230D94)) = 0x5C000000;
+  *((UINT32P)(0x10228D9C)) = 0x5C000002;
+  *((UINT32P)(0x10230D9C)) = 0x5C000000;
+  #else 
+    #ifdef DDR3733_LPBK
+    *((UINT32P)(0x10228D94)) = 0x8F000002;
+    *((UINT32P)(0x10230D94)) = 0x8F000000;
+    *((UINT32P)(0x10228D9C)) = 0x8F000002;
+    *((UINT32P)(0x10230D9C)) = 0x8F000000;  
+    #else  //LPBK1600
+    *((UINT32P)(0x10228D94)) = 0x7B000002;
+    *((UINT32P)(0x10230D94)) = 0x7B000002;
+    *((UINT32P)(0x10228D9C)) = 0x7B000002;
+    *((UINT32P)(0x10230D9C)) = 0x7B000002;
+
+    *((UINT32P)(0x10228C18)) = 0xBC00140;
+    *((UINT32P)(0x10228C98)) = 0xBC00140;
+    *((UINT32P)(0x10228D18)) = 0xBC00140;
+    *((UINT32P)(0x10230C18)) = 0xBC00140;
+    *((UINT32P)(0x10230C98)) = 0xBC00140;
+    *((UINT32P)(0x10230D18)) = 0xBC00140;
+    #endif
+  #endif
+#endif
+#ifdef DDR3600_LPBK
+    *((UINT32P)(0x10228D94)) = 0x8A000002;
+    *((UINT32P)(0x10230D94)) = 0x8A000000;
+    *((UINT32P)(0x10228D9C)) = 0x8A000002;
+    *((UINT32P)(0x10230D9C)) = 0x8A000000; 
+#endif
+#ifdef DDR800_LPBK
+*((UINT32P)(0x10228D94)) = 0x30000002;
+*((UINT32P)(0x10230D94)) = 0x30000002;
+*((UINT32P)(0x10228D9C)) = 0x30000002;
+*((UINT32P)(0x10230D9C)) = 0x30000002;
+#endif
+
+*((UINT32P)(0x10228180)) = 0x2;
+*((UINT32P)(0x10230180)) = 0x2;
+*((UINT32P)(0x10228080)) = 0x2;
+*((UINT32P)(0x10230080)) = 0x2;
+*((UINT32P)(0x10228100)) = 0x2;
+*((UINT32P)(0x10230100)) = 0x2;
+*((UINT32P)(0x10228184)) = 0x300000;
+*((UINT32P)(0x10230184)) = 0x300000;
+*((UINT32P)(0x10228084)) = 0x300000;
+*((UINT32P)(0x10230084)) = 0x300000;
+*((UINT32P)(0x10228104)) = 0x300000;
+*((UINT32P)(0x10230104)) = 0x300000;
+#ifdef  DDR3200_LPBK
+//*((UINT32P)(0x10228C18)) = 0x7440440;
+//*((UINT32P)(0x10230C18)) = 0x7440440;
+//*((UINT32P)(0x10228C98)) = 0x7440440;
+//*((UINT32P)(0x10230C98)) = 0x7440440;
+//*((UINT32P)(0x10228D18)) = 0x7440440;
+//*((UINT32P)(0x10230D18)) = 0x7440440;
+*((UINT32P)(0x10228C18)) = 0x2460440;
+*((UINT32P)(0x10230C18)) = 0x2460440;
+*((UINT32P)(0x10228C98)) = 0x2460440;
+*((UINT32P)(0x10230C98)) = 0x2460440;
+*((UINT32P)(0x10228D18)) = 0x2460440;
+*((UINT32P)(0x10230D18)) = 0x2460440;
+
+#else
+  #ifdef DDR3733_LPBK
+  //*((UINT32P)(0x10228C18)) = 0x7000440;
+  //*((UINT32P)(0x10230C18)) = 0x7000440;
+  //*((UINT32P)(0x10228C98)) = 0x7000440;
+  //*((UINT32P)(0x10230C98)) = 0x7000440;
+  //*((UINT32P)(0x10228D18)) = 0x7000440;
+  //*((UINT32P)(0x10230D18)) = 0x7000440;
+  *((UINT32P)(0x10228C18)) = 0x2060440;
+  *((UINT32P)(0x10230C18)) = 0x2060440;
+  *((UINT32P)(0x10228C98)) = 0x2060440;
+  *((UINT32P)(0x10230C98)) = 0x2060440;
+  *((UINT32P)(0x10228D18)) = 0x2060440;
+  *((UINT32P)(0x10230D18)) = 0x2060440;  
+  #else  
+    #ifdef DDR2400_LPBK
+    *((UINT32P)(0x10228C18)) = 0x7600740;
+    *((UINT32P)(0x10230C18)) = 0x7600740;
+    *((UINT32P)(0x10228C98)) = 0x7600740;
+    *((UINT32P)(0x10230C98)) = 0x7600740;
+    *((UINT32P)(0x10228D18)) = 0x7660740;
+    *((UINT32P)(0x10230D18)) = 0x7600740;    
+    #else //1600 
+    *((UINT32P)(0x10228C18)) = 0xBC00140;
+    *((UINT32P)(0x10228C98)) = 0xBC00140;
+    *((UINT32P)(0x10228D18)) = 0xBC00140;
+    *((UINT32P)(0x10230C18)) = 0xBC00140;
+    *((UINT32P)(0x10230C98)) = 0xBC00140;
+    *((UINT32P)(0x10230D18)) = 0xBC00140;    
+    #endif
+  #endif
+#endif
+#ifdef  DDR3600_LPBK
+*((UINT32P)(0x10228C18)) = 0x2460440;
+*((UINT32P)(0x10230C18)) = 0x2460440;
+*((UINT32P)(0x10228C98)) = 0x2460440;
+*((UINT32P)(0x10230C98)) = 0x2460440;
+*((UINT32P)(0x10228D18)) = 0x2460440;
+*((UINT32P)(0x10230D18)) = 0x2460440;
+#endif    
+*((UINT32P)(0x10228180)) = 0xA;
+*((UINT32P)(0x10230180)) = 0xA;
+*((UINT32P)(0x10228080)) = 0xA;
+*((UINT32P)(0x10230080)) = 0xA;
+*((UINT32P)(0x10228100)) = 0xA;
+*((UINT32P)(0x10230100)) = 0xA;
+DELAY_US(1);
+*((UINT32P)(0x10228000)) = 0x80000000;
+*((UINT32P)(0x10230000)) = 0x80000000;
+*((UINT32P)(0x10228004)) = 0x80000000;
+*((UINT32P)(0x10230004)) = 0x80000000;
+/*TINFO="PLL Enable"*/ *MDM_TM_TINFOMSG = 1216;
+DELAY_US(100);
+*((UINT32P)(0x1022800C)) = 0x4D0000;
+*((UINT32P)(0x1023000C)) = 0x410000;
+DELAY_US(1);
+#ifdef  DDR3200_LPBK
+//*((UINT32P)(0x10228C18)) = 0x7440440;
+//*((UINT32P)(0x10230C18)) = 0x7440440;
+//*((UINT32P)(0x10228C98)) = 0x7440440;
+//*((UINT32P)(0x10230C98)) = 0x7440440;
+//*((UINT32P)(0x10228D18)) = 0x7440440;
+//*((UINT32P)(0x10230D18)) = 0x7440440;
+*((UINT32P)(0x10228C18)) = 0x6460440;
+*((UINT32P)(0x10230C18)) = 0x6460440;
+*((UINT32P)(0x10228C98)) = 0x6460440;
+*((UINT32P)(0x10230C98)) = 0x6460440;
+*((UINT32P)(0x10228D18)) = 0x6460440;
+*((UINT32P)(0x10230D18)) = 0x6460440;
+
+#else
+  #ifdef DDR3733_LPBK
+  //*((UINT32P)(0x10228C18)) = 0x7000440;
+  //*((UINT32P)(0x10230C18)) = 0x7000440;
+  //*((UINT32P)(0x10228C98)) = 0x7000440;
+  //*((UINT32P)(0x10230C98)) = 0x7000440;
+  //*((UINT32P)(0x10228D18)) = 0x7000440;
+  //*((UINT32P)(0x10230D18)) = 0x7000440;
+  *((UINT32P)(0x10228C18)) = 0x6060440;
+  *((UINT32P)(0x10230C18)) = 0x6060440;
+  *((UINT32P)(0x10228C98)) = 0x6060440;
+  *((UINT32P)(0x10230C98)) = 0x6060440;
+  *((UINT32P)(0x10228D18)) = 0x6060440;
+  *((UINT32P)(0x10230D18)) = 0x6060440;
+  
+  #else  
+    #ifdef DDR2400_LPBK
+    *((UINT32P)(0x10228C18)) = 0x7600740;
+    *((UINT32P)(0x10230C18)) = 0x7600740;
+    *((UINT32P)(0x10228C98)) = 0x7600740;
+    *((UINT32P)(0x10230C98)) = 0x7600740;
+    *((UINT32P)(0x10228D18)) = 0x7660740;
+    *((UINT32P)(0x10230D18)) = 0x7600740;    
+    #else //1600 
+    *((UINT32P)(0x10228C18)) = 0xBC00140;
+    *((UINT32P)(0x10228C98)) = 0xBC00140;
+    *((UINT32P)(0x10228D18)) = 0xBC00140;
+    *((UINT32P)(0x10230C18)) = 0xBC00140;
+    *((UINT32P)(0x10230C98)) = 0xBC00140;
+    *((UINT32P)(0x10230D18)) = 0xBC00140;    
+    #endif
+  #endif
+#endif
+#ifdef  DDR3600_LPBK
+*((UINT32P)(0x10228C18)) = 0x6460440;
+*((UINT32P)(0x10230C18)) = 0x6460440;
+*((UINT32P)(0x10228C98)) = 0x6460440;
+*((UINT32P)(0x10230C98)) = 0x6460440;
+*((UINT32P)(0x10228D18)) = 0x6460440;
+*((UINT32P)(0x10230D18)) = 0x6460440;
+#endif    
+DELAY_US(1);
+*((UINT32P)(0x1022818C)) = 0xBA000;
+*((UINT32P)(0x1023018C)) = 0x3A000;
+*((UINT32P)(0x1022808C)) = 0x2E800;
+*((UINT32P)(0x1023008C)) = 0x2E800;
+*((UINT32P)(0x1022810C)) = 0x2E800;
+*((UINT32P)(0x1023010C)) = 0x2E800;
+*((UINT32P)(0x10228188)) = 0x800;
+*((UINT32P)(0x10230188)) = 0x800;
+*((UINT32P)(0x10228088)) = 0x800;
+*((UINT32P)(0x10230088)) = 0x800;
+*((UINT32P)(0x10228108)) = 0x800;
+*((UINT32P)(0x10230108)) = 0x800;
+*((UINT32P)(0x10228188)) = 0x800;
+*((UINT32P)(0x10230188)) = 0x800;
+*((UINT32P)(0x10228088)) = 0x0;
+*((UINT32P)(0x10230088)) = 0x0;
+*((UINT32P)(0x10228108)) = 0x0;
+*((UINT32P)(0x10230108)) = 0x0;
+DELAY_US(2);
+*((UINT32P)(0x10228284)) = 0x1F;
+*((UINT32P)(0x10230284)) = 0x1F;
+DELAY_US(1);
+*((UINT32P)(0x10228188)) = 0x801;
+*((UINT32P)(0x10230188)) = 0x801;
+DELAY_US(1);
+*((UINT32P)(0x10228088)) = 0x1;
+*((UINT32P)(0x10230088)) = 0x1;
+DELAY_US(1);
+*((UINT32P)(0x10228108)) = 0x1;
+*((UINT32P)(0x10230108)) = 0x1;
+DELAY_US(1);
+*((UINT32P)(0x10228278)) = 0x0;
+*((UINT32P)(0x10230278)) = 0x0;
+*((UINT32P)(0x10228274)) = 0xFFFFFFFF;
+*((UINT32P)(0x10230274)) = 0xFFFFFFFF;
+*((UINT32P)(0x1022827C)) = 0xFFFFFFFF;
+*((UINT32P)(0x1023027C)) = 0xFFFFFFFF;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502400;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502400;
+*((UINT32P)(0x100010B4)) = 0x1F; //broad_on
+//drmac init *((UINT32P)(0x1022A028)) = 0x20080000;
+//drmac init *((UINT32P)(0x1022A004)) = 0x348A2000;
+*((UINT32P)(0x102280BC)) = 0x10100431;
+*((UINT32P)(0x1022813C)) = 0x10100431;
+//drmac init *((UINT32P)(0x1022AB04)) = 0xF0F0F0F;
+//drmac init *((UINT32P)(0x1022A204)) = 0x14F70;
+//drmac init *((UINT32P)(0x1022AC54)) = 0x8120060C;
+//drmac init *((UINT32P)(0x1022A8A8)) = 0x14A5294A;
+//drmac init *((UINT32P)(0x1022A8AC)) = 0x14A5294A;
+//drmac init *((UINT32P)(0x1022A8B0)) = 0x14A5294A;
+//drmac init *((UINT32P)(0x1022A8B4)) = 0x14A5294A;
+//drmac init *((UINT32P)(0x1022A0DC)) = 0x8201DD0A;
+//drmac init *((UINT32P)(0x1022A210)) = 0x23;
+//drmac init *((UINT32P)(0x1022A000)) = 0x4109000;
+//drmac init *((UINT32P)(0x1022A208)) = 0x50000010;
+//drmac init *((UINT32P)(0x1022A208)) = 0x70000010;
+//drmac init *((UINT32P)(0x1022A208)) = 0x50000010;
+//drmac init *((UINT32P)(0x1022A03C)) = 0x22CFFFF;
+*((UINT32P)(0x102280BC)) = 0x10100431;
+*((UINT32P)(0x1022813C)) = 0x10100431;
+*((UINT32P)(0x102281C0)) = 0x31;
+*((UINT32P)(0x1022829C)) = 0xB119020F;
+*((UINT32P)(0x102282A0)) = 0x8100B08C;
+*((UINT32P)(0x102285F0)) = 0x1000222;
+*((UINT32P)(0x10228670)) = 0x1000222;
+*((UINT32P)(0x102286F0)) = 0x0;
+*((UINT32P)(0x102281B4)) = 0x0;
+*((UINT32P)(0x102281B4)) = 0x0;
+*((UINT32P)(0x102280B4)) = 0x0;
+*((UINT32P)(0x10228134)) = 0x0;
+//drmac init *((UINT32P)(0x1022A840)) = 0xA10810BF;
+//drmac init *((UINT32P)(0x1022A860)) = 0xC001004F;
+*((UINT32P)(0x10228C1C)) = 0x13008091;
+*((UINT32P)(0x10228C9C)) = 0x13008081;
+//drmac init *((UINT32P)(0x1022A04C)) = 0x75774001;
+//drmac init *((UINT32P)(0x1022A880)) = 0x0;
+//drmac init *((UINT32P)(0x1022A884)) = 0x70000;
+//drmac init *((UINT32P)(0x1022A888)) = 0x0;
+//drmac init *((UINT32P)(0x1022A88C)) = 0x0;
+//drmac init *((UINT32P)(0x1022A890)) = 0x11111011;
+//drmac init *((UINT32P)(0x1022A8A0)) = 0x33333333;
+//drmac init *((UINT32P)(0x1022A8A4)) = 0x22225555;
+//drmac init *((UINT32P)(0x1022AA2C)) = 0x33333333;
+//drmac init *((UINT32P)(0x1022AA30)) = 0x33333333;
+//drmac init *((UINT32P)(0x1022AA34)) = 0x22226666;
+//drmac init *((UINT32P)(0x1022AA38)) = 0x22226666;
+//drmac init *((UINT32P)(0x1022AB2C)) = 0x33333333;
+//drmac init *((UINT32P)(0x1022AB30)) = 0x33333333;
+//drmac init *((UINT32P)(0x1022AB34)) = 0x22226666;
+//drmac init *((UINT32P)(0x1022AB38)) = 0x22226666;
+*((UINT32P)(0x10228E6C)) = 0x1A1A00;
+*((UINT32P)(0x10228E1C)) = 0x1A1A00;
+*((UINT32P)(0x10228F6C)) = 0x141400;
+*((UINT32P)(0x10228F1C)) = 0x141400;
+DELAY_US(1);
+*((UINT32P)(0x1022813C)) = 0x10100431;
+*((UINT32P)(0x102280BC)) = 0x10100431;
+*((UINT32P)(0x102280B0)) = 0x10352E9;
+*((UINT32P)(0x10228130)) = 0x10352E9;
+//drmac init *((UINT32P)(0x1022A200)) = 0xFC120001;
+//drmac init *((UINT32P)(0x1022A048)) = 0x840F000;
+//drmac init *((UINT32P)(0x1022A85C)) = 0x33210000;
+//drmac init *((UINT32P)(0x1022A878)) = 0xC0000000;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502400;
+//drmac init *((UINT32P)(0x1022A034)) = 0x731814;
+//drmac init *((UINT32P)(0x1022A848)) = 0x9007640F;
+//drmac init *((UINT32P)(0x1022A064)) = 0x340007D2;
+//drmac init *((UINT32P)(0x1022A0D8)) = 0x40;
+//drmac init *((UINT32P)(0x1022A0D4)) = 0xC03C1D0;
+//drmac init *((UINT32P)(0x1022A050)) = 0x300007A1;
+//drmac init *((UINT32P)(0x1022A054)) = 0x6543B321;
+//drmac init *((UINT32P)(0x1022A004)) = 0x348A2000;
+//drmac init *((UINT32P)(0x1022A008)) = 0x81080000;
+//drmac init *((UINT32P)(0x1022A00C)) = 0x40ACF13;
+//drmac init *((UINT32P)(0x1022A010)) = 0xC80;
+//drmac init *((UINT32P)(0x1022A020)) = 0x9;
+//drmac init *((UINT32P)(0x1022A038)) = 0xC4000107;
+//drmac init *((UINT32P)(0x1022A040)) = 0x3000008C;
+//drmac init *((UINT32P)(0x1022A04C)) = 0x75774001;
+//drmac init *((UINT32P)(0x1022A858)) = 0x64401200;
+//drmac init *((UINT32P)(0x1022A850)) = 0x111;
+DELAY_US(2);
+//drmac init *((UINT32P)(0x1022AA04)) = 0x1919;
+//drmac init *((UINT32P)(0x1022AB04)) = 0x1B1B;
+//drmac init *((UINT32P)(0x1022A004)) = 0x348A2000;
+//drmac init *((UINT32P)(0x1022A058)) = 0x80A56;
+DELAY_US(1);
+//drmac init *((UINT32P)(0x1022A84C)) = 0xFF0005;
+//drmac init *((UINT32P)(0x1022A04C)) = 0x75774001;
+//drmac init *((UINT32P)(0x1022A048)) = 0x4840F000;
+//drmac init *((UINT32P)(0x1022A06C)) = 0x20000;
+//drmac init *((UINT32P)(0x1022A038)) = 0xC4000107;
+//drmac init *((UINT32P)(0x1022A038)) = 0xC4000107;
+//drmac init *((UINT32P)(0x1022A20C)) = 0x10704;
+//drmac init *((UINT32P)(0x1022A204)) = 0x14F70;
+//drmac init *((UINT32P)(0x1022A094)) = 0x100000;
+//drmac init *((UINT32P)(0x1022A098)) = 0x4000;
+//drmac init *((UINT32P)(0x1022A09C)) = 0x12000480;
+//drmac init *((UINT32P)(0x1022A01C)) = 0x0;
+//drmac init *((UINT32P)(0x1022A01C)) = 0x0;
+DELAY_US(1);
+//drmac init *((UINT32P)(0x1022A074)) = 0x68;
+//drmac init *((UINT32P)(0x1022A004)) = 0x348A2000;
+//drmac init *((UINT32P)(0x1022A00C)) = 0x40ACF13;
+//drmac init *((UINT32P)(0x1022A064)) = 0x340007D2;
+//drmac init *((UINT32P)(0x1022A01C)) = 0x0;
+//drmac init *((UINT32P)(0x1022A034)) = 0x731814;
+//drmac init *((UINT32P)(0x1022A06C)) = 0x20000;
+//drmac init *((UINT32P)(0x1022A20C)) = 0x10704;
+//drmac init *((UINT32P)(0x1022A8C0)) = 0x20000B00;
+*((UINT32P)(0x10228C1C)) = 0x8091;
+*((UINT32P)(0x10228C9C)) = 0x8081;
+//drmac init *((UINT32P)(0x1022A858)) = 0x64401200;
+//drmac init *((UINT32P)(0x1022AA2C)) = 0x33333322;
+//drmac init *((UINT32P)(0x1022AA30)) = 0x33333322;
+//drmac init *((UINT32P)(0x1022AB2C)) = 0x33333322;
+//drmac init *((UINT32P)(0x1022AB30)) = 0x33333322;
+DELAY_US(5);
+//drmac init *((UINT32P)(0x1022A204)) = 0x34F70;
+//drmac init *((UINT32P)(0x1022A204)) = 0x14F70;
+//drmac init *((UINT32P)(0x1022A200)) = 0xFC120001;
+//drmac init *((UINT32P)(0x1022A204)) = 0x14F70;
+//drmac init *((UINT32P)(0x1022A8C4)) = 0x1F19800;
+*((UINT32P)(0x1022829C)) = 0xB1190200;
+//drmac init *((UINT32P)(0x1022A850)) = 0x111;
+//drmac init *((UINT32P)(0x1022A200)) = 0xFC120001;
+*((UINT32P)(0x10228C1C)) = 0x13008091;
+*((UINT32P)(0x10228C9C)) = 0x13008081;
+//drmac init *((UINT32P)(0x1022A850)) = 0x110;
+//drmac init *((UINT32P)(0x1022A050)) = 0x300007A1;
+//drmac init *((UINT32P)(0x1022A0C8)) = 0x98E0080;
+//drmac init *((UINT32P)(0x1022A01C)) = 0x0;
+//drmac init *((UINT32P)(0x1022A034)) = 0x731814;
+DELAY_US(12);
+//drmac init *((UINT32P)(0x1022A858)) = 0x64401200;
+//drmac init *((UINT32P)(0x1022A8C0)) = 0x20000B00;
+//drmac init *((UINT32P)(0x1022AA0C)) = 0x1A1A1A1A;
+//drmac init *((UINT32P)(0x1022AA34)) = 0x44446666;
+//drmac init *((UINT32P)(0x1022AA38)) = 0x44446666;
+//drmac init *((UINT32P)(0x1022AB0C)) = 0x14141414;
+//drmac init *((UINT32P)(0x1022AB34)) = 0x44446666;
+//drmac init *((UINT32P)(0x1022AB38)) = 0x44446666;
+//drmac init *((UINT32P)(0x1022AC54)) = 0x8120050C;
+*((UINT32P)(0x10228C1C)) = 0x1300B091;
+*((UINT32P)(0x10228C9C)) = 0x1300B081;
+//drmac init *((UINT32P)(0x1022A8D0)) = 0x0;
+//drmac init *((UINT32P)(0x1022A858)) = 0x20001200;
+//drmac init *((UINT32P)(0x1022A85C)) = 0x30210000;
+//drmac init *((UINT32P)(0x1022A860)) = 0x1004F;
+//*((UINT32P)(0x10228C1C)) = 0x3091;
+//*((UINT32P)(0x10228C9C)) = 0x3081;
+//drmac init *((UINT32P)(0x1022A8A0)) = 0x11112222;
+//drmac init *((UINT32P)(0x1022A8A4)) = 0x66661111;
+//drmac init *((UINT32P)(0x1022A8C0)) = 0x80000B00;
+//drmac init *((UINT32P)(0x1022A8D0)) = 0x4;
+//drmac init *((UINT32P)(0x1022AA04)) = 0x0;
+//drmac init *((UINT32P)(0x1022AA0C)) = 0x1A1A1A1A;
+//drmac init *((UINT32P)(0x1022AA2C)) = 0x11112222;
+//drmac init *((UINT32P)(0x1022AA30)) = 0x11112222;
+//drmac init *((UINT32P)(0x1022AA34)) = 0x77771111;
+//drmac init *((UINT32P)(0x1022AA38)) = 0x77771111;
+//drmac init *((UINT32P)(0x1022AB04)) = 0x0;
+//drmac init *((UINT32P)(0x1022AB0C)) = 0x1E1E1E1E;
+//drmac init *((UINT32P)(0x1022AB2C)) = 0x11112222;
+//drmac init *((UINT32P)(0x1022AB30)) = 0x11112222;
+//drmac init *((UINT32P)(0x1022AB34)) = 0x77771111;
+//drmac init *((UINT32P)(0x1022AB38)) = 0x77771111;
+//drmac init *((UINT32P)(0x1022AC54)) = 0x81200308;
+*((UINT32P)(0x10228C14)) = 0x40000B;
+*((UINT32P)(0x10228C1C)) = 0x1021;
+*((UINT32P)(0x10228C94)) = 0x40000B;
+*((UINT32P)(0x10228C9C)) = 0x1001;
+*((UINT32P)(0x10228E1C)) = 0x1A1A00;
+*((UINT32P)(0x10228E6C)) = 0x1A1A00;
+*((UINT32P)(0x10228F1C)) = 0x1E1E00;
+*((UINT32P)(0x10228F6C)) = 0x1E1E00;
+*((UINT32P)(0x10228F00)) = 0xDDDDDDDD;
+*((UINT32P)(0x10228F04)) = 0xD;
+*((UINT32P)(0x10228F50)) = 0xDDDDDDDD;
+*((UINT32P)(0x10228F54)) = 0xD;
+//drmac init *((UINT32P)(0x1022A860)) = 0x1004E;
+*((UINT32P)(0x10228C1C)) = 0x1021;
+*((UINT32P)(0x10228C9C)) = 0x1001;
+*((UINT32P)(0x10228608)) = 0x20000000;
+*((UINT32P)(0x10228808)) = 0x20000000;
+*((UINT32P)(0x10228688)) = 0x20000000;
+*((UINT32P)(0x10228888)) = 0x20000000;
+*((UINT32P)(0x10228D1C)) = 0x0;
+*((UINT32P)(0x102281A4)) = 0x4AC;
+*((UINT32P)(0x102281C0)) = 0x31;
+*((UINT32P)(0x102281B0)) = 0x252A9;
+*((UINT32P)(0x102280A4)) = 0x4EE;
+*((UINT32P)(0x10228124)) = 0x4EE;
+*((UINT32P)(0x102281A4)) = 0x4AC;
+*((UINT32P)(0x102280A4)) = 0x4EC;
+*((UINT32P)(0x10228124)) = 0x4EC;
+*((UINT32P)(0x102280AC)) = 0x82110E00;
+*((UINT32P)(0x1022812C)) = 0x82110E00;
+*((UINT32P)(0x102281AC)) = 0x80000808;
+*((UINT32P)(0x102281B0)) = 0x352A9;
+*((UINT32P)(0x102281B0)) = 0x352A9;
+*((UINT32P)(0x10228268)) = 0x30;
+*((UINT32P)(0x102280B0)) = 0x10352E9;
+*((UINT32P)(0x10228130)) = 0x10352E9;
+*((UINT32P)(0x102281B0)) = 0x352A9;
+*((UINT32P)(0x102280B0)) = 0x10352E9;
+*((UINT32P)(0x10228130)) = 0x10352E9;
+*((UINT32P)(0x102281B0)) = 0x352A9;
+*((UINT32P)(0x102281B0)) = 0x352A9;
+*((UINT32P)(0x102280B0)) = 0x10352E9;
+*((UINT32P)(0x10228130)) = 0x10352E9;
+*((UINT32P)(0x102281B0)) = 0x352E9;
+*((UINT32P)(0x102280B0)) = 0x10352E9;
+*((UINT32P)(0x10228130)) = 0x10352E9;
+*((UINT32P)(0x102281B0)) = 0x352E9;
+*((UINT32P)(0x10228C14)) = 0x30000B;
+*((UINT32P)(0x10228C94)) = 0x30000B;
+*((UINT32P)(0x102280AC)) = 0x82110B00;
+*((UINT32P)(0x1022812C)) = 0x82110B00;
+*((UINT32P)(0x102280B8)) = 0x7;
+*((UINT32P)(0x10228138)) = 0x7;
+*((UINT32P)(0x102281BC)) = 0x10007;
+*((UINT32P)(0x102280B0)) = 0x10392E9;
+*((UINT32P)(0x10228130)) = 0x10392E9;
+*((UINT32P)(0x102280BC)) = 0x10100431;
+*((UINT32P)(0x1022813C)) = 0x10100431;
+//drmac init *((UINT32P)(0x1022A204)) = 0x14F70;
+//drmac init *((UINT32P)(0x1022A200)) = 0xFC120001;
+*((UINT32P)(0x102280BC)) = 0x10100720;
+*((UINT32P)(0x1022813C)) = 0x10100720;
+DELAY_US(1);
+*((UINT32P)(0x1022813C)) = 0x10100731;
+*((UINT32P)(0x102280BC)) = 0x10100731;
+*((UINT32P)(0x102281B8)) = 0x80A0A;
+*((UINT32P)(0x102281B8)) = 0x80A0A;
+//drmac init *((UINT32P)(0x1022A8CC)) = 0xF132;
+//drmac init *((UINT32P)(0x1022A8C4)) = 0x1F19800;
+*((UINT32P)(0x10228C14)) = 0x30000B;
+*((UINT32P)(0x10228C94)) = 0x30000B;
+*((UINT32P)(0x10228D14)) = 0x0;
+*((UINT32P)(0x100010B4)) = 0x0; //broad_off
+
+#ifdef  DDR3200_LPBK
+//*((UINT32P)(0x10228C18)) = 0x6060440;
+//*((UINT32P)(0x10230C18)) = 0x6060440;
+//*((UINT32P)(0x10228C98)) = 0x6060440;
+//*((UINT32P)(0x10230C98)) = 0x6060440;
+//*((UINT32P)(0x10228D18)) = 0x6060440;
+//*((UINT32P)(0x10230D18)) = 0x6060440;
+
+*((UINT32P)(0x10228C18)) = 0x6460440;
+*((UINT32P)(0x10230C18)) = 0x6460440;
+*((UINT32P)(0x10228C98)) = 0x6460440;
+*((UINT32P)(0x10230C98)) = 0x6460440;
+*((UINT32P)(0x10228D18)) = 0x6460440;
+*((UINT32P)(0x10230D18)) = 0x6460440;
+
+#else
+  #ifdef DDR3733_LPBK
+  //*((UINT32P)(0x10228C18)) = 0xA060440;
+  //*((UINT32P)(0x10230C18)) = 0xA060440;
+  //*((UINT32P)(0x10228C98)) = 0xA060440;
+  //*((UINT32P)(0x10230C98)) = 0xA060440;
+  //*((UINT32P)(0x10228D18)) = 0xA060440;
+  //*((UINT32P)(0x10230D18)) = 0xA060440;
+  *((UINT32P)(0x10228C18)) = 0x6060440;
+  *((UINT32P)(0x10230C18)) = 0x6060440;
+  *((UINT32P)(0x10228C98)) = 0x6060440;
+  *((UINT32P)(0x10230C98)) = 0x6060440;
+  *((UINT32P)(0x10228D18)) = 0x6060440;
+  *((UINT32P)(0x10230D18)) = 0x6060440;
+  
+  #else  //2400, 1600
+  *((UINT32P)(0x10228C18)) = 0xA0607C0;
+  *((UINT32P)(0x10230C18)) = 0xA0607C0;
+  *((UINT32P)(0x10228C98)) = 0xA0607C0;
+  *((UINT32P)(0x10230C98)) = 0xA0607C0;
+  *((UINT32P)(0x10228D18)) = 0xA0607C0;
+  *((UINT32P)(0x10230D18)) = 0xA0607C0;    
+  #endif
+#endif
+
+#ifdef  DDR3600_LPBK
+*((UINT32P)(0x10228C18)) = 0x6460440;
+*((UINT32P)(0x10230C18)) = 0x6460440;
+*((UINT32P)(0x10228C98)) = 0x6460440;
+*((UINT32P)(0x10230C98)) = 0x6460440;
+*((UINT32P)(0x10228D18)) = 0x6460440;
+*((UINT32P)(0x10230D18)) = 0x6460440;
+#endif    
+#ifdef LP3_IO
+*((UINT32P)(0x10228C18)) = 0x1A060540;
+*((UINT32P)(0x10230C18)) = 0x1A060540;
+*((UINT32P)(0x10228C98)) = 0x1A060540;
+*((UINT32P)(0x10230C98)) = 0x1A060540;
+*((UINT32P)(0x10228D18)) = 0x1A060540;
+*((UINT32P)(0x10230D18)) = 0x1A060540;
+#endif
+
+
+*((UINT32P)(0x100010B4)) = 0x1F; //broad_on
+//drmac init *((UINT32P)(0x1022A864)) = 0x81086894;
+//drmac init *((UINT32P)(0x1022A048)) = 0x4840F000;
+//drmac init *((UINT32P)(0x1022A218)) = 0x20000;
+//drmac init *((UINT32P)(0x1022A8CC)) = 0xF132;
+*((UINT32P)(0x10228C20)) = 0xFFC07FFF;
+*((UINT32P)(0x10228CA0)) = 0xFFC07FFF;
+*((UINT32P)(0x10228D20)) = 0xFFC07FFF;
+*((UINT32P)(0x102282A8)) = 0x1D351135;
+*((UINT32P)(0x10228C1C)) = 0x13008091;
+*((UINT32P)(0x10228C9C)) = 0x13008091;
+//drmac init *((UINT32P)(0x1022A03C)) = 0x22CFFFF;
+//drmac init *((UINT32P)(0x1022AC54)) = 0x81200308;
+//drmac init *((UINT32P)(0x1022A0BC)) = 0x80000;
+//drmac init *((UINT32P)(0x1022A0D0)) = 0xD426810;
+//drmac init *((UINT32P)(0x1022A208)) = 0x50000010;
+//drmac init *((UINT32P)(0x1022A20C)) = 0x10704;
+//drmac init *((UINT32P)(0x1022A860)) = 0x1004E;
+*((UINT32P)(0x10228C34)) = 0xC0778609;
+*((UINT32P)(0x10228CB4)) = 0xC0778609;
+*((UINT32P)(0x10228184)) = 0x300000;
+//drmac init *((UINT32P)(0x1022A00C)) = 0x40ACF13;
+//drmac init *((UINT32P)(0x1022A048)) = 0x4840F000;
+//drmac init *((UINT32P)(0x1022A0D8)) = 0x1A;
+*((UINT32P)(0x102280B0)) = 0x10392E9;
+*((UINT32P)(0x10228130)) = 0x10392E9;
+*((UINT32P)(0x102281B0)) = 0x352E9;
+//drmac init *((UINT32P)(0x1022A874)) = 0x0;
+//drmac init *((UINT32P)(0x1022A8C4)) = 0x1F19800;
+//drmac init *((UINT32P)(0x1022AA08)) = 0x0;
+//drmac init *((UINT32P)(0x1022AB08)) = 0x0;
+//drmac init *((UINT32P)(0x1022A850)) = 0x110;
+*((UINT32P)(0x102280BC)) = 0x10100431;
+*((UINT32P)(0x1022813C)) = 0x10100431;
+*((UINT32P)(0x102281C0)) = 0x31;
+*((UINT32P)(0x10228C20)) = 0xFFC07FFF;
+*((UINT32P)(0x10228CA0)) = 0xFFC07FFF;
+//*((UINT32P)(0x10228C38)) = 0x22401;
+//*((UINT32P)(0x10228CB8)) = 0x22401;
+//Joe disable READ_BASE_EN
+*((UINT32P)(0x10228C38)) = 0x02401;
+*((UINT32P)(0x10228CB8)) = 0x02401;
+//drmac init *((UINT32P)(0x1022A860)) = 0xC001004F;
+*((UINT32P)(0x10228C1C)) = 0x13008091;
+*((UINT32P)(0x10228C9C)) = 0x13008091;
+//drmac init *((UINT32P)(0x1022A028)) = 0x20080000;
+//drmac init *((UINT32P)(0x1022A04C)) = 0x75774001;
+//drmac init *((UINT32P)(0x1022A058)) = 0x80A56;
+//drmac init *((UINT32P)(0x1022A0D0)) = 0xD426810;
+//drmac init *((UINT32P)(0x1022A0DC)) = 0x8201DD0A;
+//drmac init *((UINT32P)(0x1022A0E0)) = 0xB80000D;
+*((UINT32P)(0x102282A8)) = 0x1D351135;
+*((UINT32P)(0x10228084)) = 0x300000;
+*((UINT32P)(0x10228104)) = 0x300000;
+*((UINT32P)(0x10228184)) = 0x300000;
+*((UINT32P)(0x1022829C)) = 0xB1190200;
+*((UINT32P)(0x102285E8)) = 0x101;
+//drmac init *((UINT32P)(0x1022A040)) = 0x3000008C;
+//drmac init *((UINT32P)(0x1022A050)) = 0x300007A1;
+//drmac init *((UINT32P)(0x1022A0D4)) = 0xC03C1D0;
+//drmac init *((UINT32P)(0x1022A0DC)) = 0x8201DD0A;
+//drmac init *((UINT32P)(0x1022A208)) = 0x50000000;
+//drmac init *((UINT32P)(0x1022A218)) = 0x20000;
+//drmac init *((UINT32P)(0x1022A03C)) = 0x22CFFFF;
+//drmac init *((UINT32P)(0x1022A8C0)) = 0x80000B00;
+//drmac init *((UINT32P)(0x1022A8A4)) = 0x66651111;
+//drmac init *((UINT32P)(0x1022A8A0)) = 0x11112222;
+//drmac init *((UINT32P)(0x1022AA38)) = 0x77761111;
+//drmac init *((UINT32P)(0x1022AA30)) = 0x11112222;
+//drmac init *((UINT32P)(0x1022AA34)) = 0x77761111;
+//drmac init *((UINT32P)(0x1022AA2C)) = 0x11112222;
+//drmac init *((UINT32P)(0x1022AB38)) = 0x77761111;
+//drmac init *((UINT32P)(0x1022AB30)) = 0x11112222;
+//drmac init *((UINT32P)(0x1022AB34)) = 0x77761111;
+//drmac init *((UINT32P)(0x1022AB2C)) = 0x11112222;
+//drmac init *((UINT32P)(0x1022A8A4)) = 0x66551111;
+//drmac init *((UINT32P)(0x1022A8A0)) = 0x11112222;
+//drmac init *((UINT32P)(0x1022AA38)) = 0x77661111;
+//drmac init *((UINT32P)(0x1022AA30)) = 0x11112222;
+//drmac init *((UINT32P)(0x1022AA34)) = 0x77661111;
+//drmac init *((UINT32P)(0x1022AA2C)) = 0x11112222;
+//drmac init *((UINT32P)(0x1022AB38)) = 0x77661111;
+//drmac init *((UINT32P)(0x1022AB30)) = 0x11112222;
+//drmac init *((UINT32P)(0x1022AB34)) = 0x77661111;
+//drmac init *((UINT32P)(0x1022AB2C)) = 0x11112222;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502400;
+//drmac init *((UINT32P)(0x1022A064)) = 0x340007D2;
+*((UINT32P)(0x102281D0)) = 0xA94011C0;
+*((UINT32P)(0x100010B4)) = 0x1F; //broad_on
+//drmac init *((UINT32P)(0x1022A8A8)) = 0x14A52907;
+//drmac init *((UINT32P)(0x1022A8AC)) = 0x1075294A;
+//drmac init *((UINT32P)(0x1022A8B0)) = 0x14A5280D;
+//drmac init *((UINT32P)(0x1022A8B4)) = 0xD5294A;
+//drmac init *((UINT32P)(0x1022A8A8)) = 0x10752907;
+//drmac init *((UINT32P)(0x1022A8A8)) = 0x10741D07;
+//drmac init *((UINT32P)(0x1022A8B0)) = 0xD5280D;
+//drmac init *((UINT32P)(0x1022A8B0)) = 0xD0340D;
+//drmac init *((UINT32P)(0x1022A8AC)) = 0x10741D4A;
+//drmac init *((UINT32P)(0x1022A8AC)) = 0x10741D07;
+//drmac init *((UINT32P)(0x1022A8B4)) = 0xD0354A;
+//drmac init *((UINT32P)(0x1022A8B4)) = 0xD0340D;
+*((UINT32P)(0x10228D2C)) = 0x101B03;
+*((UINT32P)(0x10228D2C)) = 0x1D01B03;
+*((UINT32P)(0x10228D0C)) = 0x400;
+*((UINT32P)(0x10228D00)) = 0x140010;
+*((UINT32P)(0x100010B4)) = 0x0; //broad_off
+*((UINT32P)(0x10228D38)) = 0x9E104;
+*((UINT32P)(0x10230D38)) = 0x9E101;
+*((UINT32P)(0x100010B4)) = 0x1F; //broad_on
+*((UINT32P)(0x100010B4)) = 0x1F; //broad_on
+//drmac init *((UINT32P)(0x1022A0A0)) = 0x4080110D;
+//drmac init *((UINT32P)(0x1022A84C)) = 0xFF0005;
+DELAY_US(1);
+//drmac init *((UINT32P)(0x1022A04C)) = 0x75774001;
+//drmac init *((UINT32P)(0x1022A0DC)) = 0x8301DD0A;
+//drmac init *((UINT32P)(0x1022A04C)) = 0x75774001;
+//drmac init *((UINT32P)(0x1022A004)) = 0x348A2000;
+//drmac init *((UINT32P)(0x1022A0D0)) = 0xD426810;
+//drmac init *((UINT32P)(0x1022A0A0)) = 0x4080110D;
+//drmac init *((UINT32P)(0x1022A004)) = 0x348A2000;
+DELAY_US(1);
+DELAY_US(1);
+*((UINT32P)(0x100010B4)) = 0x0; //broad_off
+//drmac init *((UINT32P)(0x1022A0D4)) = 0xC03C1D0;
+//drmac init *((UINT32P)(0x1022A0DC)) = 0x8301DD0A;
+//drmac init *((UINT32P)(0x102320D4)) = 0xC01C1F0;
+//drmac init *((UINT32P)(0x102320DC)) = 0x8301CD0A;
+//drmac init *((UINT32P)(0x1022A210)) = 0x23;
+//drmac init *((UINT32P)(0x10232210)) = 0x23;
+*((UINT32P)(0x10228260)) = 0x20000000;
+*((UINT32P)(0x10230260)) = 0x20000000;
+//drmac init *((UINT32P)(0x1022A0DC)) = 0x8301DD30;
+//drmac init *((UINT32P)(0x102320DC)) = 0x8301CD30;
+*((UINT32P)(0x1022829C)) = 0xB1190200;
+*((UINT32P)(0x1023029C)) = 0xB1190200;
+*((UINT32P)(0x100010B4)) = 0x0; //broad_off
+*((UINT32P)(0x102282A0)) = 0x8100908C;
+*((UINT32P)(0x102302A0)) = 0x8100908C;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502480;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502480;
+DELAY_US(200);
+*((UINT32P)(0x102282A0)) = 0x8100B08C;
+*((UINT32P)(0x102302A0)) = 0x8100B08C;
+//drmac init *((UINT32P)(0x1022A038)) = 0xC4000107;
+//drmac init *((UINT32P)(0x10232038)) = 0xC4000107;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+DELAY_US(2);
+//drmac init *((UINT32P)(0x1022A05C)) = 0xDD8;
+//drmac init *((UINT32P)(0x1022A038)) = 0xC4000107;
+DELAY_US(1);
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A05C)) = 0xDD8;
+//drmac init *((UINT32P)(0x1022A06C)) = 0x20000;
+//drmac init *((UINT32P)(0x1022A060)) = 0x10;
+DELAY_US(1);
+//drmac init *((UINT32P)(0x1022A060)) = 0x0;
+DELAY_US(1);
+//drmac init *((UINT32P)(0x1022A060)) = 0x40;
+DELAY_US(1);
+//drmac init *((UINT32P)(0x1022A060)) = 0x0;
+DELAY_US(1);
+//drmac init *((UINT32P)(0x1022A05C)) = 0xDD8;
+//drmac init *((UINT32P)(0x1022A038)) = 0xC4000107;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A05C)) = 0xDD8;
+//drmac init *((UINT32P)(0x1022A05C)) = 0xD18;
+//drmac init *((UINT32P)(0x1022A060)) = 0x1;
+//drmac init *((UINT32P)(0x1022A060)) = 0x0;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A05C)) = 0xC18;
+//drmac init *((UINT32P)(0x1022A05C)) = 0xC5D;
+//drmac init *((UINT32P)(0x1022A060)) = 0x1;
+//drmac init *((UINT32P)(0x1022A060)) = 0x0;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x15D;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x126;
+//drmac init *((UINT32P)(0x1022A060)) = 0x1;
+//drmac init *((UINT32P)(0x1022A060)) = 0x0;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x226;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x212;
+//drmac init *((UINT32P)(0x1022A060)) = 0x1;
+//drmac init *((UINT32P)(0x1022A060)) = 0x0;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A05C)) = 0xB12;
+//drmac init *((UINT32P)(0x1022A05C)) = 0xB00;
+//drmac init *((UINT32P)(0x1022A060)) = 0x1;
+//drmac init *((UINT32P)(0x1022A060)) = 0x0;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x1600;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x1638;
+//drmac init *((UINT32P)(0x1022A060)) = 0x1;
+//drmac init *((UINT32P)(0x1022A060)) = 0x0;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A05C)) = 0xE38;
+//drmac init *((UINT32P)(0x1022A05C)) = 0xE5D;
+//drmac init *((UINT32P)(0x1022A060)) = 0x1;
+//drmac init *((UINT32P)(0x1022A060)) = 0x0;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x35D;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x330;
+//drmac init *((UINT32P)(0x1022A060)) = 0x1;
+//drmac init *((UINT32P)(0x1022A060)) = 0x0;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A05C)) = 0xD30;
+//drmac init *((UINT32P)(0x1022A05C)) = 0xD58;
+//drmac init *((UINT32P)(0x1022A060)) = 0x1;
+//drmac init *((UINT32P)(0x1022A060)) = 0x0;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A05C)) = 0xC58;
+//drmac init *((UINT32P)(0x1022A05C)) = 0xC5D;
+//drmac init *((UINT32P)(0x1022A060)) = 0x1;
+//drmac init *((UINT32P)(0x1022A060)) = 0x0;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x15D;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x156;
+//drmac init *((UINT32P)(0x1022A060)) = 0x1;
+//drmac init *((UINT32P)(0x1022A060)) = 0x0;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x256;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x22D;
+//drmac init *((UINT32P)(0x1022A060)) = 0x1;
+//drmac init *((UINT32P)(0x1022A060)) = 0x0;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A05C)) = 0xB2D;
+//drmac init *((UINT32P)(0x1022A05C)) = 0xB04;
+//drmac init *((UINT32P)(0x1022A060)) = 0x1;
+//drmac init *((UINT32P)(0x1022A060)) = 0x0;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x1604;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x1638;
+//drmac init *((UINT32P)(0x1022A060)) = 0x1;
+//drmac init *((UINT32P)(0x1022A060)) = 0x0;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A05C)) = 0xE38;
+//drmac init *((UINT32P)(0x1022A05C)) = 0xE5D;
+//drmac init *((UINT32P)(0x1022A060)) = 0x1;
+//drmac init *((UINT32P)(0x1022A060)) = 0x0;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x35D;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x330;
+//drmac init *((UINT32P)(0x1022A060)) = 0x1;
+//drmac init *((UINT32P)(0x1022A060)) = 0x0;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A05C)) = 0xD30;
+//drmac init *((UINT32P)(0x1022A05C)) = 0xD18;
+//drmac init *((UINT32P)(0x1022A060)) = 0x1;
+//drmac init *((UINT32P)(0x1022A060)) = 0x0;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x1000D18;
+//drmac init *((UINT32P)(0x1022A038)) = 0xC4000107;
+DELAY_US(1);
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x1000D18;
+//drmac init *((UINT32P)(0x1022A06C)) = 0x20000;
+//drmac init *((UINT32P)(0x1022A060)) = 0x10;
+DELAY_US(1);
+//drmac init *((UINT32P)(0x1022A060)) = 0x0;
+DELAY_US(1);
+//drmac init *((UINT32P)(0x1022A060)) = 0x40;
+DELAY_US(1);
+//drmac init *((UINT32P)(0x1022A060)) = 0x0;
+DELAY_US(1);
+//drmac init *((UINT32P)(0x1022A05C)) = 0x1000D18;
+//drmac init *((UINT32P)(0x1022A038)) = 0xC4000107;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x1000D18;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x1000D18;
+//drmac init *((UINT32P)(0x1022A060)) = 0x1;
+//drmac init *((UINT32P)(0x1022A060)) = 0x0;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x1000C18;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x1000C5D;
+//drmac init *((UINT32P)(0x1022A060)) = 0x1;
+//drmac init *((UINT32P)(0x1022A060)) = 0x0;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x100015D;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x1000126;
+//drmac init *((UINT32P)(0x1022A060)) = 0x1;
+//drmac init *((UINT32P)(0x1022A060)) = 0x0;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x1000226;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x1000212;
+//drmac init *((UINT32P)(0x1022A060)) = 0x1;
+//drmac init *((UINT32P)(0x1022A060)) = 0x0;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x1000B12;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x1000B00;
+//drmac init *((UINT32P)(0x1022A060)) = 0x1;
+//drmac init *((UINT32P)(0x1022A060)) = 0x0;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x1001600;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x1001638;
+//drmac init *((UINT32P)(0x1022A060)) = 0x1;
+//drmac init *((UINT32P)(0x1022A060)) = 0x0;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x1000E38;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x1000E5D;
+//drmac init *((UINT32P)(0x1022A060)) = 0x1;
+//drmac init *((UINT32P)(0x1022A060)) = 0x0;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x100035D;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x1000330;
+//drmac init *((UINT32P)(0x1022A060)) = 0x1;
+//drmac init *((UINT32P)(0x1022A060)) = 0x0;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x1000D30;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x1000D58;
+//drmac init *((UINT32P)(0x1022A060)) = 0x1;
+//drmac init *((UINT32P)(0x1022A060)) = 0x0;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x1000C58;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x1000C5D;
+//drmac init *((UINT32P)(0x1022A060)) = 0x1;
+//drmac init *((UINT32P)(0x1022A060)) = 0x0;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x100015D;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x1000156;
+//drmac init *((UINT32P)(0x1022A060)) = 0x1;
+//drmac init *((UINT32P)(0x1022A060)) = 0x0;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x1000256;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x100022D;
+//drmac init *((UINT32P)(0x1022A060)) = 0x1;
+//drmac init *((UINT32P)(0x1022A060)) = 0x0;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x1000B2D;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x1000B04;
+//drmac init *((UINT32P)(0x1022A060)) = 0x1;
+//drmac init *((UINT32P)(0x1022A060)) = 0x0;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x1001604;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x1001638;
+//drmac init *((UINT32P)(0x1022A060)) = 0x1;
+//drmac init *((UINT32P)(0x1022A060)) = 0x0;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x1000E38;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x1000E5D;
+//drmac init *((UINT32P)(0x1022A060)) = 0x1;
+//drmac init *((UINT32P)(0x1022A060)) = 0x0;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x100035D;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x1000330;
+//drmac init *((UINT32P)(0x1022A060)) = 0x1;
+//drmac init *((UINT32P)(0x1022A060)) = 0x0;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x1000D30;
+//drmac init *((UINT32P)(0x1022A05C)) = 0x1000D18;
+//drmac init *((UINT32P)(0x1022A060)) = 0x1;
+//drmac init *((UINT32P)(0x1022A060)) = 0x0;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A8D8)) = 0x18000D;
+//drmac init *((UINT32P)(0x1022A8DC)) = 0x10000D;
+//drmac init *((UINT32P)(0x1022A8D4)) = 0x120002;
+//drmac init *((UINT32P)(0x1023205C)) = 0xDD8;
+//drmac init *((UINT32P)(0x10232038)) = 0xC4000107;
+DELAY_US(1);
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1023205C)) = 0xDD8;
+//drmac init *((UINT32P)(0x1023206C)) = 0x20000;
+//drmac init *((UINT32P)(0x10232060)) = 0x10;
+DELAY_US(1);
+//drmac init *((UINT32P)(0x10232060)) = 0x0;
+DELAY_US(1);
+//drmac init *((UINT32P)(0x10232060)) = 0x40;
+DELAY_US(1);
+//drmac init *((UINT32P)(0x10232060)) = 0x0;
+DELAY_US(1);
+//drmac init *((UINT32P)(0x1023205C)) = 0xDD8;
+//drmac init *((UINT32P)(0x10232038)) = 0xC4000107;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1023205C)) = 0xDD8;
+//drmac init *((UINT32P)(0x1023205C)) = 0xD18;
+//drmac init *((UINT32P)(0x10232060)) = 0x1;
+//drmac init *((UINT32P)(0x10232060)) = 0x0;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1023205C)) = 0xC18;
+//drmac init *((UINT32P)(0x1023205C)) = 0xC5D;
+//drmac init *((UINT32P)(0x10232060)) = 0x1;
+//drmac init *((UINT32P)(0x10232060)) = 0x0;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1023205C)) = 0x15D;
+//drmac init *((UINT32P)(0x1023205C)) = 0x126;
+//drmac init *((UINT32P)(0x10232060)) = 0x1;
+//drmac init *((UINT32P)(0x10232060)) = 0x0;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1023205C)) = 0x226;
+//drmac init *((UINT32P)(0x1023205C)) = 0x212;
+//drmac init *((UINT32P)(0x10232060)) = 0x1;
+//drmac init *((UINT32P)(0x10232060)) = 0x0;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1023205C)) = 0xB12;
+//drmac init *((UINT32P)(0x1023205C)) = 0xB00;
+//drmac init *((UINT32P)(0x10232060)) = 0x1;
+//drmac init *((UINT32P)(0x10232060)) = 0x0;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1023205C)) = 0x1600;
+//drmac init *((UINT32P)(0x1023205C)) = 0x1638;
+//drmac init *((UINT32P)(0x10232060)) = 0x1;
+//drmac init *((UINT32P)(0x10232060)) = 0x0;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1023205C)) = 0xE38;
+//drmac init *((UINT32P)(0x1023205C)) = 0xE5D;
+//drmac init *((UINT32P)(0x10232060)) = 0x1;
+//drmac init *((UINT32P)(0x10232060)) = 0x0;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1023205C)) = 0x35D;
+//drmac init *((UINT32P)(0x1023205C)) = 0x330;
+//drmac init *((UINT32P)(0x10232060)) = 0x1;
+//drmac init *((UINT32P)(0x10232060)) = 0x0;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1023205C)) = 0xD30;
+//drmac init *((UINT32P)(0x1023205C)) = 0xD58;
+//drmac init *((UINT32P)(0x10232060)) = 0x1;
+//drmac init *((UINT32P)(0x10232060)) = 0x0;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1023205C)) = 0xC58;
+//drmac init *((UINT32P)(0x1023205C)) = 0xC5D;
+//drmac init *((UINT32P)(0x10232060)) = 0x1;
+//drmac init *((UINT32P)(0x10232060)) = 0x0;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1023205C)) = 0x15D;
+//drmac init *((UINT32P)(0x1023205C)) = 0x156;
+//drmac init *((UINT32P)(0x10232060)) = 0x1;
+//drmac init *((UINT32P)(0x10232060)) = 0x0;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1023205C)) = 0x256;
+//drmac init *((UINT32P)(0x1023205C)) = 0x22D;
+//drmac init *((UINT32P)(0x10232060)) = 0x1;
+//drmac init *((UINT32P)(0x10232060)) = 0x0;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1023205C)) = 0xB2D;
+//drmac init *((UINT32P)(0x1023205C)) = 0xB04;
+//drmac init *((UINT32P)(0x10232060)) = 0x1;
+//drmac init *((UINT32P)(0x10232060)) = 0x0;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1023205C)) = 0x1604;
+//drmac init *((UINT32P)(0x1023205C)) = 0x1638;
+//drmac init *((UINT32P)(0x10232060)) = 0x1;
+//drmac init *((UINT32P)(0x10232060)) = 0x0;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1023205C)) = 0xE38;
+//drmac init *((UINT32P)(0x1023205C)) = 0xE5D;
+//drmac init *((UINT32P)(0x10232060)) = 0x1;
+//drmac init *((UINT32P)(0x10232060)) = 0x0;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1023205C)) = 0x35D;
+//drmac init *((UINT32P)(0x1023205C)) = 0x330;
+//drmac init *((UINT32P)(0x10232060)) = 0x1;
+//drmac init *((UINT32P)(0x10232060)) = 0x0;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1023205C)) = 0xD30;
+//drmac init *((UINT32P)(0x1023205C)) = 0xD18;
+//drmac init *((UINT32P)(0x10232060)) = 0x1;
+//drmac init *((UINT32P)(0x10232060)) = 0x0;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1023205C)) = 0x1000D18;
+//drmac init *((UINT32P)(0x10232038)) = 0xC4000107;
+DELAY_US(1);
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1023205C)) = 0x1000D18;
+//drmac init *((UINT32P)(0x1023206C)) = 0x20000;
+//drmac init *((UINT32P)(0x10232060)) = 0x10;
+DELAY_US(1);
+//drmac init *((UINT32P)(0x10232060)) = 0x0;
+DELAY_US(1);
+//drmac init *((UINT32P)(0x10232060)) = 0x40;
+DELAY_US(1);
+//drmac init *((UINT32P)(0x10232060)) = 0x0;
+DELAY_US(1);
+//drmac init *((UINT32P)(0x1023205C)) = 0x1000D18;
+//drmac init *((UINT32P)(0x10232038)) = 0xC4000107;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1023205C)) = 0x1000D18;
+//drmac init *((UINT32P)(0x1023205C)) = 0x1000D18;
+//drmac init *((UINT32P)(0x10232060)) = 0x1;
+//drmac init *((UINT32P)(0x10232060)) = 0x0;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1023205C)) = 0x1000C18;
+//drmac init *((UINT32P)(0x1023205C)) = 0x1000C5D;
+//drmac init *((UINT32P)(0x10232060)) = 0x1;
+//drmac init *((UINT32P)(0x10232060)) = 0x0;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1023205C)) = 0x100015D;
+//drmac init *((UINT32P)(0x1023205C)) = 0x1000126;
+//drmac init *((UINT32P)(0x10232060)) = 0x1;
+//drmac init *((UINT32P)(0x10232060)) = 0x0;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1023205C)) = 0x1000226;
+//drmac init *((UINT32P)(0x1023205C)) = 0x1000212;
+//drmac init *((UINT32P)(0x10232060)) = 0x1;
+//drmac init *((UINT32P)(0x10232060)) = 0x0;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1023205C)) = 0x1000B12;
+//drmac init *((UINT32P)(0x1023205C)) = 0x1000B00;
+//drmac init *((UINT32P)(0x10232060)) = 0x1;
+//drmac init *((UINT32P)(0x10232060)) = 0x0;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1023205C)) = 0x1001600;
+//drmac init *((UINT32P)(0x1023205C)) = 0x1001638;
+//drmac init *((UINT32P)(0x10232060)) = 0x1;
+//drmac init *((UINT32P)(0x10232060)) = 0x0;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1023205C)) = 0x1000E38;
+//drmac init *((UINT32P)(0x1023205C)) = 0x1000E5D;
+//drmac init *((UINT32P)(0x10232060)) = 0x1;
+//drmac init *((UINT32P)(0x10232060)) = 0x0;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1023205C)) = 0x100035D;
+//drmac init *((UINT32P)(0x1023205C)) = 0x1000330;
+//drmac init *((UINT32P)(0x10232060)) = 0x1;
+//drmac init *((UINT32P)(0x10232060)) = 0x0;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1023205C)) = 0x1000D30;
+//drmac init *((UINT32P)(0x1023205C)) = 0x1000D58;
+//drmac init *((UINT32P)(0x10232060)) = 0x1;
+//drmac init *((UINT32P)(0x10232060)) = 0x0;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1023205C)) = 0x1000C58;
+//drmac init *((UINT32P)(0x1023205C)) = 0x1000C5D;
+//drmac init *((UINT32P)(0x10232060)) = 0x1;
+//drmac init *((UINT32P)(0x10232060)) = 0x0;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1023205C)) = 0x100015D;
+//drmac init *((UINT32P)(0x1023205C)) = 0x1000156;
+//drmac init *((UINT32P)(0x10232060)) = 0x1;
+//drmac init *((UINT32P)(0x10232060)) = 0x0;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1023205C)) = 0x1000256;
+//drmac init *((UINT32P)(0x1023205C)) = 0x100022D;
+//drmac init *((UINT32P)(0x10232060)) = 0x1;
+//drmac init *((UINT32P)(0x10232060)) = 0x0;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1023205C)) = 0x1000B2D;
+//drmac init *((UINT32P)(0x1023205C)) = 0x1000B04;
+//drmac init *((UINT32P)(0x10232060)) = 0x1;
+//drmac init *((UINT32P)(0x10232060)) = 0x0;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1023205C)) = 0x1001604;
+//drmac init *((UINT32P)(0x1023205C)) = 0x1001638;
+//drmac init *((UINT32P)(0x10232060)) = 0x1;
+//drmac init *((UINT32P)(0x10232060)) = 0x0;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1023205C)) = 0x1000E38;
+//drmac init *((UINT32P)(0x1023205C)) = 0x1000E5D;
+//drmac init *((UINT32P)(0x10232060)) = 0x1;
+//drmac init *((UINT32P)(0x10232060)) = 0x0;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1023205C)) = 0x100035D;
+//drmac init *((UINT32P)(0x1023205C)) = 0x1000330;
+//drmac init *((UINT32P)(0x10232060)) = 0x1;
+//drmac init *((UINT32P)(0x10232060)) = 0x0;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1023205C)) = 0x1000D30;
+//drmac init *((UINT32P)(0x1023205C)) = 0x1000D18;
+//drmac init *((UINT32P)(0x10232060)) = 0x1;
+//drmac init *((UINT32P)(0x10232060)) = 0x0;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x102328D8)) = 0x18000D;
+//drmac init *((UINT32P)(0x102328DC)) = 0x10000D;
+//drmac init *((UINT32P)(0x102328D4)) = 0x120002;
+//drmac init *((UINT32P)(0x1022A05C)) = 0xD18;
+//drmac init *((UINT32P)(0x1023205C)) = 0xD18;
+*((UINT32P)(0x100010B4)) = 0x0; //broad_off
+//drmac init *((UINT32P)(0x1022A800)) = 0x3000704;
+//drmac init *((UINT32P)(0x10232800)) = 0x3000704;
+//drmac init *((UINT32P)(0x1022A804)) = 0x4000200;
+//drmac init *((UINT32P)(0x10232804)) = 0x4000200;
+//drmac init *((UINT32P)(0x1022A808)) = 0x40100;
+//drmac init *((UINT32P)(0x10232808)) = 0x40100;
+//drmac init *((UINT32P)(0x1022A80C)) = 0x302C0010;
+//drmac init *((UINT32P)(0x1023280C)) = 0x302C0010;
+//drmac init *((UINT32P)(0x1022A810)) = 0x1065003E;
+//drmac init *((UINT32P)(0x10232810)) = 0x1065003E;
+//drmac init *((UINT32P)(0x1022A814)) = 0x5000606;
+//drmac init *((UINT32P)(0x10232814)) = 0x5000606;
+//drmac init *((UINT32P)(0x1022A81C)) = 0x503030C;
+//drmac init *((UINT32P)(0x1023281C)) = 0x503030C;
+//drmac init *((UINT32P)(0x1022A820)) = 0x2000520;
+//drmac init *((UINT32P)(0x10232820)) = 0x2000520;
+//drmac init *((UINT32P)(0x1022A0B0)) = 0x8000000;
+//drmac init *((UINT32P)(0x102320B0)) = 0x8000000;
+//drmac init *((UINT32P)(0x1022AA00)) = 0x1;
+//drmac init *((UINT32P)(0x10232A00)) = 0x1;
+//drmac init *((UINT32P)(0x1022AB00)) = 0x1;
+//drmac init *((UINT32P)(0x10232B00)) = 0x1;
+//drmac init *((UINT32P)(0x1022A860)) = 0xC001001F;
+//drmac init *((UINT32P)(0x10232860)) = 0xC001001F;
+//drmac init *((UINT32P)(0x1022A844)) = 0x2000080A;
+//drmac init *((UINT32P)(0x10232844)) = 0x2000080A;
+//drmac init *((UINT32P)(0x1022A848)) = 0x9007320F;
+//drmac init *((UINT32P)(0x10232848)) = 0x9007320F;
+//drmac init *((UINT32P)(0x1022A8C8)) = 0x4E39E9B6;
+//drmac init *((UINT32P)(0x102328C8)) = 0x4E39E9B6;
+//drmac init *((UINT32P)(0x1022A85C)) = 0x30110000;
+//drmac init *((UINT32P)(0x1023285C)) = 0x30110000;
+//drmac init *((UINT32P)(0x1022A024)) = 0x80502440;
+//drmac init *((UINT32P)(0x10232024)) = 0x80502440;
+//drmac init *((UINT32P)(0x1022A858)) = 0x20000100;
+//drmac init *((UINT32P)(0x10232858)) = 0x20000100;
+//drmac init *((UINT32P)(0x1022A010)) = 0xC80;
+//drmac init *((UINT32P)(0x1022A01C)) = 0x0;
+//drmac init *((UINT32P)(0x1022A010)) = 0xC80;
+*((UINT32P)(0x100010B4)) = 0x0; //broad_off
+*((UINT32P)(0x10228084)) = 0x200000;
+*((UINT32P)(0x10230084)) = 0x200000;
+*((UINT32P)(0x10228104)) = 0x200000;
+*((UINT32P)(0x10230104)) = 0x200000;
+*((UINT32P)(0x10228184)) = 0x200000;
+*((UINT32P)(0x10230184)) = 0x200000;
+*((UINT32P)(0x10228C34)) = 0xC0778609;
+*((UINT32P)(0x10230C34)) = 0xC0778609;
+*((UINT32P)(0x10228CB4)) = 0xC0778609;
+*((UINT32P)(0x10230CB4)) = 0xC0778609;
+*((UINT32P)(0x10228D34)) = 0xC0778609;
+*((UINT32P)(0x10230D34)) = 0xC0778609;
+//for other shuffle group
+//*((UINT32P)(0x10229134)) = 0x80666009;
+//*((UINT32P)(0x10231134)) = 0x80666009;
+//*((UINT32P)(0x102291B4)) = 0x80666009;
+//*((UINT32P)(0x102311B4)) = 0x80666009;
+//*((UINT32P)(0x10229234)) = 0x666009;
+//*((UINT32P)(0x10231234)) = 0x666009;
+//*((UINT32P)(0x10229634)) = 0x80666009;
+//*((UINT32P)(0x10231634)) = 0x80666009;
+//*((UINT32P)(0x102296B4)) = 0x80666009;
+//*((UINT32P)(0x102316B4)) = 0x80666009;
+//*((UINT32P)(0x10229734)) = 0x666009;
+//*((UINT32P)(0x10231734)) = 0x666009;
+//drmac init *((UINT32P)(0x1022A038)) = 0x4000120;
+//drmac init *((UINT32P)(0x10232038)) = 0x4000120;
+*((UINT32P)(0x1022828C)) = 0x8060037E;
+*((UINT32P)(0x1023028C)) = 0x8060037E;
+*((UINT32P)(0x1022828C)) = 0x8060037F;
+*((UINT32P)(0x1023028C)) = 0x8060037F;
+*((UINT32P)(0x1022828C)) = 0x8060037E;
+*((UINT32P)(0x1023028C)) = 0x8060037E;
+*((UINT32P)(0x102282A8)) = 0x1D351135;
+*((UINT32P)(0x102302A8)) = 0x1D351135;
+*((UINT32P)(0x10228C1C)) = 0x13008091;
+*((UINT32P)(0x10230C1C)) = 0x13008091;
+*((UINT32P)(0x10228C9C)) = 0x13008091;
+*((UINT32P)(0x10230C9C)) = 0x13008091;
+*((UINT32P)(0x10228D1C)) = 0x0;
+*((UINT32P)(0x10230D1C)) = 0x0;
+//*((UINT32P)(0x1022911C)) = 0x2;
+//*((UINT32P)(0x1023111C)) = 0x2;
+//*((UINT32P)(0x1022919C)) = 0x2;
+//*((UINT32P)(0x1023119C)) = 0x2;
+//*((UINT32P)(0x1022921C)) = 0x2;
+//*((UINT32P)(0x1023121C)) = 0x2;
+//*((UINT32P)(0x1022961C)) = 0x2;
+//*((UINT32P)(0x1023161C)) = 0x2;
+//*((UINT32P)(0x1022969C)) = 0x2;
+//*((UINT32P)(0x1023169C)) = 0x2;
+//*((UINT32P)(0x1022971C)) = 0x2;
+//*((UINT32P)(0x1023171C)) = 0x2;
+*((UINT32P)(0x10228284)) = 0xBFF1F;
+*((UINT32P)(0x10230284)) = 0xBFF1F;
+*((UINT32P)(0x10228C20)) = 0xFFF87FFF;
+*((UINT32P)(0x10230C20)) = 0xFFF87FFF;
+*((UINT32P)(0x10228CA0)) = 0xFFF87FFF;
+*((UINT32P)(0x10230CA0)) = 0xFFF87FFF;
+*((UINT32P)(0x10228D20)) = 0x7FFF;
+*((UINT32P)(0x10230D20)) = 0x7FFF;
+//*((UINT32P)(0x10229120)) = 0xFFF80000;
+//*((UINT32P)(0x10231120)) = 0xFFF80000;
+//*((UINT32P)(0x102291A0)) = 0xFFF80000;
+//*((UINT32P)(0x102311A0)) = 0xFFF80000;
+//*((UINT32P)(0x10229220)) = 0x0;
+//*((UINT32P)(0x10231220)) = 0x0;
+//*((UINT32P)(0x10229620)) = 0xFFF80000;
+//*((UINT32P)(0x10231620)) = 0xFFF80000;
+//*((UINT32P)(0x102296A0)) = 0xFFF80000;
+//*((UINT32P)(0x102316A0)) = 0xFFF80000;
+//*((UINT32P)(0x10229720)) = 0x0;
+//*((UINT32P)(0x10231720)) = 0x0;
+*((UINT32P)(0x10228298)) = 0x0;
+*((UINT32P)(0x10230298)) = 0x0;
+*((UINT32P)(0x100010B4)) = 0x0; //broad_off
+*((UINT32P)(0x10228EA0)) = 0x0;
+*((UINT32P)(0x10230EA0)) = 0x0;
+*((UINT32P)(0x10228E00)) = 0x0;
+*((UINT32P)(0x10230E00)) = 0x0;
+*((UINT32P)(0x10228E50)) = 0x0;
+*((UINT32P)(0x10230E50)) = 0x0;
+*((UINT32P)(0x10228E04)) = 0x0;
+*((UINT32P)(0x10230E04)) = 0x0;
+*((UINT32P)(0x10228E54)) = 0x0;
+*((UINT32P)(0x10230E54)) = 0x0;
+*((UINT32P)(0x10228FA0)) = 0x0;
+*((UINT32P)(0x10230FA0)) = 0x0;
+*((UINT32P)(0x10228F00)) = 0x0;
+*((UINT32P)(0x10230F00)) = 0x0;
+*((UINT32P)(0x10228F50)) = 0x0;
+*((UINT32P)(0x10230F50)) = 0x0;
+*((UINT32P)(0x10228F04)) = 0x0;
+*((UINT32P)(0x10230F04)) = 0x0;
+*((UINT32P)(0x10228F54)) = 0x0;
+*((UINT32P)(0x10230F54)) = 0x0;
+//drmac init *((UINT32P)(0x1022A84C)) = 0x1FF0005;
+//drmac init *((UINT32P)(0x1023284C)) = 0x1FF0005;
+//drmac init *((UINT32P)(0x1022A064)) = 0x350007D2;
+//drmac init *((UINT32P)(0x10232064)) = 0x350007D2;
+//drmac init *((UINT32P)(0x1022A8C8)) = 0x4E39E9BE;
+//drmac init *((UINT32P)(0x102328C8)) = 0x4E39E9BE;
+//drmac init *((UINT32P)(0x1022A84C)) = 0x1FF01FF;
+//drmac init *((UINT32P)(0x1023284C)) = 0x1FF01FF;
+//drmac init *((UINT32P)(0x1022AE4C)) = 0x1FF;
+//drmac init *((UINT32P)(0x10232E4C)) = 0x1FF;
+//drmac init *((UINT32P)(0x1022B44C)) = 0x1FF;
+//drmac init *((UINT32P)(0x1023344C)) = 0x1FF;
+//drmac init *((UINT32P)(0x1022A004)) = 0x348A2000;
+//drmac init *((UINT32P)(0x10232004)) = 0x348A2000;
+//drmac init *((UINT32P)(0x1022A064)) = 0x350007D2;
+//drmac init *((UINT32P)(0x10232064)) = 0x350007D2;
+//drmac init *((UINT32P)(0x1022A064)) = 0x350007D2;
+//drmac init *((UINT32P)(0x10232064)) = 0x350007D2;
+//drmac init *((UINT32P)(0x1022A8C0)) = 0x80000B00;
+//drmac init *((UINT32P)(0x102328C0)) = 0x80000B00;
+*((UINT32P)(0x10228C1C)) = 0x8021;
+*((UINT32P)(0x10230C1C)) = 0x8021;
+*((UINT32P)(0x10228C9C)) = 0x8001;
+*((UINT32P)(0x10230C9C)) = 0x8001;
+//drmac init *((UINT32P)(0x1022A064)) = 0x350007D2;
+//drmac init *((UINT32P)(0x10232064)) = 0x350007D2;
+//drmac init *((UINT32P)(0x1022A0C8)) = 0x98E0080;
+//drmac init *((UINT32P)(0x102320C8)) = 0x98E0080;
+//drmac init *((UINT32P)(0x1022A8C8)) = 0x4E39E9BE;
+//drmac init *((UINT32P)(0x102328C8)) = 0x4E39E9BE;
+//drmac init *((UINT32P)(0x1022AEC8)) = 0x4E39EFF6;
+//drmac init *((UINT32P)(0x10232EC8)) = 0x4E39EFF6;
+//drmac init *((UINT32P)(0x1022B4C8)) = 0x4E39EFF6;
+//drmac init *((UINT32P)(0x102334C8)) = 0x4E39EFF6;
+//drmac init *((UINT32P)(0x1022A0D0)) = 0xD026810;
+//drmac init *((UINT32P)(0x102320D0)) = 0xD026810;
+//drmac init *((UINT32P)(0x1022A0DC)) = 0x83011D30;
+//drmac init *((UINT32P)(0x102320DC)) = 0x83010D30;
+//drmac init *((UINT32P)(0x1022A208)) = 0x40000000;
+//drmac init *((UINT32P)(0x10232208)) = 0x40000000;
+//drmac init *((UINT32P)(0x1022A200)) = 0xFC120001;
+//drmac init *((UINT32P)(0x10232200)) = 0xFC120001;
+//drmac init *((UINT32P)(0x1022A200)) = 0xFC120001;
+//drmac init *((UINT32P)(0x10232200)) = 0xFC120001;
+//drmac init *((UINT32P)(0x1022A208)) = 0x40000000;
+//drmac init *((UINT32P)(0x10232208)) = 0x40000000;
+*((UINT32P)(0x10228608)) = 0x20000000;
+*((UINT32P)(0x10230608)) = 0x20000000;
+*((UINT32P)(0x10228688)) = 0x20000000;
+*((UINT32P)(0x10230688)) = 0x20000000;
+*((UINT32P)(0x10228608)) = 0x20000000;
+*((UINT32P)(0x10230608)) = 0x20000000;
+*((UINT32P)(0x10228688)) = 0x20000000;
+*((UINT32P)(0x10230688)) = 0x20000000;
+*((UINT32P)(0x10228608)) = 0x20000000;
+*((UINT32P)(0x10230608)) = 0x20000000;
+*((UINT32P)(0x10228688)) = 0x20000000;
+*((UINT32P)(0x10230688)) = 0x20000000;
+*((UINT32P)(0x10228708)) = 0x0;
+*((UINT32P)(0x10230708)) = 0x0;
+*((UINT32P)(0x10228808)) = 0x20000000;
+*((UINT32P)(0x10230808)) = 0x20000000;
+*((UINT32P)(0x10228888)) = 0x20000000;
+*((UINT32P)(0x10230888)) = 0x20000000;
+*((UINT32P)(0x10228808)) = 0x20000000;
+*((UINT32P)(0x10230808)) = 0x20000000;
+*((UINT32P)(0x10228888)) = 0x20000000;
+*((UINT32P)(0x10230888)) = 0x20000000;
+*((UINT32P)(0x10228808)) = 0x20000000;
+*((UINT32P)(0x10230808)) = 0x20000000;
+*((UINT32P)(0x10228888)) = 0x20000000;
+*((UINT32P)(0x10230888)) = 0x20000000;
+*((UINT32P)(0x10228708)) = 0x0;
+*((UINT32P)(0x10230708)) = 0x0;
+*((UINT32P)(0x102282A0)) = 0x8100B08C;
+*((UINT32P)(0x102302A0)) = 0x8100B08C;
+//drmac init *((UINT32P)(0x1022A04C)) = 0x75734001;
+//drmac init *((UINT32P)(0x1023204C)) = 0x75734001;
+//drmac init *((UINT32P)(0x1022A05C)) = 0xD18;
+//drmac init *((UINT32P)(0x1023205C)) = 0xD18;
+//drmac init *((UINT32P)(0x1022A06C)) = 0x20000;
+//drmac init *((UINT32P)(0x1023206C)) = 0x20000;
+*((UINT32P)(0x102280B0)) = 0x10392E9;
+*((UINT32P)(0x102300B0)) = 0x10392E9;
+*((UINT32P)(0x10228130)) = 0x10392E9;
+*((UINT32P)(0x10230130)) = 0x10392E9;
+*((UINT32P)(0x102281B0)) = 0x352E9;
+*((UINT32P)(0x102301B0)) = 0x352E9;
+*((UINT32P)(0x10228C14)) = 0x30000B;
+*((UINT32P)(0x10230C14)) = 0x30000B;
+*((UINT32P)(0x10228C94)) = 0x30000B;
+*((UINT32P)(0x10230C94)) = 0x30000B;
+*((UINT32P)(0x10228C1C)) = 0x13008011;
+*((UINT32P)(0x10230C1C)) = 0x13008011;
+*((UINT32P)(0x10228C9C)) = 0x13008011;
+*((UINT32P)(0x10230C9C)) = 0x13008011;
+
+//drmac init *((UINT32P)(0x1022A028)) = 0x20080001;
+//drmac init *((UINT32P)(0x10232028)) = 0x20080001;
+DELAY_US(10);
+}
+
+
+
+
+//! ------------------------------------------------------------------
+//! ddrphy external loopback test control for internal/external
+//! ------------------------------------------------------------------
+void ddrphy_lpbk_test_ctrl(DRAMC_CTX_T *p)
+{
+
+  int           lpbk_tx           = 0 ;
+  int           fpc_result        = 0 ;
+  int           fpc_result_0        = 0 ;
+  int           fpc_result_1        = 0 ;
+  unsigned int  ddrphy_drvp       = 0 ;
+  unsigned int  ddrphy_drvn       = 0 ;
+  unsigned int  ddrphy_odtn       = 0 ;
+  unsigned int  ddrphy_vref_sel   = 0 ;
+  unsigned int  ddrphy_rx_dq_dly  = 0 ;
+  unsigned int  ddrphy_rx_dqs_dly = 0 ;
+  unsigned int  gpio_location[10] = {0};
+  unsigned int  gpio_location_temp = 0;
+  int i = 0;
+
+  unsigned int 	idx = 0 ;
+
+  unsigned int vref_min_pass = 64 ;
+  unsigned int vref_max_pass = 64 ;
+  
+  unsigned int drvp_min_pass = 64 ;
+  unsigned int drvp_max_pass = 64 ;
+  
+  unsigned int odtn_min_pass = 64 ;
+  unsigned int odtn_max_pass = 64 ;
+
+//  //!*DRAMC_WBR  = 0x0000000f;
+//  /*TINFO="2CH simultaneous configuration"*/ *MDM_TM_TINFOMSG = 1217;
+//  *INFRA_DRAMC_REG_CONFIG = 0x00000001;
+//
+//  //! ==============================
+//  //! - DDRPHY lpbk common setting
+//  //! ==============================
+//  /*TINFO="[LPBK] start to do loopback test CHA/B common configuration ..."*/ *MDM_TM_TINFOMSG = 1218;
+//
+//  /*TINFO="[LPBK] DRVP, DRVN and ODT setting ..."*/ *MDM_TM_TINFOMSG = 1219;
+//  //! 2016.04.28, from SA's result, SW calibration ODT turn-on
+//  ddrphy_drvp = 5   ;
+//  ddrphy_drvn = 9   ;
+//  ddrphy_odtn = 11  ;
+//  *((UINT32P)(DRAMC0_AO_BASE + 0x08a8)) = (ddrphy_drvp << 25) |
+//                                          (ddrphy_drvn << 20) |
+//                                          (ddrphy_drvp << 15) |
+//                                          (ddrphy_drvn << 10) |
+//                                          (ddrphy_drvp <<  5) |
+//                                          (ddrphy_drvn <<  0) ;
+//
+//  *((UINT32P)(DRAMC0_AO_BASE + 0x08ac)) = (ddrphy_drvp << 25) |
+//                                          (ddrphy_drvn << 20) |
+//                                          (ddrphy_drvp << 15) |
+//                                          (ddrphy_drvn << 10) |
+//                                          (ddrphy_drvp <<  5) |
+//                                          (ddrphy_drvn <<  0) ;
+//
+//  *((UINT32P)(DRAMC0_AO_BASE + 0x08b0)) = (ddrphy_odtn << 20) |
+//                                          (ddrphy_odtn << 10) |
+//                                          (ddrphy_odtn <<  0) ;
+//
+//  *((UINT32P)(DRAMC0_AO_BASE + 0x08b4)) = (ddrphy_odtn << 20) |
+//                                          (ddrphy_odtn << 10) |
+//                                          (ddrphy_odtn <<  0) ;
+//
+//  //! Byte-0
+//  *((UINT32P)(DDRPHY0AO_BASE + 0x0608)) = 0x00000000;
+//  *((UINT32P)(DDRPHY0AO_BASE + 0x0e1c)) = 0x00000000; //! it dosn't need to set TX delay
+//  //! for Byte-1
+//  *((UINT32P)(DDRPHY0AO_BASE + 0x0688)) = 0x00000000;
+//  *((UINT32P)(DDRPHY0AO_BASE + 0x0e6c)) = 0x00000000; //! it dosn't need to set TX delay
+//
+//  /*TINFO="[LPBK] RX input delay setting ..."*/ *MDM_TM_TINFOMSG = 1220;
+//#ifdef LPBK_INTERNAL_EN
+//  ddrphy_rx_dq_dly = 7  ;
+//  ddrphy_rx_dqs_dly= 0  ;
+//#else
+//  ddrphy_rx_dq_dly = 0  ;
+//  ddrphy_rx_dqs_dly= 13 ;
+//#endif
+//  //! for Byte-0
+//  //! [29:24]: RG_RK0_RX_ARDQ1_F_DLY / [21:16]: RG_RK0_RX_ARDQ1_R_DLY
+//  //! [13: 8]: RG_RK0_RX_ARDQ0_F_DLY / [ 5: 0]: RG_RK0_RX_ARDQ0_R_DLY
+//  *((UINT32P)(DDRPHY0AO_BASE + 0x0e08)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+//  //! [29:24]: RG_RK0_RX_ARDQ3_F_DLY / [21:16]: RG_RK0_RX_ARDQ3_R_DLY
+//  //! [13: 8]: RG_RK0_RX_ARDQ2_F_DLY / [ 5: 0]: RG_RK0_RX_ARDQ2_R_DLY
+//  *((UINT32P)(DDRPHY0AO_BASE + 0x0e0c)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+//  //! [29:24]: RG_RK0_RX_ARDQ5_F_DLY / [21:16]: RG_RK0_RX_ARDQ5_R_DLY
+//  //! [13: 8]: RG_RK0_RX_ARDQ4_F_DLY / [ 5: 0]: RG_RK0_RX_ARDQ4_R_DLY
+//  *((UINT32P)(DDRPHY0AO_BASE + 0x0e10)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+//  //! [29:24]: RG_RK0_RX_ARDQ7_F_DLY / [21:16]: RG_RK0_RX_ARDQ7_R_DLY
+//  //! [13: 8]: RG_RK0_RX_ARDQ6_F_DLY / [ 5: 0]: RG_RK0_RX_ARDQ6_R_DLY
+//  *((UINT32P)(DDRPHY0AO_BASE + 0x0e14)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+//  //! [29:24]: RG_RK0_RX_ARDQS_F_DLY / [21:16]: RG_RK0_RX_ARDQS_R_DLY
+//  //! [13: 8]: RG_RK0_RX_ARDQM_F_DLY / [ 5: 0]: RG_RK0_RX_ARDQM_R_DLY
+//  *((UINT32P)(DDRPHY0AO_BASE + 0x0e18)) = (ddrphy_rx_dqs_dly<<24) | (ddrphy_rx_dqs_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ; 
+//
+//  //! for Byte-1
+//  //! [29:24]: RG_RK0_RX_ARDQ1_F_DLY / [21:16]: RG_RK0_RX_ARDQ1_R_DLY
+//  //! [13: 8]: RG_RK0_RX_ARDQ0_F_DLY / [ 5: 0]: RG_RK0_RX_ARDQ0_R_DLY
+//  *((UINT32P)(DDRPHY0AO_BASE + 0x0e58)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+//  //! [29:24]: RG_RK0_RX_ARDQ3_F_DLY / [21:16]: RG_RK0_RX_ARDQ3_R_DLY
+//  //! [13: 8]: RG_RK0_RX_ARDQ2_F_DLY / [ 5: 0]: RG_RK0_RX_ARDQ2_R_DLY
+//  *((UINT32P)(DDRPHY0AO_BASE + 0x0e5c)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+//  //! [29:24]: RG_RK0_RX_ARDQ5_F_DLY / [21:16]: RG_RK0_RX_ARDQ5_R_DLY
+//  //! [13: 8]: RG_RK0_RX_ARDQ4_F_DLY / [ 5: 0]: RG_RK0_RX_ARDQ4_R_DLY
+//  *((UINT32P)(DDRPHY0AO_BASE + 0x0e60)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+//  //! [29:24]: RG_RK0_RX_ARDQ7_F_DLY / [21:16]: RG_RK0_RX_ARDQ7_R_DLY
+//  //! [13: 8]: RG_RK0_RX_ARDQ6_F_DLY / [ 5: 0]: RG_RK0_RX_ARDQ6_R_DLY
+//  *((UINT32P)(DDRPHY0AO_BASE + 0x0e64)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+//  //! [29:24]: RG_RK0_RX_ARDQS_F_DLY / [21:16]: RG_RK0_RX_ARDQS_R_DLY
+//  //! [13: 8]: RG_RK0_RX_ARDQM_F_DLY / [ 5: 0]: RG_RK0_RX_ARDQM_R_DLY
+//  *((UINT32P)(DDRPHY0AO_BASE + 0x0e68)) = (ddrphy_rx_dqs_dly<<24) | (ddrphy_rx_dqs_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ; 
+// 
+//  //! for CA
+//  //! [29:24]: RG_RK0_RX_ARCA1_F_DLY / [21:16]: RG_RK0_RX_ARCA1_R_DLY
+//  //! [13: 8]: RG_RK0_RX_ARCA0_F_DLY / [ 5: 0]: RG_RK0_RX_ARCA0_R_DLY
+//  *((UINT32P)(DDRPHY0AO_BASE + 0x0ea8)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+//  //! [29:24]: RG_RK0_RX_ARCA3_F_DLY / [21:16]: RG_RK0_RX_ARCA3_R_DLY
+//  //! [13: 8]: RG_RK0_RX_ARCA2_F_DLY / [ 5: 0]: RG_RK0_RX_ARCA2_R_DLY
+//  *((UINT32P)(DDRPHY0AO_BASE + 0x0eac)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+//  //! [29:24]: RG_RK0_RX_ARCA5_F_DLY / [21:16]: RG_RK0_RX_ARCA5_R_DLY
+//  //! [13: 8]: RG_RK0_RX_ARCA4_F_DLY / [ 5: 0]: RG_RK0_RX_ARCA4_R_DLY
+//  *((UINT32P)(DDRPHY0AO_BASE + 0x0eb0)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+//  //! [29:24]: RG_RK0_RX_ARCKE1_F_DLY / [21:16]: RG_RK0_RX_ARCKE1_R_DLY
+//  //! [13: 8]: RG_RK0_RX_ARCKE0_F_DLY / [ 5: 0]: RG_RK0_RX_ARCKE0_R_DLY
+//  *((UINT32P)(DDRPHY0AO_BASE + 0x0eb4)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+//  //! [29:24]: RG_RK0_RX_ARCS0_F_DLY / [21:16]: RG_RK0_RX_ARCS0_R_DLY
+//  //! [13: 8]: RG_RK0_RX_ARCKE2_F_DLY / [ 5: 0]: RG_RK0_RX_ARCKE2_R_DLY
+//  *((UINT32P)(DDRPHY0AO_BASE + 0x0eb8)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ; 
+//  //! [29:24]: RG_RK0_RX_ARCS2_F_DLY / [21:16]: RG_RK0_RX_ARCS2_R_DLY
+//  //! [13: 8]: RG_RK0_RX_ARCS1_F_DLY / [ 5: 0]: RG_RK0_RX_ARCS1_R_DLY
+//  *((UINT32P)(DDRPHY0AO_BASE + 0x0ebc)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ; 
+//  //! [29:24]: RG_RK0_RX_ARCLK_F_DLY / [21:16]: RG_RK0_RX_ARCLK_R_DLY
+//  *((UINT32P)(DDRPHY0AO_BASE + 0x0ec0)) = (ddrphy_rx_dqs_dly<<24) | (ddrphy_rx_dqs_dly<<16) ; 
+
+  //! ==============================
+  //! - GPIO indicator setting
+  //! ==============================
+  //SHL for FT GPIO control
+  //! GPIO mode
+  //*((UINT32P)(0x10005400)) &= 0x00000fff; // PAD_WB_CTRL0/1/2/3/4 GPIO_MODE
+  //*((UINT32P)(0x10005410)) &= 0xfffffff0; // PAD_WB_CTRL5 GPIO_MODE
+  //*((UINT32P)(0x10005460)) &= 0x000000ff; // PAD_MSDC0_DAT0/CLK/CMD/DAT1/DAT5/DAT6  GPIO_MODE
+  //*((UINT32P)(0x10005470)) &= 0xff000000; // PAD_MSDC0_DAT4/RSTB/DAT2/DAT3/DAT7/DSL GPIO_MODE
+  //! GPIO dir
+  //*((UINT32P)(0x10005040)) &= 0xfffffe07; // PAD_WB_CTRL0/1/2/3/4/5 INPUT mode [8:3]
+  //*((UINT32P)(0x10005050)) &= 0xc003ffff; // input mode for PAD_MSDC*
+
+
+  //! ==============================
+  //! - DDRPHY lpbk common setting
+  //! ==============================
+  mcSHOW_DBG_MSG(("[LPBK] start to do loopback test CHA/B common configuration ...\n"));
+  /*TINFO="[LPBK] start to do loopback test CHA/B common configuration ...\n"*/ *MDM_TM_TINFOMSG = 1221;
+
+	/* do basic settings: add by xixi*/
+	//ett_log();
+  
+#ifdef LPBK_RUN_DSIM 
+ //*GPIO_DOUT3 = 0x00000000; 
+ //*GPIO_DOUT2 = 0x00000000;
+#endif
+
+#ifdef LPBK_RUN_DSIM
+      *DRAMC_WBR = 0x0000000f;
+#else
+      *((UINT32P)(DRAMC_WBR)) = 0x0000000f;
+#endif
+
+  *((UINT32P)(0x10228294)) = 0x333F3F00;
+  *((UINT32P)(0x10228EC4)) = 0x00000000;//CLK/CMD/CS
+  //*((UINT32P)(0x10228EC4)) = 0x00001010;//CLK/CMD/CS
+  *((UINT32P)(0x1022CA0C)) = 0x0;
+  *((UINT32P)(0x10228EA0)) = 0x0;
+  //*((UINT32P)(0x10228D14)) = 0x0040040e;
+*((UINT32P)(0x10234EA0)) = 0x0;
+*((UINT32P)(0x10228E00)) = 0x0;
+*((UINT32P)(0x10234E00)) = 0x0;
+*((UINT32P)(0x10228E50)) = 0x0;
+*((UINT32P)(0x10234E50)) = 0x0;
+*((UINT32P)(0x10228E04)) = 0x0;
+*((UINT32P)(0x10234E04)) = 0x0;
+*((UINT32P)(0x10228E54)) = 0x0;
+*((UINT32P)(0x10234E54)) = 0x0;
+*((UINT32P)(0x10228FA0)) = 0x0;
+*((UINT32P)(0x10234FA0)) = 0x0;
+*((UINT32P)(0x10228F00)) = 0x0;
+*((UINT32P)(0x10234F00)) = 0x0;
+*((UINT32P)(0x10228F50)) = 0x0;
+*((UINT32P)(0x10234F50)) = 0x0;
+*((UINT32P)(0x10228F04)) = 0x0;
+*((UINT32P)(0x10234F04)) = 0x0;
+*((UINT32P)(0x10228F54)) = 0x0;
+*((UINT32P)(0x10234F54)) = 0x0;
+
+*((UINT32P)(0x102281C0)) = 0x31;
+
+
+  *((UINT32P)(DDRPHY0AO_BASE + 0x01c0)) = 0x00000011;  //enable ARCMD_STBEN_RESETB
+  //! 2016.04.28, from SA's result, SW calibration ODT turn-on
+  //! #ifdef WEAK_DRVP
+  //!   ddrphy_drvp = 3   ;
+  //! #else
+  //!   ddrphy_drvp = 5   ;
+  //! #endif
+  //! ddrphy_odtn = 14    ;
+
+  //! 2016.10.25, setting from GPIO input
+#ifdef LP3_IO
+  ddrphy_drvn = 8   ;
+  ddrphy_drvp = 10  ;
+  ddrphy_odtn = 0   ;
+#else
+  ddrphy_drvn = 9     ;
+  //ddrphy_drvp = ((*((UINT32P)(0x10005250)) >> 18) & 0xf) ;
+  //ddrphy_odtn = ((*((UINT32P)(0x10005250)) >> 22) & 0xf) + 10 ; 
+  ddrphy_drvp = 3   ;
+  ddrphy_odtn = 14  ;
+#endif
+
+#ifdef DRVP15_DRVN14
+  ddrphy_drvn = 14  ;
+  ddrphy_drvp = 15  ;
+  ddrphy_odtn = 0   ;
+#endif 
+#ifdef DRVP29_DRVN15
+  ddrphy_drvn = 15  ;
+  ddrphy_drvp = 29  ;
+  ddrphy_odtn = 0   ;
+#endif 
+#ifdef DRVP30_DRVN29
+  ddrphy_drvn = 29  ;
+  ddrphy_drvp = 30  ;
+  ddrphy_odtn = 0   ;
+#endif 
+
+  /* xixi comment */
+   ddrphy_SetImp ( ddrphy_drvn, ddrphy_drvp, ddrphy_odtn ) ;
+  /*TINFO="[LPBK] from GPIO - cur DRVP=%d, DRVN=%d and ODT=%d ...",ddrphy_drvp, ddrphy_drvn, ddrphy_odtn*/ *MDM_TM_TPAR = ddrphy_drvp; *MDM_TM_TPAR =  ddrphy_drvn; *MDM_TM_TPAR =  ddrphy_odtn; *MDM_TM_TINFOMSG = 1222;
+  mcSHOW_DBG_MSG(("[LPBK] from GPIO - cur DRVP=%d, DRVN=%d and ODT=%d ...\n",ddrphy_drvp, ddrphy_drvn, ddrphy_odtn));
+
+  //! #ifdef LPBK_RODT_FIX_ON
+  //!   ddrphy_vref_sel = 14 ;
+  //! #else
+  //!   //! 0906, ddrphy_vref_sel = 20 ;
+  //!   ddrphy_vref_sel = 18 ;
+  //! #endif
+
+  //! 2016.10.25, setting from GPIO input
+  //ddrphy_vref_sel = ((*((UINT32P)(0x10005250)) >> 26) & 0xf) + 10 ;
+#ifdef LP3_IO
+  ddrphy_vref_sel = 11 ;
+#else  //LP3_IO
+  ddrphy_vref_sel = 14 ;
+#endif
+
+   /* xixi comment */
+  ddrphy_SetRXVref( ddrphy_vref_sel ) ;
+  /*TINFO="[LPBK] from GPIO - cur VREF setting is %d ...",ddrphy_vref_sel*/ *MDM_TM_TPAR = ddrphy_vref_sel; *MDM_TM_TINFOMSG = 1223;
+  mcSHOW_DBG_MSG(("[LPBK] from GPIO - cur VREF setting is %d ...\n", ddrphy_vref_sel));
+
+/*TINFO="[LPBK]  CHA/B Common setting  ..."*/ *MDM_TM_TINFOMSG = 1224;
+mcSHOW_DBG_MSG(("[LPBK]  CHA/B Common setting  ...\n"));
+#ifdef LPBK_RUN_DSIM
+      *DRAMC_WBR = 0x0000000f;
+#else
+      *((UINT32P)(DRAMC_WBR)) = 0x0000000f;
+#endif
+//! CHA/B Common setting
+*((UINT32P)(DDRPHY0AO_BASE + 0x02a0)) =   0x80000080; //RRESETB_E=1
+*((UINT32P)(DDRPHY0AO_BASE + 0x0284)) =   0x0303fc1f; //! Alaska add : enable CK_ANCHOR's CGEN
+*((UINT32P)(DDRPHY0AO_BASE + 0x0298)) =   0x00000000;
+*((UINT32P)(DDRPHY0AO_BASE + 0x0c20)) =   0xffff0000; //! Alaska add : disable sync cell CG
+
+*((UINT32P)(DDRPHY0AO_BASE + 0x2c20)) =   0xffff0000; // add by xixi
+
+*((UINT32P)(DDRPHY0AO_BASE + 0x0ca0)) =   0xffff0000; //! Alaska add : disable sync cell CG
+*((UINT32P)(DDRPHY0AO_BASE + 0x0d20)) =   0xffff0000; //! Alaska add : disable sync cell CG
+*((UINT32P)(DDRPHY0AO_BASE + 0x0608)) =   0x00000000;
+*((UINT32P)(DDRPHY0AO_BASE + 0x0e08)) =   0x00000000;
+*((UINT32P)(DDRPHY0AO_BASE + 0x0e0c)) =   0x00000000;
+*((UINT32P)(DDRPHY0AO_BASE + 0x0e10)) =   0x00000000;
+*((UINT32P)(DDRPHY0AO_BASE + 0x0e14)) =   0x00000000;
+*((UINT32P)(DDRPHY0AO_BASE + 0x0e18)) =   0x00000000;
+*((UINT32P)(DDRPHY0AO_BASE + 0x0e1c)) =   0x00000000;
+*((UINT32P)(DDRPHY0AO_BASE + 0x0688)) =   0x00000000;
+*((UINT32P)(DDRPHY0AO_BASE + 0x0e58)) =   0x00000000;
+*((UINT32P)(DDRPHY0AO_BASE + 0x0e5c)) =   0x00000000;
+*((UINT32P)(DDRPHY0AO_BASE + 0x0e60)) =   0x00000000;
+*((UINT32P)(DDRPHY0AO_BASE + 0x0e64)) =   0x00000000;
+*((UINT32P)(DDRPHY0AO_BASE + 0x0e68)) =   0x00000000;
+*((UINT32P)(DDRPHY0AO_BASE + 0x0e6c)) =   0x00000000;
+
+*((UINT32P)(DDRPHY0AO_BASE + 0x2ca0)) =   0xffff0000; //! Alaska add : disable sync cell CG
+*((UINT32P)(DDRPHY0AO_BASE + 0x2d20)) =   0xffff0000; //! Alaska add : disable sync cell CG
+*((UINT32P)(DDRPHY0AO_BASE + 0x2608)) =   0x00000000;
+*((UINT32P)(DDRPHY0AO_BASE + 0x2e08)) =   0x00000000;
+*((UINT32P)(DDRPHY0AO_BASE + 0x2e0c)) =   0x00000000;
+*((UINT32P)(DDRPHY0AO_BASE + 0x2e10)) =   0x00000000;
+*((UINT32P)(DDRPHY0AO_BASE + 0x2e14)) =   0x00000000;
+*((UINT32P)(DDRPHY0AO_BASE + 0x2e18)) =   0x00000000;
+*((UINT32P)(DDRPHY0AO_BASE + 0x2e1c)) =   0x00000000;
+*((UINT32P)(DDRPHY0AO_BASE + 0x2688)) =   0x00000000;
+*((UINT32P)(DDRPHY0AO_BASE + 0x2e58)) =   0x00000000;
+*((UINT32P)(DDRPHY0AO_BASE + 0x2e5c)) =   0x00000000;
+*((UINT32P)(DDRPHY0AO_BASE + 0x2e60)) =   0x00000000;
+*((UINT32P)(DDRPHY0AO_BASE + 0x2e64)) =   0x00000000;
+*((UINT32P)(DDRPHY0AO_BASE + 0x2e68)) =   0x00000000;
+*((UINT32P)(DDRPHY0AO_BASE + 0x2e6c)) =   0x00000000;
+
+
+/*TINFO="[LPBK]  enable lpbk CG control  ..."*/ *MDM_TM_TINFOMSG = 1225;
+mcSHOW_DBG_MSG(("[LPBK]  enable lpbk CG control  ...\n"));
+//! enable lpbk CG control
+*((UINT32P)(DDRPHY0AO_BASE + 0x0284)) =   0x0303fc1f;
+*((UINT32P)(DDRPHY0AO_BASE + 0x0290)) =   0xffffffff;
+*((UINT32P)(DDRPHY0AO_BASE + 0x01fc)) =   0xffffffff;
+*((UINT32P)(DDRPHY0AO_BASE + 0x0188)) =   0x00000000;
+//! disable dcm control (R_DDRPHY_COMB_CG_IG=1, @for Alaska) MISC_CTRL3
+*((UINT32P)(DDRPHY0AO_BASE + 0x02a8)) =   0x15301530;
+//! set RG_TX_ARDQ_PULL_DN_B0/B1 to low
+*((UINT32P)(DDRPHY0AO_BASE + 0x00b4)) =   0x00000000;
+*((UINT32P)(DDRPHY0AO_BASE + 0x0134)) =   0x00000000;
+/*TINFO="[LPBK]  enable clock and TX/RX setting of ARCMD/BRCMD..."*/ *MDM_TM_TINFOMSG = 1226;
+mcSHOW_DBG_MSG(("[LPBK]  enable clock and TX/RX setting of ARCMD/BRCMD...\n"));
+//! enable clock and TX/RX setting of ARCMD/BRCMD
+*((UINT32P)(DDRPHY0AO_BASE + 0x018c)) =   0x000ba800;DELAY_US(1); //fra
+*((UINT32P)(DDRPHY0AO_BASE + 0x0198)) =   0x0f000060;
+*((UINT32P)(DDRPHY0AO_BASE + 0x019c)) =   0x00000000;
+*((UINT32P)(DDRPHY0AO_BASE + 0x01a0)) =   0x00000000;
+//*((UINT32P)(DDRPHY0AO_BASE + 0x01a4)) =   0x000107be; //RG_RX_IN_BUFF_EN=1
+*((UINT32P)(DDRPHY0AO_BASE + 0x01a4)) =   0x0001071e;
+*((UINT32P)(DDRPHY0AO_BASE + 0x01a8)) =   0x00001010;
+*((UINT32P)(DDRPHY0AO_BASE + 0x01ac)) =   0x03111010;
+*((UINT32P)(DDRPHY0AO_BASE + 0x01b0)) =   0x010310e0;
+//*((UINT32P)(DDRPHY0AO_BASE + 0x01b0)) =   0x010310c1; //BIAS_PS=0x1 (IN_BUFF_EN @RG mode)
+*((UINT32P)(DDRPHY0AO_BASE + 0x01b4)) =   0x00000000;
+*((UINT32P)(DDRPHY0AO_BASE + 0x01b8)) =   0x00000000;
+
+#ifdef LP3_IO
+/*TINFO="FPC test pattern for LP3 IO config"*/ *MDM_TM_TINFOMSG = 1227;
+*((UINT32P)(0x102281B0)) &=  0xfff0ffff; //DDR3_SEL=0, DDR4_SEL=0
+*((UINT32P)(0x102281B0)) |=  0x000c0000; //DDR3_SEL=1, DDR4_SEL=0
+*((UINT32P)(0x102280B0)) &=  0xfff0ffff; //DDR3_SEL=0, DDR4_SEL=0
+*((UINT32P)(0x102280B0)) |=  0x000c0000; //DDR3_SEL=1, DDR4_SEL=0
+*((UINT32P)(0x10228130)) &=  0xfff0ffff; //DDR3_SEL=0, DDR4_SEL=0
+*((UINT32P)(0x10228130)) |=  0x000c0000; //DDR3_SEL=1, DDR4_SEL=0
+*((UINT32P)(0x102281BC)) &=  0xfffffffc; //EN_CAP_LP4P=0, EN_LP4P=0
+*((UINT32P)(0x102280B8)) &=  0xfffffffc; //EN_CAP_LP4P=0, EN_LP4P=0
+*((UINT32P)(0x10228138)) &=  0xfffffffc; //EN_CAP_LP4P=0, EN_LP4P=0
+*((UINT32P)(0x10228C0C)) &=  0xfcfcffff; //WDQS OFF
+*((UINT32P)(0x10228C8C)) &=  0xfcfcffff; //WDQS OFF
+*((UINT32P)(0x102280A0)) |=  0x00110000; //ODTEN_DIS=1
+*((UINT32P)(0x10228120)) |=  0x00110000; //ODTEN_DIS=1
+//*((UINT32P)(0x102280AC)) &=  0xffffc0ff; //EYE_VREF_SEL=0x0
+//*((UINT32P)(0x102280AC)) |=  0x00000b00; //EYE_VREF_SEL=0xb
+//*((UINT32P)(0x1022812C)) &=  0xffffc0ff; //EYE_VREF_SEL=0x0
+//*((UINT32P)(0x1022812C)) |=  0x00000b00; //EYE_VREF_SEL=0xb
+//*((UINT32P)(0x10228C14)) &=  0xffffffc0; //VREF_SEL=0x0
+//*((UINT32P)(0x10228C14)) |=  0x0000000b; //VREF_SEL=0xb
+//*((UINT32P)(0x10228C94)) &=  0xffffffc0; //VREF_SEL=0x0
+//*((UINT32P)(0x10228C94)) |=  0x0000000b; //VREF_SEL=0xb
+#endif
+
+//! [0]: LFSR_EN; [1]: SSO_EN; [2]: XTALK_EN
+*((UINT32P)(DDRPHY0AO_BASE + 0x024c)) =   0x00000007;
+//! xtalk TX bit toggle setting
+//*((UINT32P)(DDRPHY0AO_BASE + 0x0250)) =   0x76543210;
+//*((UINT32P)(DDRPHY0AO_BASE + 0x0254)) =   0x65432100;
+//*((UINT32P)(DDRPHY0AO_BASE + 0x0258)) =   0x54321007;
+//*((UINT32P)(DDRPHY0AO_BASE + 0x025c)) =   0x54321076;
+//*((UINT32P)(DDRPHY0AO_BASE + 0x02f8)) =   0x76543210;
+//*((UINT32P)(DDRPHY0AO_BASE + 0x02fc)) =   0x65432100;
+//*((UINT32P)(DDRPHY0AO_BASE + 0x0300)) =   0x54321007;
+//*((UINT32P)(DDRPHY0AO_BASE + 0x0304)) =   0x54321076;
+
+#ifndef LPBK_INTERNAL_EN
+  //! [2]: XTALK_EN; [1]: SSO_EN; [0]: LFSR_EN
+  *((UINT32P)(DDRPHY0AO_BASE + 0x024C)) = 0x00000001;
+  //! hj, 0909, test only 1-bits as external lpbk
+  /*TINFO="[LPBK] Ignore pinmux  ..."*/ *MDM_TM_TINFOMSG = 1228;
+  //! xtalk TX bit toggle setting
+  //! x-talk TX
+  //! *((UINT32P)(DDRPHY0AO_BASE + 0x0250)) = 0x77777777  ; //! 0x76543210;
+  //! *((UINT32P)(DDRPHY0AO_BASE + 0x0254)) = 0x77777777  ; //! 0x65432100;
+  //! *((UINT32P)(DDRPHY0AO_BASE + 0x0258)) = 0x77777777  ; //! 0x54321007;
+  //! *((UINT32P)(DDRPHY0AO_BASE + 0x025C)) = 0x77777777  ; //! 0x54321076;
+  //! x-talk RX
+  //! *((UINT32P)(DDRPHY0AO_BASE + 0x02F8)) = 0x77777777  ; //! 0x76543210;
+  //! *((UINT32P)(DDRPHY0AO_BASE + 0x02FC)) = 0x77777777  ; //! 0x65432100;
+  //! *((UINT32P)(DDRPHY0AO_BASE + 0x0300)) = 0x77777777  ; //! 0x54321007;
+  //! *((UINT32P)(DDRPHY0AO_BASE + 0x0304)) = 0x77777777  ; //! 0x54321076;
+  
+  //! TX LFSR
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0200)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0204)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0208)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x020c)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0210)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0214)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0218)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x021c)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0220)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0224)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0228)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x022c)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0230)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0234)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0238)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x023c)) = 0x4c044c04  ;
+  
+  //! RX LFSR
+  *((UINT32P)(DDRPHY0AO_BASE + 0x02b4)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x02b8)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x02bc)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x02c0)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x02c4)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x02c8)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x02cc)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x02d0)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x02d4)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x02d8)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x02dc)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x02e0)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x02e4)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x02e8)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x02ec)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x02f0)) = 0x4c044c04  ;
+#else
+
+
+  /*TINFO="[LPBK] Ignore pinmux  ..."*/ *MDM_TM_TINFOMSG = 1228;
+mcSHOW_DBG_MSG(("[LPBK] Ignore pinmux  ...\n"));
+  //! xtalk TX bit toggle setting
+  //! x-talk TX
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0250)) = 0x77777777  ; //! 0x76543210;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0254)) = 0x77777777  ; //! 0x65432100;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0258)) = 0x77777777  ; //! 0x54321007;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x025C)) = 0x77777777  ; //! 0x54321076;
+  //! x-talk RX
+  *((UINT32P)(DDRPHY0AO_BASE + 0x02F8)) = 0x77777777  ; //! 0x76543210;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x02FC)) = 0x77777777  ; //! 0x65432100;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0300)) = 0x77777777  ; //! 0x54321007;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0304)) = 0x77777777  ; //! 0x54321076;
+
+  //! TX LFSR
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0200)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0204)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0208)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x020c)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0210)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0214)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0218)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x021c)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0220)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0224)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0228)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x022c)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0230)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0234)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0238)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x023c)) = 0x4c044c04  ;
+
+  //! RX LFSR
+  *((UINT32P)(DDRPHY0AO_BASE + 0x02b4)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x02b8)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x02bc)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x02c0)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x02c4)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x02c8)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x02cc)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x02d0)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x02d4)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x02d8)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x02dc)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x02e0)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x02e4)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x02e8)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x02ec)) = 0x4c044c04  ;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x02f0)) = 0x4c044c04  ;
+
+#endif
+
+//#ifndef LPBK_INTERNAL_EN
+  //! Disable B1-DQS and CA-CLK for external lpbk 1-bit toggle
+  //*((UINT32P)(DDRPHY0AO_BASE + 0x0120)) = 0x00020000  ;
+  //*((UINT32P)(DDRPHY0AO_BASE + 0x01A0)) = 0x00020000  ;
+//#endif
+
+
+  //! ==============================
+  //! - DDRPHY lpbk test flow
+  //! ==============================
+
+//step-1: trigger LPBK prepare on
+*((UINT32P)(DDRPHY0AO_BASE + 0x0244)) =   0x0000cc81;
+
+
+  //! Byte-0
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0608)) = 0x00000000;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0e1c)) = 0x00000000; //! it dosn't need to set TX delay
+  //! for Byte-1
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0688)) = 0x00000000;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0e6c)) = 0x00000000; //! it dosn't need to set TX delay
+    //! Byte-2
+  *((UINT32P)(DDRPHY0AO_BASE + 0x2608)) = 0x00000000;
+  *((UINT32P)(DDRPHY0AO_BASE + 0x2e1c)) = 0x00000000; //! it dosn't need to set TX delay
+    
+  /*TINFO="[LPBK] RX input delay setting ..."*/ *MDM_TM_TINFOMSG = 1220;
+  mcSHOW_DBG_MSG(("[LPBK] RX input delay setting ...\n"));
+#ifdef DQDLY20
+  ddrphy_rx_dq_dly = 20 ;  
+#else
+ #ifdef DQDLY10
+  ddrphy_rx_dq_dly = 10 ;
+ #else
+  ddrphy_rx_dq_dly = 0  ;
+ #endif
+#endif
+
+#ifdef DQSDLY30
+  ddrphy_rx_dqs_dly= 30 ;  
+#else
+ #ifdef DQSDLY20
+  ddrphy_rx_dqs_dly= 20 ;
+#else
+  #ifdef DQSDLY10
+  ddrphy_rx_dqs_dly= 10 ;
+  #else
+  ddrphy_rx_dqs_dly= 0  ;
+  #endif
+ #endif
+#endif
+#ifdef LPBK_RUN_DSIM
+      *DRAMC_WBR = 0x00000000;
+#else
+      *((UINT32P)(DRAMC_WBR)) = 0x00000000;
+#endif
+  ddrphy_SetRXInputDelay_B0( ddrphy_rx_dqs_dly, ddrphy_rx_dq_dly ) ;
+  ddrphy_SetRXInputDelay_B1( ddrphy_rx_dqs_dly, ddrphy_rx_dq_dly ) ;
+  ddrphy_SetRXInputDelay_B2( ddrphy_rx_dqs_dly, ddrphy_rx_dq_dly ) ;
+  ddrphy_SetRXInputDelay_CA( ddrphy_rx_dqs_dly, ddrphy_rx_dq_dly ) ;
+
+     //APB write broadcast OFF
+    //*DRAMC_WBR = 0x00000000;
+
+#ifdef PIDLY16
+  *((UINT32P)(0x10228E1C)) = 0x10000000;//CA
+  *((UINT32P)(0x10228E6C)) = 0x10000000;//B0
+  *((UINT32P)(0x10228EC4)) = 0x10000000;//B1
+  *((UINT32P)(0x1022AE6C)) = 0x10000000;//B2
+  *((UINT32P)(0x10234E1C)) = 0x10000000;//CA
+  *((UINT32P)(0x10234E6C)) = 0x10000000;//B0
+  *((UINT32P)(0x10234EC4)) = 0x10000000;//B1
+  *((UINT32P)(0x10234E6C)) = 0x10000000;//B2
+#endif
+
+  //xqzhu
+#if 0
+//#ifdef DQPIDLY16
+    *((UINT32P)(0x10228E1C)) = 0x00000000;//CA
+    *((UINT32P)(0x10228E6C)) = 0x00000000;//B0
+    *((UINT32P)(0x10228EC4)) = 0x00000000;//B1
+    *((UINT32P)(0x1022AE6C)) = 0x00000000;//B2
+    *((UINT32P)(0x10234E1C)) = 0x00000000;//CA
+    *((UINT32P)(0x10234E6C)) = 0x00000000;//B0
+    *((UINT32P)(0x10234EC4)) = 0x00000000;//B1
+    *((UINT32P)(0x10234E6C)) = 0x00000000;//B2
+#endif
+
+
+  #ifdef LPBK_MODE_0
+    lpbk_tx = 0 ; //! CHN-A is TX
+  #else
+    lpbk_tx = 1 ; //! CHN-B is TX
+  #endif
+
+#if 1
+#ifdef DDRPHY_LPBK_CAL_EN
+#ifndef LPBK_INTERNAL_EN
+    fpc_result =  ddrphy_lpbk_cal_top() ;
+#else
+    /*TINFO = "CHA lpbk calibration begin"*/ *MDM_TM_TINFOMSG = 1229;
+    fpc_result_0 = ddrphy_lpbk_cal_top_perch(0) ;
+    /*TINFO = "CHB lpbk calibration begin"*/ *MDM_TM_TINFOMSG = 1230;
+    fpc_result_1 = ddrphy_lpbk_cal_top_perch(1) ;
+    fpc_result = fpc_result_0 | fpc_result_1;
+#endif
+    //#ifndef LPBK_INTERNAL_EN
+    if( fpc_result == 3) {
+#ifdef LPBK_RUN_DSIM
+      //*GPIO_DOUT3 = 0x00000f00; //PAD_BPI_BUS1/2/3/4
+      //pat_pass = 0x1;
+      //xqzhu TBD *GPIO_GPIO_DOUT2 = 0x01000000; // PAD_CAM_CLK3      
+      //SET_GPIO_DOUT (75, 1);//PAD_CMDAT7
+#endif
+      /*TINFO="[LPBK] final DDRPHY LPBK test PASS \n\n"*/ *MDM_TM_TINFOMSG = 1231;
+      mcSHOW_DBG_MSG(("[LPBK] final DDRPHY LPBK test PASS \n\n"));
+    } 
+    else
+    {
+      /*TINFO="[LPBK] final DDRPHY LPBK test FAIL \n\n"*/ *MDM_TM_TINFOMSG = 1232;
+      mcSHOW_DBG_MSG(("[LPBK] final DDRPHY LPBK test FAIL \n\n"));
+    }
+    //ate test flag
+    SET_GPIO_DOUT(0,1); //PAD_GPIO0
+    //else
+    //{
+    //  for(i=0;i<=9;i++)
+    //  {
+    //    gpio_location[i] = (fpc_result & (1 << i)) >> i;
+    //    //SET_GPIO_DOUT(i+68,gpio_location);
+    //  }
+    //  SET_GPIO_DOUT(88,gpio_location[0]); // PAD_MSDC1_CLK
+    //  SET_GPIO_DOUT(99,gpio_location[1]); // PAD_MSDC0_CLK
+    //  SET_GPIO_DOUT(86,gpio_location[2]); // PAD_MSDC2_DSL  
+    //  SET_GPIO_DOUT(81,gpio_location[3]); // PAD_MSDC2_CLK	
+    //  SET_GPIO_DOUT(93,gpio_location[4]); // PAD_MSDC0_DAT7
+    //  SET_GPIO_DOUT(94,gpio_location[5]); // PAD_MSDC0_DAT6	    //CHA INTERNAL_B2_FAIL
+    //  SET_GPIO_DOUT(95,gpio_location[6]); // PAD_MSDC0_DAT5	    //CHB INTERNAL_B0_B1_CA_FAIL				  
+    //  SET_GPIO_DOUT(96,gpio_location[7]); // PAD_MSDC0_DAT4					  
+    //  SET_GPIO_DOUT(73,gpio_location[8]); // PAD_CMDAT5
+    //  SET_GPIO_DOUT(74,gpio_location[9]); // PAD_CMDAT6     	
+
+    //  /*TINFO="[LPBK] ERROR !!! final DDRPHY LPBK test FAIL \n\n"*/ *MDM_TM_TINFOMSG = 1233;
+    //  mcSHOW_DBG_MSG(("[LPBK] ERROR !!! final DDRPHY LPBK test FAIL \n\n"));
+    //}
+    //else if ( fpc_result == 1) { //CHA fail, CHB ok
+    //  #ifdef LPBK_RUN_DSIM
+    //  //pat_pass = 0x0;
+    //  //xqzhu TBD *GPIO_GPIO_DOUT4 = 0x80000000; // PAD_PERIPHERAL_EN4
+    //  //*GPIO_DOUT3 = 0x00000c00; //PAD_BPI_BUS1/2/3/4
+    //  //SET_GPIO_DOUT (29, 0);
+    //  SET_GPIO_DOUT (74, 1);//PAD_CMDAT6
+    //  #endif
+    //  /*TINFO="[LPBK] final DDRPHY LPBK test CHA FAIL, CHB PASS \n\n"*/ *MDM_TM_TINFOMSG = 1234;
+    //  mcSHOW_DBG_MSG(("[LPBK] final DDRPHY LPBK test CHA FAIL, CHB PASS \n\n"));
+    //} else if ( fpc_result == 2) { //CHA ok, CHB fail
+    //  #ifdef LPBK_RUN_DSIM
+    //  //pat_pass = 0x0;
+    //  //xqzhu TBD *GPIO_GPIO_DOUT4 = 0x80000000; // PAD_PERIPHERAL_EN4
+    //  //*GPIO_DOUT3 = 0x00000300; //PAD_BPI_BUS1/2/3/4
+    //  //SET_GPIO_DOUT (29, 0);
+    //  SET_GPIO_DOUT (75, 1);//PAD_CMDAT7
+    //  /*TINFO="[LPBK] final DDRPHY LPBK test CHA PASS, CHB FAIL \n\n"*/ *MDM_TM_TINFOMSG = 1235;
+    //  mcSHOW_DBG_MSG(("[LPBK] final DDRPHY LPBK test CHA PASS, CHB FAIL \n\n"));
+    //  #endif
+    //}
+    //else{
+    //  #ifdef LPBK_RUN_DSIM
+    //  //SET_GPIO_DOUT (29, 0);
+    //  //*GPIO_DOUT3 = 0x00000000;
+    //  //pat_pass = 0x0;      
+    //  //xqzhu TBD *GPIO_GPIO_DOUT4 = 0x80000000; // PAD_PERIPHERAL_EN4
+    //  SET_GPIO_DOUT (76, 1);//PAD_CMDAT8
+    //  #endif
+    //  /*TINFO="[LPBK] ERROR !!! final DDRPHY LPBK test FAIL \n\n"*/ *MDM_TM_TINFOMSG = 1233;
+    //  mcSHOW_DBG_MSG(("[LPBK] ERROR !!! final DDRPHY LPBK test FAIL \n\n"));
+    //}
+    //#endif
+
+    #ifdef LPBK_RUN_DSIM
+      /*TINFO = "pattern done"*/ *MDM_TM_TINFOMSG = 1236;
+      //SET_GPIO_DOUT (135, 1);
+      //xqzhu TBD *GPIO_GPIO_DOUT1 = 0x10000000; // PAD_RFIC0_BSI_D0  ///pat done
+      //*GPIO_DOUT2 = 0x00000600; //PAD_IDDIG & PAD_DRVBUS
+      //*MDM_TM_ENDSIM = 0x0;
+      //while(1);
+    #endif
+#else
+
+  #ifdef LPBK_INTERNAL_EN
+#ifdef LPBK_RUN_DSIM
+      *DRAMC_WBR = 0x0000000f;
+#else
+      *((UINT32P)(DRAMC_WBR)) = 0x0000000f;
+#endif
+    //fpc_result = ddrphy_int_lpbk_test_seq ( 0 ) ;
+    fpc_result_0 = ddrphy_int_lpbk_test_seq_perch ( 0, 0 ) ; 
+    if(fpc_result_0 == 3)
+      fpc_result_0 = 2;
+    fpc_result_1 = ddrphy_int_lpbk_test_seq_perch ( 0, 1 ) ;
+    if(fpc_result_1 == 3)
+      fpc_result_1 = 1;    
+    fpc_result = fpc_result_0 | fpc_result_1;
+  #else
+    //APB write broadcast OFF
+#ifdef LPBK_RUN_DSIM
+      *DRAMC_WBR = 0x00000000;
+#else
+      *((UINT32P)(DRAMC_WBR)) = 0x00000000;
+#endif
+    fpc_result = ddrphy_ext_lpbk_test_seq ( lpbk_tx ) ;
+    //APB write broadcast ON
+#ifdef LPBK_RUN_DSIM
+      *DRAMC_WBR = 0x0000000f;
+#else
+      *((UINT32P)(DRAMC_WBR)) = 0x0000000f;
+#endif
+  #endif
+  #ifdef LPBK_RUN_DSIM
+   //#ifndef LPBK_INTERNAL_EN
+   if( fpc_result  == 3) {
+      #ifdef LPBK_RUN_DSIM
+      //SET_GPIO_DOUT (29, 1); 
+      //pat_pass = 0x1;
+      //xqzhu TBD *GPIO_GPIO_DOUT2 = 0x01000000; // PAD_CAM_CLK3
+      //*GPIO_DOUT3 = 0x00000f00; //PAD_BPI_BUS1/2/3/4
+      #endif
+      #ifdef LPBK_INTERNAL_EN
+      /*TINFO="[LPBK] final DDRPHY internal LPBK test PASS \n\n"*/ *MDM_TM_TINFOMSG = 1237;
+      mcSHOW_DBG_MSG(("[LPBK] final DDRPHY internal LPBK test PASS \n\n"));
+      #else
+      /*TINFO="[LPBK] final DDRPHY external LPBK test PASS \n\n"*/ *MDM_TM_TINFOMSG = 1238;
+      mcSHOW_DBG_MSG(("[LPBK] final DDRPHY external LPBK test PASS \n\n"));
+      #endif
+    } else if ( fpc_result == 1) { //CHA fail, CHB ok for interal, CA PASS & DQ FAIL for external
+      #ifdef LPBK_RUN_DSIM
+      //SET_GPIO_DOUT (29, 0); 
+      //*GPIO_DOUT3 = 0x00000c00; //PAD_BPI_BUS1/2/3/4
+      //pat_pass = 0x0;
+      //xqzhu TBD *GPIO_GPIO_DOUT4 = 0x80000000; // PAD_PERIPHERAL_EN4
+      #endif
+      #ifdef LPBK_INTERNAL_EN
+      /*TINFO="[LPBK] final DDRPHY internal LPBK test CHA FAIL, CHB PASS \n\n"*/ *MDM_TM_TINFOMSG = 1239;
+
+      mcSHOW_DBG_MSG(("[LPBK] final DDRPHY internal LPBK test CHA FAIL, CHB PASS \n\n"));
+      #else
+      /*TINFO="[LPBK] final DDRPHY exteranl LPBK test DQ FAIL, CA PASS \n\n"*/ *MDM_TM_TINFOMSG = 1240;
+      mcSHOW_DBG_MSG(("[LPBK] final DDRPHY exteranl LPBK test DQ FAIL, CA PASS \n\n"));
+      #endif
+    } else if ( fpc_result == 2) { //CHA ok, CHB fail, , CA FAIL & DQ PASS for external
+      #ifdef LPBK_RUN_DSIM
+      //SET_GPIO_DOUT (29, 0);
+      //xqzhu TBD *GPIO_GPIO_DOUT4 = 0x80000000; // PAD_PERIPHERAL_EN4
+      //pat_pass = 0x0;
+      //*GPIO_DOUT3 = 0x00000300; //PAD_BPI_BUS1/2/3/4
+      #endif
+      #ifdef LPBK_INTERNAL_EN
+      /*TINFO="[LPBK] final DDRPHY LPBK test CHA PASS, CHB FAIL \n\n"*/ *MDM_TM_TINFOMSG = 1235;
+      mcSHOW_DBG_MSG(("[LPBK] final DDRPHY LPBK test CHA PASS, CHB FAIL \n\n"));
+      #else
+      /*TINFO="[LPBK] final DDRPHY exteranl LPBK test DQ FAIL, CA PASS \n\n"*/ *MDM_TM_TINFOMSG = 1240;
+      mcSHOW_DBG_MSG(("[LPBK] final DDRPHY exteranl LPBK test DQ FAIL, CA PASS \n\n"));
+      #endif
+    }else{
+      #ifdef LPBK_RUN_DSIM
+      //SET_GPIO_DOUT (29, 0);
+      //xqzhu TBD *GPIO_GPIO_DOUT4 = 0x80000000; // PAD_PERIPHERAL_EN4
+      //pat_pass = 0x0;
+      //*GPIO_DOUT3 = 0x00000000;
+      #endif
+      /*TINFO="[LPBK] ERROR !!! final DDRPHY LPBK test FAIL \n\n"*/ *MDM_TM_TINFOMSG = 1233;
+      mcSHOW_DBG_MSG(("[LPBK] ERROR !!! final DDRPHY LPBK test FAIL \n\n"));
+    }
+    //#endif
+    /*TINFO = "pattern done"*/ *MDM_TM_TINFOMSG = 1236;
+    //SET_GPIO_DOUT (135, 1);
+    //xqzhu TBD *GPIO_GPIO_DOUT1 = 0x10000000; // PAD_RFIC0_BSI_D0  ///pat done
+    //*GPIO_DOUT2 = 0x00000600; //PAD_IDDIG & PAD_DRVBUS
+    DELAY_US(10);
+
+//===========The folling define is added for LPAIP_WFI===========//
+  #ifdef LPAIP_WFI
+  LPAIP_WFI_API();
+  #endif // End of LPAIP_WFI
+//===============================================================//
+
+//======For interrupt coverage collection======
+*MDM_TM_INT_DONE=0;
+*MDM_TM_INT_DONE=1;
+//======For interrupt coverage collection======
+    *MDM_TM_ENDSIM = 0x0;
+//===========The folling define is added for LPAIP_WFI===========//
+  #ifdef LPAIP_WFI
+  __wfi();
+  #endif // End of LPAIP_WFI
+//===============================================================//
+    while(1);
+  #endif
+#endif  
+#endif 
+
+} //! end of ddrphy_lpbk_test_ctrl
+
+
+//! ----------------------------------------------
+//! ddrphy loopback test calibration top
+//! ----------------------------------------------
+int ddrphy_lpbk_cal_top ( )
+{
+  unsigned int  cal_boundary          = 64  ;
+  //unsigned int  cal_boundary          = 40  ;
+  unsigned int  lpbk_test_result      = 0   ;
+  unsigned int  lpbk_test_result_0      = 0   ;
+  unsigned int  lpbk_test_result_1      = 0   ;
+  unsigned int  cal_idx               = 0   ;
+  unsigned int  lpbk_tx               = 0   ;
+
+  unsigned int  cal_rx_dq_delta       = 0   ;
+  unsigned int  cal_rx_dqs_delta      = 0   ;  
+  
+  //! cal_delay
+  unsigned int  cal_rx_dq_dly         = 0   ;
+  unsigned int  cal_rx_dqs_dly        = 0   ;
+  unsigned int  rx_dq_min_pass_dly    = 64  ;
+  unsigned int  rx_dq_max_pass_dly    = 64  ;
+  unsigned int  rx_dqs_min_pass_dly   = 64  ;
+  unsigned int  rx_dqs_max_pass_dly   = 64  ;
+  
+  #ifdef LPBK_INTERNAL_EN
+    /*TINFO="[LPBK] Starting to DDRPHY internal loopback test calibration ...\n"*/ *MDM_TM_TINFOMSG = 1241;
+    mcSHOW_DBG_MSG(("[LPBK] Starting to DDRPHY internal loopback test calibration ...\n"));
+  #else
+    /*TINFO="[LPBK] Starting to DDRPHY external loopback test calibration ...\n"*/ *MDM_TM_TINFOMSG = 1242;
+    mcSHOW_DBG_MSG(("[LPBK] Starting to DDRPHY external loopback test calibration ...\n"));
+    #ifdef LPBK_MODE_0
+      lpbk_tx = 0 ; //! CHA is TX
+    #else
+      lpbk_tx = 1 ; //! CHB is TX
+    #endif
+  #endif
+ 
+#ifdef LPBK_RUN_DSIM
+      *DRAMC_WBR = 0x00000000;
+#else
+      *((UINT32P)(DRAMC_WBR)) = 0x00000000;
+#endif
+  *((UINT32P)(DDRPHY0AO_BASE + 0x01b0)) = *((UINT32P)(DDRPHY0AO_BASE + 0x01b0)) & ~(0x00001000)   ; //! disable ARCMD_BIAS_EN to eanble change DQS dly for ARCLK
+  *((UINT32P)(DDRPHY1AO_BASE + 0x01b0)) = *((UINT32P)(DDRPHY1AO_BASE + 0x01b0)) & ~(0x00001000)   ; //! disable ARCMD_BIAS_EN to eanble change DQS dly for ARCLK
+   
+  //! step-1 : adjust DQ until PASS or dqs_delay==64
+
+  cal_idx = 0 ;
+  cal_rx_dqs_dly = 20 ;  
+  //cal_rx_dqs_dly = 1 ;
+  do{
+    /*TINFO="[LPBK] Starting to adjust DQ delays =%d ...\n", cal_idx*/ *MDM_TM_TPAR =  cal_idx; *MDM_TM_TINFOMSG = 1243;
+    mcSHOW_DBG_MSG(("[LPBK] Starting to adjust DQ delays =%d ...\n", cal_idx));
+#ifdef LPBK_RUN_DSIM
+      *DRAMC_WBR = 0x00000000;
+#else
+      *((UINT32P)(DRAMC_WBR)) = 0x00000000;
+#endif
+  	ddrphy_SetRXInputDelay_B0( cal_rx_dqs_dly, cal_idx ) ;
+  	ddrphy_SetRXInputDelay_B1( cal_rx_dqs_dly, cal_idx ) ;
+  	ddrphy_SetRXInputDelay_CA( cal_rx_dqs_dly, cal_idx ) ;
+  	#ifdef LPBK_INTERNAL_EN
+      //lpbk_test_result = ddrphy_int_lpbk_test_seq( 1 ) ;
+      lpbk_test_result_0 = ddrphy_int_lpbk_test_seq_perch( 1,0 ) ;
+      lpbk_test_result_1 = ddrphy_int_lpbk_test_seq_perch( 1,1 ) ;
+      if(lpbk_test_result_0 == 3)
+	lpbk_test_result_0 = 2;
+      if(lpbk_test_result_1 == 3)
+        lpbk_test_result_1 = 1;
+      lpbk_test_result = lpbk_test_result_0 | lpbk_test_result_1;
+    #else
+      lpbk_test_result = ddrphy_ext_lpbk_test_seq( lpbk_tx ) ;
+    #endif
+    if( lpbk_test_result == 3 ) {
+      rx_dq_min_pass_dly = (rx_dq_min_pass_dly==64) ? cal_idx : rx_dq_min_pass_dly ;
+      rx_dq_max_pass_dly = cal_idx ;
+    }
+    cal_idx += 2 ;
+    //cal_idx += 5 ;
+  }while( (cal_idx<cal_boundary) ) ;
+  
+  //! cal_rx_dq_dly = (rx_dq_min_pass_dly<cal_boundary) ? (rx_dq_min_pass_dly+3) : 0 ;
+  #ifdef LPBK_INTERNAL_EN
+    //cal_rx_dq_dly = 0 ;
+  #else
+    //! cal_rx_dq_dly = 20 ; //! as external scan, we let DQ all fail, then scan dqs
+  #endif
+  /*TINFO="[LPBK] DQ  min pass delay is %d \n", rx_dq_min_pass_dly*/ *MDM_TM_TPAR =  rx_dq_min_pass_dly; *MDM_TM_TINFOMSG = 1244;
+  /*TINFO="[LPBK] DQ  max pass delay is %d \n", rx_dq_max_pass_dly*/ *MDM_TM_TPAR =  rx_dq_max_pass_dly; *MDM_TM_TINFOMSG = 1245;
+  mcSHOW_DBG_MSG(("[LPBK] DQ  min pass delay is %d \n", rx_dq_min_pass_dly));
+  mcSHOW_DBG_MSG(("[LPBK] DQ  max pass delay is %d \n", rx_dq_max_pass_dly));
+
+  //! step-2 : adjust DQS delay
+  cal_idx = 0 ;
+  if(rx_dq_min_pass_dly==64)
+    cal_rx_dq_dly = 0 ;
+  else
+    cal_rx_dq_dly = ((rx_dq_min_pass_dly+3)<rx_dq_max_pass_dly) ? (rx_dq_min_pass_dly+3) :  rx_dq_min_pass_dly;
+  
+  //cal_rx_dq_dly  = 10 ;
+  //cal_rx_dq_dly  = 0 ;
+  do{
+    /*TINFO="[LPBK] Starting to adjust DQS delays =%d ...\n", cal_idx*/ *MDM_TM_TPAR =  cal_idx; *MDM_TM_TINFOMSG = 1246;
+    mcSHOW_DBG_MSG(("[LPBK] Starting to adjust DQS delays =%d ...\n", cal_idx));
+#ifdef LPBK_RUN_DSIM
+      *DRAMC_WBR = 0x00000000;
+#else
+      *((UINT32P)(DRAMC_WBR)) = 0x00000000;
+#endif
+  	ddrphy_SetRXInputDelay_B0( cal_idx, cal_rx_dq_dly ) ;
+  	ddrphy_SetRXInputDelay_B1( cal_idx, cal_rx_dq_dly ) ;
+  	ddrphy_SetRXInputDelay_CA( cal_idx, cal_rx_dq_dly ) ;
+  	#ifdef LPBK_INTERNAL_EN
+      lpbk_test_result_0 = ddrphy_int_lpbk_test_seq_perch( 1,0 ) ;
+      lpbk_test_result_1 = ddrphy_int_lpbk_test_seq_perch( 1,1 ) ;
+      if(lpbk_test_result_0 == 3)
+	lpbk_test_result_0 = 2;
+      if(lpbk_test_result_1 == 3)
+        lpbk_test_result_1 = 1;
+      lpbk_test_result = lpbk_test_result_0 | lpbk_test_result_1;
+    #else
+      lpbk_test_result = ddrphy_ext_lpbk_test_seq( lpbk_tx ) ;
+    #endif
+    if( lpbk_test_result == 3 ) {
+      rx_dqs_min_pass_dly = (rx_dqs_min_pass_dly==64) ? cal_idx : rx_dqs_min_pass_dly ;
+      rx_dqs_max_pass_dly = cal_idx ;
+    }
+    cal_idx += 2 ;
+    //cal_idx += 5 ;
+  }while( (cal_idx<cal_boundary) ) ;
+  /*TINFO="[LPBK] DQS min pass delay is %d \n", rx_dqs_min_pass_dly*/ *MDM_TM_TPAR =  rx_dqs_min_pass_dly; *MDM_TM_TINFOMSG = 1247;
+  /*TINFO="[LPBK] DQS max pass delay is %d \n", rx_dqs_max_pass_dly*/ *MDM_TM_TPAR =  rx_dqs_max_pass_dly; *MDM_TM_TINFOMSG = 1248;
+  mcSHOW_DBG_MSG(("[LPBK] DQS min pass delay is %d \n", rx_dqs_min_pass_dly));
+  mcSHOW_DBG_MSG(("[LPBK] DQS max pass delay is %d \n", rx_dqs_max_pass_dly));
+  
+  //! step-3 : check set to dq or dqs
+  cal_rx_dq_delta   = rx_dq_max_pass_dly-rx_dq_min_pass_dly   ;
+  cal_rx_dqs_delta  = rx_dqs_max_pass_dly-rx_dqs_min_pass_dly ;
+  if      (( cal_rx_dqs_delta >= cal_rx_dq_delta )&&(rx_dqs_min_pass_dly!=64)){
+    cal_rx_dqs_dly  = (rx_dqs_max_pass_dly+rx_dqs_min_pass_dly) >> 1 ;
+    cal_rx_dq_dly   = cal_rx_dq_dly ;
+    /*TINFO="\n[LPBK] DQS margin larger than DQ ; dqs_delta=%d ; dq_delta=%d ; DQS_delay=%d ; DQ_delay=%d \n", cal_rx_dqs_delta, cal_rx_dq_delta, cal_rx_dqs_dly, cal_rx_dq_dly*/ *MDM_TM_TPAR =  cal_rx_dqs_delta; *MDM_TM_TPAR =  cal_rx_dq_delta; *MDM_TM_TPAR =  cal_rx_dqs_dly; *MDM_TM_TPAR =  cal_rx_dq_dly; *MDM_TM_TINFOMSG = 1249;
+    mcSHOW_DBG_MSG(("\n[LPBK] DQS margin larger than DQ ; dqs_delta=%d ; dq_delta=%d ; DQS_delay=%d ; DQ_delay=%d \n", cal_rx_dqs_delta, cal_rx_dq_delta, cal_rx_dqs_dly, cal_rx_dq_dly));
+  }else if(cal_rx_dq_delta > cal_rx_dqs_delta) {
+    cal_rx_dq_dly   = (rx_dq_max_pass_dly+rx_dq_min_pass_dly) >> 1 ;
+    //cal_rx_dqs_dly  = cal_rx_dqs_dly ;
+    cal_rx_dqs_dly  = 20 ;
+    /*TINFO="\n[LPBK] DQ margin larger than DQS ; dqs_delta=%d ; dq_delta=%d ; DQS_delay=%d ; DQ_delay=%d \n", cal_rx_dqs_delta, cal_rx_dq_delta, cal_rx_dqs_dly, cal_rx_dq_dly*/ *MDM_TM_TPAR =  cal_rx_dqs_delta; *MDM_TM_TPAR =  cal_rx_dq_delta; *MDM_TM_TPAR =  cal_rx_dqs_dly; *MDM_TM_TPAR =  cal_rx_dq_dly; *MDM_TM_TINFOMSG = 1250;
+    mcSHOW_DBG_MSG(("\n[LPBK] DQ margin larger than DQS ; dqs_delta=%d ; dq_delta=%d ; DQS_delay=%d ; DQ_delay=%d \n", cal_rx_dqs_delta, cal_rx_dq_delta, cal_rx_dqs_dly, cal_rx_dq_dly));
+  }else {
+    //cal_rx_dq_dly   = 0 ;
+    //cal_rx_dqs_dly  = 0 ;
+    cal_rx_dq_dly   = 0 ;
+    cal_rx_dqs_dly  = 0 ;
+    /*TINFO="[LPBK] dqs & dq no margin \n"*/ *MDM_TM_TINFOMSG = 1251;
+    mcSHOW_DBG_MSG(("[LPBK] dqs & dq no margin \n"));
+  }
+  
+  //! step-4 : final check
+#ifdef LPBK_RUN_DSIM
+      *DRAMC_WBR = 0x00000000;
+#else
+      *((UINT32P)(DRAMC_WBR)) = 0x00000000;
+#endif
+  ddrphy_SetRXInputDelay_B0( cal_rx_dqs_dly, cal_rx_dq_dly ) ;
+  ddrphy_SetRXInputDelay_B1( cal_rx_dqs_dly, cal_rx_dq_dly ) ;
+  ddrphy_SetRXInputDelay_CA( cal_rx_dqs_dly, cal_rx_dq_dly ) ;
+  
+  #ifdef LPBK_INTERNAL_EN
+      lpbk_test_result_0 = ddrphy_int_lpbk_test_seq_perch( 1,0 ) ;
+      lpbk_test_result_1 = ddrphy_int_lpbk_test_seq_perch( 1,1 ) ;
+      if(lpbk_test_result_0 == 3)
+	lpbk_test_result_0 = 2;
+      if(lpbk_test_result_1 == 3)
+        lpbk_test_result_1 = 1;
+        
+      lpbk_test_result = lpbk_test_result_0 | lpbk_test_result_1;
+  #else
+    lpbk_test_result = ddrphy_ext_lpbk_test_seq( lpbk_tx ) ;
+  #endif
+  
+  return lpbk_test_result ;
+  
+} //! end-ddrphy_lpbk_cal_top
+
+
+int ddrphy_lpbk_cal_top_perch ( int CUR_CHN)
+{
+  unsigned int  cal_boundary          = 64  ;
+  //unsigned int  cal_boundary          = 30  ;
+  //unsigned int  cal_boundary          = 25  ;
+  unsigned int  lpbk_test_result      = 0   ;
+  unsigned int  lpbk_test_result_0      = 0   ;
+  unsigned int  lpbk_test_result_1      = 0   ;
+  unsigned int  cal_idx               = 0   ;
+  unsigned int  lpbk_tx               = 0   ;
+
+  unsigned int  cal_rx_dq_delta       = 0   ;
+  unsigned int  cal_rx_dqs_delta      = 0   ;  
+  
+  //! cal_delay
+  unsigned int  cal_rx_dq_dly         = 0   ;
+  unsigned int  cal_rx_dqs_dly        = 0   ;
+  unsigned int  rx_dq_min_pass_dly    = 64  ;
+  unsigned int  rx_dq_max_pass_dly    = 64  ;
+  unsigned int  rx_dqs_min_pass_dly   = 64  ;
+  unsigned int  rx_dqs_max_pass_dly   = 64  ;
+  unsigned int  lpbk_test_result_dq   = 0   ;
+  unsigned int	lpbk_test_result_dqs  = 0   ;
+  unsigned int	gpio_location_temp    = 0   ;
+
+  unsigned int  DDRPHYCUR_BASE    = 0;
+
+  if        ( CUR_CHN==0 ) {
+    DDRPHYCUR_BASE = DDRPHY0AO_BASE ;
+  } else if ( CUR_CHN==1 ) {
+    DDRPHYCUR_BASE = DDRPHY1AO_BASE ;
+  } else {
+    DDRPHYCUR_BASE = DDRPHY0AO_BASE ;
+  }
+
+
+  #ifdef LPBK_INTERNAL_EN
+    /*TINFO="[LPBK] Starting to DDRPHY internal loopback test calibration ...\n"*/ *MDM_TM_TINFOMSG = 1241;
+    mcSHOW_DBG_MSG(("[LPBK] Starting to DDRPHY internal loopback test calibration ...\n"));
+  #else
+    /*TINFO="[LPBK] Starting to DDRPHY external loopback test calibration ...\n"*/ *MDM_TM_TINFOMSG = 1242;
+    mcSHOW_DBG_MSG(("[LPBK] Starting to DDRPHY external loopback test calibration ...\n"));
+    #ifdef LPBK_MODE_0
+      lpbk_tx = 0 ; //! CHA is TX
+    #else
+      lpbk_tx = 1 ; //! CHB is TX
+    #endif
+  #endif
+#ifdef LPBK_RUN_DSIM
+      *DRAMC_WBR = 0x00000000;
+#else
+      *((UINT32P)(DRAMC_WBR)) = 0x00000000;
+#endif
+  *((UINT32P)(DDRPHYCUR_BASE + 0x01b0)) = *((UINT32P)(DDRPHYCUR_BASE + 0x01b0)) & ~(0x00001000)   ; //! disable ARCMD_BIAS_EN to eanble change DQS dly for ARCLK
+
+  //! step-1 : adjust DQ until PASS or dqs_delay==64
+
+  cal_idx = 0 ;
+  // cal_idx = 20 ;
+  cal_rx_dqs_dly = 20 ;
+  /*TINFO="[LPBK] Starting to adjust DQS delays =%d, loop DQ delay to find DQ delay windows ...\n", cal_rx_dqs_dly*/ *MDM_TM_TPAR =  cal_rx_dqs_dly; *MDM_TM_TINFOMSG = 1252;
+  mcSHOW_DBG_MSG(("[LPBK] Starting to adjust DQS delays =%d, loop DQ delay to find DQ delay windows ...\n", cal_rx_dqs_dly));
+  //cal_rx_dqs_dly = 1 ;
+  //for(cal_rx_dqs_dly = 20; cal_rx_dqs_dly < 128; cal_rx_dqs_dly += 2){			  //looking for dqs_dly
+    do{
+      /*TINFO="[LPBK] Starting to adjust DQ delays =%d ...\n", cal_idx*/ *MDM_TM_TPAR =  cal_idx; *MDM_TM_TINFOMSG = 1243;
+      mcSHOW_DBG_MSG(("[LPBK] Starting to adjust DQ delays =%d ...\n", cal_idx));
+#ifdef LPBK_RUN_DSIM
+      *DRAMC_WBR = 0x00000000;
+#else
+      *((UINT32P)(DRAMC_WBR)) = 0x00000000;
+#endif
+      ddrphy_SetRXInputDelay_B0( cal_rx_dqs_dly, cal_idx ) ;
+      ddrphy_SetRXInputDelay_B1( cal_rx_dqs_dly, cal_idx ) ;
+      ddrphy_SetRXInputDelay_B2( cal_rx_dqs_dly, cal_idx ) ;
+      ddrphy_SetRXInputDelay_CA( cal_rx_dqs_dly, cal_idx ) ;
+#ifdef LPBK_INTERNAL_EN
+      lpbk_test_result = ddrphy_int_lpbk_test_seq_perch( 1,CUR_CHN ) ;
+#else
+      lpbk_test_result = ddrphy_ext_lpbk_test_seq( lpbk_tx ) ;
+#endif
+      if( lpbk_test_result == INTERNAL_LPBK_PASS) {
+	rx_dq_min_pass_dly = (rx_dq_min_pass_dly==64) ? cal_idx : rx_dq_min_pass_dly ;
+	rx_dq_max_pass_dly = cal_idx ;
+	lpbk_test_result_dq = 1;
+      }
+      //cal_idx += 2 ;
+      cal_idx += 2 ;		// 5
+    }while( (cal_idx<cal_boundary) ) ;
+    cal_idx = 0 ;
+	
+    //if( cal_rx_dqs_dly != 0) {
+      //SET_GPIO_DOUT(100,1);//PAD_MSDC0_DAT3, check whether forloop running normal or not
+    //}
+
+    //if(lpbk_test_result_dq == 1){
+      //gpio_location_temp = (CUR_CHN == 0)?89:90;
+      //SET_GPIO_DOUT(gpio_location_temp,1); // PAD_MSDC1_DAT0, PAD_MSDC1_DAT1
+      //break;
+    //}
+  //}
+  
+  //HANG_HERE
+
+  //! cal_rx_dq_dly = (rx_dq_min_pass_dly<cal_boundary) ? (rx_dq_min_pass_dly+3) : 0 ;
+  #ifdef LPBK_INTERNAL_EN
+    //cal_rx_dq_dly = 0 ;
+  #else
+    //! cal_rx_dq_dly = 20 ; //! as external scan, we let DQ all fail, then scan dqs
+  #endif
+  /*TINFO="[LPBK] DQ  min pass delay is %d \n", rx_dq_min_pass_dly*/ *MDM_TM_TPAR =  rx_dq_min_pass_dly; *MDM_TM_TINFOMSG = 1244;
+  /*TINFO="[LPBK] DQ  max pass delay is %d \n", rx_dq_max_pass_dly*/ *MDM_TM_TPAR =  rx_dq_max_pass_dly; *MDM_TM_TINFOMSG = 1245;
+  mcSHOW_DBG_MSG(("[LPBK] DQ  min pass delay is %d \n", rx_dq_min_pass_dly));
+  mcSHOW_DBG_MSG(("[LPBK] DQ  max pass delay is %d \n", rx_dq_max_pass_dly));
+
+  //! step-2 : adjust DQS delay
+  cal_idx = 0 ;
+  if(rx_dq_min_pass_dly==64)
+    cal_rx_dq_dly = 0 ;
+  else
+    cal_rx_dq_dly = ((rx_dq_min_pass_dly+3)<rx_dq_max_pass_dly) ? (rx_dq_min_pass_dly+3) :  rx_dq_min_pass_dly;
+  
+  //cal_rx_dq_dly  = 10 ;
+  //cal_rx_dq_dly  = 0 ;
+  /*TINFO="[LPBK] Starting to adjust DQ delays =%d, loop DQS delay to find DQ delay windows ...\n", cal_rx_dq_dly*/ *MDM_TM_TPAR =  cal_rx_dq_dly; *MDM_TM_TINFOMSG = 1253;
+  mcSHOW_DBG_MSG(("[LPBK] Starting to adjust DQ delays =%d, loop DQS delay to find DQ delay windows ...\n", cal_rx_dq_dly));
+  do{
+    /*TINFO="[LPBK] Starting to adjust DQS delays =%d ...\n", cal_idx*/ *MDM_TM_TPAR =  cal_idx; *MDM_TM_TINFOMSG = 1246;
+    mcSHOW_DBG_MSG(("[LPBK] Starting to adjust DQS delays =%d ...\n", cal_idx));
+#ifdef LPBK_RUN_DSIM
+      *DRAMC_WBR = 0x00000000;
+#else
+      *((UINT32P)(DRAMC_WBR)) = 0x00000000;
+#endif
+  	ddrphy_SetRXInputDelay_B0( cal_idx, cal_rx_dq_dly ) ;
+  	ddrphy_SetRXInputDelay_B1( cal_idx, cal_rx_dq_dly ) ;
+  	ddrphy_SetRXInputDelay_B2( cal_idx, cal_rx_dq_dly ) ;
+  	ddrphy_SetRXInputDelay_CA( cal_idx, cal_rx_dq_dly ) ;
+  	#ifdef LPBK_INTERNAL_EN
+	lpbk_test_result = ddrphy_int_lpbk_test_seq_perch( 1,CUR_CHN ) ;
+    #else
+      lpbk_test_result = ddrphy_ext_lpbk_test_seq( lpbk_tx ) ;
+    #endif
+    if( lpbk_test_result == INTERNAL_LPBK_PASS ) {
+      rx_dqs_min_pass_dly = (rx_dqs_min_pass_dly==64) ? cal_idx : rx_dqs_min_pass_dly ;
+      rx_dqs_max_pass_dly = cal_idx ;
+      lpbk_test_result_dqs = 1;
+    }
+    cal_idx += 2 ;
+    //cal_idx += 5 ;
+  }while( (cal_idx<cal_boundary) ) ;
+
+  if(lpbk_test_result_dqs == 1){
+    gpio_location_temp = (CUR_CHN == 0)?91:92;
+    SET_GPIO_DOUT(gpio_location_temp,1); // PAD_MSDC1_DAT2, PAD_MSDC1_DAT3
+  }
+
+  /*TINFO="[LPBK] DQS min pass delay is %d \n", rx_dqs_min_pass_dly*/ *MDM_TM_TPAR =  rx_dqs_min_pass_dly; *MDM_TM_TINFOMSG = 1247;
+  /*TINFO="[LPBK] DQS max pass delay is %d \n", rx_dqs_max_pass_dly*/ *MDM_TM_TPAR =  rx_dqs_max_pass_dly; *MDM_TM_TINFOMSG = 1248;
+  mcSHOW_DBG_MSG(("[LPBK] DQS min pass delay is %d \n", rx_dqs_min_pass_dly));
+  mcSHOW_DBG_MSG(("[LPBK] DQS max pass delay is %d \n", rx_dqs_max_pass_dly));
+
+
+  //! step-3 : check set to dq or dqs
+  cal_rx_dq_delta   = rx_dq_max_pass_dly-rx_dq_min_pass_dly   ;	     //25
+  cal_rx_dqs_delta  = rx_dqs_max_pass_dly-rx_dqs_min_pass_dly ;	     //5
+  if (( cal_rx_dqs_delta >= cal_rx_dq_delta )&&(rx_dqs_min_pass_dly!=64)) {
+    cal_rx_dqs_dly  = (rx_dqs_max_pass_dly+rx_dqs_min_pass_dly) >> 1 ;
+    cal_rx_dq_dly   = cal_rx_dq_dly ;
+    /*TINFO="\n[LPBK] DQS margin larger than DQ ; dqs_delta=%d ; dq_delta=%d ; DQS_delay=%d ; DQ_delay=%d \n", cal_rx_dqs_delta, cal_rx_dq_delta, cal_rx_dqs_dly, cal_rx_dq_dly*/ *MDM_TM_TPAR =  cal_rx_dqs_delta; *MDM_TM_TPAR =  cal_rx_dq_delta; *MDM_TM_TPAR =  cal_rx_dqs_dly; *MDM_TM_TPAR =  cal_rx_dq_dly; *MDM_TM_TINFOMSG = 1249;
+    mcSHOW_DBG_MSG(("\n[LPBK] DQS margin larger than DQ ; dqs_delta=%d ; dq_delta=%d ; DQS_delay=%d ; DQ_delay=%d \n", cal_rx_dqs_delta, cal_rx_dq_delta, cal_rx_dqs_dly, cal_rx_dq_dly));
+  }else if(cal_rx_dq_delta > cal_rx_dqs_delta) {
+    cal_rx_dq_dly   = (rx_dq_max_pass_dly+rx_dq_min_pass_dly) >> 1 ; //12
+    cal_rx_dqs_dly  = cal_rx_dqs_dly ;
+    //cal_rx_dqs_dly  = 20 ;					     //20 TBD
+    /*TINFO="\n[LPBK] DQ margin larger than DQS ; dqs_delta=%d ; dq_delta=%d ; DQS_delay=%d ; DQ_delay=%d \n", cal_rx_dqs_delta, cal_rx_dq_delta, cal_rx_dqs_dly, cal_rx_dq_dly*/ *MDM_TM_TPAR =  cal_rx_dqs_delta; *MDM_TM_TPAR =  cal_rx_dq_delta; *MDM_TM_TPAR =  cal_rx_dqs_dly; *MDM_TM_TPAR =  cal_rx_dq_dly; *MDM_TM_TINFOMSG = 1250;
+    mcSHOW_DBG_MSG(("\n[LPBK] DQ margin larger than DQS ; dqs_delta=%d ; dq_delta=%d ; DQS_delay=%d ; DQ_delay=%d \n", cal_rx_dqs_delta, cal_rx_dq_delta, cal_rx_dqs_dly, cal_rx_dq_dly));
+  }else {
+    //cal_rx_dq_dly   = 0 ;
+    //cal_rx_dqs_dly  = 0 ;
+    cal_rx_dq_dly   = 0 ;
+    cal_rx_dqs_dly  = 0 ;
+    /*TINFO="[LPBK] dqs & dq no margin \n"*/ *MDM_TM_TINFOMSG = 1251;
+    mcSHOW_DBG_MSG(("[LPBK] dqs & dq no margin \n"));
+  }
+  
+  //! step-4 : final check
+#ifdef LPBK_RUN_DSIM
+      *DRAMC_WBR = 0x00000000;
+#else
+      *((UINT32P)(DRAMC_WBR)) = 0x00000000;
+#endif
+  ddrphy_SetRXInputDelay_B0( cal_rx_dqs_dly, cal_rx_dq_dly ) ;
+  ddrphy_SetRXInputDelay_B1( cal_rx_dqs_dly, cal_rx_dq_dly ) ;
+  ddrphy_SetRXInputDelay_B2( cal_rx_dqs_dly, cal_rx_dq_dly ) ;
+  ddrphy_SetRXInputDelay_CA( cal_rx_dqs_dly, cal_rx_dq_dly ) ;
+  
+#ifdef LPBK_INTERNAL_EN
+  lpbk_test_result = ddrphy_int_lpbk_test_seq_perch( 0,CUR_CHN ) ;
+  if(lpbk_test_result == INTERNAL_LPBK_PASS) {
+    lpbk_test_result = (CUR_CHN == 0)?2:1;
+    gpio_location_temp = (CUR_CHN == 0)?101:102;//PAD_MSDC0_DAT2, PAD_MSDC0_DAT1
+    SET_GPIO_DOUT(gpio_location_temp,1);
+  }
+  else if(lpbk_test_result == INTERNAL_LPBK_FAIL){
+    lpbk_test_result = (CUR_CHN == 0)?8:4;
+    gpio_location_temp = (CUR_CHN == 0)?75:103;//PAD_CMDAT7, PAD_MSDC0_DAT0
+    SET_GPIO_DOUT(gpio_location_temp,1);
+  }
+  //    else if (lpbk_test_result == INTERNAL_LPBK_NODONE)
+  //	lpbk_test_result = (CUR_CHN == 0)? 8:4;
+  //    else if (lpbk_test_result == INTERNAL_B2_FAIL)
+  //	lpbk_test_result = (CUR_CHN == 0)? 32:16;
+  //    else if (lpbk_test_result == INTERNAL_B0_B1_CA_FAIL)
+  //	lpbk_test_result = (CUR_CHN == 0)? 128:64;
+  //    else if (lpbk_test_result == INTERNAL_ALL_FAIL)
+  //	lpbk_test_result = (CUR_CHN == 0)? 512:256;
+  /*TINFO="[LPBK] CH%d internal lpbk result : %d \n", CUR_CHN, lpbk_test_result*/ *MDM_TM_TPAR =  CUR_CHN; *MDM_TM_TPAR =  lpbk_test_result; *MDM_TM_TINFOMSG = 1254;
+  mcSHOW_DBG_MSG(("[LPBK] CH%d internal lpbk result : %d \n", CUR_CHN, lpbk_test_result));
+#else
+  lpbk_test_result = ddrphy_ext_lpbk_test_seq( lpbk_tx ) ;
+#endif
+
+  return lpbk_test_result ;
+}
+//! ----------------------------------------------
+//! ddrphy external loopback test sequence control
+//! ----------------------------------------------
+int ddrphy_ext_lpbk_test_seq ( unsigned int LPBK_TX )
+{
+  int i;  
+  unsigned int  lpbk_test_result  = 0 ;
+  unsigned int  lpbk_done_fail    = 0 ;
+  unsigned int  lpbk_test_dq      = 0 ;
+  unsigned int  lpbk_test_ca      = 0 ;
+  unsigned int  reg_r_data = 0 ;
+  int           DDRPHY_TX_BASE      = 0x0 ;
+  int           DDRPHY_RX_BASE      = 0x0 ;
+  int           DDRPHY_RX_NAO_BASE  = 0x0 ;
+  unsigned int  rodt_enable = 0 ;
+
+
+  /*TINFO="[LPBK] Starting to DDRPHY external loopback test ..."*/ *MDM_TM_TINFOMSG = 1255;
+
+  //! *GPIO_DOUT1 = 0x00000100; //! EINT8 - trigger lpbk test
+
+  if( LPBK_TX==0 ){
+    //! CHN-A is TX
+    /*TINFO="[LPBK] CHN-A is TX ; CHN-B is RX ..."*/ *MDM_TM_TINFOMSG = 1256;
+    DDRPHY_TX_BASE      = DDRPHY0AO_BASE  ;
+    DDRPHY_RX_BASE      = DDRPHY1AO_BASE  ;
+    DDRPHY_RX_NAO_BASE  = DDRPHY1NAO_BASE ;
+    if( rodt_enable ) {
+      *((UINT32P)(DRAMC1_AO_BASE + 0x0860)) = *((UINT32P)(DRAMC1_AO_BASE + 0x0860)) | (1<<27) ;
+    }
+
+  } else {
+    //! CHN-B is TX
+    /*TINFO="[LPBK] CHN-B is TX ; CHN-A is RX ..."*/ *MDM_TM_TINFOMSG = 1257;
+    DDRPHY_TX_BASE      = DDRPHY1AO_BASE  ;
+    DDRPHY_RX_BASE      = DDRPHY0AO_BASE  ;
+    DDRPHY_RX_NAO_BASE  = DDRPHY0NAO_BASE ;
+    if( rodt_enable ) {
+      *((UINT32P)(DRAMC0_AO_BASE + 0x0860)) = *((UINT32P)(DRAMC0_AO_BASE + 0x0860)) | (1<<27) ;
+    }
+  }
+
+
+
+  //! step-1 : APHY TX/RX setting
+#ifdef LPBK_RUN_DSIM
+      *DRAMC_WBR = 0x00000000;
+#else
+      *((UINT32P)(DRAMC_WBR)) = 0x00000000;
+#endif
+
+  //! step-0 : close DQ and DQS input buffer enable to aviod DQS unknown issue and assert reset
+  *((UINT32P)(DDRPHY_RX_BASE + 0x0248)) = 0x0;
+  
+  //! assert reset
+  *((UINT32P)(DDRPHY_TX_BASE + 0x0244)) = 0x0000cc03;
+  *((UINT32P)(DDRPHY_RX_BASE + 0x0244)) = 0x0000cc03;
+  
+  ddrphy_RxReset_seq () ;
+
+
+  //! ==============================
+  //! - TX setting
+  //! ==============================
+  //! [21:16]: R_EXTLB_OE_*_ON
+  #ifdef LPBK_ODT_ON
+    *((UINT32P)(DDRPHY_TX_BASE + 0x0240)) = 0x0fffb401;
+  #else
+    *((UINT32P)(DDRPHY_TX_BASE + 0x0240)) = 0x003fb401;
+  #endif
+
+  //! [5]: CA_TX_MODE; [4]:DQ_TX_MODE; [3]: DQ_MODE for CA
+  *((UINT32P)(DDRPHY_TX_BASE + 0x0248)) = 0x00000038;
+ 
+  //! ==============================
+  //! - RX setting
+  //! ==============================
+  //! DDRPHY_GLUE_MISC_CHB
+  //! [9]: CA_RX_MODE; [8]:DQ_RX_MODE; [3]: DQ_MODE for CA
+  *((UINT32P)(DDRPHY_RX_BASE + 0x0248)) = 0x00000308;
+
+  //*((UINT32P)(DDRPHY_RX_BASE + 0x0C14)) = 0x0000040e; //! 0621, RG_ARPI_FB_B0 & RG_RX_ARDQ_VREF_SEL_B0
+  //*((UINT32P)(DDRPHY_RX_BASE + 0x0C94)) = 0x0000040e; //! 0621, RG_ARPI_FB_B1 & RG_RX_ARDQ_VREF_SEL_B1
+  //*((UINT32P)(DDRPHY_RX_BASE + 0x0D14)) = 0x0000060e; //! 0621, RG_ARPI_FB_CA & RG_RX_ARCMD_VREF_SEL
+  //*((UINT32P)(DDRPHY_RX_BASE + 0x0C14)) = 0x00300410; //! 0621, RG_ARPI_FB_B0 & RG_RX_ARDQ_VREF_SEL_B0
+  //*((UINT32P)(DDRPHY_RX_BASE + 0x0C94)) = 0x00300410; //! 0621, RG_ARPI_FB_B1 & RG_RX_ARDQ_VREF_SEL_B1
+  //*((UINT32P)(DDRPHY_RX_BASE + 0x0D14)) = 0x00000010; //! 0621, RG_ARPI_FB_CA & RG_RX_ARCMD_VREF_SEL
+  //! APHY-B0
+  //*((UINT32P)(DDRPHY_RX_BASE + 0x00A4)) = 0x000005b8;
+  //*((UINT32P)(DDRPHY_RX_BASE + 0x00AC)) = 0x00010000;
+  //*((UINT32P)(DDRPHY_RX_BASE + 0x00B0)) = 0x010352e9; //! 0621, change 0x000110c1; //! RG_RX_ARDQ_DDR4_SEL_B0 / RG_RX_ARCMD_OP_BIAS_SW_EN: set to 1
+  *((UINT32P)(DDRPHY_RX_BASE + 0x00A4)) = 0x000004ac;
+  *((UINT32P)(DDRPHY_RX_BASE + 0x00AC)) = *((UINT32P)(DDRPHY_RX_BASE + 0x00AC)) | (1<<16);
+  *((UINT32P)(DDRPHY_RX_BASE + 0x00B0)) = 0x01031041; //! 0621, change 0x000110c1; //! RG_RX_ARDQ_DDR4_SEL_B0 / RG_RX_ARCMD_OP_BIAS_SW_EN: set to 1
+  //! APHY-B1
+  //*((UINT32P)(DDRPHY_RX_BASE + 0x0124)) = 0x000005b8;
+  //*((UINT32P)(DDRPHY_RX_BASE + 0x012C)) = 0x00010000;
+  //*((UINT32P)(DDRPHY_RX_BASE + 0x0130)) = 0x010352e9; //! 0621, change 0x000110c1; //! RG_RX_ARDQ_DDR4_SEL_B1 / RG_RX_ARCMD_OP_BIAS_SW_EN: set to 1
+  *((UINT32P)(DDRPHY_RX_BASE + 0x0124)) = 0x000004ac;
+  *((UINT32P)(DDRPHY_RX_BASE + 0x012C)) = *((UINT32P)(DDRPHY_RX_BASE + 0x012C)) | (1<<16);
+  *((UINT32P)(DDRPHY_RX_BASE + 0x0130)) = 0x01031041; //! 0621, change 0x000110c1; //! RG_RX_ARDQ_DDR4_SEL_B1 / RG_RX_ARCMD_OP_BIAS_SW_EN: set to 1
+  //! APHY-CA
+  //*((UINT32P)(DDRPHY_RX_BASE + 0x01A4)) = 0x000005b8;
+  //*((UINT32P)(DDRPHY_RX_BASE + 0x01AC)) = 0x00010000;
+  //*((UINT32P)(DDRPHY_RX_BASE + 0x01B0)) = 0x010352e9; //! 0621, change 0x000110c1; //! RG_RX_ARCMD_DDR4_SEL / RG_RX_ARCMD_OP_BIAS_SW_EN: set to 1
+  *((UINT32P)(DDRPHY_RX_BASE + 0x01A4)) = 0x000004ac;
+  *((UINT32P)(DDRPHY_RX_BASE + 0x01AC)) = *((UINT32P)(DDRPHY_RX_BASE + 0x01AC)) | (1<<16);
+  *((UINT32P)(DDRPHY_RX_BASE + 0x01B0)) = 0x010310c1; //! 0621, change 0x000110c1; //! RG_RX_ARCMD_DDR4_SEL / RG_RX_ARCMD_OP_BIAS_SW_EN: set to 1
+
+  //! step-2 : trigger RX SWRST
+  *((UINT32P)(DDRPHY_TX_BASE + 0x0244)) = 0x0000cc83;
+  *((UINT32P)(DDRPHY_TX_BASE + 0x0244)) = 0x0000cc8b;
+  *((UINT32P)(DDRPHY_RX_BASE + 0x0244)) = 0x0000cc83;
+  *((UINT32P)(DDRPHY_RX_BASE + 0x0244)) = 0x0000cc8b;
+  
+  //! step-3 : release RX SWRST
+  *((UINT32P)(DDRPHY_TX_BASE + 0x0244)) = 0x0000cc81;
+  *((UINT32P)(DDRPHY_TX_BASE + 0x0244)) = 0x0000cc89;
+  *((UINT32P)(DDRPHY_RX_BASE + 0x0244)) = 0x0000cc81;
+  *((UINT32P)(DDRPHY_RX_BASE + 0x0244)) = 0x0000cc89;
+ 
+  /*TINFO="[LPBK] Trigger TX Enable ..."*/ *MDM_TM_TINFOMSG = 1258;
+
+  //! step-4 : trigger LPBK TX_EN
+  *((UINT32P)(DDRPHY_TX_BASE + 0x0244)) = 0x0000cc85;
+
+  DELAY_US(1);
+  DELAY_US(1);
+
+  //! step-5 : wait LPBK done
+  DELAY_US(2);
+#ifdef LP3_IO
+  DELAY_US(4); //extra delay for down-speed to DDR-800
+#endif
+
+  //do {
+    reg_r_data = *((UINT32P)(DDRPHY_RX_NAO_BASE + 0x0000)) ;
+    /*TINFO="[LPBK] Waiting for RX test done ; current RX status is [%x] ...", reg_r_data*/ *MDM_TM_TPAR =  reg_r_data; *MDM_TM_TINFOMSG = 1259;
+    //!temply mark : waiting for SH update ECO RTL files }while( reg_r_data != 0x0fffffff ) ;  //! B0-9bits ; B1-9bits ; CA-10bits
+  //}while( reg_r_data != 0xfffffff ) ;  //! B0-9bits ; B1-9bits ; CA-10bits
+
+  //! *GPIO_DOUT1 = 0x00000300; //! EINT-9 : trigger lpbk done
+  if(reg_r_data != 0xfffffff) {
+    /*TINFO="[LPBK] ERROR, RX test not done ; current RX status is [%x] ...", reg_r_data*/ *MDM_TM_TPAR =  reg_r_data; *MDM_TM_TINFOMSG = 1260;
+    lpbk_done_fail = 1;
+  } else {
+     /*TINFO="[LPBK]RX test done ; current RX status is [%x] ...", reg_r_data*/ *MDM_TM_TPAR =  reg_r_data; *MDM_TM_TINFOMSG = 1261;
+    lpbk_done_fail = 0;
+  }
+  
+
+  //! check fail
+  reg_r_data = *((UINT32P)(DDRPHY_RX_NAO_BASE + 0x0004)) ;
+  if( reg_r_data != 0 ){
+    /*TINFO="[LPBK] Error !!! DDRPHY external loopback test FAIL"*/ *MDM_TM_TINFOMSG = 1262;
+    /*TINFO="[LPBK] Error !!! LPBK fail status = %x", reg_r_data*/ *MDM_TM_TPAR =  reg_r_data; *MDM_TM_TINFOMSG = 1263;
+    lpbk_test_ca = reg_r_data & 0x0ffc0000 ;
+    lpbk_test_dq = reg_r_data & 0x0003ffff ;
+    
+    //! EINT11 : trigger lpbkc DQ-FAIL
+    if( (lpbk_test_ca != 0x0) && (lpbk_test_dq != 0x0) ){
+      //! CA & DQ all FAIL
+      //! *GPIO_DOUT1 = 0x00000b00;
+       lpbk_test_result = 0;
+    }else{
+      if( (lpbk_test_ca == 0x0) && (lpbk_test_dq != 0x0) ){
+        //! CA PASS & DQ FAIL
+        //! *GPIO_DOUT1 = 0x00000900;
+	lpbk_test_result = 1;
+      }else {
+        //! CA FAIL & DQ PASS
+        //! *GPIO_DOUT1 = 0x00000800;
+	lpbk_test_result = 2;
+      }
+    }
+
+  } else {
+    /*TINFO="[LPBK] DDRPHY external loopback test PASS !!!"*/ *MDM_TM_TINFOMSG = 1264;
+    lpbk_test_result = 3 ;
+    //! *GPIO_DOUT1 = 0x00000700; //! EINT-10 : trigger lpbk pass
+    //*GPIO_DOUT3 = 0x00000f00; //PAD_BPI_BUS1/2/3/4
+
+  }
+    /*TINFO = "pattern done"*/ *MDM_TM_TINFOMSG = 1236;
+    //*GPIO_DOUT2 = 0x00000600; //PAD_IDDIG & PAD_DRVBUS
+
+  //for (i=0;i<10;i++){}
+  //*MDM_TM_ENDSIM = 0x0;
+  //while(1);
+  if(lpbk_done_fail)
+    lpbk_test_result = 4;   //not done
+  return lpbk_test_result;
+
+}//! end of ddrphy_ext_lpbk_test_seq
+
+
+//! ----------------------------------------------
+//! ddrphy internal loopback test sequence control
+//! ----------------------------------------------
+int ddrphy_int_lpbk_test_seq ( int cal_loop )
+{
+  int i;
+  int           lpbk_test_result = 0 ;
+  int           lpbk_cha_done_fail = 0 ;
+  int           lpbk_chb_done_fail = 0 ;
+  unsigned int  reg_cha_r_data = 0 ;
+  unsigned int  reg_chb_r_data = 0 ;
+  int           DDRPHY_TX_BASE = 0x0 ;
+  int           DDRPHY_RX_BASE = 0x0 ;
+  int           lpbk_test_result_gpio_cha ;
+  int           lpbk_test_result_gpio_chb ;
+/*TINFO="[LPBK] Starting to DDRPHY internal loopback test ..."*/ *MDM_TM_TINFOMSG = 1265;
+mcSHOW_DBG_MSG(("[LPBK] Starting to DDRPHY internal loopback test ...\n"));
+/*TINFO="[LPBK] step-0: start to internal lpbk setting..."*/ *MDM_TM_TINFOMSG = 1266;
+//mcSHOW_DBG_MSG(("[LPBK] step-0: start to internal lpbk setting...\n"));
+//step-0: start to internal lpbk setting...
+  //! ==============================
+  //! - TX setting
+  //! ==============================
+#ifdef LPBK_RUN_DSIM
+      *DRAMC_WBR = 0x0000000f;
+#else
+      *((UINT32P)(DRAMC_WBR)) = 0x0000000f;
+#endif
+ddrphy_RxReset_seq () ;
+#ifdef LPBK_RUN_DSIM
+      *DRAMC_WBR = 0x0000000f;
+#else
+      *((UINT32P)(DRAMC_WBR)) = 0x0000000f;
+#endif
+  //! [21:16]: R_EXTLB_OE_*_O
+*((UINT32P)(DDRPHY0AO_BASE + 0x0240)) =   0x003fb401; //! [21:16]: R_EXTLB_OE_*_ON
+  //! [5]: CA_TX_MODE; [4]:DQ_TX_MODE; [3]: DQ_MODE for CA
+  //! [9]: CA_RX_MODE; [8]:DQ_RX_MODE; [3]: DQ_MODE for CA
+*((UINT32P)(DDRPHY0AO_BASE + 0x0248)) =   0x00000338;
+/*TINFO="[LPBK] step-1 : APHY setting..."*/ *MDM_TM_TINFOMSG = 1267;
+mcSHOW_DBG_MSG(("[LPBK] step-1 : APHY setting...\n"));
+  //! ==============================
+  //! - APHY setting
+  //! ==============================
+  //! B0
+//*((UINT32P)(DDRPHY0AO_BASE + 0x0c14)) =   0x00300410;
+  //! B1
+//*((UINT32P)(DDRPHY0AO_BASE + 0x0c94)) =   0x00300410;
+  //! CMD
+//*((UINT32P)(DDRPHY0AO_BASE + 0x0d14)) =   0x00000010;
+#ifdef INT_CLK_PAD
+//! update B0 setting0
+//*((UINT32P)(DDRPHY0AO_BASE + 0x00a4)) =   0x000004ac;
+//*((UINT32P)(DDRPHY0AO_BASE + 0x00b0)) =   0x01031141;
+*((UINT32P)(DDRPHY0AO_BASE + 0x00b0)) = *((UINT32P)(DDRPHY0AO_BASE + 0x00b0)) | (1<<8) ; //! LPBK_EN //! 0x010311c1;
+//! update B1 setting0
+//*((UINT32P)(DDRPHY0AO_BASE + 0x0124)) =   0x000004ac;
+//*((UINT32P)(DDRPHY0AO_BASE + 0x0130)) =   0x01031141;
+*((UINT32P)(DDRPHY0AO_BASE + 0x0130)) = *((UINT32P)(DDRPHY0AO_BASE + 0x0130)) | (1<<8) ; //! LPBK_EN //! 0x010311c1;
+//! update CA setting0
+//*((UINT32P)(DDRPHY0AO_BASE + 0x01a4)) =   0x000004ac;
+//*((UINT32P)(DDRPHY0AO_BASE + 0x01b0)) =   0x010311c1;
+*((UINT32P)(DDRPHY0AO_BASE + 0x01b0)) = *((UINT32P)(DDRPHY0AO_BASE + 0x01b0)) | (1<<8) ; //! LPBK_EN //! 0x010311c1;
+#endif
+/*TINFO="[LPBK] step-2 : trigger RX SWRST..."*/ *MDM_TM_TINFOMSG = 1268;
+mcSHOW_DBG_MSG(("[LPBK] step-2 : trigger RX SWRST...\n"));
+//! step-2 : trigger RX SWRST
+*((UINT32P)(DDRPHY0AO_BASE + 0x0244)) =   0x0000cc83;
+*((UINT32P)(DDRPHY0AO_BASE + 0x0244)) =   0x0000cc8b;
+/*TINFO="[LPBK] step-3 : release RX SWRST..."*/ *MDM_TM_TINFOMSG = 1269;
+mcSHOW_DBG_MSG(("[LPBK] step-3 : release RX SWRST...\n"));
+//! step-3 : release RX SWRST
+*((UINT32P)(DDRPHY0AO_BASE + 0x0244)) =   0x0000cc81;
+*((UINT32P)(DDRPHY0AO_BASE + 0x0244)) =   0x0000cc89;
+/*TINFO="[LPBK] step-4 : trigger LPBK TX_EN..."*/ *MDM_TM_TINFOMSG = 1270;
+mcSHOW_DBG_MSG(("[LPBK] step-4 : trigger LPBK TX_EN...\n"));
+//! step-4 : trigger LPBK TX_EN
+*((UINT32P)(DDRPHY0AO_BASE + 0x0244)) =   0x0000cc85;
+
+
+
+
+  //! ==============================
+  //! - APHY setting
+  //! ==============================
+  //! B0
+  //*((UINT32P)(DDRPHY0AO_BASE + 0x00a4)) = 0x000005bc;
+  //*((UINT32P)(DDRPHY0AO_BASE + 0x00b0)) = 0x010311c1;
+  //! B1
+  //*((UINT32P)(DDRPHY0AO_BASE + 0x0124)) = 0x000005bc;
+  //*((UINT32P)(DDRPHY0AO_BASE + 0x0130)) = 0x010311c1;
+  //! CA
+  //*((UINT32P)(DDRPHY0AO_BASE + 0x01a4)) = 0x000005bc;
+  //*((UINT32P)(DDRPHY0AO_BASE + 0x01b0)) = 0x010311c1;
+
+
+  DELAY_US(1);
+  DELAY_US(1);
+
+  //! step-4 : wait LPBK done
+  DELAY_US(2);
+
+#ifdef LPBK_RUN_DSIM
+      *DRAMC_WBR = 0x00000000;
+#else
+      *((UINT32P)(DRAMC_WBR)) = 0x00000000;
+#endif
+  //*INFRA_DRAMC_REG_CONFIG = 0x00000000;
+
+  //do {
+    reg_cha_r_data = *((UINT32P)(DDRPHY0NAO_BASE + 0x0000)) ;
+    reg_chb_r_data = *((UINT32P)(DDRPHY1NAO_BASE + 0x0000)) ;
+    if((reg_cha_r_data != 0xfffffff) || (reg_chb_r_data != 0xfffffff)) {
+    /*TINFO="[LPBK] ERROR: CHA RX not test done ; current RX status is [%x] ...", reg_cha_r_data*/ *MDM_TM_TPAR =  reg_cha_r_data; *MDM_TM_TINFOMSG = 1271;
+    mcSHOW_DBG_MSG(("[LPBK] ERROR: CHA RX not test done ; current RX status is [%x] ...\n", reg_cha_r_data));
+    /*TINFO="[LPBK] ERROR: CHB RX not test done ; current RX status is [%x] ...", reg_chb_r_data*/ *MDM_TM_TPAR =  reg_chb_r_data; *MDM_TM_TINFOMSG = 1272;
+    mcSHOW_DBG_MSG(("[LPBK] ERROR: CHB RX not test done ; current RX status is [%x] ...\n", reg_chb_r_data));
+    if(reg_cha_r_data != 0xfffffff)
+    { lpbk_cha_done_fail = 1; }
+    if(reg_chb_r_data != 0xfffffff)
+    { lpbk_chb_done_fail = 1; }
+    } else {
+    /*TINFO="[LPBK] CHA RX test done ; current RX status is [%x] ...", reg_cha_r_data*/ *MDM_TM_TPAR =  reg_cha_r_data; *MDM_TM_TINFOMSG = 1273;
+    mcSHOW_DBG_MSG(("[LPBK] CHA RX test done ; current RX status is [%x] ...\n", reg_cha_r_data));
+    /*TINFO="[LPBK] CHB RX test done ; current RX status is [%x] ...", reg_chb_r_data*/ *MDM_TM_TPAR =  reg_chb_r_data; *MDM_TM_TINFOMSG = 1274;
+    mcSHOW_DBG_MSG(("[LPBK] CHB RX test done ; current RX status is [%x] ...\n", reg_chb_r_data));
+    }
+  //}while( (reg_cha_r_data != 0xfffffff) || (reg_chb_r_data != 0xfffffff) ) ;  //! B0-9bits ; B1-9bits ; CA-10bits
+
+  //! *GPIO_DOUT1 = 0x00000300; //! EINT9 - trigger lpbk done
+
+  //! step-5 : check fail
+  reg_cha_r_data = *((UINT32P)(DDRPHY0NAO_BASE + 0x0004)) ;
+  reg_chb_r_data = *((UINT32P)(DDRPHY1NAO_BASE + 0x0004)) ;
+
+  if( reg_cha_r_data == 0 ){
+    lpbk_test_result_gpio_cha = 0x00000300; //PAD_BPI_BUS3/4=1
+    if(cal_loop == 0){
+     /*TINFO="[LPBK] [ 9: 8] INTERNAL LPBK CHA PASS, GPIO status = %x", lpbk_test_result_gpio_cha */ *MDM_TM_TPAR =  lpbk_test_result_gpio_cha ; *MDM_TM_TINFOMSG = 1275;
+     mcSHOW_DBG_MSG(("[LPBK] [ 9: 8] INTERNAL LPBK CHA PASS, GPIO status = %x\n", lpbk_test_result_gpio_cha));
+    } else {
+     /*TINFO="[LPBK] INTERNAL LPBK CHA Pass !!!" */ *MDM_TM_TINFOMSG = 1276;
+     mcSHOW_DBG_MSG(("[LPBK] INTERNAL LPBK CHA Pass !!!\n"));
+    }
+  } else {
+    lpbk_test_result_gpio_cha = 0x00000000; //PAD_BPI_BUS3/4=0
+  }
+    //*GPIO_DOUT3 = (lpbk_test_result_gpio_cha) & 0xffffffff ; //PAD_BPI_BUS3/4
+
+  if( reg_chb_r_data == 0 ){
+    lpbk_test_result_gpio_chb = 0x00000c00; //PAD_BPI_BUS1/2=1
+    if(cal_loop == 0){
+     /*TINFO="[LPBK] [11:10] INTERNAL LPBK CHB PASS, GPIO status = %x", lpbk_test_result_gpio_chb */ *MDM_TM_TPAR =  lpbk_test_result_gpio_chb ; *MDM_TM_TINFOMSG = 1277;
+     mcSHOW_DBG_MSG(("[LPBK] [11:10] INTERNAL LPBK CHB PASS, GPIO status = %x\n", lpbk_test_result_gpio_chb));
+    } else {
+     /*TINFO="[LPBK] INTERNAL LPBK CHB Pass !!!" */ *MDM_TM_TINFOMSG = 1278;
+     mcSHOW_DBG_MSG(("[LPBK] INTERNAL LPBK CHB Pass !!!"));
+    }
+  } else {
+    lpbk_test_result_gpio_chb = 0x00000000; //PAD_BPI_BUS1/2=0
+  }
+  if( (reg_cha_r_data != 0) || (reg_chb_r_data != 0) ){
+    if(cal_loop == 0){
+    /*TINFO="[LPBK] Error !!! DDRPHY internal loopback test FAIL"*/ *MDM_TM_TINFOMSG = 1279;
+    mcSHOW_DBG_MSG(("[LPBK] Error !!! DDRPHY internal loopback test FAIL\n"));
+    /*TINFO="[LPBK] Error !!! LPBK CHA fail status = %x", reg_cha_r_data*/ *MDM_TM_TPAR =  reg_cha_r_data; *MDM_TM_TINFOMSG = 1280;
+    mcSHOW_DBG_MSG(("[LPBK] Error !!! LPBK CHA fail status = %x\n", reg_cha_r_data));
+    /*TINFO="[LPBK] Error !!! LPBK CHB fail status = %x", reg_chb_r_data*/ *MDM_TM_TPAR =  reg_chb_r_data; *MDM_TM_TINFOMSG = 1281;
+    mcSHOW_DBG_MSG(("[LPBK] Error !!! LPBK CHB fail status = %x\n", reg_chb_r_data));
+    } else {
+    /*TINFO="[LPBK] Fail !!! DDRPHY internal loopback test FAIL"*/ *MDM_TM_TINFOMSG = 1282;
+    mcSHOW_DBG_MSG(("[LPBK] Fail !!! DDRPHY internal loopback test FAIL\n"));
+    /*TINFO="[LPBK] Fail !!! LPBK CHA fail status = %x", reg_cha_r_data*/ *MDM_TM_TPAR =  reg_cha_r_data; *MDM_TM_TINFOMSG = 1283;
+    mcSHOW_DBG_MSG(("[LPBK] Fail !!! LPBK CHA fail status = %x\n", reg_cha_r_data));
+    /*TINFO="[LPBK] Fail !!! LPBK CHB fail status = %x", reg_chb_r_data*/ *MDM_TM_TPAR =  reg_chb_r_data; *MDM_TM_TINFOMSG = 1284;
+    mcSHOW_DBG_MSG(("[LPBK] Fail !!! LPBK CHB fail status = %x\n", reg_chb_r_data));
+    }
+    if((reg_cha_r_data != 0)&&(reg_chb_r_data != 0))
+      lpbk_test_result = 0 ;
+    else if(reg_cha_r_data != 0)
+      lpbk_test_result = 1 ;
+    else
+      lpbk_test_result = 2 ;
+  } else {
+    /*TINFO="[LPBK] DDRPHY internal loopback test PASS !!!"*/ *MDM_TM_TINFOMSG = 1285;
+    mcSHOW_DBG_MSG(("[LPBK] DDRPHY internal loopback test PASS !!!\n"));
+    lpbk_test_result = 3 ;
+    //! *GPIO_DOUT1 = 0x00000700; //! EINT10 - trigger lpbk pass
+    //*GPIO_DOUT3 = 0x00000f00; //PAD_BPI_BUS1/2/3/4
+  }
+  if(lpbk_cha_done_fail || lpbk_chb_done_fail)
+     lpbk_test_result = 4 ;
+    //if(cal_loop == 0) {
+    //  *GPIO_DOUT3 = (lpbk_test_result_gpio_cha | lpbk_test_result_gpio_chb) & 0xffffffff ; //PAD_BPI_BUS1/2/3/4      
+    //}
+
+    ///*TINFO = "pattern done"*/ *MDM_TM_TINFOMSG = 1236;
+    //*GPIO_DOUT2 = 0x00000600; //PAD_IDDIG & PAD_DRVBUS
+
+  //for (i=0;i<10;i++){}
+  //*MDM_TM_ENDSIM = 0x0;
+  //while(1);
+  //
+  //! step-6 : assert reset
+#ifdef LPBK_RUN_DSIM
+      *DRAMC_WBR = 0x0000000f;
+#else
+      *((UINT32P)(DRAMC_WBR)) = 0x0000000f;
+#endif
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0244)) = 0x0000cc03;
+  ddrphy_RxReset_seq () ;
+
+
+  return lpbk_test_result;
+
+} //! end of ddrphy_int_lpbk_test_seq
+
+
+//! ----------------------------------------------
+//! ddrphy internal loopback test sequence control
+//! ----------------------------------------------
+int ddrphy_int_lpbk_test_seq_perch ( int cal_loop, int CUR_CHN )
+{
+  int           lpbk_test_result = 0 ;
+  int		lpbk_test_pass = 0;
+  int		lpbk_nodone = 0;
+  unsigned int  reg_r_data_intdq = 0 ;
+  unsigned int  reg_r_data_intca = 0 ;
+  int		intca_lpbk_nodone = 0;
+  int		intdq_lpbk_nodone = 0;
+  int		intca_lpbk_done_flag;
+  int           lpbk_test_result_gpio ;
+  unsigned int  DDRPHYCUR_BASE    = 0 ;
+  int		int_b2_fail_done = 0;
+  int		int_b2_nodone = 0;
+  int		reg_r_data_intb2 = 0;
+  int		reg_r_data_intb0 = 0;
+  int		reg_r_data_intb1 = 0;
+  int		gpio_location_temp = 0;
+
+  if ( CUR_CHN == 0 )
+    intca_lpbk_done_flag = 0x7fff;
+  else if ( CUR_CHN == 1 )
+    intca_lpbk_done_flag = 0x783f;
+  else
+    intca_lpbk_done_flag = 0x7fff;
+
+  if ( CUR_CHN==0 ) {
+    DDRPHYCUR_BASE = DDRPHY0AO_BASE ;
+  } else if ( CUR_CHN==1 ) {
+    DDRPHYCUR_BASE = DDRPHY1AO_BASE ;
+  } else {
+    DDRPHYCUR_BASE = DDRPHY0AO_BASE ;
+  }
+
+
+  /*TINFO="[LPBK] Starting to DDRPHY internal loopback test ..."*/ *MDM_TM_TINFOMSG = 1265;
+  mcSHOW_DBG_MSG(("[LPBK] Starting to DDRPHY internal loopback test ...\n"));
+  /*TINFO="[LPBK] step-0: start to internal lpbk setting..."*/ *MDM_TM_TINFOMSG = 1266;
+  //mcSHOW_DBG_MSG(("[LPBK] step-0: start to internal lpbk setting...\n"));
+  //step-0: start to internal lpbk setting...
+  //! ==============================
+  //! - TX setting
+  //! ==============================
+  //*DRAMC_WBR = 0x0000000f;
+  ddrphy_RxReset_seq () ;
+  //*DRAMC_WBR = 0x0000000f;
+  //! [21:16]: R_EXTLB_OE_*_O
+#ifdef LPBK_RUN_DSIM
+  *DRAMC_WBR = 0x00000000;
+#else
+  *((UINT32P)(DRAMC_WBR)) = 0x00000000;
+#endif
+  *((UINT32P)(DDRPHYCUR_BASE + 0x0240)) =   0x003fb401; //! [21:16]: R_EXTLB_OE_*_ON
+  //! [5]: CA_TX_MODE; [4]:DQ_TX_MODE; [3]: DQ_MODE for CA
+  //! [9]: CA_RX_MODE; [8]:DQ_RX_MODE; [3]: DQ_MODE for CA
+  *((UINT32P)(DDRPHYCUR_BASE + 0x0248)) =   0x05000338;
+  /*TINFO="[LPBK] step-1 : APHY setting..."*/ *MDM_TM_TINFOMSG = 1267;
+  //mcSHOW_DBG_MSG(("[LPBK] step-1 : APHY setting...\n"));
+  //! ==============================
+  //! - APHY setting
+  //! ==============================
+  //! B0
+  //*((UINT32P)(DDRPHYCUR_BASE + 0x0c14)) =   0x00300410;
+  //! B1
+  //*((UINT32P)(DDRPHYCUR_BASE + 0x0c94)) =   0x00300410;
+  //! CMD
+  //*((UINT32P)(DDRPHYCUR_BASE + 0x0d14)) =   0x00000010;
+  //! B2
+  //*((UINT32P)(DDRPHYCUR_BASE + 0x2c14)) =   0x00300410;
+#ifdef INT_CLK_PAD
+  //! update B0 setting0
+  //*((UINT32P)(DDRPHYCUR_BASE + 0x00a4)) =   0x000004ac;
+  //*((UINT32P)(DDRPHYCUR_BASE + 0x00b0)) =   0x01031141;
+  *((UINT32P)(DDRPHYCUR_BASE + 0x00b0)) = *((UINT32P)(DDRPHYCUR_BASE + 0x00b0)) | (1<<8) ; //! LPBK_EN //! 0x010311c1;
+  //! update B1 setting0
+  //*((UINT32P)(DDRPHYCUR_BASE + 0x0124)) =   0x000004ac;
+  //*((UINT32P)(DDRPHYCUR_BASE + 0x0130)) =   0x01031141;
+  *((UINT32P)(DDRPHYCUR_BASE + 0x0130)) = *((UINT32P)(DDRPHYCUR_BASE + 0x0130)) | (1<<8) ; //! LPBK_EN //! 0x010311c1;
+  //! update CA setting0
+  //*((UINT32P)(DDRPHYCUR_BASE + 0x01a4)) =   0x000004ac;
+  //*((UINT32P)(DDRPHYCUR_BASE + 0x01b0)) =   0x010311c1;
+  *((UINT32P)(DDRPHYCUR_BASE + 0x01b0)) = *((UINT32P)(DDRPHYCUR_BASE + 0x01b0)) | (1<<8) ; //! LPBK_EN //! 0x010311c1;
+  //! update B2 setting0
+  *((UINT32P)(DDRPHYCUR_BASE + 0x20b0)) = *((UINT32P)(DDRPHYCUR_BASE + 0x20b0)) | (1<<8) ; //! LPBK_EN //! 0x010
+#endif
+   // add by xixi
+   *((UINT32P)(DDRPHYCUR_BASE + 0x00b0)) = 0x10393e9;
+   *((UINT32P)(DDRPHYCUR_BASE + 0x20b0)) = 0x10393e9;
+    *((UINT32P)(DDRPHY0AO_BASE + 0x0)) = 0x80000000;
+    *((UINT32P)(DDRPHY0AO_BASE + 0x4)) = 0x80000000;
+    *((UINT32P)(DDRPHY1AO_BASE + 0x0)) = 0x80000000;
+    *((UINT32P)(DDRPHY1AO_BASE + 0x4)) = 0x80000000;
+
+  /*TINFO="[LPBK] step-2 : trigger RX SWRST..."*/ *MDM_TM_TINFOMSG = 1268;
+  //mcSHOW_DBG_MSG(("[LPBK] step-2 : trigger RX SWRST...\n"));
+  //! step-2 : trigger RX SWRST
+  *((UINT32P)(DDRPHYCUR_BASE + 0x0244)) =   0x0000cc83;
+  *((UINT32P)(DDRPHYCUR_BASE + 0x0244)) =   0x0000cc8b;
+  /*TINFO="[LPBK] step-3 : release RX SWRST..."*/ *MDM_TM_TINFOMSG = 1269;
+  //mcSHOW_DBG_MSG(("[LPBK] step-3 : release RX SWRST...\n"));
+  //! step-3 : release RX SWRST
+  *((UINT32P)(DDRPHYCUR_BASE + 0x0244)) =   0x0000cc81;
+  *((UINT32P)(DDRPHYCUR_BASE + 0x0244)) =   0x0000cc89;
+  /*TINFO="[LPBK] step-4 : trigger LPBK TX_EN..."*/ *MDM_TM_TINFOMSG = 1270;
+  //mcSHOW_DBG_MSG(("[LPBK] step-4 : trigger LPBK TX_EN...\n"));
+  //! step-4 : trigger LPBK TX_EN
+  *((UINT32P)(DDRPHYCUR_BASE + 0x0244)) =   0x0000cc85;
+
+
+
+
+  //! ==============================
+  //! - APHY setting
+  //! ==============================
+  //! B0
+  //*((UINT32P)(DDRPHYCUR_BASE + 0x00a4)) = 0x000005bc;
+  //*((UINT32P)(DDRPHYCUR_BASE + 0x00b0)) = 0x010311c1;
+  //! B1
+  //*((UINT32P)(DDRPHYCUR_BASE + 0x0124)) = 0x000005bc;
+  //*((UINT32P)(DDRPHYCUR_BASE + 0x0130)) = 0x010311c1;
+  //! CA
+  //*((UINT32P)(DDRPHYCUR_BASE + 0x01a4)) = 0x000005bc;
+  //*((UINT32P)(DDRPHYCUR_BASE + 0x01b0)) = 0x010311c1;
+
+
+  DELAY_US(1);
+  DELAY_US(1);
+
+  //! step-4 : wait LPBK done  
+  DELAY_US(2);
+
+#ifdef LPBK_RUN_DSIM
+  *DRAMC_WBR = 0x00000000;
+#else
+  *((UINT32P)(DRAMC_WBR)) = 0x00000000;
+#endif
+  //*INFRA_DRAMC_REG_CONFIG = 0x00000000;
+
+  if        ( CUR_CHN==0 ) {
+    DDRPHYCUR_BASE = DDRPHY0NAO_BASE ;
+  } else if ( CUR_CHN==1 ) {
+    DDRPHYCUR_BASE = DDRPHY1NAO_BASE ;
+  } else {
+    DDRPHYCUR_BASE = DDRPHY0NAO_BASE ;
+  }
+
+  reg_r_data_intca = *((UINT32P)(DDRPHYCUR_BASE + 0x020c)) ;
+  reg_r_data_intdq = *((UINT32P)(DDRPHYCUR_BASE + 0x0000)) ;
+
+  //check whether ca has done or not
+  if (reg_r_data_intca != intca_lpbk_done_flag) {
+    /*TINFO="[LPBK] ERROR: CH%d ca RX not test done ; current ca RX status is [%x] ...", CUR_CHN, reg_r_data_intca*/ *MDM_TM_TPAR =  CUR_CHN; *MDM_TM_TPAR =  reg_r_data_intca; *MDM_TM_TINFOMSG = 1286;
+    mcSHOW_DBG_MSG(("[LPBK] ERROR: CH%d ca RX not test done ; current ca RX status is [%x] ...", CUR_CHN, reg_r_data_intca));
+    intca_lpbk_nodone = 1;
+  } else {
+    /*TINFO="[LPBK] CH%d ca RX test done ; current ca RX status is [%x] ...", CUR_CHN, reg_r_data_intca*/ *MDM_TM_TPAR =  CUR_CHN; *MDM_TM_TPAR =  reg_r_data_intca; *MDM_TM_TINFOMSG = 1287;
+    mcSHOW_DBG_MSG(("[LPBK] CH%d ca RX test done ; current ca RX status is [%x] ...", CUR_CHN, reg_r_data_intca));
+    intca_lpbk_nodone = 0;
+  }
+
+  //check whether dq has done or not    
+  if(reg_r_data_intdq != 0x7ffffff) {
+    /*TINFO="[LPBK] ERROR: CH%d dq RX not test done ; current dq RX status is [%x] ...", CUR_CHN, reg_r_data_intdq*/ *MDM_TM_TPAR =  CUR_CHN; *MDM_TM_TPAR =  reg_r_data_intdq; *MDM_TM_TINFOMSG = 1288;
+    mcSHOW_DBG_MSG(("[LPBK] ERROR: CH%d dq RX not test done ; current dq RX status is [%x] ...\n", CUR_CHN, reg_r_data_intdq));
+    intdq_lpbk_nodone = 1;
+  } else {
+    /*TINFO="[LPBK] CH%d dq RX test done ; current dq RX status is [%x] ...", CUR_CHN, reg_r_data_intdq*/ *MDM_TM_TPAR =  CUR_CHN; *MDM_TM_TPAR =  reg_r_data_intdq; *MDM_TM_TINFOMSG = 1289;
+    mcSHOW_DBG_MSG(("[LPBK] CH%d dq RX test done ; current dq RX status is [%x] ...\n", CUR_CHN, reg_r_data_intdq));
+    intdq_lpbk_nodone = 0;
+  }
+
+  //! step-5 : check fail
+  reg_r_data_intdq = *((UINT32P)(DDRPHYCUR_BASE + 0x0004)) ;
+  reg_r_data_intca = *((UINT32P)(DDRPHYCUR_BASE + 0x210)) ;
+
+  mcSHOW_DBG_MSG(("DQ_Fail:0x%x, 08:0x%x, CA_Fail:0x%x\n", 
+  	*((UINT32P)(DDRPHYCUR_BASE + 0x0004)), *((UINT32P)(DDRPHYCUR_BASE + 0x0008)), *((UINT32P)(DDRPHYCUR_BASE + 0x210))));
+  
+  reg_r_data_intb0 = (reg_r_data_intdq & 0x1ff);
+  reg_r_data_intb1 = (reg_r_data_intdq & 0x3fe00) >> 9;
+  reg_r_data_intb2 = (reg_r_data_intdq & 0x7fc0000) >> 18;
+
+  ////check ca result for rtlsim
+  //if ( reg_r_data_intca != 0 || intca_lpbk_nodone !=0 ){
+  //  /*TINFO="[LPBK] Fail !!! ca LPBK CH%d fail status = %x", CUR_CHN, reg_r_data_intca*/ *MDM_TM_TPAR =  CUR_CHN; *MDM_TM_TPAR =  reg_r_data_intca; *MDM_TM_TINFOMSG = 1290;
+  //  mcSHOW_DBG_MSG(("[LPBK] Fail !!! ca LPBK CH%d fail status = %x\n", CUR_CHN, reg_r_data_intca));
+  //} else {
+  //  /*TINFO="[LPBK] DDRPHY CH%d ca internal loopback test PASS !!!", CUR_CHN*/ *MDM_TM_TPAR =  CUR_CHN; *MDM_TM_TINFOMSG = 1291;
+  //  mcSHOW_DBG_MSG(("[LPBK] DDRPHY CH%d ca internal loopback test PASS !!!\n", CUR_CHN));
+  //}
+
+  ////check dq result for rtlsim
+  //if ( reg_r_data_intdq != 0 || intdq_lpbk_nodone !=0 ){ //with B2
+  //  /*TINFO="[LPBK] Fail !!! dq LPBK CH%d fail status = %x", CUR_CHN, reg_r_data_intdq*/ *MDM_TM_TPAR =  CUR_CHN; *MDM_TM_TPAR =  reg_r_data_intdq; *MDM_TM_TINFOMSG = 1292;
+  //  mcSHOW_DBG_MSG(("[LPBK] Fail !!! dq LPBK CH%d fail status = %x\n", CUR_CHN, reg_r_data_intdq));
+  //} else {
+  //  /*TINFO="[LPBK] DDRPHY CH%d dq internal loopback test PASS !!!", CUR_CHN*/ *MDM_TM_TPAR =  CUR_CHN; *MDM_TM_TINFOMSG = 1293;
+  //  mcSHOW_DBG_MSG(("[LPBK] DDRPHY CH%d dq internal loopback test PASS !!!\n", CUR_CHN));
+  //}
+
+  //check nodone for real test
+  if(intdq_lpbk_nodone != 0 || intca_lpbk_nodone != 0){
+    gpio_location_temp = (CUR_CHN == 0)?88:99;	//PAD_MSDC1_CLK, PAD_MSDC0_CLK
+    SET_GPIO_DOUT(gpio_location_temp,1);
+  }else{
+    gpio_location_temp = (CUR_CHN == 0)?88:99;	
+    SET_GPIO_DOUT(gpio_location_temp,0);
+  }
+
+  //check status for real test
+#ifdef ALL_TEST
+  if(reg_r_data_intdq == 0 && reg_r_data_intca == 0 && intdq_lpbk_nodone == 0 && intca_lpbk_nodone == 0){
+    /*TINFO="[LPBK] DDRPHY CH%d internal loopback test PASS !!!", CUR_CHN*/ *MDM_TM_TPAR =  CUR_CHN; *MDM_TM_TINFOMSG = 1294;
+    mcSHOW_DBG_MSG(("[LPBK] DDRPHY CH%d internal loopback test PASS !!!\n", CUR_CHN));
+    lpbk_test_result = INTERNAL_LPBK_PASS; //test pass
+  }else{
+    /*TINFO="[LPBK] DDRPHY CH%d internal loopback test FAIL !!!", CUR_CHN*/ *MDM_TM_TPAR =  CUR_CHN; *MDM_TM_TINFOMSG = 1295;
+    mcSHOW_DBG_MSG(("[LPBK] DDRPHY CH%d internal loopback test FAIL !!!\n", CUR_CHN));
+    lpbk_test_result = INTERNAL_LPBK_FAIL;
+  }
+
+  //check b0 status for real test
+  if(reg_r_data_intb0 != 0){
+    gpio_location_temp = (CUR_CHN == 0)?86:81;	//PAD_MSDC2_DSL, PAD_MSDC2_CLK
+    SET_GPIO_DOUT(gpio_location_temp,1);
+  }else{
+    gpio_location_temp = (CUR_CHN == 0)?86:81;	
+    SET_GPIO_DOUT(gpio_location_temp,0);
+  }
+
+  //check b1 status for real test
+  if(reg_r_data_intb1 != 0){
+    gpio_location_temp = (CUR_CHN == 0)?93:94;	//PAD_MSDC0_DAT7, PAD_MSDC0_DAT6
+    SET_GPIO_DOUT(gpio_location_temp,1);
+  }else{
+    gpio_location_temp = (CUR_CHN == 0)?93:94;	//PAD_MSDC0_DAT7, PAD_MSDC0_DAT6
+    SET_GPIO_DOUT(gpio_location_temp,0);
+  }
+
+  //check b2 status for real test
+  if(reg_r_data_intb2 != 0){
+    gpio_location_temp = (CUR_CHN == 0)?95:96;	//PAD_MSDC0_DAT5, PAD_MSDC0_DAT4
+    SET_GPIO_DOUT(gpio_location_temp,1);
+  }else{
+    gpio_location_temp = (CUR_CHN == 0)?95:96;	//PAD_MSDC0_DAT5, PAD_MSDC0_DAT4
+    SET_GPIO_DOUT(gpio_location_temp,0);
+  }
+
+  //check ca status for real test
+  if(reg_r_data_intca != 0){
+    gpio_location_temp = (CUR_CHN == 0)?73:74;	//PAD_CMDAT5, PAD_CMDAT6
+    SET_GPIO_DOUT(gpio_location_temp,1);
+  }else{
+    gpio_location_temp = (CUR_CHN == 0)?73:74;	//PAD_CMDAT5, PAD_CMDAT6
+    SET_GPIO_DOUT(gpio_location_temp,0);
+  }
+#endif
+
+#ifdef B0B1CA
+  if(reg_r_data_intb0 == 0 && reg_r_data_intb1 == 0 && reg_r_data_intca == 0 && intdq_lpbk_nodone == 0 && intca_lpbk_nodone == 0){
+    /*TINFO="[LPBK] DDRPHY CH%d internal loopback test PASS !!!", CUR_CHN*/ *MDM_TM_TPAR =  CUR_CHN; *MDM_TM_TINFOMSG = 1294;
+    mcSHOW_DBG_MSG(("[LPBK] DDRPHY CH%d internal loopback test PASS !!!\n", CUR_CHN));
+    lpbk_test_result = INTERNAL_LPBK_PASS; //test pass
+  }else{
+    /*TINFO="[LPBK] DDRPHY CH%d internal loopback test FAIL !!!", CUR_CHN*/ *MDM_TM_TPAR =  CUR_CHN; *MDM_TM_TINFOMSG = 1295;
+    mcSHOW_DBG_MSG(("[LPBK] DDRPHY CH%d internal loopback test FAIL !!!\n", CUR_CHN));
+    lpbk_test_result = INTERNAL_LPBK_FAIL;
+  }
+
+  //check b0 status for real test
+  if(reg_r_data_intb0 != 0){
+    gpio_location_temp = (CUR_CHN == 0)?86:81;	//PAD_MSDC2_DSL, PAD_MSDC2_CLK
+    SET_GPIO_DOUT(gpio_location_temp,1);
+  }else{
+    gpio_location_temp = (CUR_CHN == 0)?86:81;	
+    SET_GPIO_DOUT(gpio_location_temp,0);
+  }
+
+  //check b1 status for real test
+  if(reg_r_data_intb1 != 0){
+    gpio_location_temp = (CUR_CHN == 0)?93:94;	//PAD_MSDC0_DAT7, PAD_MSDC0_DAT6
+    SET_GPIO_DOUT(gpio_location_temp,1);
+  }else{
+    gpio_location_temp = (CUR_CHN == 0)?93:94;	//PAD_MSDC0_DAT7, PAD_MSDC0_DAT6
+    SET_GPIO_DOUT(gpio_location_temp,0);
+  }
+
+  //check ca status for real test
+  if(reg_r_data_intca != 0){
+    gpio_location_temp = (CUR_CHN == 0)?73:74;	//PAD_CMDAT5, PAD_CMDAT6
+    SET_GPIO_DOUT(gpio_location_temp,1);
+  }else{
+    gpio_location_temp = (CUR_CHN == 0)?73:74;	//PAD_CMDAT5, PAD_CMDAT6
+    SET_GPIO_DOUT(gpio_location_temp,0);
+  }
+#endif
+
+#ifdef B0_ONLY
+  if(reg_r_data_intb0 == 0){
+    /*TINFO="[LPBK] DDRPHY CH%d B0 internal loopback test PASS !!!", CUR_CHN*/ *MDM_TM_TPAR =  CUR_CHN; *MDM_TM_TINFOMSG = 1296;
+    mcSHOW_DBG_MSG(("[LPBK] DDRPHY CH%d B0 internal loopback test PASS !!!\n", CUR_CHN));
+    lpbk_test_result = INTERNAL_LPBK_PASS; //test pass
+  }else{
+    /*TINFO="[LPBK] DDRPHY CH%d B0 internal loopback test FAIL !!!", CUR_CHN*/ *MDM_TM_TPAR =  CUR_CHN; *MDM_TM_TINFOMSG = 1297;
+    mcSHOW_DBG_MSG(("[LPBK] DDRPHY CH%d B0 internal loopback test FAIL !!!\n", CUR_CHN));
+    lpbk_test_result = INTERNAL_LPBK_FAIL;
+  }
+#endif
+
+#ifdef B2_ONLY
+  if(reg_r_data_intb2 == 0){
+    /*TINFO="[LPBK] DDRPHY CH%d B2 internal loopback test PASS !!!", CUR_CHN*/ *MDM_TM_TPAR =  CUR_CHN; *MDM_TM_TINFOMSG = 1298;
+    mcSHOW_DBG_MSG(("[LPBK] DDRPHY CH%d B2 internal loopback test PASS !!!\n", CUR_CHN));
+    lpbk_test_result = INTERNAL_LPBK_PASS; //test pass
+  }else{
+    /*TINFO="[LPBK] DDRPHY CH%d B2 internal loopback test FAIL !!!", CUR_CHN*/ *MDM_TM_TPAR =  CUR_CHN; *MDM_TM_TINFOMSG = 1299;
+    mcSHOW_DBG_MSG(("[LPBK] DDRPHY CH%d B2 internal loopback test FAIL !!!\n", CUR_CHN));
+    lpbk_test_result = INTERNAL_LPBK_FAIL;
+  }
+#endif
+
+  //if( reg_r_data_intdq == 0 && reg_r_data_intca == 0 ){
+  //  lpbk_test_result_gpio = 0x00000300; //PAD_BPI_BUS3/4=1
+  //  if(cal_loop == 0){
+  //   /*TINFO="[LPBK] [ 9: 8] INTERNAL LPBK CHA PASS, GPIO status = %x", lpbk_test_result_gpio */ *MDM_TM_TPAR =  lpbk_test_result_gpio ; *MDM_TM_TINFOMSG = 1275;
+  //   mcSHOW_DBG_MSG(("[LPBK] [ 9: 8] INTERNAL LPBK CHA PASS, GPIO status = %x", lpbk_test_result_gpio));
+  //  } else {
+  //   /*TINFO="[LPBK] INTERNAL LPBK CHA Pass !!!" */ *MDM_TM_TINFOMSG = 1276;
+  //   mcSHOW_DBG_MSG(("[LPBK] INTERNAL LPBK CHA Pass !!!\n"));
+  //  }
+  //} else {
+  //  lpbk_test_result_gpio = 0x00000000; //PAD_BPI_BUS3/4=0
+  //}
+  //if(reg_r_data_intdq != 0) {
+  //  if(cal_loop == 0){
+  //  /*TINFO="[LPBK] Error !!! dq DDRPHY internal loopback test FAIL"*/ *MDM_TM_TINFOMSG = 1300;
+  //  mcSHOW_DBG_MSG(("[LPBK] Error !!! dqq DDRPHY internal loopback test FAIL\n"));
+  //  /*TINFO="[LPBK] Error !!! dq LPBK CH%d fail status = %x", CUR_CHN, reg_r_data_intdq*/ *MDM_TM_TPAR =  CUR_CHN; *MDM_TM_TPAR =  reg_r_data_intdq; *MDM_TM_TINFOMSG = 1301;
+  //  mcSHOW_DBG_MSG(("[LPBK] Error !!! dq LPBK CH%d fail status = %x\n", CUR_CHN, reg_r_data_intdq));
+  //  } else {
+  //  /*TINFO="[LPBK] Fail !!! dq DDRPHY internal loopback test FAIL"*/ *MDM_TM_TINFOMSG = 1302;
+  //  mcSHOW_DBG_MSG(("[LPBK] Fail !!! dq DDRPHY internal loopback test FAIL\n"));
+  //  /*TINFO="[LPBK] Fail !!! dq LPBK CH%d fail status = %x", CUR_CHN, reg_r_data_intdq*/ *MDM_TM_TPAR =  CUR_CHN; *MDM_TM_TPAR =  reg_r_data_intdq; *MDM_TM_TINFOMSG = 1292;
+  //  mcSHOW_DBG_MSG(("[LPBK] Fail !!! dq LPBK CH%d fail status = %x\n", CUR_CHN, reg_r_data_intdq));
+  //  }
+  //}
+  //judging whether pass or not
+  // if(reg_r_data_intdq != 0 || reg_r_data_intca != 0 || intdq_lpbk_nodone !=0 || intca_lpbk_nodone !=0){
+  //   /*TINFO="[LPBK] DDRPHY CH%d internal loopback test FAIL !!!", CUR_CHN*/ *MDM_TM_TPAR =  CUR_CHN; *MDM_TM_TINFOMSG = 1295;
+  //   mcSHOW_DBG_MSG(("[LPBK] DDRPHY CH%d internal loopback test FAIL !!!\n", CUR_CHN));
+  //   if(intdq_lpbk_nodone !=0 || intca_lpbk_nodone !=0 )    			
+  //     lpbk_test_result = INTERNAL_LPBK_NODONE; //no done			
+  //   else if((reg_r_data_intdq != 0 || reg_r_data_intca != 0) && intdq_lpbk_nodone == 0 && intca_lpbk_nodone == 0){			
+  //     if(reg_r_data_intb2 != 0 && reg_r_data_intb0 == 0 && reg_r_data_intb1 == 0 && reg_r_data_intca == 0){
+  //       lpbk_test_result = INTERNAL_B2_FAIL; //B2 fail
+  //     }
+  //     else if(reg_r_data_intb2 == 0 && reg_r_data_intb0 != 0 && reg_r_data_intb1 != 0 && reg_r_data_intca != 0){
+  //       lpbk_test_result = INTERNAL_B0_B1_CA_FAIL; //B0 or B1 or CA fail
+  //     }
+  //     else if(reg_r_data_intb2 !=0 && reg_r_data_intb0 != 0 && reg_r_data_intb1 != 0 && reg_r_data_intca != 0){
+  //       lpbk_test_result = INTERNAL_ALL_FAIL; //ALL fail
+  //     }
+  //   }
+  // }
+  // else {
+  //   /*TINFO="[LPBK] DDRPHY CH%d internal loopback test PASS !!!", CUR_CHN*/ *MDM_TM_TPAR =  CUR_CHN; *MDM_TM_TINFOMSG = 1294;
+  //   mcSHOW_DBG_MSG(("[LPBK] DDRPHY CH%d internal loopback test PASS !!!\n", CUR_CHN));
+  //   lpbk_test_result = INTERNAL_LPBK_PASS;		    //test pass
+  // }
+
+  // delay here: add by xixi
+  //while(1);
+
+  //! step-6 : assert reset
+#ifdef LPBK_RUN_DSIM
+      *DRAMC_WBR = 0x0000000f;
+#else
+      *((UINT32P)(DRAMC_WBR)) = 0x0000000f;
+#endif
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0244)) = 0x0000cc03;
+  ddrphy_RxReset_seq () ;
+
+
+  return lpbk_test_result;
+
+} //! end of ddrphy_int_lpbk_test_seq
+
+
+
+//! ----------------------------------------------
+//! set DDRPHY RX Input Delay (Byte-0 CHA/CHB)
+//! ----------------------------------------------
+void ddrphy_SetRXInputDelay_B0( unsigned int ddrphy_rx_dqs_dly, unsigned int ddrphy_rx_dq_dly )
+{
+  //! for Byte-0
+  //-- *((UINT32P)(DDRPHY0AO_BASE + 0x0e08)) = 0x0 ;
+  //-- *((UINT32P)(DDRPHY0AO_BASE + 0x0e0c)) = 0x0 ;
+  //-- *((UINT32P)(DDRPHY0AO_BASE + 0x0e10)) = 0x0 ;
+  //-- *((UINT32P)(DDRPHY0AO_BASE + 0x0e14)) = 0x0 ;
+  //-- *((UINT32P)(DDRPHY0AO_BASE + 0x0e18)) = 0x0 ;
+  //-- 
+  //-- *((UINT32P)(DDRPHY1AO_BASE + 0x0e08)) = 0x0 ;
+  //-- *((UINT32P)(DDRPHY1AO_BASE + 0x0e0c)) = 0x0 ;
+  //-- *((UINT32P)(DDRPHY1AO_BASE + 0x0e10)) = 0x0 ;
+  //-- *((UINT32P)(DDRPHY1AO_BASE + 0x0e14)) = 0x0 ;
+  //-- *((UINT32P)(DDRPHY1AO_BASE + 0x0e18)) = 0x0 ;
+
+  /*TINFO="[LPBK] set B0 input delay => RX_DQS_DLY=%x, RX_DQ_DLY=%x ;", ddrphy_rx_dqs_dly, ddrphy_rx_dq_dly*/ *MDM_TM_TPAR =  ddrphy_rx_dqs_dly; *MDM_TM_TPAR =  ddrphy_rx_dq_dly; *MDM_TM_TINFOMSG = 1303;
+  mcSHOW_DBG_MSG(("[LPBK] set B0 input delay => RX_DQS_DLY=%x, RX_DQ_DLY=%x ;\n", ddrphy_rx_dqs_dly, ddrphy_rx_dq_dly));
+  
+  //! for CHA-Byte-0
+  //! [29:24]: RG_RK0_RX_ARDQ1_F_DLY / [21:16]: RG_RK0_RX_ARDQ1_R_DLY
+  //! [13: 8]: RG_RK0_RX_ARDQ0_F_DLY / [ 5: 0]: RG_RK0_RX_ARDQ0_R_DLY
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0e08)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+  //! [29:24]: RG_RK0_RX_ARDQ3_F_DLY / [21:16]: RG_RK0_RX_ARDQ3_R_DLY
+  //! [13: 8]: RG_RK0_RX_ARDQ2_F_DLY / [ 5: 0]: RG_RK0_RX_ARDQ2_R_DLY
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0e0c)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+  //! [29:24]: RG_RK0_RX_ARDQ5_F_DLY / [21:16]: RG_RK0_RX_ARDQ5_R_DLY
+  //! [13: 8]: RG_RK0_RX_ARDQ4_F_DLY / [ 5: 0]: RG_RK0_RX_ARDQ4_R_DLY
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0e10)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+  //! [29:24]: RG_RK0_RX_ARDQ7_F_DLY / [21:16]: RG_RK0_RX_ARDQ7_R_DLY
+  //! [13: 8]: RG_RK0_RX_ARDQ6_F_DLY / [ 5: 0]: RG_RK0_RX_ARDQ6_R_DLY
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0e14)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+  //! [29:24]: RG_RK0_RX_ARDQS_F_DLY / [21:16]: RG_RK0_RX_ARDQS_R_DLY
+  //! [13: 8]: RG_RK0_RX_ARDQM_F_DLY / [ 5: 0]: RG_RK0_RX_ARDQM_R_DLY
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0e18)) = (ddrphy_rx_dqs_dly<<24) | (ddrphy_rx_dqs_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+
+  //! for CHB-Byte-0
+  //! [29:24]: RG_RK0_RX_ARDQ1_F_DLY / [21:16]: RG_RK0_RX_ARDQ1_R_DLY
+  //! [13: 8]: RG_RK0_RX_ARDQ0_F_DLY / [ 5: 0]: RG_RK0_RX_ARDQ0_R_DLY
+  *((UINT32P)(DDRPHY1AO_BASE + 0x0e08)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+  //! [29:24]: RG_RK0_RX_ARDQ3_F_DLY / [21:16]: RG_RK0_RX_ARDQ3_R_DLY
+  //! [13: 8]: RG_RK0_RX_ARDQ2_F_DLY / [ 5: 0]: RG_RK0_RX_ARDQ2_R_DLY
+  *((UINT32P)(DDRPHY1AO_BASE + 0x0e0c)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+  //! [29:24]: RG_RK0_RX_ARDQ5_F_DLY / [21:16]: RG_RK0_RX_ARDQ5_R_DLY
+  //! [13: 8]: RG_RK0_RX_ARDQ4_F_DLY / [ 5: 0]: RG_RK0_RX_ARDQ4_R_DLY
+  *((UINT32P)(DDRPHY1AO_BASE + 0x0e10)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+  //! [29:24]: RG_RK0_RX_ARDQ7_F_DLY / [21:16]: RG_RK0_RX_ARDQ7_R_DLY
+  //! [13: 8]: RG_RK0_RX_ARDQ6_F_DLY / [ 5: 0]: RG_RK0_RX_ARDQ6_R_DLY
+  *((UINT32P)(DDRPHY1AO_BASE + 0x0e14)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+  //! [29:24]: RG_RK0_RX_ARDQS_F_DLY / [21:16]: RG_RK0_RX_ARDQS_R_DLY
+  //! [13: 8]: RG_RK0_RX_ARDQM_F_DLY / [ 5: 0]: RG_RK0_RX_ARDQM_R_DLY
+  *((UINT32P)(DDRPHY1AO_BASE + 0x0e18)) = (ddrphy_rx_dqs_dly<<24) | (ddrphy_rx_dqs_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+
+  #ifdef LPBK_DEBU_MSG_ON
+  mcSHOW_DBG_MSG(("[LPBK] set CHA-B0 input delay = %x\n", *((UINT32P)(DDRPHY0AO_BASE + 0x0e18))));
+  mcSHOW_DBG_MSG(("[LPBK] set CHB-B0 input delay = %x\n", *((UINT32P)(DDRPHY1AO_BASE + 0x0e18))));
+  mcSHOW_DBG_MSG(("[LPBK] set ddrphy_rx_dqs_dly = %d\n", ddrphy_rx_dqs_dly));
+  mcSHOW_DBG_MSG(("[LPBK] set ddrphy_rx_dq_dly  = %d\n", ddrphy_rx_dq_dly ));
+  /*TINFO="[LPBK] set ddrphy_rx_dqs_dly = %d\n", ddrphy_rx_dqs_dly*/ *MDM_TM_TPAR =  ddrphy_rx_dqs_dly; *MDM_TM_TINFOMSG = 1304;
+  /*TINFO="[LPBK] set ddrphy_rx_dq_dly  = %d\n", ddrphy_rx_dq_dly*/ *MDM_TM_TPAR =  ddrphy_rx_dq_dly; *MDM_TM_TINFOMSG = 1305;
+  #endif
+} //! end-ddrphy_SetRXInputDelay_B0
+
+//! ----------------------------------------------
+//! set DDRPHY RX Input Delay (Byte-1 CHA/CHB)
+//! ----------------------------------------------
+void ddrphy_SetRXInputDelay_B1( unsigned int ddrphy_rx_dqs_dly, unsigned int ddrphy_rx_dq_dly )
+{
+  //! for Byte-1
+  //-- *((UINT32P)(DDRPHY0AO_BASE + 0x0e58)) = 0x0 ;
+  //-- *((UINT32P)(DDRPHY0AO_BASE + 0x0e5c)) = 0x0 ;
+  //-- *((UINT32P)(DDRPHY0AO_BASE + 0x0e60)) = 0x0 ;
+  //-- *((UINT32P)(DDRPHY0AO_BASE + 0x0e64)) = 0x0 ;
+  //-- *((UINT32P)(DDRPHY0AO_BASE + 0x0e68)) = 0x0 ;
+  //-- 
+  //-- *((UINT32P)(DDRPHY1AO_BASE + 0x0e58)) = 0x0 ;
+  //-- *((UINT32P)(DDRPHY1AO_BASE + 0x0e5c)) = 0x0 ;
+  //-- *((UINT32P)(DDRPHY1AO_BASE + 0x0e60)) = 0x0 ;
+  //-- *((UINT32P)(DDRPHY1AO_BASE + 0x0e64)) = 0x0 ;
+  //-- *((UINT32P)(DDRPHY1AO_BASE + 0x0e68)) = 0x0 ;
+
+  /*TINFO="[LPBK] set B1 input delay => RX_DQS_DLY=%x, RX_DQ_DLY=%x ;", ddrphy_rx_dqs_dly, ddrphy_rx_dq_dly*/ *MDM_TM_TPAR =  ddrphy_rx_dqs_dly; *MDM_TM_TPAR =  ddrphy_rx_dq_dly; *MDM_TM_TINFOMSG = 1306;
+  mcSHOW_DBG_MSG(("[LPBK] set B1 input delay => RX_DQS_DLY=%x, RX_DQ_DLY=%x ;\n", ddrphy_rx_dqs_dly, ddrphy_rx_dq_dly));
+  
+  //! for CHA-Byte-1
+  //! [29:24]: RG_RK0_RX_ARDQ1_F_DLY / [21:16]: RG_RK0_RX_ARDQ1_R_DLY
+  //! [13: 8]: RG_RK0_RX_ARDQ0_F_DLY / [ 5: 0]: RG_RK0_RX_ARDQ0_R_DLY
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0e58)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+  //! [29:24]: RG_RK0_RX_ARDQ3_F_DLY / [21:16]: RG_RK0_RX_ARDQ3_R_DLY
+  //! [13: 8]: RG_RK0_RX_ARDQ2_F_DLY / [ 5: 0]: RG_RK0_RX_ARDQ2_R_DLY
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0e5c)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+  //! [29:24]: RG_RK0_RX_ARDQ5_F_DLY / [21:16]: RG_RK0_RX_ARDQ5_R_DLY
+  //! [13: 8]: RG_RK0_RX_ARDQ4_F_DLY / [ 5: 0]: RG_RK0_RX_ARDQ4_R_DLY
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0e60)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+  //! [29:24]: RG_RK0_RX_ARDQ7_F_DLY / [21:16]: RG_RK0_RX_ARDQ7_R_DLY
+  //! [13: 8]: RG_RK0_RX_ARDQ6_F_DLY / [ 5: 0]: RG_RK0_RX_ARDQ6_R_DLY
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0e64)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+  //! [29:24]: RG_RK0_RX_ARDQS_F_DLY / [21:16]: RG_RK0_RX_ARDQS_R_DLY
+  //! [13: 8]: RG_RK0_RX_ARDQM_F_DLY / [ 5: 0]: RG_RK0_RX_ARDQM_R_DLY
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0e68)) = (ddrphy_rx_dqs_dly<<24) | (ddrphy_rx_dqs_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ; 
+
+  //! for CHB-Byte-1
+  //! [29:24]: RG_RK0_RX_ARDQ1_F_DLY / [21:16]: RG_RK0_RX_ARDQ1_R_DLY
+  //! [13: 8]: RG_RK0_RX_ARDQ0_F_DLY / [ 5: 0]: RG_RK0_RX_ARDQ0_R_DLY
+  *((UINT32P)(DDRPHY1AO_BASE + 0x0e58)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+  //! [29:24]: RG_RK0_RX_ARDQ3_F_DLY / [21:16]: RG_RK0_RX_ARDQ3_R_DLY
+  //! [13: 8]: RG_RK0_RX_ARDQ2_F_DLY / [ 5: 0]: RG_RK0_RX_ARDQ2_R_DLY
+  *((UINT32P)(DDRPHY1AO_BASE + 0x0e5c)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+  //! [29:24]: RG_RK0_RX_ARDQ5_F_DLY / [21:16]: RG_RK0_RX_ARDQ5_R_DLY
+  //! [13: 8]: RG_RK0_RX_ARDQ4_F_DLY / [ 5: 0]: RG_RK0_RX_ARDQ4_R_DLY
+  *((UINT32P)(DDRPHY1AO_BASE + 0x0e60)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+  //! [29:24]: RG_RK0_RX_ARDQ7_F_DLY / [21:16]: RG_RK0_RX_ARDQ7_R_DLY
+  //! [13: 8]: RG_RK0_RX_ARDQ6_F_DLY / [ 5: 0]: RG_RK0_RX_ARDQ6_R_DLY
+  *((UINT32P)(DDRPHY1AO_BASE + 0x0e64)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+  //! [29:24]: RG_RK0_RX_ARDQS_F_DLY / [21:16]: RG_RK0_RX_ARDQS_R_DLY
+  //! [13: 8]: RG_RK0_RX_ARDQM_F_DLY / [ 5: 0]: RG_RK0_RX_ARDQM_R_DLY
+  *((UINT32P)(DDRPHY1AO_BASE + 0x0e68)) = (ddrphy_rx_dqs_dly<<24) | (ddrphy_rx_dqs_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ; 
+  
+             
+  //! mcSHOW_DBG_MSG(("[LPBK] set CHA-B1 input delay = %x\n", *((UINT32P)(DDRPHY0AO_BASE + 0x0e68))));                                                                                 
+  //! mcSHOW_DBG_MSG(("[LPBK] set CHB-B1 input delay = %x\n", *((UINT32P)(DDRPHY1AO_BASE + 0x0e68))));
+  
+} //! end-ddrphy_SetRXInputDelay_B1
+
+//! ----------------------------------------------
+//! set DDRPHY RX Input Delay (Byte-2 CHA/CHB)
+//! ----------------------------------------------
+void ddrphy_SetRXInputDelay_B2( unsigned int ddrphy_rx_dqs_dly, unsigned int ddrphy_rx_dq_dly )
+{
+  //! for Byte-0
+  //-- *((UINT32P)(DDRPHY0AO_BASE + 0x2e08)) = 0x0 ;
+  //-- *((UINT32P)(DDRPHY0AO_BASE + 0x2e0c)) = 0x0 ;
+  //-- *((UINT32P)(DDRPHY0AO_BASE + 0x2e10)) = 0x0 ;
+  //-- *((UINT32P)(DDRPHY0AO_BASE + 0x2e14)) = 0x0 ;
+  //-- *((UINT32P)(DDRPHY0AO_BASE + 0x2e18)) = 0x0 ;
+  //-- 
+  //-- *((UINT32P)(DDRPHY1AO_BASE + 0x2e08)) = 0x0 ;
+  //-- *((UINT32P)(DDRPHY1AO_BASE + 0x2e0c)) = 0x0 ;
+  //-- *((UINT32P)(DDRPHY1AO_BASE + 0x2e10)) = 0x0 ;
+  //-- *((UINT32P)(DDRPHY1AO_BASE + 0x2e14)) = 0x0 ;
+  //-- *((UINT32P)(DDRPHY1AO_BASE + 0x2e18)) = 0x0 ;
+
+  /*TINFO="[LPBK] set B2 input delay => RX_DQS_DLY=%x, RX_DQ_DLY=%x ;", ddrphy_rx_dqs_dly, ddrphy_rx_dq_dly*/ *MDM_TM_TPAR =  ddrphy_rx_dqs_dly; *MDM_TM_TPAR =  ddrphy_rx_dq_dly; *MDM_TM_TINFOMSG = 1307;
+  mcSHOW_DBG_MSG(("[LPBK] set B2 input delay => RX_DQS_DLY=%x, RX_DQ_DLY=%x ;\n", ddrphy_rx_dqs_dly, ddrphy_rx_dq_dly));
+  
+  //! for CHA-Byte-2
+  //! [29:24]: RG_RK0_RX_ARDQ1_F_DLY / [21:16]: RG_RK0_RX_ARDQ1_R_DLY
+  //! [13: 8]: RG_RK0_RX_ARDQ0_F_DLY / [ 5: 0]: RG_RK0_RX_ARDQ0_R_DLY
+  *((UINT32P)(DDRPHY0AO_BASE + 0x2e08)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+  //! [29:24]: RG_RK0_RX_ARDQ3_F_DLY / [21:16]: RG_RK0_RX_ARDQ3_R_DLY
+  //! [13: 8]: RG_RK0_RX_ARDQ2_F_DLY / [ 5: 0]: RG_RK0_RX_ARDQ2_R_DLY
+  *((UINT32P)(DDRPHY0AO_BASE + 0x2e0c)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+  //! [29:24]: RG_RK0_RX_ARDQ5_F_DLY / [21:16]: RG_RK0_RX_ARDQ5_R_DLY
+  //! [13: 8]: RG_RK0_RX_ARDQ4_F_DLY / [ 5: 0]: RG_RK0_RX_ARDQ4_R_DLY
+  *((UINT32P)(DDRPHY0AO_BASE + 0x2e10)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+  //! [29:24]: RG_RK0_RX_ARDQ7_F_DLY / [21:16]: RG_RK0_RX_ARDQ7_R_DLY
+  //! [13: 8]: RG_RK0_RX_ARDQ6_F_DLY / [ 5: 0]: RG_RK0_RX_ARDQ6_R_DLY
+  *((UINT32P)(DDRPHY0AO_BASE + 0x2e14)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+  //! [29:24]: RG_RK0_RX_ARDQS_F_DLY / [21:16]: RG_RK0_RX_ARDQS_R_DLY
+  //! [13: 8]: RG_RK0_RX_ARDQM_F_DLY / [ 5: 0]: RG_RK0_RX_ARDQM_R_DLY
+  *((UINT32P)(DDRPHY0AO_BASE + 0x2e18)) = (ddrphy_rx_dqs_dly<<24) | (ddrphy_rx_dqs_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+
+  //! for CHB-Byte-0
+  //! [29:24]: RG_RK0_RX_ARDQ1_F_DLY / [21:16]: RG_RK0_RX_ARDQ1_R_DLY
+  //! [13: 8]: RG_RK0_RX_ARDQ0_F_DLY / [ 5: 0]: RG_RK0_RX_ARDQ0_R_DLY
+  *((UINT32P)(DDRPHY1AO_BASE + 0x2e08)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+  //! [29:24]: RG_RK0_RX_ARDQ3_F_DLY / [21:16]: RG_RK0_RX_ARDQ3_R_DLY
+  //! [13: 8]: RG_RK0_RX_ARDQ2_F_DLY / [ 5: 0]: RG_RK0_RX_ARDQ2_R_DLY
+  *((UINT32P)(DDRPHY1AO_BASE + 0x2e0c)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+  //! [29:24]: RG_RK0_RX_ARDQ5_F_DLY / [21:16]: RG_RK0_RX_ARDQ5_R_DLY
+  //! [13: 8]: RG_RK0_RX_ARDQ4_F_DLY / [ 5: 0]: RG_RK0_RX_ARDQ4_R_DLY
+  *((UINT32P)(DDRPHY1AO_BASE + 0x2e10)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+  //! [29:24]: RG_RK0_RX_ARDQ7_F_DLY / [21:16]: RG_RK0_RX_ARDQ7_R_DLY
+  //! [13: 8]: RG_RK0_RX_ARDQ6_F_DLY / [ 5: 0]: RG_RK0_RX_ARDQ6_R_DLY
+  *((UINT32P)(DDRPHY1AO_BASE + 0x2e14)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+  //! [29:24]: RG_RK0_RX_ARDQS_F_DLY / [21:16]: RG_RK0_RX_ARDQS_R_DLY
+  //! [13: 8]: RG_RK0_RX_ARDQM_F_DLY / [ 5: 0]: RG_RK0_RX_ARDQM_R_DLY
+  *((UINT32P)(DDRPHY1AO_BASE + 0x2e18)) = (ddrphy_rx_dqs_dly<<24) | (ddrphy_rx_dqs_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+
+  #ifdef LPBK_DEBU_MSG_ON
+  mcSHOW_DBG_MSG(("[LPBK] set CHA-B2 input delay = %x\n", *((UINT32P)(DDRPHY0AO_BASE + 0x2e18))));
+  mcSHOW_DBG_MSG(("[LPBK] set CHB-B2 input delay = %x\n", *((UINT32P)(DDRPHY1AO_BASE + 0x2e18))));
+  mcSHOW_DBG_MSG(("[LPBK] set ddrphy_rx_dqs_dly = %d\n", ddrphy_rx_dqs_dly));
+  mcSHOW_DBG_MSG(("[LPBK] set ddrphy_rx_dq_dly  = %d\n", ddrphy_rx_dq_dly ));
+  /*TINFO="[LPBK] set ddrphy_rx_dqs_dly = %d\n", ddrphy_rx_dqs_dly*/ *MDM_TM_TPAR =  ddrphy_rx_dqs_dly; *MDM_TM_TINFOMSG = 1304;
+  /*TINFO="[LPBK] set ddrphy_rx_dq_dly  = %d\n", ddrphy_rx_dq_dly*/ *MDM_TM_TPAR =  ddrphy_rx_dq_dly; *MDM_TM_TINFOMSG = 1305;
+  #endif
+} //! end-ddrphy_SetRXInputDelay_B2
+//! ----------------------------------------------
+//! set DDRPHY RX Input Delay (CA CHA/CHB)
+//! ----------------------------------------------
+void ddrphy_SetRXInputDelay_CA( unsigned int ddrphy_rx_dqs_dly, unsigned int ddrphy_rx_dq_dly )
+{
+	
+  //! for CA
+  //-- *((UINT32P)(DDRPHY0AO_BASE + 0x0ea8)) = 0 ;
+  //-- *((UINT32P)(DDRPHY0AO_BASE + 0x0eac)) = 0 ;
+  //-- *((UINT32P)(DDRPHY0AO_BASE + 0x0eb0)) = 0 ;
+  //-- *((UINT32P)(DDRPHY0AO_BASE + 0x0eb4)) = 0 ;
+  //-- *((UINT32P)(DDRPHY0AO_BASE + 0x0eb8)) = 0 ; 
+  //-- *((UINT32P)(DDRPHY0AO_BASE + 0x0ebc)) = 0 ; 
+  //-- *((UINT32P)(DDRPHY0AO_BASE + 0x0ec0)) = 0 ;
+
+  //-- *((UINT32P)(DDRPHY1AO_BASE + 0x0ea8)) = 0 ;
+  //-- *((UINT32P)(DDRPHY1AO_BASE + 0x0eac)) = 0 ;
+  //-- *((UINT32P)(DDRPHY1AO_BASE + 0x0eb0)) = 0 ;
+  //-- *((UINT32P)(DDRPHY1AO_BASE + 0x0eb4)) = 0 ;
+  //-- *((UINT32P)(DDRPHY1AO_BASE + 0x0eb8)) = 0 ; 
+  //-- *((UINT32P)(DDRPHY1AO_BASE + 0x0ebc)) = 0 ; 
+  //-- *((UINT32P)(DDRPHY1AO_BASE + 0x0ec0)) = 0 ;
+  
+  /*TINFO="[LPBK] set CA input delay => RX_DQS_DLY=%x, RX_DQ_DLY=%x ;", ddrphy_rx_dqs_dly, ddrphy_rx_dq_dly*/ *MDM_TM_TPAR =  ddrphy_rx_dqs_dly; *MDM_TM_TPAR =  ddrphy_rx_dq_dly; *MDM_TM_TINFOMSG = 1308;
+  mcSHOW_DBG_MSG(("[LPBK] set CA input delay => RX_DQS_DLY=%x, RX_DQ_DLY=%x ;\n", ddrphy_rx_dqs_dly, ddrphy_rx_dq_dly));
+  //! for CHA-CA
+  //! [29:24]: RG_RK0_RX_ARCA1_F_DLY / [21:16]: RG_RK0_RX_ARCA1_R_DLY
+  //! [13: 8]: RG_RK0_RX_ARCA0_F_DLY / [ 5: 0]: RG_RK0_RX_ARCA0_R_DLY
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0ea8)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+  //! [29:24]: RG_RK0_RX_ARCA3_F_DLY / [21:16]: RG_RK0_RX_ARCA3_R_DLY
+  //! [13: 8]: RG_RK0_RX_ARCA2_F_DLY / [ 5: 0]: RG_RK0_RX_ARCA2_R_DLY
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0eac)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+  //! [29:24]: RG_RK0_RX_ARCA5_F_DLY / [21:16]: RG_RK0_RX_ARCA5_R_DLY
+  //! [13: 8]: RG_RK0_RX_ARCA4_F_DLY / [ 5: 0]: RG_RK0_RX_ARCA4_R_DLY
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0eb0)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+  //! [29:24]: RG_RK0_RX_ARCKE1_F_DLY / [21:16]: RG_RK0_RX_ARCKE1_R_DLY
+  //! [13: 8]: RG_RK0_RX_ARCKE0_F_DLY / [ 5: 0]: RG_RK0_RX_ARCKE0_R_DLY
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0eb4)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+  //! [29:24]: RG_RK0_RX_ARCS0_F_DLY / [21:16]: RG_RK0_RX_ARCS0_R_DLY
+  //! [13: 8]: RG_RK0_RX_ARCKE2_F_DLY / [ 5: 0]: RG_RK0_RX_ARCKE2_R_DLY
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0eb8)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ; 
+  //! [29:24]: RG_RK0_RX_ARCS2_F_DLY / [21:16]: RG_RK0_RX_ARCS2_R_DLY
+  //! [13: 8]: RG_RK0_RX_ARCS1_F_DLY / [ 5: 0]: RG_RK0_RX_ARCS1_R_DLY
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0ebc)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ; 
+
+  //! [29:24]: RG_RK0_RX_ARCKE1_F_DLY / [21:16]: RG_RK0_RX_ARCKE1_R_DLY
+  //! [13: 8]: RG_RK0_RX_ARCKE0_F_DLY / [ 5: 0]: RG_RK0_RX_ARCKE0_R_DLY
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0e74)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+  //! [29:24]: RG_RK0_RX_ARCS0_F_DLY / [21:16]: RG_RK0_RX_ARCS0_R_DLY
+  //! [13: 8]: RG_RK0_RX_ARCKE2_F_DLY / [ 5: 0]: RG_RK0_RX_ARCKE2_R_DLY
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0e78)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ; 
+  //! [29:24]: RG_RK0_RX_ARCS2_F_DLY / [21:16]: RG_RK0_RX_ARCS2_R_DLY
+  //! [13: 8]: RG_RK0_RX_ARCS1_F_DLY / [ 5: 0]: RG_RK0_RX_ARCS1_R_DLY
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0e7c)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+
+
+  //! [29:24]: RG_RK0_RX_ARCLK_F_DLY / [21:16]: RG_RK0_RX_ARCLK_R_DLY
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0ec0)) = (ddrphy_rx_dqs_dly<<24) | (ddrphy_rx_dqs_dly<<16) ;
+
+  //! for CHB-CA
+  //! [29:24]: RG_RK0_RX_ARCA1_F_DLY / [21:16]: RG_RK0_RX_ARCA1_R_DLY
+  //! [13: 8]: RG_RK0_RX_ARCA0_F_DLY / [ 5: 0]: RG_RK0_RX_ARCA0_R_DLY
+  *((UINT32P)(DDRPHY1AO_BASE + 0x0ea8)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+  //! [29:24]: RG_RK0_RX_ARCA3_F_DLY / [21:16]: RG_RK0_RX_ARCA3_R_DLY
+  //! [13: 8]: RG_RK0_RX_ARCA2_F_DLY / [ 5: 0]: RG_RK0_RX_ARCA2_R_DLY
+  *((UINT32P)(DDRPHY1AO_BASE + 0x0eac)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+  //! [29:24]: RG_RK0_RX_ARCA5_F_DLY / [21:16]: RG_RK0_RX_ARCA5_R_DLY
+  //! [13: 8]: RG_RK0_RX_ARCA4_F_DLY / [ 5: 0]: RG_RK0_RX_ARCA4_R_DLY
+  *((UINT32P)(DDRPHY1AO_BASE + 0x0eb0)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+  //! [29:24]: RG_RK0_RX_ARCKE1_F_DLY / [21:16]: RG_RK0_RX_ARCKE1_R_DLY
+  //! [13: 8]: RG_RK0_RX_ARCKE0_F_DLY / [ 5: 0]: RG_RK0_RX_ARCKE0_R_DLY
+  *((UINT32P)(DDRPHY1AO_BASE + 0x0eb4)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+  //! [29:24]: RG_RK0_RX_ARCS0_F_DLY / [21:16]: RG_RK0_RX_ARCS0_R_DLY
+  //! [13: 8]: RG_RK0_RX_ARCKE2_F_DLY / [ 5: 0]: RG_RK0_RX_ARCKE2_R_DLY
+  *((UINT32P)(DDRPHY1AO_BASE + 0x0eb8)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ; 
+  //! [29:24]: RG_RK0_RX_ARCS2_F_DLY / [21:16]: RG_RK0_RX_ARCS2_R_DLY
+  //! [13: 8]: RG_RK0_RX_ARCS1_F_DLY / [ 5: 0]: RG_RK0_RX_ARCS1_R_DLY
+  *((UINT32P)(DDRPHY1AO_BASE + 0x0ebc)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ; 
+
+  //! [29:24]: RG_RK0_RX_ARCKE1_F_DLY / [21:16]: RG_RK0_RX_ARCKE1_R_DLY
+  //! [13: 8]: RG_RK0_RX_ARCKE0_F_DLY / [ 5: 0]: RG_RK0_RX_ARCKE0_R_DLY
+  *((UINT32P)(DDRPHY1AO_BASE + 0x0e74)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+  //! [29:24]: RG_RK0_RX_ARCS0_F_DLY / [21:16]: RG_RK0_RX_ARCS0_R_DLY
+  //! [13: 8]: RG_RK0_RX_ARCKE2_F_DLY / [ 5: 0]: RG_RK0_RX_ARCKE2_R_DLY
+  *((UINT32P)(DDRPHY1AO_BASE + 0x0e78)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ; 
+  //! [29:24]: RG_RK0_RX_ARCS2_F_DLY / [21:16]: RG_RK0_RX_ARCS2_R_DLY
+  //! [13: 8]: RG_RK0_RX_ARCS1_F_DLY / [ 5: 0]: RG_RK0_RX_ARCS1_R_DLY
+  *((UINT32P)(DDRPHY1AO_BASE + 0x0e7c)) = (ddrphy_rx_dq_dly<<24) | (ddrphy_rx_dq_dly<<16) | (ddrphy_rx_dq_dly<<8) | (ddrphy_rx_dq_dly<<0) ;
+
+
+  //! [29:24]: RG_RK0_RX_ARCLK_F_DLY / [21:16]: RG_RK0_RX_ARCLK_R_DLY
+  *((UINT32P)(DDRPHY1AO_BASE + 0x0ec0)) = (ddrphy_rx_dqs_dly<<24) | (ddrphy_rx_dqs_dly<<16) ;
+                
+  //! mcSHOW_DBG_MSG(("[LPBK] set CHA-CA input delay = %x\n", *((UINT32P)(DDRPHY0AO_BASE + 0x0ec0))));          
+  //! mcSHOW_DBG_MSG(("[LPBK] set CHB-CA input delay = %x\n", *((UINT32P)(DDRPHY1AO_BASE + 0x0ec0))));
+  
+} //! end-ddrphy_SetRXInputDelay_CA
+
+//! ----------------------------------------------
+//! set DDRPHY RX Vref value
+//! ----------------------------------------------
+void ddrphy_SetRXVref( unsigned int VREF )
+{
+  /*TINFO="[LPBK] set DDRPHY RX Vref  = %d\n", VREF*/ *MDM_TM_TPAR =  VREF; *MDM_TM_TINFOMSG = 1309;
+  mcSHOW_DBG_MSG(("[LPBK] set DDRPHY RX Vref  = %d\n", VREF ));
+  
+  //! CH-A
+  //! *((UINT32P)(DDRPHY0AO_BASE + 0x0C14)) = (*((UINT32P)(DDRPHY0AO_BASE + 0x0C14)) & (~0x3f)) | VREF ; //! RG_RX_ARDQ_VREF_SEL_B0
+  //! *((UINT32P)(DDRPHY0AO_BASE + 0x0C94)) = (*((UINT32P)(DDRPHY0AO_BASE + 0x0C94)) & (~0x3f)) | VREF ; //! RG_RX_ARDQ_VREF_SEL_B1
+  //! *((UINT32P)(DDRPHY0AO_BASE + 0x0D14)) = (*((UINT32P)(DDRPHY0AO_BASE + 0x0D14)) & (~0x3f)) | VREF ; //! RG_RX_ARCMD_VREF_SEL
+  //! CH-B
+  //! *((UINT32P)(DDRPHY1AO_BASE + 0x0C14)) = (*((UINT32P)(DDRPHY1AO_BASE + 0x0C14)) & (~0x3f)) | VREF ; //! RG_RX_ARDQ_VREF_SEL_B0
+  //! *((UINT32P)(DDRPHY1AO_BASE + 0x0C94)) = (*((UINT32P)(DDRPHY1AO_BASE + 0x0C94)) & (~0x3f)) | VREF ; //! RG_RX_ARDQ_VREF_SEL_B1
+  //! *((UINT32P)(DDRPHY1AO_BASE + 0x0D14)) = (*((UINT32P)(DDRPHY1AO_BASE + 0x0D14)) & (~0x3f)) | VREF ; //! RG_RX_ARCMD_VREF_SEL
+
+  //! CH-A
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0C14)) = (0x00400400 & (~0x3f)) | VREF ; //! RG_RX_ARDQ_VREF_SEL_B0
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0C94)) = (0x00400400 & (~0x3f)) | VREF ; //! RG_RX_ARDQ_VREF_SEL_B1
+  *((UINT32P)(DDRPHY0AO_BASE + 0x0D14)) = (0x00400600 & (~0x3f)) | VREF ; //! RG_RX_ARCMD_VREF_SEL
+  //! CH-B
+  *((UINT32P)(DDRPHY1AO_BASE + 0x0C14)) = (0x00400400 & (~0x3f)) | VREF ; //! RG_RX_ARDQ_VREF_SEL_B0
+  *((UINT32P)(DDRPHY1AO_BASE + 0x0C94)) = (0x00400400 & (~0x3f)) | VREF ; //! RG_RX_ARDQ_VREF_SEL_B1
+  *((UINT32P)(DDRPHY1AO_BASE + 0x0D14)) = (0x00400600 & (~0x3f)) | VREF ; //! RG_RX_ARCMD_VREF_SEL  
+  
+  #ifdef LPBK_DEBU_MSG_ON
+  mcSHOW_DBG_MSG(("[LPBK] CHA-VREF_SEL  = %x\n", *((UINT32P)(DDRPHY0AO_BASE + 0x0C14)) ));
+  mcSHOW_DBG_MSG(("[LPBK] CHB-VREF_SEL  = %x\n", *((UINT32P)(DDRPHY1AO_BASE + 0x0C14)) ));
+  mcSHOW_DBG_MSG(("[LPBK] CHA-VREF_SEL  = %x\n", *((UINT32P)(DDRPHY0AO_BASE + 0x0D14)) ));
+  mcSHOW_DBG_MSG(("[LPBK] CHB-VREF_SEL  = %x\n", *((UINT32P)(DDRPHY1AO_BASE + 0x0D14)) ));
+  /*TINFO= "[LPBK] CHA-VREF_SEL  = %x\n", *((UINT32P)(DDRPHY0AO_BASE + 0x0C14))*/ *MDM_TM_TPAR =  *((UINT32P)(DDRPHY0AO_BASE + 0x0C14)); *MDM_TM_TINFOMSG = 1310;
+  /*TINFO= "[LPBK] CHB-VREF_SEL  = %x\n", *((UINT32P)(DDRPHY1AO_BASE + 0x0C14))*/ *MDM_TM_TPAR =  *((UINT32P)(DDRPHY1AO_BASE + 0x0C14)); *MDM_TM_TINFOMSG = 1311;
+  /*TINFO= "[LPBK] CHA-VREF_SEL  = %x\n", *((UINT32P)(DDRPHY0AO_BASE + 0x0D14))*/ *MDM_TM_TPAR =  *((UINT32P)(DDRPHY0AO_BASE + 0x0D14)); *MDM_TM_TINFOMSG = 1310;
+  /*TINFO= "[LPBK] CHB-VREF_SEL  = %x\n", *((UINT32P)(DDRPHY1AO_BASE + 0x0D14))*/ *MDM_TM_TPAR =  *((UINT32P)(DDRPHY1AO_BASE + 0x0D14)); *MDM_TM_TINFOMSG = 1311;
+
+  #endif
+}//! end-ddrphy_SetRXVref
+
+//! ----------------------------------------------
+//! set DDRPHY DRVP / ODTN
+//! ----------------------------------------------
+void ddrphy_SetImp ( unsigned int ddrphy_drvn, unsigned int ddrphy_drvp, unsigned int ddrphy_odtn ) {
+  
+  //unsigned int ddrphy_drvn = 9 ;
+  
+  *((UINT32P)(DRAMC0_AO_BASE + 0x08a8)) = 0x0 ;
+  *((UINT32P)(DRAMC0_AO_BASE + 0x08ac)) = 0x0 ;
+  *((UINT32P)(DRAMC0_AO_BASE + 0x08b0)) = 0x0 ;
+  *((UINT32P)(DRAMC0_AO_BASE + 0x08b4)) = 0x0 ;
+  
+  //! CHA
+  *((UINT32P)(DRAMC0_AO_BASE + 0x08a8)) = (ddrphy_drvp << 25) |
+                                          (ddrphy_drvn << 20) |
+                                          (ddrphy_drvp << 15) |
+                                          (ddrphy_drvn << 10) |
+                                          (ddrphy_drvp <<  5) |
+                                          (ddrphy_drvn <<  0) ;
+
+  *((UINT32P)(DRAMC0_AO_BASE + 0x08ac)) = (ddrphy_drvp << 25) |
+                                          (ddrphy_drvn << 20) |
+                                          (ddrphy_drvp << 15) |
+                                          (ddrphy_drvn << 10) |
+                                          (ddrphy_drvp <<  5) |
+                                          (ddrphy_drvn <<  0) ;
+
+  *((UINT32P)(DRAMC0_AO_BASE + 0x08b0)) = (ddrphy_odtn << 20) |
+                                          (ddrphy_odtn << 10) |
+                                          (ddrphy_odtn <<  0) ;
+
+  *((UINT32P)(DRAMC0_AO_BASE + 0x08b4)) = (ddrphy_odtn << 20) |
+                                          (ddrphy_odtn << 10) |
+                                          (ddrphy_odtn <<  0) ;
+  //! CHB
+  *((UINT32P)(DRAMC1_AO_BASE + 0x08a8)) = 0x0 ;
+  *((UINT32P)(DRAMC1_AO_BASE + 0x08ac)) = 0x0 ;
+  *((UINT32P)(DRAMC1_AO_BASE + 0x08b0)) = 0x0 ;
+  *((UINT32P)(DRAMC1_AO_BASE + 0x08b4)) = 0x0 ;
+  
+  *((UINT32P)(DRAMC1_AO_BASE + 0x08a8)) = (ddrphy_drvp << 25) |
+                                          (ddrphy_drvn << 20) |
+                                          (ddrphy_drvp << 15) |
+                                          (ddrphy_drvn << 10) |
+                                          (ddrphy_drvp <<  5) |
+                                          (ddrphy_drvn <<  0) ;
+
+  *((UINT32P)(DRAMC1_AO_BASE + 0x08ac)) = (ddrphy_drvp << 25) |
+                                          (ddrphy_drvn << 20) |
+                                          (ddrphy_drvp << 15) |
+                                          (ddrphy_drvn << 10) |
+                                          (ddrphy_drvp <<  5) |
+                                          (ddrphy_drvn <<  0) ;
+
+  *((UINT32P)(DRAMC1_AO_BASE + 0x08b0)) = (ddrphy_odtn << 20) |
+                                          (ddrphy_odtn << 10) |
+                                          (ddrphy_odtn <<  0) ;
+
+  *((UINT32P)(DRAMC1_AO_BASE + 0x08b4)) = (ddrphy_odtn << 20) |
+                                          (ddrphy_odtn << 10) |
+                                          (ddrphy_odtn <<  0) ;
+}//! end-ddrphy_SetImp
+
+//! ----------------------------------------------
+//! ddrphy_rx reset seq
+//! ----------------------------------------------
+void ddrphy_RxReset_seq ( void ) {
+  int           DDRPHY_TX_BASE = 0x0 ;
+  int           DDRPHY_RX_BASE = 0x0 ;
+  
+  #ifdef LPBK_MODE_0
+    DDRPHY_RX_BASE = DDRPHY1AO_BASE ;
+  #else
+    //! external MODE1 & internal lpbk case
+    DDRPHY_RX_BASE = DDRPHY0AO_BASE ;
+  #endif
+  
+  #ifdef LPBK_INTERNAL_EN
+#ifdef LPBK_RUN_DSIM
+    *DRAMC_WBR = 0x0000000f;
+#else
+  *((UINT32P)(DRAMC_WBR)) = 0x0000000f;
+#endif
+  #endif
+
+	//! for CHA
+	//! assert r-data reset
+	*((UINT32P)(DDRPHY_RX_BASE + 0x02a0)) = *((UINT32P)(DDRPHY_RX_BASE + 0x02a0)) | (0x00000002) ;
+	//! mcSHOW_DBG_MSG(("[LPBK] CHA-cfgregox2a0 = %x\n", *((UINT32P)(DDRPHY_RX_BASE + 0x02a0))));
+
+  //! assert STBEN reset
+  //*((UINT32P)(DDRPHY_RX_BASE + 0x00a4)) = *((UINT32P)(DDRPHY_RX_BASE + 0x00a4)) & ~(0x00000118) ;
+  //*((UINT32P)(DDRPHY_RX_BASE + 0x0124)) = *((UINT32P)(DDRPHY_RX_BASE + 0x0124)) & ~(0x00000118) ;
+  //*((UINT32P)(DDRPHY_RX_BASE + 0x01a4)) = *((UINT32P)(DDRPHY_RX_BASE + 0x01a4)) & ~(0x00000118) ;
+
+  *((UINT32P)(DDRPHY_RX_BASE + 0x00a4)) = *((UINT32P)(DDRPHY_RX_BASE + 0x00a4)) & ~(0x00000008) ;
+  *((UINT32P)(DDRPHY_RX_BASE + 0x00bc)) = *((UINT32P)(DDRPHY_RX_BASE + 0x00bc)) & ~(0x00000011) ;
+
+  *((UINT32P)(DDRPHY_RX_BASE + 0x0124)) = *((UINT32P)(DDRPHY_RX_BASE + 0x0124)) & ~(0x00000008) ;
+  *((UINT32P)(DDRPHY_RX_BASE + 0x013c)) = *((UINT32P)(DDRPHY_RX_BASE + 0x013c)) & ~(0x00000011) ;
+
+  *((UINT32P)(DDRPHY_RX_BASE + 0x20a4)) = *((UINT32P)(DDRPHY_RX_BASE + 0x20a4)) & ~(0x00000008) ;
+  *((UINT32P)(DDRPHY_RX_BASE + 0x20bc)) = *((UINT32P)(DDRPHY_RX_BASE + 0x20bc)) & ~(0x00000011) ;
+
+  *((UINT32P)(DDRPHY_RX_BASE + 0x01a4)) = *((UINT32P)(DDRPHY_RX_BASE + 0x01a4)) & ~(0x00000008) ;
+  *((UINT32P)(DDRPHY_RX_BASE + 0x01c0)) = *((UINT32P)(DDRPHY_RX_BASE + 0x01c0)) & ~(0x00000011) ;
+
+  
+
+	delay_us(1) ;
+	
+	//! release r-data reset
+	*((UINT32P)(DDRPHY_RX_BASE + 0x02a0)) = *((UINT32P)(DDRPHY_RX_BASE + 0x02a0)) & ~(0x00000002) ;
+	//! mcSHOW_DBG_MSG(("[LPBK] CHA-cfgregox2a0 = %x\n", *((UINT32P)(DDRPHY_RX_BASE + 0x02a0))));
+	
+  //! release STBEN reset
+  //*((UINT32P)(DDRPHY_RX_BASE + 0x00a4)) = *((UINT32P)(DDRPHY_RX_BASE + 0x00a4)) | (0x00000118) ;
+  //*((UINT32P)(DDRPHY_RX_BASE + 0x0124)) = *((UINT32P)(DDRPHY_RX_BASE + 0x0124)) | (0x00000118) ;
+  //*((UINT32P)(DDRPHY_RX_BASE + 0x01a4)) = *((UINT32P)(DDRPHY_RX_BASE + 0x01a4)) | (0x00000118) ;
+
+  *((UINT32P)(DDRPHY_RX_BASE + 0x00a4)) = *((UINT32P)(DDRPHY_RX_BASE + 0x00a4)) | (0x00000008) ;
+  *((UINT32P)(DDRPHY_RX_BASE + 0x00bc)) = *((UINT32P)(DDRPHY_RX_BASE + 0x00bc)) | (0x00000011) ;
+
+  *((UINT32P)(DDRPHY_RX_BASE + 0x0124)) = *((UINT32P)(DDRPHY_RX_BASE + 0x0124)) | (0x00000008) ;
+  *((UINT32P)(DDRPHY_RX_BASE + 0x013c)) = *((UINT32P)(DDRPHY_RX_BASE + 0x013c)) | (0x00000011) ;
+
+  *((UINT32P)(DDRPHY_RX_BASE + 0x20a4)) = *((UINT32P)(DDRPHY_RX_BASE + 0x20a4)) | (0x00000008) ;
+  *((UINT32P)(DDRPHY_RX_BASE + 0x20bc)) = *((UINT32P)(DDRPHY_RX_BASE + 0x20bc)) | (0x00000011) ;
+
+  *((UINT32P)(DDRPHY_RX_BASE + 0x01a4)) = *((UINT32P)(DDRPHY_RX_BASE + 0x01a4)) | (0x00000008) ;
+  *((UINT32P)(DDRPHY_RX_BASE + 0x01c0)) = *((UINT32P)(DDRPHY_RX_BASE + 0x01c0)) | (0x00000011) ;
+	
+  #ifdef LPBK_INTERNAL_EN
+#ifdef LPBK_RUN_DSIM
+    *DRAMC_WBR = 0x00000000;
+#else
+  *((UINT32P)(DRAMC_WBR)) = 0x00000000;
+#endif
+  #endif
+} //! end-ddrphy_RxReset_seq
+

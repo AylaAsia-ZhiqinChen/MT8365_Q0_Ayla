@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--  Copyright (C) 2006 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+  
+          http://www.apache.org/licenses/LICENSE-2.0
+  
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+ -->
+
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string	name="BtReturnLabel">返回</string>
+    <string name="tab_dial">拨号</string>
+    <string name="tab_phone_book">电话簿</string>
+    <string name="tab_call_history">通话记录</string>
+    <string name="tab_music">音乐</string>
+    <string name="tab_settings">设置</string>
+    <string name="bt_settings_text">未连接</string>
+    <string name="open_bt_string">打开</string>
+    <string name="close_bt_string">关闭</string>
+    <string name="scan_btdevice_string">扫描</string>
+    <string name="discovery_bt_string">可发现</string>
+    <string name="indiscovery_bt_string">不可发现</string>
+    <string name="trypair_bt_string">配对</string>
+    <string name="dispair_bt_string">取消配对</string>
+    <string name="connect_bt_string">连接</string>
+    <string name="disconnect_bt_string">取消连接</string>
+    <string name="bt_pairconnect_return">返回</string>
+    <string name="bt_status_unpair">未配对</string>
+    <string name="bt_status_paired">已配对</string>
+    <string name="bt_status_connecting">正在连接</string>
+    <string name="bt_status_connected">已连接</string>
+	<string name="bt_status_connected_phone">音频</string>
+    <string name="bt_status_connected_media">媒体音频</string>
+    <string name="autoanswer_bt_string">自动应答</string>
+    <string name="non_autoanswer_bt_string">取消自动应答</string>
+    <string name="autoconnect_bt_string">自动连接</string>
+    <string name="non_autoconnect_bt_string">取消自动连接</string>
+    <string name="edit_bt_string">设备信息</string>
+    <string name="localname_string">修改名称</string>
+    <string name="pin_string">修改密码</string>
+    <string name="received_string">已接电话</string>
+    <string name="dialed_string">已拨电话</string>
+    <string name="missed_string">未接来电</string>
+    <string name="history_all_string">所有通话记录</string>
+    <string name="str_download_history">正在下载...</string>
+    <string name="str_download_phonebook">正在下载...</string>
+    <string name="str_loading_record">加载记录...</string>
+    <string name="str_call_info">未连接</string>
+    <string name="str_clear_all">清除</string>
+    <string name="str_call">拨打</string>
+    <string name="str_btn_recall">重拨</string>
+    <string name="str_1">1</string>
+    <string name="str_2">2</string>
+    <string name="str_3">3</string>
+    <string name="str_4">4</string>
+    <string name="str_5">5</string>
+    <string name="str_6">6</string>
+    <string name="str_7">7</string>
+    <string name="str_8">8</string>
+    <string name="str_9">9</string>
+    <string name="str_0">0</string>
+    <string name="str_pound">#</string>
+    <string name="str_asterisk">*</string>
+    <string name="str_A">A</string>
+    <string name="str_B">B</string>
+    <string name="str_C">C</string>
+    <string name="str_D">D</string>
+    <string name="str_E">E</string>
+    <string name="str_F">F</string>
+    <string name="str_G">G</string>
+    <string name="str_H">H</string>
+    <string name="str_I">I</string>
+    <string name="str_J">J</string>
+    <string name="str_K">K</string>
+    <string name="str_L">L</string>
+    <string name="str_M">M</string>
+    <string name="str_N">N</string>
+    <string name="str_O">O</string>
+    <string name="str_P">P</string>
+    <string name="str_Q">Q</string>
+    <string name="str_R">R</string>
+    <string name="str_S">S</string>
+    <string name="str_T">T</string>
+    <string name="str_U">U</string>
+    <string name="str_V">V</string>
+    <string name="str_W">W</string>
+    <string name="str_X">X</string>
+    <string name="str_Y">Y</string>
+    <string name="str_Z">Z</string>
+    <string name="str_Enter">输入</string>
+    <string name="str_Delete">删除</string>
+    <string name="str_Return">返回</string>
+    <string name="str_volume">10</string>
+    <string name="str_title_paired">设备列表</string>
+    <string name="none_paired">设备未配对</string>
+    <string name="bt_turning_on">正在打开蓝牙</string>
+    <string name="bt_turned_on">蓝牙已打开</string>
+    <string name="bt_turning_off">正在关闭蓝牙</string>
+    <string name="bt_turned_off">蓝牙已关闭</string>
+    <string name="bt_turn_error">蓝牙打开出错</string>
+    <string name="bt_discoverable">可以检测到蓝牙设备</string>
+    <string name="bt_discoverable_false">蓝牙设备不可以检测</string>
+    <string name="bluetooth_error_title">注意</string>
+    <string name="str_bluetooth_phone_not_connected">未连接到蓝牙手机</string>
+    <string name="str_handsfree_device_connected">Handsfree 已连接</string>
+	<string name="str_handsfree_device_disconnected">Handsfree 已断开</string>
+
+	<string name="str_income_call_status">来电话</string>
+	<string name="str_out_call_status">正在拨打</string>
+	<string name="str_bt_call_active">通话中</string>
+	<string name="str_bt_call_inactive">通话结束</string>
+	<string name="str_bt_call_end"> &#160;&#160;&#160;&#160;&#160;&#160;挂断</string>
+	<string name="str_bt_call_softkeypad"> &#160;&#160;&#160;拨号键盘</string>
+	<string name="str_bt_call_answer">&#160;&#160;&#160;&#160;&#160;&#160;接听</string>
+	<string name="str_bt_call_carsound"> &#160;&#160;&#160;汽车声音</string>
+	<string name="str_bt_call_phonesound"> &#160;&#160;&#160;手机声音</string>
+	<string name="str_calling_phone_number">10086</string>
+	<string name="a2dp_status_title">A2DPCLIENT</string>
+	<string name="a2dpsink_status_connected_info">已连接</string>
+	<string name="a2dpsink_status_notconnected_info">未连接</string>
+	<string name="a2dpsink_status_connecting_info">连接中</string>
+	<string name="a2dpsink_status_disconnecting_info">断开中</string>
+	<string name="avrcp_status_title">AVRCP</string>
+	<string name="avrcp_status_info">未连接</string>
+	
+	<string name="disconnecta2dp">断开A2DP</string>
+	<string name="disconnectavrcp">断开AVRCP</string>
+	<string name="avrcpct_status_connected_info">已连接</string>
+	<string name="avrcpct_status_notconnected_info">未连接</string>
+	<string name="avrcpct_status_connecting_info">连接中</string>
+	<string name="avrcpct_status_disconnecting_info">正在断开连接</string>
+    <!-- Bluetooth settings.  The user-visible string that is used whenever referring to the A2DP profile. -->
+    <string name="bluetooth_profile_a2dp">媒体</string>
+    <!-- Bluetooth settings.  The user-visible string that is used whenever referring to the A2DP profile. -->
+    <string name="bluetooth_profile_a2dp_sink">对端媒体</string>
+    <!-- Bluetooth settings.  The user-visible string that is used whenever referring to the headset or handsfree profile. -->
+    <string name="bluetooth_profile_headset">通话</string>
+	<string name="bluetooth_profile_headset_client">对端手机</string>
+    <!-- Bluetooth settings.  The user-visible string that is used whenever referring to the OPP profile. -->
+    <string name="bluetooth_profile_opp">Transfer</string>
+    <!-- Bluetooth settings.  The user-visible string that is used whenever referring to the FTP profile. -->
+    <string name="bluetooth_profile_ftp">File transfer</string>
+    <!-- Bluetooth settings.  The user-visible string that is used whenever referring to the HID profile. -->
+    <string name="bluetooth_profile_hid">Wireless keyboard</string>
+    <!-- Bluetooth settings.  The user-visible string that is used whenever referring to the DUN profile. -->
+    <string name="bluetooth_profile_dun">Dial up network</string>
+    <!-- Bluetooth settings.  The user-visible string that is used whenever referring to the PBAP profile. -->
+    <string name="bluetooth_profile_pbap">共享联系人</string>
+     <!-- Bluetooth settings.  The user-visible string that is used whenever referring to the PANprofile. -->
+    <string name="bluetooth_profile_pan_NAP">Network Access Point</string>
+    <string name="bluetooth_profile_pan_GN">Group Ad hoc Network</string>
+    <string name="bluetooth_profile_hf">Hands free sink</string>
+    <string name="bluetooth_profile_pbap_client">Phone book client</string>
+    <string name="bluetooth_profile_avrcp_ct">Audio Vedio Remote Control Controller</string>
+	<!-- PRXM: Proximity Monitor -->
+	<string name="bluetooth_profile_prxm">Proximity monitor</string>
+	<string name="bluetooth_prxm_profile_summary_connected">Connected</string>
+	<string name="bluetooth_prxm_profile_summary_use_for">Use for proximity monitor</string>
+    <string name="bluetooth_profile_pbap_summary" msgid="6605229608108852198">"用于共享联系人"</string>
+	
+	<!-- Bluetooth settings.  Connection options screen.  The summary for the A2DP checkbox preference when A2DP is connected. -->
+    <string name="bluetooth_a2dp_profile_summary_connected">Connected to media audio</string>
+    <!-- Bluetooth settings.  Connection options screen.  The summary for the headset checkbox preference when headset is connected. -->
+    <string name="bluetooth_headset_profile_summary_connected">Connected to phone audio</string>
+    <!-- Bluetooth settings.  Connection options screen.  The summary for the OPP checkbox preference when OPP is connected. -->
+    <string name="bluetooth_opp_profile_summary_connected">Connected to file transfer server</string>
+    <!-- Bluetooth settings.  Connection options screen.  The summary for the OPP checkbox preference when OPP is not connected. -->
+    <string name="bluetooth_opp_profile_summary_not_connected">Not connected to file transfer server</string>
+    <!-- Bluetooth settings.  Connection options screen.  The summary for the HID checkbox preference when HID is connected. -->
+    <string name="bluetooth_hid_profile_summary_connected">Connected to wireless keyboard</string>
+    <!-- Bluetooth settings.  Connection options screen.  The summary for the PBAP checkbox preference when PBAP is connected. -->
+    <string name="bluetooth_pbap_profile_summary_connected">Connected to phone book access</string>
+     <!-- Bluetooth settings.  Connection options screen.  The summary for the PBAP checkbox preference when DUN is connected. -->
+    <string name="bluetooth_dun_profile_summary_connected">Connected to dial up network</string>
+     <!-- Bluetooth settings.  Connection options screen.  The summary for the PAN checkbox preference when DUN is connected. -->
+    <string name="bluetooth_pan_NAP_profile_summary_connected">Connected to external network</string>
+    <string name="bluetooth_pan_GN_profile_summary_connected">Connected to GN server</string>
+    <string name="bluetooth_hf_profile_summary_connected">Hands free sink Connected</string>
+    <string name="bluetooth_pbap_client_profile_summary_connected">Connected to access phone book</string>
+    <string name="bluetooth_a2dp_sink_profile_summary_connected">Connected to media audio sink</string>
+    <string name="bluetooth_avrcp_ct_profile_summary_connected">Connected to Audio Vedio Control Target</string>
+    <string name="bluetooth_profile_a2dp_high_quality" msgid="5444517801472820055">"HD 音频：<xliff:g id="CODEC_NAME">%1$s</xliff:g>"</string>
+    <string name="bluetooth_profile_a2dp_high_quality_unknown_codec" msgid="8510588052415438887">"HD 音频"</string>
+    
+    <string name="bluetooth_ftp_profile_summary_connected">"Connected to file transfer"</string>
+    <!-- Bluetooth settings.  Connection options screen.  The summary for the A2DP checkbox preference that describes how checking it will set the A2DP profile as preferred. -->
+    <string name="bluetooth_a2dp_profile_summary_use_for">Use for media audio</string>
+    <!-- Bluetooth settings.  Connection options screen.  The summary for the headset checkbox preference that describes how checking it will set the headset profile as preferred. -->
+    <string name="bluetooth_headset_profile_summary_use_for">Use for phone audio</string>
+    <!-- Bluetooth settings.  Connection options screen.  The summary for the OPP checkbox preference that describes how checking it will set the OPP profile as preferred. -->
+    <string name="bluetooth_opp_profile_summary_use_for">Use for file transfer</string>
+    <!-- Bluetooth settings.  Connection options screen.  The summary for the FTP checkbox preference that describes how checking it will set the FTP profile as preferred. -->
+    <string name="bluetooth_ftp_profile_summary_use_for">Use for file transfer</string>
+    <!-- Bluetooth settings.  Connection options screen.  The summary for the HID checkbox preference that describes how checking it will set the HID profile as preferred. -->
+    <string name="bluetooth_hid_profile_summary_use_for">Use for wireless keyboard</string>
+    <!-- Bluetooth settings.  Connection options screen.  The summary for the PBAP checkbox preference that describes how checking it will set the PBAP profile as preferred. -->
+    <string name="bluetooth_pbap_profile_summary_use_for">Use for phone book access</string>
+    <!-- Bluetooth settings.  Connection options screen.  The summary for the PBAP checkbox preference that describes how checking it will set the PBAP profile as preferred. -->
+    <string name="bluetooth_dun_profile_summary_use_for">Use for dial up network</string>
+    <!-- Bluetooth settings.  Connection options screen.  The summary for the PAN checkbox preference that describes how checking it will set the PBAP profile as preferred. -->
+    <string name="bluetooth_hf_profile_summary_use_for">Use for hands free</string>
+    <string name="bluetooth_pan_NAP_profile_summary_use_for">Access external network</string>
+    <string name="bluetooth_pan_GN_profile_summary_use_for">To form an Ad hoc network</string>
+    <string name="bluetooth_pbap_client_profile_summary_use_for">Use for access phone book</string>
+    <string name="bluetooth_a2dp_sink_profile_summary_use_for">Use for meida audio sink</string>
+    <string name="bluetooth_avrcp_ct_profile_summary_use_for">Use for Remote Audio Vedio Control</string>
+    
+    <!-- Bluetooth settings.  The summary string when a device is connected to the A2DP profile. -->
+    <string name="bluetooth_summary_connected_to_a2dp">Connected to media audio</string>
+    <!-- Bluetooth settings.  The summary string when a device is connected to the headset profile. -->
+    <string name="bluetooth_summary_connected_to_headset">Connected to phone audio</string>
+    <!-- Bluetooth settings.  The summary string when a device is connected to the A2DP and headset profiles. -->
+    <string name="bluetooth_summary_connected_to_a2dp_headset">Connected to phone and media audio</string>
+    
+    <!-- Bluetooth settings.  Message when cnonected to a device -->
+    <string name="bluetooth_connected">已连接</string>
+    <!-- Bluetooth settings.  Message when a device is disconnected -->
+    <string name="bluetooth_disconnected">已断开连接</string>
+    <!-- Bluetooth settings.  Message when disconnecting from a device -->
+    <string name="bluetooth_disconnecting">正在断开连接\u2026</string>
+    <!-- Bluetooth settings.  Message when connecting to a device -->
+    <string name="bluetooth_connecting">正在连接\u2026</string>
+    <!-- Bluetooth settings.  Message when the device state is unknown -->
+    <string name="bluetooth_unknown"></string>
+    <!--Bluetooth settings screen, summary text under individual Bluetooth devices when not paired yet -->
+    <string name="bluetooth_not_connected">与此设备配对</string>
+    <!--Bluetooth settings screen, summary text under individual Bluetooth devices when pairing -->
+    <string name="bluetooth_pairing">正在配对\u2026</string>
+    <!--Bluetooth settings screen, summary text under individual Bluetooth devices when paired with one -->
+    <string name="bluetooth_paired">已配对，未连接</string>
+    
+    
+        <!-- Bluetooth settings: The title of the preference (list item) that initiates a scan for devices -->
+    <string name="bluetooth_preference_scan_title">扫描设备</string>
+    <!-- Bluetooth settings.  Options menu item for a device.  Action will refresh profiles in the device. -->
+   	<string name="bluetooth_options_menu_refresh">刷新</string>
+    <!-- Bluetooth settings.  Context menu item for a device.  Action will rename the device. -->
+   	<string name="bluetooth_device_context_rename">重命名</string>
+   	<!-- Bluetooth settings.  Context menu item for rename a device.  Action will rename the device. -->
+   	<string name="bluetooth_device_context_rename_edittext">重命名</string>
+    <!-- Bluetooth settings.  Context menu item for a device.  Action will connect to all profiles on the device. -->
+    <string name="bluetooth_device_context_connect">连接</string>
+    <!-- Bluetooth settings.  Context menu item for a device.  Action will disconnect from all profiles on the device. -->
+    <string name="bluetooth_device_context_disconnect">断开</string>
+    <!-- Bluetooth settings.  Context menu item for a device.  Action will first pair, and then connect to all profiles on the device. -->
+    <string name="bluetooth_device_context_pair_connect">配对 连接</string>
+     <!-- Bluetooth settings.  Context menu item for a device.  Action will first pair, and then connect to HF and A2DP if supported on the device. -->
+    <string name="bluetooth_device_context_pair">配对</string>
+    <!-- Bluetooth settings.  Context menu item for a device.  Action will remove pairing with the device. -->
+    <string name="bluetooth_device_context_unpair">未配对</string>
+    <!-- Bluetooth settings.  Context menu item for a device.  Action will disconnect and remove pairing with the device. -->
+    <string name="bluetooth_device_context_disconnect_unpair">断开连接并取消配对</string>
+    <!-- Bluetooth settings.  Context menu item for a device.  Action will take the user to another screen where they can choose exactly which profiles to connect to. -->
+    <string name="bluetooth_device_context_connect_advanced">选项\u2026</string>
+    
+    
+    <string name="ok">确认</string>
+    <string name="cancel">取消</string>
+    
+        <!-- Message for the error dialog when BT connecting operation fails generically. -->
+    <string name="bluetooth_connecting_error_message">There was a problem connecting to <xliff:g id="device_name">%1$s</xliff:g>.</string>
+    
+        <!--Bluetooth settings screen, summary text under individual Bluetooth devices that are hands free or a headset -->
+    <string name="bluetooth_device">handsfree/headset</string>
+        <!-- Bluetooth settings.  Message for disconnecting from a bluetooth device -->
+    <string name="bluetooth_disconnect_blank"><xliff:g id="device_name">%1$s</xliff:g> will be disconnected.</string>
+    
+     <!-- Message for the error dialog when BT pairing fails generically. -->
+    <string name="bluetooth_pairing_error_message">There was a problem pairing with <xliff:g id="device_name">%1$s</xliff:g>.</string>
+    <!-- Message for the error dialog when BT pairing fails because the PIN /
+    Passkey entered is incorrect. -->
+    <string name="bluetooth_pairing_pin_error_message">There was a problem pairing with <xliff:g id="device_name">%1$s</xliff:g> because the PIN or Passkey is incorrect.</string>
+    <!-- Message for the error dialog when BT pairing fails because the other device is down. -->
+    <string name="bluetooth_pairing_device_down_error_message">Cannot establish communication with <xliff:g id="device_name">%1$s</xliff:g>.</string>
+    <!-- Message for the error dialog when BT pairing fails because the other device rejected the pairing. -->
+    <string name="bluetooth_pairing_rejected_error_message">Pairing rejected by <xliff:g id="device_name">%1$s</xliff:g>.</string>
+    
+        <!-- Generic string for remote Bluetooth device  -->
+    <string name="bluetooth_remote_device">蓝牙设备</string>
+
+    <string name="bt_device_name_title">蓝牙设备名称:</string>
+    <string name="bt_device_name_text">蓝牙</string>
+    <string name="bt_device_pin_title">蓝牙设备密码:</string>
+    <string name="bt_device_pin_text">1234</string>
+    <string name="bt_device_info">设备信息</string>
+    <string name="str_edit_ok">确定</string>
+    <string name="str_edit_cancel">取消</string>
+    <string name="bt_phonebook_clear_string">断开清空</string>
+    <string name="bt_phonebook_pb_string">手机内存</string>
+    <string name="bt_phonebook_sim_string">sim卡</string>
+    <string name="bt_phonebook_sear_string">搜索</string>
+	<string name="bt_phonebook_search_mode_name">姓名</string>
+    <string name="bt_phonebook_search_mode_number">号码</string>
+    <string name="bt_phonebook_search_hint_name">输入姓名</string>
+    <string name="bt_phonebook_search_hint_number">输入号码</string>
+    <string name="bt_callhistory_syn_string">同步</string>
+    <string name="bt_phonebook_search_hint">"总共%d位联系人"</string>
+
+    <string name="bluetooth_pbap_server_auth_chall_notify_ticker">"蓝牙PBAP 认证请求"</string>
+    <string name="bluetooth_pbap_server_auth_chall_notify_title">"蓝牙 PBAP 认证请求"</string>
+    <string name="bluetooth_pbap_server_auth_chall_message">"来自 %1$s 的蓝牙认证请求"</string>
+    <string name="auth_ok">确认</string>
+    <string name="auth_cancel">取消</string>
+    <string name="auth_passcode">auth passcode</string>
+    <string name="bluetooth_hf_connect_toast">请先进行蓝牙连接</string>
+    <string name="action_call_title">拨号</string>
+    
+    <!-- strings for bluetooth music -->
+    <string name="str_bt_not_available">蓝牙不可用</string>
+    <string name="str_connecting_a2dp_avrcp">正在连接A2DP和AVRCP...</string>
+    <string name="str_connect_hf">请先进行蓝牙连接</string>
+    <string name="str_connect_a2dp_avrcp">请连接A2DP和AVRCP</string>
+    <string name="str_music_title">音乐标题</string>
+    <string name="str_music_album">专辑</string>
+    <string name="str_music_artist">艺术家</string>
+    <string name="str_music_calender">03.2012</string>
+    <string name="music_playing_time">00:00:00</string>
+    <string name="music_total_time">00:03:30</string>
+
+    <string name="not_support_set_path_device">Always set Path failed, maybe this device not support</string>
+    <string name="pull_phonebook_size_fail">Pull Phonebook size fail, maybe device is not support %1$s folder</string>
+    <string name="new_missed_call_toast">New Missed Call count is %1$d</string>
+    <string name="pull_failed">Pull failed</string>
+    <string name="total_pb_size">Total page size is %1$d</string>
+    <string name="unknown_device">Unknown device</string>
+    <string name="bluetooth_device_details">Device settings</string>
+    <string name="help_label">Help</string>
+    <string name="lock_settings_picker_title">Choose screen lock</string>
+    <string name="bluetooth_disconnect_title">Disconnect?</string>
+    <string name="bluetooth_disconnect_all_profiles">This will end your connection with:&lt;br&gt;&lt;b&gt;<xliff:g id="device_name">%1$s</xliff:g>&lt;/b&gt;</string>
+    <string name="bluetooth_connected_no_headset">Connected (no phone)</string>
+    <string name="bluetooth_connected_no_a2dp">Connected (no media)</string>
+    <string name="bluetooth_connected_no_map">Connected (no message access)</string>
+    <string name="bluetooth_connected_no_headset_no_a2dp">Connected (no phone or media)</string>
+    <string name="bluetooth_disable_profile_title">Disable profile?</string>
+    <string name="bluetooth_device_advanced_title">Paired Bluetooth device</string>
+    <string name="bluetooth_device_advanced_profile_header_title">Profiles</string>
+    <string name="bluetooth_device_advanced_rename_device">Rename</string>
+    <string name="bluetooth_disable_profile_message">This will disable:&lt;br&gt;&lt;b&gt;<xliff:g id="profile_name">%1$s</xliff:g>&lt;/b&gt;&lt;br&gt;&lt;br&gt;From:&lt;br&gt;&lt;b&gt;<xliff:g id="device_name">%2$s</xliff:g>&lt;/b&gt;</string>
+	
+	<string name="bt_entry_dialog_positive">拨号</string>
+	<string name="bt_entry_dialog_negative">忽略</string>
+	<string name="bt_entry_dialog_title">联系人详情</string>
+	<string name="btn_music_switch_audio_out">音频输出</string>
+	<string name="btn_music_switch_audio_in">音频输入</string>
+	
+	<string name="press_back_twice_to_exit">再按一次，推出程序</string>
+	
+	<!-- Add for A2dpSink  start -->
+    <string name="bluetooth_a2dp_role_change">Confirm</string>
+    <string name="dlg_ok">OK</string>
+    <string name="bluetooth_a2dp_sink_role_request">您当前连接s \"Audio source\" 将会被断开.\是否继续?</string>
+    <string name="bluetooth_a2dp_source_role_request">您当前连接 \"Audio receiver\" 将会被断开.\是否继续?</string>
+    <string name="bluetooth_disconnect_confirm_prompt">您当前连接 %1$s</string>
+    <string name="bluetooth_disconnect_prompt">您当前连接 %1$s 将会被断开.\是否继续?</string>
+    <string name="role_change_cancel">Confirm role switch timeout, cancle the connect request</string>
+    <!-- Add for A2dpSink  end -->
+
+    <string name="call_wait">您有新的电话接入</string>
+    <string name="dialog_accept">Accept</string>
+    <string name="dialog_reject">Reject</string>
+
+    <string name="pbap_connect_alert">联系人连接</string>
+    <string name="pbap_connect_alert_message">您需要获取联系人信息吗 ?</string>
+    <string name="pbap_no_device_to_connect">没有可连接设备</string>
+    <string name="pbap_is_disconnected">PBAP断开连接</string>
+    <string name="str_bt_call_exchange">切换</string>
+    <string name="dialog_end">结束并接听</string>
+    <string name="dialog_retain">保留并接听</string>
+    <string name="dlg_autodis">自动断开连接</string>
+    <string name="dlg_mandis">手动断开连接</string>
+    <string name="unknow">未知</string>
+    <string name="call_hangup">挂断现有通话</string>
+    <string name="dialog_yes">同意</string>
+    <string name="dialog_no">取消</string>
+</resources>

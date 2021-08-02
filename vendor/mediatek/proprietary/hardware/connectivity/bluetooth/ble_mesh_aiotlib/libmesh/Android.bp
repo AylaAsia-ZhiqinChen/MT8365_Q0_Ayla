@@ -1,0 +1,33 @@
+cc_prebuilt_library_shared {
+    arch: {
+        arm: {
+            cortex_a53: {
+                shared_libs: [
+                    "libcutils",
+                    "liblog",
+                    "libutils",
+                ],
+                srcs: [
+                    "arm_armv8-a_cortex-a53/libmesh.so",
+                ],
+            },
+        },
+        arm64: {
+            cortex_a53: {
+                shared_libs: [
+                    "libcutils",
+                    "liblog",
+                    "libutils",
+                ],
+                srcs: [
+                    "arm64_armv8-a_cortex-a53/libmesh.so",
+                ],
+            },
+        },
+    },
+    name: "libmesh@MTK,aiot",
+    strip: {
+        none: true,
+    },
+}
+

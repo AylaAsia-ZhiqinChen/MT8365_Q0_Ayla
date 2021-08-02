@@ -1,0 +1,23 @@
+The static library 'libtz_drv_dapc' is a TA library which provide the API to access the device acess permission control module in MTK in-house TEE.
+
+
+WHAT IT DOES?
+=============
+
+The 'libtz_drv_dapc' provides the API for accessing dapc inside MTK in-house TEE.
+
+
+HOW IT WAS BUILT?
+==================
+
+All source/dependency modules of this module are already put in
+'vendor/mediatek/libs' folder.
+
+
+HOW TO USE IT?
+==============
+
+The libary 'libtz_drv_dapc' is linked with the image of MTK in-house TEE.
+It will be used to set the dapc.
+
+All the source code of this library were written by MediaTek co..

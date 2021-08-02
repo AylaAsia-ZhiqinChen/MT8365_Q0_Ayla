@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en-us" lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="copyright" content="(C) Copyright 2005"/>
+<meta name="DC.rights.owner" content="(C) Copyright 2005"/>
+<meta name="DC.Type" content="tconcept"/>
+<meta name="DC.Title" content="Memory Management Selection"/>
+<meta name="abstract" content="Region protection options provide coarse protection at a low gate count The Full MMU provides resource management capabilities sufficient for running Linux"/>
+<meta name="description" content="Region protection options provide coarse protection at a low gate count The Full MMU provides resource management capabilities sufficient for running Linux"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/pages/page.instructions.html"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/nodes/g_muldiv.html"/>
+<meta name="DC.Format" content="XHTML"/>
+<meta name="DC.Identifier" content="opt-mmuType"/>
+<link rel="stylesheet" type="text/css" href="../../commonltr.css"/>
+<link rel="stylesheet" type="text/css" href="../../cadence.css"/>
+<title>Memory Management Selection</title>
+</head>
+<body id="opt-mmuType">
+
+
+    <h1 class="title topictitle1">Memory Management Selection</h1>
+
+    
+    <div class="body conbody"><p class="shortdesc">Region protection options provide coarse protection at a low gate count The Full MMU
+        provides resource management capabilities sufficient for running Linux</p>
+
+        <dl class="dl">
+            
+                <dt class="dt dlterm">Memory management selection</dt>
+
+                <dd class="dd"><span class="ph">Memory Protection Unit (MPU)</span></dd>
+
+            
+            
+            
+            
+                <dt class="dt dlterm"><span class="ph">Number of MPU entries</span></dt>
+
+                <dd class="dd"><span class="ph">32</span></dd>
+
+            
+        </dl>
+
+
+        
+        
+        <p class="p">LX and Xtensa processor configurations support several types of memory management: </p>
+
+        <ul class="ul">
+            <li class="li">XEA2 Region protection </li>
+
+            <li class="li">XEA2 Region protection with translation </li>
+
+            <li class="li">XEA2 Full MMU with TLBs </li>
+
+            <li class="li">XEA2 MPU (Memory Protection Unit)</li>
+
+        </ul>
+
+
+        <p class="p">Refer to the <em class="ph i"><span class="ph">Xtensa Microprocessor Data Book</span></em> for more information on the XEA2 memory
+            management options.</p>
+
+        <p class="p">The <em class="ph i">XEA2: MPU (extended region protection)</em> option
+            statically initializes a <em class="ph i">background</em> protection map which matches the
+            configuration selections for processor interface and call windows. At runtime, software
+            can dynamically refine the <em class="ph i">foreground</em> protection map to suit specific needs. See
+            also the <em class="ph i"><span class="ph"><em class="ph i">Xtensa System Software Reference Manual</em></span></em>.</p>
+
+        
+        
+        
+    </div>
+
+<div class="related-links">
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="../../config/pages/page.instructions.html" title="Instruction and ISA options">Instruction / ISA Options</a></div>
+<div class="nextlink"><strong>Next topic:</strong> <a class="link" href="../../config/nodes/g_muldiv.html" title="The Xtensa Processor Generator offers a series of optional arithmetic configuration options.">Arithmetic Instruction Options</a></div>
+</div>
+</div>
+
+</body>
+</html>

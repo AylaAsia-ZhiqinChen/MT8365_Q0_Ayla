@@ -1,0 +1,23 @@
+The static library 'libtz_cmdq' is a TA library which provide the API to access MMSYS registers module in MTK in-house TEE.
+
+
+WHAT IT DOES?
+=============
+
+The 'libtz_cmdq' provides the API for accessing MMSYS modules inside MTK in-house TEE.
+
+
+HOW IT WAS BUILT?
+==================
+
+All source/dependency modules of this module are already put in
+'vendor/mediatek/libs' folder.
+
+
+HOW TO USE IT?
+==============
+
+The libary 'libtz_cmdq' is linked with the image of MTK in-house TEE.
+It will be used to access MMSYS modules' register.
+
+All the source code of this library were written by MediaTek co..

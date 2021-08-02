@@ -1,0 +1,50 @@
+<resources>
+    <string name="app_name">MeshProv</string>
+    <string name="close_description">After it is turned on, your device can communicate with nearby Bluetooth mesh devices</string>
+    <string name="hint_description">Please make sure MeshDev closed before use MeshProv</string>
+    <string name="switch_close">Off</string>
+    <string name="switch_open">On</string>
+    <string name="provisioned_mesh_device">Node</string>
+    <string name="unprovisioned_mesh_device">Unprovisioned Device</string>
+    <string name="test_data">test data</string>
+    <string name="appkey">appkey：</string>
+    <string name="bind_module">bind model:</string>
+    <string name="send_message">send message：</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="title">title</string>
+    <string name="uuid">UUID：</string>
+    <string name="address">address:</string>
+    <string name="uuid_text">xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</string>
+    <string name="net_key">netkey：</string>
+    <string name="netkey_idx">netkeyIndex：</string>
+    <string name="appkey_index">appkeyIndex：</string>
+    <string name="flags">flags：</string>
+    <string name="scan">scan</string>
+
+    <string name="load_feature_fail">load feature fail</string>
+    <string name="ble_not_supported">BLE feature is not supported</string>
+    <string name="error_bluetooth_not_supported">Bluetooth not supported</string>
+
+    <string name="turning_on">Turning Bluetooth Mesh On...</string>
+    <string name="turning_off">Turning Bluetooth Mesh Off...</string>
+
+    <string name="ic_keyboard_arrow_right">&#xe0c7;</string>
+    <string name="ic_keyboard_arrow_down">&#xe0c5;</string>
+    <string name="ic_keyboard_arrow_left">&#xe0c6;</string>
+    <string name="ic_keyboard_arrow_up">&#xe0c8;</string>
+
+    <string name="info">Info</string>
+    <string name="config">Config</string>
+    <string name="message">Message</string>
+    <string name="on_off">on/off</string>
+    <string name="lightness">lightness</string>
+
+    <string name="prov_success">Provisioning Success</string>
+    <string name="prov_fail">Provisioning Fail</string>
+
+    <string name="disconnect">Disconnect</string>
+    <string name="connect">Connect</string>
+
+
+</resources>

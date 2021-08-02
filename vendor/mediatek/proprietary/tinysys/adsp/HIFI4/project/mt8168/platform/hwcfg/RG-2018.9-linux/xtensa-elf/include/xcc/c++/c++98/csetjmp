@@ -1,0 +1,27 @@
+// csetjmp standard header
+#ifndef _CSETJMP_
+#define _CSETJMP_
+#include <c99/yvals.h>
+
+#include <setjmp.h>
+
+ #ifdef _GLOBAL_USING
+_STD_BEGIN
+using ::jmp_buf; using ::longjmp;
+
+  #ifndef setjmp
+using ::setjmp;
+  #endif /* setjmp */
+_STD_END
+ #endif /* _GLOBAL_USING */
+
+ #ifndef setjmp
+  #define setjmp	setjmp
+ #endif /* setjmp */
+
+#endif /* _CSETJMP_ */
+
+/*
+ * Copyright (c) by P.J. Plauger. All rights reserved.
+ * Consult your license regarding permissions and restrictions.
+V6.40:1611 */

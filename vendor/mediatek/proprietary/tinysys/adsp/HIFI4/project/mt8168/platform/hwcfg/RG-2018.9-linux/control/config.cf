@@ -1,0 +1,87 @@
+ConfigVersion 3.0
+
+#  Xtensa processor configuration parameters for use by TC (TIE compiler).
+#  Generated from Sari file /project/cust/genapp/RG-2018.9/build/mediatek_ss2_hifi4/prod/hifi4_Aquila_E2_PROD/280244/hifi4_Aquila_E2_PROD.sr
+
+# Customer ID=13943; Build=0x75f5e; Copyright (c) 2005-2018 by Tensilica Inc.  ALL RIGHTS RESERVED.
+# These coded instructions, statements, and computer programs are the
+# copyrighted works and confidential proprietary information of Tensilica Inc.
+# They may not be modified, copied, reproduced, distributed, or disclosed to
+# third parties in any manner, medium, or form, in whole or in part, without
+# the prior written consent of Tensilica Inc.
+
+tieCheckLinuxNoPorts 1
+compatGenericRTOS 1
+IsaUseBooleans 1
+IsaUseDebug 1
+IsaUseTimer 1
+IsaUseInterrupt 1
+IsaUseDensityInstruction 1
+IsaUseMAC16 0
+IsaUseMul16 1
+IsaUseExclusiveStore 1
+ClkGateGlobal 1
+IsaCoprocessorCount 2
+LoadStoreUnitCount 2
+UnalignedLoadAction Exception
+UnalignedStoreAction Exception
+ClkGateFuncUnit 1
+semDataGating user_defined
+ProcessorCoreName Xm_hifi4_Aquila_E2_PROD
+TargetHW_VNum 270009
+TargetHW_EarliestVNum 270009
+TargetHWEarliestVersion LX7.0.9
+TargetHWVersion LX7.0.9
+userImplementsMul 0
+TIEFilename /project/cust/genapp/RG-2018.9/build/mediatek_ss2_hifi4/prod/hifi4_Aquila_E2_PROD/280244/MATHFUN_V4.tie
+TIEInternalModules  (/home/xpgcust/tree/RG-2018.9/p4root/Coprocessors/HiFi3/Tie/HiFi4.tie, /home/xpgcust/tree/RG-2018.9/p4root/Coprocessors/MUL32/mul32.tie, /home/xpgcust/tree/RG-2018.9/p4root/Coprocessors/DCPortsQueues/DCPortsQueues.tie.tpp)
+TIEInternalModuleRenamers  (EMPTY, EMPTY, EMPTY)
+TIEInternalModuleRenameMaps  (EMPTY, EMPTY, EMPTY)
+ringCount 1
+IsaMemoryOrder LittleEndian
+IsaMaxInstructionSize 11
+TIEUnrestrictedInstrWidths 0
+IsaUseNewExceptionArchitecture 1
+IsaUseException 1
+IsaUseLoops 1
+IsaUseIMMU 1
+ImmuZeroMpuEntries 0
+TIEUseStoreByteDisable 1
+TIEUseWideStore 1
+BranchPredictedTaken 0
+TIETracePort 0
+PipeAStage 1
+PipeBStage 1
+PipeEStage 1
+PipeMStage 3
+PipeWStage 4
+PipeDStage 9
+IsaUseWindowedRegisters 1
+DataCacheBytes 32768
+DataCacheAccessWidth 64
+InstCacheBytes 32768
+IsaUseAthensCacheTest 1
+DataRAM0AccessWidth 64
+DataRAM1AccessWidth 64
+UserDramAttributeWidth 0
+DataMemWidth 64
+InstUsePIF	1
+DataUsePIF	1
+PIFAttribute 1
+ArithmeticExceptionInterface 0
+TestFullScan 1
+TestLatchesTransparent 0
+CadHDL Verilog
+ImplResetFlops 1
+ImplAsyncReset 1
+ImplRegFileBuildingBlock FlipFlop
+BuildUserCID 13943
+BuildUniqueID 0x75f5e
+BuildSeamless 0
+buildHW 1
+dataErrorWordWidth 0
+uarchName Barcelona
+ImplDecoder and_or_mux
+GatherScatter 0
+IRDropPort 0
+

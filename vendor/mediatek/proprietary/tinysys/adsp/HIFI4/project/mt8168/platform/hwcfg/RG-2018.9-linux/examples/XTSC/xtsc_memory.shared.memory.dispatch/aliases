@@ -1,0 +1,48 @@
+// Customer ID=13943; Build=0x75f5e; Copyright (c) 2015-2017 Cadence Design Systems, Inc.  ALL RIGHTS RESERVED.
+// 
+// These coded instructions, statements, and computer programs are the
+// copyrighted works and confidential proprietary information of
+// Cadence Design Systems, Inc.  They may be adapted and modified by bona fide
+// purchasers for internal use, but neither the original nor any adapted
+// or modified version may be disclosed or distributed to third parties
+// in any manner, medium, or form, in whole or in part, without the prior
+// written consent of Cadence Design Systems, Inc.
+
+
+#ifndef NumCores
+#error You must define NumCores (for example, ". aliases NumCores=8").
+#endif
+
+#include "common.h"
+
+#lua_beg
+  function hex8(value) return string.format("0x%08x", value) end
+  ptr  = "alias ptr="
+  info = "alias info="
+  endx = "alias end="
+  buf  = "alias buf="
+  for N=0,$(NumCores)-1 do
+    xtsc.write("alias results" .. N .. "=#-----result0------ ------result1------ ------result2------ ------result3------;shmem" .. N ..
+               " peek $(RES_BASE) 16")
+    xtsc.write("alias ptr" .. N .. "=# core" .. N .. " ridx,widx=;shmem" .. N .. " peek $(ADDR_RIDX) 4;shmem" .. N .. " peek $(ADDR_WIDX) 4")
+    ptr = ptr .. "ptr" .. N .. ";"
+
+    xtsc.write("alias info" .. N .. "=ptr" .. N .. ";results" .. N .. "")
+    info = info .. "info" .. N .. ";"
+    xtsc.write("alias end" .. N .. "=shmem" .. N .. " poke $(ADDR_WIDX) 4 0xFF 0xFF 0xFF 0xFF")
+    endx = endx .. "end" .. N .. ";"
+    bufN = "alias buf" .. N .. "="
+    for B=0,$(BUF_CNT)-1 do
+      xtsc.write("alias buf" .. N .. "_" .. B .. "=shmem" .. N .. " peek " .. hex8($(BUF_BASE)+B*$(BUF_SIZE)) .. " " .. "$(BUF_SIZE)")
+      bufN = bufN .. "buf" .. N .. "_" .. B .. ";"
+    end
+    xtsc.write(bufN)
+    buf = buf .. "buf" .. N .. ";"
+  end
+  xtsc.write(ptr);
+  xtsc.write(info);
+  xtsc.write(endx);
+  xtsc.write(buf);
+#lua_end
+
+# Use the aliases command to see all the aliases that are now defined

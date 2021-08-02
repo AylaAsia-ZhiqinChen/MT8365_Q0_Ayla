@@ -1,0 +1,269 @@
+// Customer ID=13943; Build=0x75f5e; Copyright (c) 2006-2011 Tensilica Inc.  ALL RIGHTS RESERVED.
+// 
+// These coded instructions, statements, and computer programs are the
+// copyrighted works and confidential proprietary information of
+// Tensilica Inc.  They may be adapted and modified by bona fide
+// purchasers for internal use, but neither the original nor any adapted
+// or modified version may be disclosed or distributed to third parties
+// in any manner, medium, or form, in whole or in part, without the prior
+// written consent of Tensilica Inc.
+
+
+// Set MASTER to be the sc_module name of your xtsc_master
+#define MASTER=master
+
+info &grep End-Of-Script
+
+info  
+info  **************************************************************
+info  *                    Testing POKE's                          *
+info  **************************************************************
+info  
+
+/*
+delay POKE  address    sz byt0 byt1 byt2 byt3 . . .  */
+now   POKE  0x40020000 1  0x00
+now   POKE  0x40020001 1  0x01
+now   POKE  0x40020002 1  0x02
+now   POKE  0x40020003 1  0x03
+now   POKE  0x40020004 2  0x04 0x05
+now   POKE  0x40020006 2  0x06 0x07
+now   POKE  0x40020008 1  0x08
+now   POKE  0x40020009 2  0x09 0x0a
+now   POKE  0x4002000b 2  0x0b 0x0c
+now   POKE  0x4002000d 3  0x0d 0x0e 0x0f
+now   POKE  0x40020010 3  0x10 0x11 0x12
+now   POKE  0x40020013 3  0x13 0x14 0x15
+now   POKE  0x40020016 3  0x16 0x17 0x18
+now   POKE  0x40020019 3  0x19 0x1a 0x1b
+now   POKE  0x4002001c 4  0x1c 0x1d 0x1e 0x1f
+now   POKE  0x40020020 5  0x20 0x21 0x22 0x23 0x24
+now   POKE  0x40020025 5  0x25 0x26 0x27 0x28 0x29
+now   POKE  0x4002002a 5  0x2a 0x2b 0x2c 0x2d 0x2e
+now   POKE  0x4002002f 5  0x2f 0x30 0x31 0x32 0x33
+
+/*
+delay PEEK  address    sz  */
+info  Self-description:  &grep peek 0x40020000: 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f << Self-description
+now   PEEK  0x40020000 16
+info  Self-description:  &grep peek 0x40020010: 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f << Self-description
+now   PEEK  0x40020010 16
+info  Self-description:  &grep peek 0x40020020: 20 21 22 23 24 25 26 27 28 29 2a 2b 2c 2d 2e 2f << Self-description
+now   PEEK  0x40020020 16
+info  Self-description:  &grep peek 0x40020030: 30 31 32 33 << Self-description
+now   PEEK  0x40020030 4
+info  Self-description:  
+
+
+info  
+info  **************************************************************
+info  *                    Testing PEEK's                          *
+info  **************************************************************
+info  
+
+/*
+delay PEEK  address    sz */
+info  Self-description:  &grep peek 0x40020000: 00 << Self-description
+now   PEEK  0x40020000 1
+info  Self-description:  &grep peek 0x40020001: 01 << Self-description
+now   PEEK  0x40020001 1
+info  Self-description:  &grep peek 0x40020002: 02 << Self-description
+now   PEEK  0x40020002 1
+info  Self-description:  &grep peek 0x40020003: 03 << Self-description
+now   PEEK  0x40020003 1
+info  Self-description:  &grep peek 0x40020004: 04 05 << Self-description
+now   PEEK  0x40020004 2
+info  Self-description:  &grep peek 0x40020006: 06 07 << Self-description
+now   PEEK  0x40020006 2
+info  Self-description:  &grep peek 0x40020008: 08 << Self-description
+now   PEEK  0x40020008 1
+info  Self-description:  &grep peek 0x40020009: 09 0a << Self-description
+now   PEEK  0x40020009 2
+info  Self-description:  &grep peek 0x4002000b: 0b 0c << Self-description
+now   PEEK  0x4002000b 2
+info  Self-description:  &grep peek 0x4002000d: 0d 0e 0f << Self-description
+now   PEEK  0x4002000d 3
+info  Self-description:  &grep peek 0x40020010: 10 11 12 << Self-description
+now   PEEK  0x40020010 3
+info  Self-description:  &grep peek 0x40020013: 13 14 15 << Self-description
+now   PEEK  0x40020013 3
+info  Self-description:  &grep peek 0x40020016: 16 17 18 << Self-description
+now   PEEK  0x40020016 3
+info  Self-description:  &grep peek 0x40020019: 19 1a 1b << Self-description
+now   PEEK  0x40020019 3
+info  Self-description:  &grep peek 0x4002001c: 1c 1d 1e 1f << Self-description
+now   PEEK  0x4002001c 4
+info  Self-description:  &grep peek 0x40020020: 20 21 22 23 24 << Self-description
+now   PEEK  0x40020020 5
+info  Self-description:  &grep peek 0x40020025: 25 26 27 28 29 << Self-description
+now   PEEK  0x40020025 5
+info  Self-description:  &grep peek 0x4002002a: 2a 2b 2c 2d 2e << Self-description
+now   PEEK  0x4002002a 5
+info  Self-description:  &grep peek 0x4002002f: 2f 30 31 32 33 << Self-description
+now   PEEK  0x4002002f 5
+info  Self-description:  &grep peek 0x40020001: 01 02 03 04 05 06 07 << Self-description
+now   PEEK  0x40020001 7
+info  Self-description:  
+
+
+info  
+info  **************************************************************
+info  *                    Testing WRITE's                         *
+info  **************************************************************
+info  
+
+// Clear contents
+now   POKE  0x40020000 16 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+now   POKE  0x40020010 16 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+now   POKE  0x40020020 16 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+info  Self-description:  &grep WRITE's completed << Self-description
+
+/*
+delay WRITE address    sz rt id pr pc BE     byt0 byt1 byt2 byt3 */
+
+1     WRITE 0x40020000 1  0  0  0  0  0x000F 0x00
+wait  rsp
+1     WRITE 0x40020001 1  0  0  0  0  0x000F 0x01
+wait  rsp
+
+1     WRITE 0x40020002 2  0  0  0  0  0x000F 0x02 0x03
+wait  rsp
+
+1     WRITE 0x40020004 4  0  0  0  0  0x000F 0x04 0x05 0x06 0x07
+wait  rsp
+
+1     WRITE 0x40020010 8  0  0  0  0  0x00FF 0x10 0x11 0x12 0x13 0x14 0x15 0x16 0x17
+wait  rsp
+
+info WRITE's completed
+
+info  Self-description:  &grep RSP_ADDRESS_ERROR << Self-description
+// This should fail 
+1     WRITE 0x40020011  8 0  0  0  0  0xFFFF 0x10 0x11 0x12 0x13 0x14 0x15 0x16 0x17
+wait  rsp
+
+wait 1
+info  Self-description:  &grep 00 01 02 03 04 05 06 07 00 00 *$ << Self-description
+now   PEEK  0x40020000 10
+info  Self-description:  
+
+info  Self-description:  &grep 10 11 12 13 14 15 16 17 00 00 *$ << Self-description
+now   PEEK  0x40020010 10
+info  Self-description:  
+
+
+
+
+info  
+info  **************************************************************
+info  *                    Testing READ's                          *
+info  **************************************************************
+info  
+
+/*
+delay READ  address    sz rt id pr pc  */
+
+info  Self-description:  &grep INFO.*$(MASTER).*RSP_OK.*: 00 *$ << Self-description
+1     READ  0x40020000 1  0  0  0  0  
+wait  rsp
+
+info  Self-description:  &grep INFO.*$(MASTER).*RSP_OK.*: 01 *$ << Self-description
+1     READ  0x40020001 1  0  0  0  0  
+wait  rsp
+
+info  Self-description:  &grep INFO.*$(MASTER).*RSP_OK.*: 02 03 *$ << Self-description
+1     READ  0x40020002 2  0  0  0  0  
+wait  rsp
+
+info  Self-description:  &grep INFO.*$(MASTER).*RSP_OK.*: 04 05 06 07 *$ << Self-description
+1     READ  0x40020004 4  0  0  0  0  
+wait  rsp
+
+info  Self-description:  &grep INFO.*$(MASTER).*RSP_OK.*: 10 11 12 13 14 15 16 17 *$ << Self-description
+1     READ  0x40020010 8  0  0  0  0  
+wait  rsp
+
+info  Self-description:  &grep RSP_ADDRESS_ERROR << Self-description
+// This should fail 
+1     READ  0x40020009 8  0  0  0  0  
+wait  rsp
+info  Self-description:  
+
+
+info  
+info  **************************************************************
+info  *                    Testing RCW's                           *
+info  **************************************************************
+info  
+
+/*
+delay RCW         address    sz rt id pr pc num last byt0 byt1 byt2 byt3 */
+10    RCW         0x40022004  4 0  0  0  0  2   0    0xba 0xbe 0xfa 0xce
+1     RCW         0x40022004  4 0  0  0  0  2   1    0xca 0xfe 0xf0 0x0d
+wait  rsp
+
+wait 1
+info  Self-description:  &grep! ca fe f0 0d << Self-description
+now   PEEK  0x40022004 4
+info  Self-description:  
+
+now   POKE  0x40022004 4 0xba 0xbe 0xfa 0xce
+
+/*
+delay RCW         address    sz rt id pr pc num last byt0 byt1 byt2 byt3 */
+10    RCW         0x40022004  4 0  0  0  0  2   0    0xba 0xbe 0xfa 0xce
+1     RCW         0x40022004  4 0  0  0  0  2   1    0xca 0xfe 0xf0 0x0d
+wait  rsp
+
+wait 1
+info  Self-description:  &grep ca fe f0 0d *$ << Self-description
+now   PEEK  0x40022004 4
+info  Self-description:  
+
+
+
+
+info  
+info  **************************************************************
+info  *                Testing BLOCK_WRITE's                       *
+info  **************************************************************
+info  
+
+/*
+delay BLOCK_WRITE address    sz rt id pr pc num last first  b0 b1 b2 b3 b4 b5 b6 b7 b8 */
+
+10    BLOCK_WRITE 0x40023000  8 0  0  0  0  4   0    1       0  1  2  3  4  5  6  7
+10    BLOCK_WRITE 0x40023008  8 0  0  0  0  4   0    0       8  9 10 11 12 13 14 15
+10    BLOCK_WRITE 0x40023010  8 0  0  0  0  4   0    0      16 17 18 19 20 21 22 23
+10    BLOCK_WRITE 0x40023018  8 0  0  0  0  4   1    0      24 25 26 27 28 29 30 31
+wait  rsp
+
+wait 1
+info  Self-description:  &grep 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f *$ << Self-description
+now   PEEK  0x40023000 32
+info  Self-description:  
+
+
+info  
+info  **************************************************************
+info  *                Testing BLOCK_READ's                        *
+info  **************************************************************
+info  
+
+/*
+delay BLOCK_READ  address    sz rt id pr pc num */
+10    BLOCK_READ  0x40023000  8 0  0  0  0  4   
+info  Self-description:  &grep 00 01 02 03 04 05 06 07 *$ << Self-description
+wait  rsp
+info  Self-description:  &grep 08 09 0a 0b 0c 0d 0e 0f *$ << Self-description
+wait  rsp
+info  Self-description:  &grep 10 11 12 13 14 15 16 17 *$ << Self-description
+wait  rsp
+info  Self-description:  &grep 18 19 1a 1b 1c 1d 1e 1f *$ << Self-description
+wait  rsp
+info  Self-description:
+
+wait 10
+info End-Of-Script
+now stop

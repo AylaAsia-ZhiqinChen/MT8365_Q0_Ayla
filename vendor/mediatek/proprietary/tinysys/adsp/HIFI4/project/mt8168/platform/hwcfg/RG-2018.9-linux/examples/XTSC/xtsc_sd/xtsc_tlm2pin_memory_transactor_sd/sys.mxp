@@ -1,0 +1,1772 @@
+#//////////////////////////////////////////////////////////////////////////
+#//////////////////////////////////////////////////////////////////////////
+#//
+#//  File:    sys.mxp
+#//  Created: Mon Jun 22 11:29:19 2009
+#//
+#//  Caution should be taken when modifing this file.
+#//
+#//  Copyright (c) 2008 Carbon Design Systems Incorporated
+#//
+#//  Carbon Design Systemc Inc Proprietary Information.
+#//  Disclosure to third parties is prohibited without prior consent.
+#//
+#//  Tensilica's use and distribution to third parties is with permission.
+#//
+#//////////////////////////////////////////////////////////////////////////
+#//////////////////////////////////////////////////////////////////////////
+
+
+system "sys"(
+	properties
+	(
+		type = "System";
+		version = "1.0";
+		variant = "";
+		loadfile_extension = "";
+		description = "";
+		onecyclevalue = "10.0";
+		onecycletime = "ns";
+		simulationresolution = "1 ps";
+		simulationdefaulttime = "1 ns";
+	)
+	parameters
+	(
+	)
+	components
+	(
+
+		instance "PIReqRdy"
+		(
+			model = "sc_signal<bool>";
+			version = "1.0.000";
+			variant = "";
+
+			parameters
+			(
+			)
+
+			ports
+			(
+
+				define "in"
+				(
+					enabled = true;
+				)
+
+				define "out"
+				(
+					enabled = true;
+				)
+			)
+		)
+
+		instance "PIRespCntl"
+		(
+			model = "xtsc_sc_signal_sc_uint_base_sd_8";
+			version = "1.0.000";
+			variant = "";
+
+			parameters
+			(
+			)
+
+			ports
+			(
+
+				define "in"
+				(
+					enabled = true;
+				)
+
+				define "out"
+				(
+					enabled = true;
+				)
+			)
+		)
+
+		instance "PIRespData"
+		(
+			model = "xtsc_sc_signal_sc_bv_base_sd_64";
+			version = "1.0.000";
+			variant = "";
+
+			parameters
+			(
+			)
+
+			ports
+			(
+
+				define "in"
+				(
+					enabled = true;
+				)
+
+				define "out"
+				(
+					enabled = true;
+				)
+			)
+		)
+
+		instance "PIRespId"
+		(
+			model = "xtsc_sc_signal_sc_uint_base_sd_6";
+			version = "1.0.000";
+			variant = "";
+
+			parameters
+			(
+			)
+
+			ports
+			(
+
+				define "in"
+				(
+					enabled = true;
+				)
+
+				define "out"
+				(
+					enabled = true;
+				)
+			)
+		)
+
+		instance "PIRespPriority"
+		(
+			model = "xtsc_sc_signal_sc_uint_base_sd_2";
+			version = "1.0.000";
+			variant = "";
+
+			parameters
+			(
+			)
+
+			ports
+			(
+
+				define "in"
+				(
+					enabled = true;
+				)
+
+				define "out"
+				(
+					enabled = true;
+				)
+			)
+		)
+
+		instance "PIRespValid"
+		(
+			model = "sc_signal<bool>";
+			version = "1.0.000";
+			variant = "";
+
+			parameters
+			(
+			)
+
+			ports
+			(
+
+				define "in"
+				(
+					enabled = true;
+				)
+
+				define "out"
+				(
+					enabled = true;
+				)
+			)
+		)
+
+		instance "POReqAdrs"
+		(
+			model = "xtsc_sc_signal_sc_uint_base_sd_32";
+			version = "1.0.000";
+			variant = "";
+
+			parameters
+			(
+			)
+
+			ports
+			(
+
+				define "in"
+				(
+					enabled = true;
+				)
+
+				define "out"
+				(
+					enabled = true;
+				)
+			)
+		)
+
+		instance "POReqCntl"
+		(
+			model = "xtsc_sc_signal_sc_uint_base_sd_8";
+			version = "1.0.000";
+			variant = "";
+
+			parameters
+			(
+			)
+
+			ports
+			(
+
+				define "in"
+				(
+					enabled = true;
+				)
+
+				define "out"
+				(
+					enabled = true;
+				)
+			)
+		)
+
+		instance "POReqData"
+		(
+			model = "xtsc_sc_signal_sc_bv_base_sd_64";
+			version = "1.0.000";
+			variant = "";
+
+			parameters
+			(
+			)
+
+			ports
+			(
+
+				define "in"
+				(
+					enabled = true;
+				)
+
+				define "out"
+				(
+					enabled = true;
+				)
+			)
+		)
+
+		instance "POReqDataBE"
+		(
+			model = "xtsc_sc_signal_sc_uint_base_sd_8";
+			version = "1.0.000";
+			variant = "";
+
+			parameters
+			(
+			)
+
+			ports
+			(
+
+				define "in"
+				(
+					enabled = true;
+				)
+
+				define "out"
+				(
+					enabled = true;
+				)
+			)
+		)
+
+		instance "POReqId"
+		(
+			model = "xtsc_sc_signal_sc_uint_base_sd_6";
+			version = "1.0.000";
+			variant = "";
+
+			parameters
+			(
+			)
+
+			ports
+			(
+
+				define "in"
+				(
+					enabled = true;
+				)
+
+				define "out"
+				(
+					enabled = true;
+				)
+			)
+		)
+
+		instance "POReqPriority"
+		(
+			model = "xtsc_sc_signal_sc_uint_base_sd_2";
+			version = "1.0.000";
+			variant = "";
+
+			parameters
+			(
+			)
+
+			ports
+			(
+
+				define "in"
+				(
+					enabled = true;
+				)
+
+				define "out"
+				(
+					enabled = true;
+				)
+			)
+		)
+
+		instance "POReqValid"
+		(
+			model = "sc_signal<bool>";
+			version = "1.0.000";
+			variant = "";
+
+			parameters
+			(
+			)
+
+			ports
+			(
+
+				define "in"
+				(
+					enabled = true;
+				)
+
+				define "out"
+				(
+					enabled = true;
+				)
+			)
+		)
+
+		instance "PORespRdy"
+		(
+			model = "sc_signal<bool>";
+			version = "1.0.000";
+			variant = "";
+
+			parameters
+			(
+			)
+
+			ports
+			(
+
+				define "in"
+				(
+					enabled = true;
+				)
+
+				define "out"
+				(
+					enabled = true;
+				)
+			)
+		)
+
+		instance "core0"
+		(
+			model = "xtsc_core_sd";
+			version = "0.1";
+			variant = "";
+
+			parameters
+			(
+			)
+
+			ports
+			(
+
+				define "m_pif_request_port"
+				(
+					enabled = true;
+				)
+
+				define "m_pif_respond_export"
+				(
+					enabled = true;
+				)
+			)
+		)
+
+		instance "sysmem"
+		(
+			model = "xtsc_memory_pin_sd_64";
+			version = "0.1";
+			variant = "";
+
+			parameters
+			(
+				big_endian = "false";
+			)
+
+			ports
+			(
+
+				define "PIReqRdy"
+				(
+					enabled = true;
+				)
+
+				define "PIRespCntl"
+				(
+					enabled = true;
+				)
+
+				define "PIRespData"
+				(
+					enabled = true;
+				)
+
+				define "PIRespId"
+				(
+					enabled = true;
+				)
+
+				define "PIRespPriority"
+				(
+					enabled = true;
+				)
+
+				define "PIRespValid"
+				(
+					enabled = true;
+				)
+
+				define "POReqAdrs"
+				(
+					enabled = true;
+				)
+
+				define "POReqCntl"
+				(
+					enabled = true;
+				)
+
+				define "POReqData"
+				(
+					enabled = true;
+				)
+
+				define "POReqDataBE"
+				(
+					enabled = true;
+				)
+
+				define "POReqId"
+				(
+					enabled = true;
+				)
+
+				define "POReqPriority"
+				(
+					enabled = true;
+				)
+
+				define "POReqValid"
+				(
+					enabled = true;
+				)
+
+				define "PORespRdy"
+				(
+					enabled = true;
+				)
+			)
+		)
+
+		instance "tlm2pin"
+		(
+			model = "xtsc_tlm2pin_memory_transactor_sd_64";
+			version = "0.1";
+			variant = "";
+
+			parameters
+			(
+#				dso_name = "/mtkeda/xtensa/Xplorer-7.0.9/XtDevTools/install/tools/RG-2018.9-linux/XtensaTools/lib/iss-GCC-4.2/SoCDesigner_7.16/libxtsc_memory_pin_sd.so";
+				dso_name = "/mtkeda/xtensa/Xplorer-7.0.9/XtDevTools/install/tools/RG-2018.9-linux/XtensaTools/lib64/iss-GCC-4.7/SoCDesigner_8.4/libxtsc_memory_pin_sd.so";
+#				dso_cookie = "sysmem_";
+				dso_cookie = "sysmem.sysmem_";
+				big_endian = "false";
+			)
+
+			ports
+			(
+
+				define "PIReqRdy"
+				(
+					enabled = true;
+				)
+
+				define "PIRespCntl"
+				(
+					enabled = true;
+				)
+
+				define "PIRespData"
+				(
+					enabled = true;
+				)
+
+				define "PIRespId"
+				(
+					enabled = true;
+				)
+
+				define "PIRespPriority"
+				(
+					enabled = true;
+				)
+
+				define "PIRespValid"
+				(
+					enabled = true;
+				)
+
+				define "POReqAdrs"
+				(
+					enabled = true;
+				)
+
+				define "POReqCntl"
+				(
+					enabled = true;
+				)
+
+				define "POReqData"
+				(
+					enabled = true;
+				)
+
+				define "POReqDataBE"
+				(
+					enabled = true;
+				)
+
+				define "POReqId"
+				(
+					enabled = true;
+				)
+
+				define "POReqPriority"
+				(
+					enabled = true;
+				)
+
+				define "POReqValid"
+				(
+					enabled = true;
+				)
+
+				define "PORespRdy"
+				(
+					enabled = true;
+				)
+
+				define "m_request_export"
+				(
+					enabled = true;
+				)
+
+				define "m_respond_port"
+				(
+					enabled = true;
+				)
+			)
+		)
+	)
+	ports
+	(
+	)
+	connections
+	(
+		"core0::m_pif_request_port<-->tlm2pin::m_request_export" = "core0":"m_pif_request_port" to "tlm2pin":"m_request_export";
+		"sysmem::PIReqRdy<-->PIReqRdy::out" = "sysmem":"PIReqRdy" to "PIReqRdy":"out";
+		"sysmem::PIRespCntl<-->PIRespCntl::out" = "sysmem":"PIRespCntl" to "PIRespCntl":"out";
+		"sysmem::PIRespData<-->PIRespData::out" = "PIRespData":"out" to "sysmem":"PIRespData";
+		"sysmem::PIRespId<-->PIRespId::out" = "sysmem":"PIRespId" to "PIRespId":"out";
+		"sysmem::PIRespPriority<-->PIRespPriority::out" = "PIRespPriority":"out" to "sysmem":"PIRespPriority";
+		"sysmem::PIRespValid<-->PIRespValid::out" = "sysmem":"PIRespValid" to "PIRespValid":"out";
+		"sysmem::POReqAdrs<-->POReqAdrs::out" = "POReqAdrs":"out" to "sysmem":"POReqAdrs";
+		"sysmem::POReqCntl<-->POReqCntl::out" = "sysmem":"POReqCntl" to "POReqCntl":"out";
+		"sysmem::POReqData<-->POReqData::out" = "POReqData":"out" to "sysmem":"POReqData";
+		"sysmem::POReqDataBE<-->POReqDataBE::out" = "sysmem":"POReqDataBE" to "POReqDataBE":"out";
+		"sysmem::POReqId<-->POReqId::out" = "POReqId":"out" to "sysmem":"POReqId";
+		"sysmem::POReqPriority<-->POReqPriority::out" = "POReqPriority":"out" to "sysmem":"POReqPriority";
+		"sysmem::POReqValid<-->POReqValid::out" = "POReqValid":"out" to "sysmem":"POReqValid";
+		"sysmem::PORespRdy<-->PORespRdy::out" = "PORespRdy":"out" to "sysmem":"PORespRdy";
+		"tlm2pin::PIReqRdy<-->PIReqRdy::in" = "tlm2pin":"PIReqRdy" to "PIReqRdy":"in";
+		"tlm2pin::PIRespCntl<-->PIRespCntl::in" = "PIRespCntl":"in" to "tlm2pin":"PIRespCntl";
+		"tlm2pin::PIRespData<-->PIRespData::in" = "PIRespData":"in" to "tlm2pin":"PIRespData";
+		"tlm2pin::PIRespId<-->PIRespId::in" = "tlm2pin":"PIRespId" to "PIRespId":"in";
+		"tlm2pin::PIRespPriority<-->PIRespPriority::in" = "PIRespPriority":"in" to "tlm2pin":"PIRespPriority";
+		"tlm2pin::PIRespValid<-->PIRespValid::in" = "PIRespValid":"in" to "tlm2pin":"PIRespValid";
+		"tlm2pin::POReqAdrs<-->POReqAdrs::in" = "tlm2pin":"POReqAdrs" to "POReqAdrs":"in";
+		"tlm2pin::POReqCntl<-->POReqCntl::in" = "tlm2pin":"POReqCntl" to "POReqCntl":"in";
+		"tlm2pin::POReqData<-->POReqData::in" = "POReqData":"in" to "tlm2pin":"POReqData";
+		"tlm2pin::POReqDataBE<-->POReqDataBE::in" = "tlm2pin":"POReqDataBE" to "POReqDataBE":"in";
+		"tlm2pin::POReqId<-->POReqId::in" = "POReqId":"in" to "tlm2pin":"POReqId";
+		"tlm2pin::POReqPriority<-->POReqPriority::in" = "tlm2pin":"POReqPriority" to "POReqPriority":"in";
+		"tlm2pin::POReqValid<-->POReqValid::in" = "tlm2pin":"POReqValid" to "POReqValid":"in";
+		"tlm2pin::PORespRdy<-->PORespRdy::in" = "tlm2pin":"PORespRdy" to "PORespRdy":"in";
+		"tlm2pin::m_respond_port<-->core0::m_pif_respond_export" = "tlm2pin":"m_respond_port" to "core0":"m_pif_respond_export";
+	)
+	portmaps
+	(
+	))
+
+
+
+#/************************************************************************
+# *                                                                      *
+# *  Do NOT modify the file beyond this section. It is for internal use  *
+# *  by the System Designer only.   This section MUST follow the system  *
+# *  section above.                                                      *
+# *                                                                      *
+# ************************************************************************/
+
+
+
+editor(
+	properties
+	(
+
+		instance "component"
+		(
+			font_family = "Times New Roman";
+			font_size = 10;
+			font_bold = true;
+			font_italic = false;
+			font_underline = false;
+		)
+
+		instance "component_port"
+		(
+			font_family = "Helvetica";
+			font_size = 8;
+			font_bold = false;
+			font_italic = false;
+			font_underline = false;
+		)
+
+		instance "external_port"
+		(
+			font_family = "Helvetica";
+			font_size = 8;
+			font_bold = false;
+			font_italic = false;
+			font_underline = false;
+		)
+
+		instance "grid"
+		(
+			width = 10;
+			height = 10;
+		)
+	)
+	components
+	(
+
+		instance "PIReqRdy"
+		(
+			x = 370;
+			y = 120;
+			width = 81;
+			height = 21;
+			sheight = 41;
+			show_title = false;
+			show_name = true;
+			show_type = false;
+			show_logo = true;
+
+			ports
+			(
+
+				define "in"
+				(
+					x = 0;
+					y = 2;
+					side = 16;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+
+				define "out"
+				(
+					x = 0;
+					y = 2;
+					side = 64;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+			)
+		)
+
+		instance "PIRespCntl"
+		(
+			x = 370;
+			y = 390;
+			width = 81;
+			height = 21;
+			sheight = 41;
+			show_title = false;
+			show_name = true;
+			show_type = false;
+			show_logo = true;
+
+			ports
+			(
+
+				define "in"
+				(
+					x = 0;
+					y = 2;
+					side = 16;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+
+				define "out"
+				(
+					x = 0;
+					y = 2;
+					side = 64;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+			)
+		)
+
+		instance "PIRespData"
+		(
+			x = 370;
+			y = 420;
+			width = 81;
+			height = 21;
+			sheight = 41;
+			show_title = false;
+			show_name = true;
+			show_type = false;
+			show_logo = true;
+
+			ports
+			(
+
+				define "in"
+				(
+					x = 0;
+					y = 2;
+					side = 16;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+
+				define "out"
+				(
+					x = 0;
+					y = 2;
+					side = 64;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+			)
+		)
+
+		instance "PIRespId"
+		(
+			x = 370;
+			y = 450;
+			width = 81;
+			height = 21;
+			sheight = 41;
+			show_title = false;
+			show_name = true;
+			show_type = false;
+			show_logo = true;
+
+			ports
+			(
+
+				define "in"
+				(
+					x = 0;
+					y = 2;
+					side = 16;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+
+				define "out"
+				(
+					x = 0;
+					y = 2;
+					side = 64;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+			)
+		)
+
+		instance "PIRespPriority"
+		(
+			x = 370;
+			y = 480;
+			width = 81;
+			height = 21;
+			sheight = 41;
+			show_title = false;
+			show_name = true;
+			show_type = false;
+			show_logo = true;
+
+			ports
+			(
+
+				define "in"
+				(
+					x = 0;
+					y = 2;
+					side = 16;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+
+				define "out"
+				(
+					x = 0;
+					y = 2;
+					side = 64;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+			)
+		)
+
+		instance "PIRespValid"
+		(
+			x = 370;
+			y = 330;
+			width = 81;
+			height = 21;
+			sheight = 41;
+			show_title = false;
+			show_name = true;
+			show_type = false;
+			show_logo = true;
+
+			ports
+			(
+
+				define "in"
+				(
+					x = 0;
+					y = 2;
+					side = 16;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+
+				define "out"
+				(
+					x = 0;
+					y = 2;
+					side = 64;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+			)
+		)
+
+		instance "POReqAdrs"
+		(
+			x = 370;
+			y = 150;
+			width = 81;
+			height = 21;
+			sheight = 41;
+			show_title = false;
+			show_name = true;
+			show_type = false;
+			show_logo = true;
+
+			ports
+			(
+
+				define "in"
+				(
+					x = 0;
+					y = 2;
+					side = 16;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+
+				define "out"
+				(
+					x = 0;
+					y = 2;
+					side = 64;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+			)
+		)
+
+		instance "POReqCntl"
+		(
+			x = 370;
+			y = 180;
+			width = 81;
+			height = 21;
+			sheight = 41;
+			show_title = false;
+			show_name = true;
+			show_type = false;
+			show_logo = true;
+
+			ports
+			(
+
+				define "in"
+				(
+					x = 0;
+					y = 2;
+					side = 16;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+
+				define "out"
+				(
+					x = 0;
+					y = 2;
+					side = 64;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+			)
+		)
+
+		instance "POReqData"
+		(
+			x = 370;
+			y = 210;
+			width = 81;
+			height = 21;
+			sheight = 41;
+			show_title = false;
+			show_name = true;
+			show_type = false;
+			show_logo = true;
+
+			ports
+			(
+
+				define "in"
+				(
+					x = 0;
+					y = 2;
+					side = 16;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+
+				define "out"
+				(
+					x = 0;
+					y = 2;
+					side = 64;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+			)
+		)
+
+		instance "POReqDataBE"
+		(
+			x = 370;
+			y = 240;
+			width = 81;
+			height = 21;
+			sheight = 41;
+			show_title = false;
+			show_name = true;
+			show_type = false;
+			show_logo = true;
+
+			ports
+			(
+
+				define "in"
+				(
+					x = 0;
+					y = 2;
+					side = 16;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+
+				define "out"
+				(
+					x = 0;
+					y = 2;
+					side = 64;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+			)
+		)
+
+		instance "POReqId"
+		(
+			x = 370;
+			y = 270;
+			width = 81;
+			height = 21;
+			sheight = 41;
+			show_title = false;
+			show_name = true;
+			show_type = false;
+			show_logo = true;
+
+			ports
+			(
+
+				define "in"
+				(
+					x = 0;
+					y = 2;
+					side = 16;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+
+				define "out"
+				(
+					x = 0;
+					y = 2;
+					side = 64;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+			)
+		)
+
+		instance "POReqPriority"
+		(
+			x = 370;
+			y = 300;
+			width = 81;
+			height = 21;
+			sheight = 41;
+			show_title = false;
+			show_name = true;
+			show_type = false;
+			show_logo = true;
+
+			ports
+			(
+
+				define "in"
+				(
+					x = 0;
+					y = 2;
+					side = 16;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+
+				define "out"
+				(
+					x = 0;
+					y = 2;
+					side = 64;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+			)
+		)
+
+		instance "POReqValid"
+		(
+			x = 370;
+			y = 90;
+			width = 81;
+			height = 21;
+			sheight = 41;
+			show_title = false;
+			show_name = true;
+			show_type = false;
+			show_logo = true;
+
+			ports
+			(
+
+				define "in"
+				(
+					x = 0;
+					y = 2;
+					side = 16;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+
+				define "out"
+				(
+					x = 0;
+					y = 2;
+					side = 64;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+			)
+		)
+
+		instance "PORespRdy"
+		(
+			x = 370;
+			y = 360;
+			width = 81;
+			height = 21;
+			sheight = 41;
+			show_title = false;
+			show_name = true;
+			show_type = false;
+			show_logo = true;
+
+			ports
+			(
+
+				define "in"
+				(
+					x = 0;
+					y = 2;
+					side = 16;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+
+				define "out"
+				(
+					x = 0;
+					y = 2;
+					side = 64;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+			)
+		)
+
+		instance "core0"
+		(
+			x = -170;
+			y = 50;
+			width = 171;
+			height = 91;
+			sheight = 41;
+			show_title = true;
+			show_name = true;
+			show_type = false;
+			show_logo = true;
+
+			ports
+			(
+
+				define "m_pif_request_port"
+				(
+					x = 0;
+					y = 2;
+					side = 64;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+
+				define "m_pif_respond_export"
+				(
+					x = 160;
+					y = 32;
+					side = 64;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = true;
+				)
+			)
+		)
+
+		instance "sysmem"
+		(
+			x = 490;
+			y = 50;
+			width = 211;
+			height = 481;
+			sheight = 41;
+			show_title = true;
+			show_name = true;
+			show_type = false;
+			show_logo = true;
+
+			ports
+			(
+
+				define "PIReqRdy"
+				(
+					x = 0;
+					y = 32;
+					side = 16;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+
+				define "PIRespCntl"
+				(
+					x = 0;
+					y = 302;
+					side = 16;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+
+				define "PIRespData"
+				(
+					x = 0;
+					y = 332;
+					side = 16;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+
+				define "PIRespId"
+				(
+					x = 0;
+					y = 362;
+					side = 16;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+
+				define "PIRespPriority"
+				(
+					x = 0;
+					y = 392;
+					side = 16;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+
+				define "PIRespValid"
+				(
+					x = 0;
+					y = 242;
+					side = 16;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+
+				define "POReqAdrs"
+				(
+					x = 0;
+					y = 62;
+					side = 16;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+
+				define "POReqCntl"
+				(
+					x = 0;
+					y = 92;
+					side = 16;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+
+				define "POReqData"
+				(
+					x = 0;
+					y = 122;
+					side = 16;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+
+				define "POReqDataBE"
+				(
+					x = 0;
+					y = 152;
+					side = 16;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+
+				define "POReqId"
+				(
+					x = 0;
+					y = 182;
+					side = 16;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+
+				define "POReqPriority"
+				(
+					x = 0;
+					y = 212;
+					side = 16;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+
+				define "POReqValid"
+				(
+					x = 0;
+					y = 2;
+					side = 16;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+
+				define "PORespRdy"
+				(
+					x = 0;
+					y = 272;
+					side = 16;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+			)
+		)
+
+		instance "tlm2pin"
+		(
+			x = 30;
+			y = 50;
+			width = 301;
+			height = 481;
+			sheight = 41;
+			show_title = true;
+			show_name = true;
+			show_type = false;
+			show_logo = true;
+
+			ports
+			(
+
+				define "PIReqRdy"
+				(
+					x = 170;
+					y = 32;
+					side = 64;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+
+				define "PIRespCntl"
+				(
+					x = 0;
+					y = 302;
+					side = 64;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+
+				define "PIRespData"
+				(
+					x = 0;
+					y = 332;
+					side = 64;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+
+				define "PIRespId"
+				(
+					x = 0;
+					y = 362;
+					side = 64;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+
+				define "PIRespPriority"
+				(
+					x = 0;
+					y = 392;
+					side = 64;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+
+				define "PIRespValid"
+				(
+					x = 140;
+					y = 242;
+					side = 64;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+
+				define "POReqAdrs"
+				(
+					x = 0;
+					y = 62;
+					side = 64;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+
+				define "POReqCntl"
+				(
+					x = 170;
+					y = 92;
+					side = 64;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+
+				define "POReqData"
+				(
+					x = 0;
+					y = 122;
+					side = 64;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+
+				define "POReqDataBE"
+				(
+					x = 0;
+					y = 152;
+					side = 64;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+
+				define "POReqId"
+				(
+					x = 0;
+					y = 182;
+					side = 64;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+
+				define "POReqPriority"
+				(
+					x = 0;
+					y = 212;
+					side = 64;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+
+				define "POReqValid"
+				(
+					x = 0;
+					y = 2;
+					side = 64;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+
+				define "PORespRdy"
+				(
+					x = 0;
+					y = 272;
+					side = 64;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+
+				define "m_request_export"
+				(
+					x = 0;
+					y = 2;
+					side = 16;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+
+				define "m_respond_port"
+				(
+					x = 0;
+					y = 32;
+					side = 16;
+					clock_type = 0;
+					enabled = true;
+					hidden = false;
+					moved_by_user = false;
+				)
+			)
+		)
+	)
+	ports
+	(
+	)
+	connections
+	(
+
+		define "core0::m_pif_request_port<-->tlm2pin::m_request_export"
+		(
+		)
+
+		define "sysmem::PIReqRdy<-->PIReqRdy::out"
+		(
+		)
+
+		define "sysmem::PIRespCntl<-->PIRespCntl::out"
+		(
+		)
+
+		define "sysmem::PIRespData<-->PIRespData::out"
+		(
+		)
+
+		define "sysmem::PIRespId<-->PIRespId::out"
+		(
+		)
+
+		define "sysmem::PIRespPriority<-->PIRespPriority::out"
+		(
+		)
+
+		define "sysmem::PIRespValid<-->PIRespValid::out"
+		(
+		)
+
+		define "sysmem::POReqAdrs<-->POReqAdrs::out"
+		(
+		)
+
+		define "sysmem::POReqCntl<-->POReqCntl::out"
+		(
+		)
+
+		define "sysmem::POReqData<-->POReqData::out"
+		(
+		)
+
+		define "sysmem::POReqDataBE<-->POReqDataBE::out"
+		(
+		)
+
+		define "sysmem::POReqId<-->POReqId::out"
+		(
+		)
+
+		define "sysmem::POReqPriority<-->POReqPriority::out"
+		(
+		)
+
+		define "sysmem::POReqValid<-->POReqValid::out"
+		(
+		)
+
+		define "sysmem::PORespRdy<-->PORespRdy::out"
+		(
+		)
+
+		define "tlm2pin::PIReqRdy<-->PIReqRdy::in"
+		(
+		)
+
+		define "tlm2pin::PIRespCntl<-->PIRespCntl::in"
+		(
+		)
+
+		define "tlm2pin::PIRespData<-->PIRespData::in"
+		(
+		)
+
+		define "tlm2pin::PIRespId<-->PIRespId::in"
+		(
+		)
+
+		define "tlm2pin::PIRespPriority<-->PIRespPriority::in"
+		(
+		)
+
+		define "tlm2pin::PIRespValid<-->PIRespValid::in"
+		(
+		)
+
+		define "tlm2pin::POReqAdrs<-->POReqAdrs::in"
+		(
+		)
+
+		define "tlm2pin::POReqCntl<-->POReqCntl::in"
+		(
+		)
+
+		define "tlm2pin::POReqData<-->POReqData::in"
+		(
+		)
+
+		define "tlm2pin::POReqDataBE<-->POReqDataBE::in"
+		(
+		)
+
+		define "tlm2pin::POReqId<-->POReqId::in"
+		(
+		)
+
+		define "tlm2pin::POReqPriority<-->POReqPriority::in"
+		(
+		)
+
+		define "tlm2pin::POReqValid<-->POReqValid::in"
+		(
+		)
+
+		define "tlm2pin::PORespRdy<-->PORespRdy::in"
+		(
+		)
+
+		define "tlm2pin::m_respond_port<-->core0::m_pif_respond_export"
+		(
+		)
+	)
+	portmaps
+	(
+	)
+	labels
+	(
+	))

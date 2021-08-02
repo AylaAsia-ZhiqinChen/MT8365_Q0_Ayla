@@ -1,0 +1,116 @@
+// Customer ID=13943; Build=0x75f5e; Copyright (c) 2009-2017 by Cadence Design Systems, Inc.  ALL RIGHTS RESERVED.
+// These coded instructions, statements, and computer programs are the
+// copyrighted works and confidential proprietary information of
+// Cadence Design Systems, Inc.  They may be adapted and modified by bona fide
+// purchasers for internal use, but neither the original nor any adapted
+// or modified version may be disclosed or distributed to third parties
+// in any manner, medium, or form, in whole or in part, without the prior
+// written consent of Cadence Design Systems, Inc.
+
+#if 0
+input <InputName> <BitWidth> {<InitialValue>}
+output <OutputName> <BitWidth> {<InitialValue> {<WritePolicy> {<Delay> {clock_period}}}}
+iterator <Iterator> <Start> <Stop> {<StepSize>}
+assign <OutputName> = <RpnExpression>
+assign <OutputName>[<Iterator>] = <RpnExpression>
+assign <OutputName>[<Index>] = <RpnExpression>
+lua_function <OutputName> <LuaFunctionName> <InputName> ...
+#endif
+
+
+/*
+input <InputName> <BitWidth> {<InitialValue>} */
+
+input A           32          0x00000000
+input B           32          0x00000000
+
+
+/*
+output <OutputName> <BitWidth> {<InitialValue> {<WritePolicy> {<Delay> {clock_period}}}} */
+
+output not_A        32
+output A_and_B      32
+output A_or_B       32
+output A_xor_B      32
+output A0           1
+output A1           1
+output A_dup1       32
+output A_dup2       32
+output A_B          64
+
+
+// Use "#if 1" to use RPN assignments (assign lines)
+// Use "#if 0" to use Lua functions (lua_function lines)
+#if 1
+
+/*
+assign <OutputName> = <RpnExpression> */
+
+assign not_A    = A !
+assign A_and_B  = A B &
+assign A_or_B   = A B |
+assign A_xor_B  = A B ^
+assign A0       = A[0]
+assign A1       = A[1]
+assign A_dup1   = A
+assign A_dup2   = A
+
+iterator i 0  31
+iterator j 32 63
+assign A_B[i] = B[i]
+assign A_B[j] = A[i]
+
+#else
+
+#lua_beg
+
+  function not32(A)
+    return string.format("0x%08x", bit32.bnot(A))
+  end
+
+  function and32(A, B)
+    return string.format("0x%08x", bit32.band(A, B))
+  end
+
+  function or32(A, B)
+    return string.format("0x%08x", bit32.bor(A, B))
+  end
+
+  function xor32(A, B)
+    return string.format("0x%08x", bit32.bxor(A, B))
+  end
+
+  function bit0(A)
+    return string.format("0x%x", bit32.extract(A, 0))
+  end
+
+  function bit1(A)
+    return string.format("0x%x", bit32.extract(A, 1))
+  end
+
+  function dup32(A)
+    return string.format("0x%08x", A)
+  end
+
+  function cat32(A, B)
+    return string.format("0x%08x%08x", A, B)
+  end
+
+#lua_end
+
+
+/*
+lua_function <OutputName> <LuaFunctionName> <InputName> ...  */
+
+lua_function not_A   not32 A
+lua_function A_and_B and32 A B
+lua_function A_or_B  or32  A B
+lua_function A_xor_B xor32 A B
+lua_function A0      bit0  A
+lua_function A1      bit1  A
+lua_function A_dup1  dup32 A
+lua_function A_dup2  dup32 A
+lua_function A_B     cat32 A B
+
+#endif
+

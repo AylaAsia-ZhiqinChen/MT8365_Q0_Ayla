@@ -1,0 +1,5 @@
+#if __cplusplus >= 201103
+#include <c++11/hash_map>
+#else
+#include <c++98/hash_map>
+#endif

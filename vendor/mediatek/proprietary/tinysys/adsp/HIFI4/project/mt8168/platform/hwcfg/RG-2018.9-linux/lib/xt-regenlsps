@@ -1,0 +1,381 @@
+package RegenLSPs;
+use strict;
+use Getopt::Long;
+use FindBin;
+use File::Path;
+use File::Copy;
+use File::Basename;
+use FileHandle;
+my $progname = 'xt-regenlsps';
+my $debug = 0;
+my ($xttools, $tools, $prefix);
+BEGIN {
+    $xttools = $ENV{"XTENSA_TOOLS_ROOT"};
+    $tools   = $ENV{"XTENSA_STANDARD_TOOLS"};
+    $prefix  = $ENV{"XTENSA_CORE_ROOT"};
+    die("${progname}: This script must be invoked by the correct wrapper program")
+	unless defined($prefix);
+    $prefix =~ s|[/\\]+$||;
+    die("${progname}: invalid XTENSA_CORE_ROOT: cannot be the root of the filesystem")
+	unless $prefix ne "";
+    push @INC, $xttools."/lib/perl";
+}
+use Xtensa::Params;
+sub usage {
+  return <<EOF;
+Usage:
+  xt-regenlsps [-srcbase dir]  {-dstbase dir | -inplace}  [options]
+  xt-regenlsps -mlsp=lsp [...]  -dstbase dir    [options]
+  xt-regenlsps -mlsp=lsp        -b lspDir       [options]
+Deprecated usage:
+  xt-regenlsps  [options]   (no destination; standard LSPs and -inplace assumed)
+Copy one or a set of LSPs (linker support packages) and regenerate their linker
+scripts.  By default, copies all regeneratable standard LSPs (except ldapp).
+Options are:
+  -srcbase dir      Specify a directory containing LSP sub-directories to copy.
+                     Only LSPs with both memmap.xmm and specs files are copied.
+  -mlsp=<lsp>       Specify a single LSP to copy.  If <lsp> contains any slash
+                     (directory separator), it is taken as an LSP directory;
+                     otherwise it is the name of a standard LSP.
+                     With -dstbase, may be specified multiple times, and
+                     <lsp> may be a comma-separated list of LSPs.
+                    The -srcbase and -mlsp options are mutually exclusive.
+                    With neither option, default is to copy all standard LSPs.
+  -dstbase dir      Specify destination directory under which LSP directories
+                     are to be copied and their linker scripts generated.
+  -base dir         Synonym for -dstbase.
+  -b lspDir         Specify a single destination LSP directory <lspDir>
+                     (as opposed to <dir>/<name> when using -dstbase).
+  -inplace          Make destination same as source, ie. don't copy, just
+                     regenerate the linker scripts.  Must normally be used
+                     with -srcbase to avoid modifying the standard LSPs
+                     (modifying the core package is not recommended);
+                     otherwise a double prompt is displayed before modifying
+                     standard LSPs (the -f option skips these prompts).
+  -mref             Use the generated (reference) map as the main memory map
+                     instead of the source LSP memmap.xmm file.
+                     [but use source LSP memmap.xmm's parameters anyway?]
+                     The -mvecbase, -mvecreset and -mvecselect options enable 
+                     this option.                   
+  -m mapFile        Specify main memory map file (see xt-genldscripts).
+  -a mapFile        Additional memory map file (see xt-genldscripts).
+  -r mapFile        Additional (override) memory map file (see xt-genldscripts).
+  -ap mapFile       Additional (params only) map file (see xt-genldscripts).
+  -u                Update each LSP memmap.xmm file.  Left unchanged by default.
+  -mrompack         Pack RAM contents to ROM (same as -a file with ROMING=true).
+  -mlocalmems       Put default code and data sections in local memories.
+  -mvecbase addr    Specify run-time value of VECBASE register (implies -mref).
+  -mvecreset addr   Specify reset-time value of the alternate reset vector 
+                    (implies -mref).
+  -mvecselect 0|1   Specify static vector select pin value (implies -mref).
+  -nodefer          Don't defer errors to link-time (see xt-genldscripts).
+  -stop             Stop on xt-genldscripts errors (other errors always stop).
+  -f                Force operation without prompting if destination LSP exists.
+  -v                Slightly more verbose operation.
+  -q                Omit output other than errors and warnings and -v additions.
+  -n                Show what would be done without modifying anything.
+  -help             Display this message and exit.
+Please refer to the Xtensa LSP Reference Manual for more information
+about using xt-regenlsps.
+EOF
+}
+sub error {
+  my ($msg) = @_;
+  $msg =~ s/\n/\n${progname}: ERROR: /sg;
+  print STDERR "${progname}: ERROR: $msg\n";
+  exit 1;
+}
+sub readdirsort {
+  opendir(DIR,shift) or return ();
+  my(@filenames) = readdir(DIR);
+  closedir(DIR);
+  return sort grep {$_ ne "." and $_ ne ".."} @filenames;
+}
+sub readfile {
+  my ($filename, $whatdebug) = @_;
+  my $handle = new FileHandle $filename, '<';
+  error("can't open '$filename' for reading $whatdebug") unless $handle;
+  print STDERR "Reading $whatdebug from $filename ...\n" if $debug;
+  my @lines = $handle->getlines();
+  $handle->close();
+  join('',@lines);
+}
+{
+  my @specificLsps = ();
+  my $srcBaseDir = undef;
+  my $dstBaseDir = undef;
+  my $oldBaseDir = undef;
+  my $dstLspDir = undef;
+  my $inPlace = 0;
+  my $syscorename = undef;
+  my $reset_table_vaddr = undef;
+  my $useReferenceMap = 0;
+  my $mainMapFile = undef;
+  my @addedMapFiles = ();
+  my $updateMapFile = 0;
+  my $optForce = 0;
+  my $verbose = 0;
+  my $quiet = 0;
+  my $showHelp = 0;
+  my $deferStdErrors = undef;
+  my $diags = 0;
+  my $errors = 0;
+  my $stopOnErrors = 0;
+  my $doNothing = 0;
+  my $romOpt = 0;
+  my $localMemOpt = 0;
+  my $vecbase = undef;
+  my $vecreset = undef;
+  my $vecselect = undef;
+  my $deprecated = 0;
+  if (@ARGV == 0) {
+    print usage();
+    exit 0;
+  }
+  (print STDERR "ERROR: see xt-regenlsps -help\n" and exit(1))
+    unless &GetOptions(
+		"mlsp=s@"	=> \@specificLsps,
+		"srcbase=s"	=> \$srcBaseDir,
+		"dstbase=s"	=> \$dstBaseDir,
+		"base=s"	=> \$oldBaseDir,	
+		"b=s"		=> \$dstLspDir,
+		"inplace"	=> \$inPlace,
+		"syscore=s"	=> \$syscorename,
+		"reset-table-vaddr=s"	=> \$reset_table_vaddr,
+		"mref"		=> \$useReferenceMap,
+		"m=s"		=> \$mainMapFile,
+		"a=s@"		=> sub { shift; push @addedMapFiles, ["-a", shift]; },
+		"ap=s@"		=> sub { shift; push @addedMapFiles, ["-ap", shift]; },
+		"r=s@"		=> sub { shift; push @addedMapFiles, ["-r", shift]; },
+		"u"		=> \$updateMapFile,
+		"mvecbase=s"	=> \$vecbase,
+		"mvecreset=s"	=> \$vecreset,
+		"mvecselect=s"	=> \$vecselect,
+		"mrompack"	=> \$romOpt,
+		"mlocalmems"	=> \$localMemOpt,
+		"defer!"	=> \$deferStdErrors,
+		"debug"		=> \$debug,
+		"diags"		=> \$diags,
+		"stop"		=> \$stopOnErrors,
+		"v"		=> \$verbose,
+		"q"		=> \$quiet,
+		"f"		=> \$optForce,
+		"n"		=> \$doNothing,
+		"h"		=> \$showHelp,
+		"help"		=> \$showHelp,
+		)
+	and @ARGV == 0;
+  if ($showHelp) {
+    print usage();
+    exit 0;
+  }
+  my $newOptPresent = ($romOpt or $localMemOpt or scalar(@specificLsps)
+			or defined($srcBaseDir) or defined($dstBaseDir)
+			or defined($dstLspDir) or $inPlace
+			or defined($vecbase) or defined($vecreset) or defined($vecselect)
+			or $useReferenceMap
+			);
+  if (!$newOptPresent and !defined($oldBaseDir)) {
+    print STDERR "${progname}: WARNING: deprecated syntax; assuming -inplace\n";
+    $inPlace = 1;
+    $deprecated = 1;
+  }
+  $deferStdErrors = 1 unless defined($deferStdErrors);
+  if (defined($vecbase) or defined($vecselect)) {
+    $useReferenceMap = 1;
+    my %params = xtensa_params_init($prefix."/config", "default", []);
+    if (! $params{'RelocatableVectors'}) {
+      error("the -mvecbase and -mvecselect options only work\n"
+	    ."with processors configured with relocatable vectors.");
+    }
+  }
+  if (defined($vecreset)) {
+    $useReferenceMap = 1;
+  }
+  if (scalar(@specificLsps) and defined($srcBaseDir)) {
+    error("-srcbase and -mlsp cannot be used together.");
+  }
+  if (defined($dstLspDir) and scalar(@specificLsps) != 1) {
+    error("the -b option requires exactly one -mlsp option.");
+  }
+  if (defined($dstBaseDir) and defined($oldBaseDir)) {
+    error("-base is an older synonym for -dstbase ; they cannot be used together.");
+  }
+  $dstBaseDir = $oldBaseDir if defined($oldBaseDir);
+  if (defined($dstBaseDir) and defined($dstLspDir)) {
+    error("-dstbase and -b cannot be used together.");
+  }
+  if ($inPlace and defined($dstLspDir)) {
+    error("-b and -inplace cannot be used together.\n"
+	." Simply invoke xt-genldscripts directly instead.");
+  }
+  if ($inPlace and defined($dstBaseDir)) {
+    error("-inplace and -dstbase cannot be used together.");
+  }
+  if (!defined($dstBaseDir) and !defined($dstLspDir) and !$inPlace) {
+    error("please specify destination: at least one -dstbase, -b, or -inplace.");
+  }
+  if ($useReferenceMap and defined($mainMapFile)) {
+    error("-m and -mref options are mutually exclusive");
+  }
+  my @standard_lsps = qw(sim sim-local sim-stacklocal sim-rom ldapp nort nort-rom min-rt min-rt-rom min-rt-local xtav60-rt xtav60-rt-rom xtav110-rt xtav110-rt-rom xtkc705-rt xtkc705-rt-rom xtml605-rt xtml605-rt-rom xtav200-rt xtav200-rt-rom ngo-sample-gdbio rtos-ram rtos-ramp rtos-rom rtos-res gdbio gdbio-local gdbio-stacklocal gdbio-rom tiny tiny-rom);
+  my @src_lsps = ();		
+  if (@specificLsps) {
+    my %lspnames = ();		
+    foreach my $lsp (map(split(/,/, $_), @specificLsps)) {
+      my $name = $lsp;
+      if ($lsp =~ m|[/\\]|) {		
+	$lsp =~ s|[/\\]+$||;		
+	$lsp =~ m|([^/\\]*)$|;		
+	$name = $1;
+	$name ne "" or error("-mlsp cannot specify an empty string nor the root directory.");
+	push @src_lsps, [0, $name, $lsp];
+      } else {
+	push @src_lsps, [1, $name, "$prefix/xtensa-elf/lib/$name"];
+      }
+      exists($lspnames{$name}) and error("-mlsp specified LSP named '$name' multiple times.");
+      $lspnames{$name} = 1;
+    }
+  } elsif (defined($srcBaseDir)) {
+    $srcBaseDir =~ s|[/\\]+$||;		
+    -e $srcBaseDir or error("-srcbase directory not found: '$srcBaseDir'");
+    -d $srcBaseDir or error("-srcbase directory not a directory: '$srcBaseDir'");
+    foreach my $subdir (readdirsort($srcBaseDir)) {
+      next unless -d "$srcBaseDir/$subdir";
+      next unless -r "$srcBaseDir/$subdir/memmap.xmm";
+      next unless -r "$srcBaseDir/$subdir/specs";
+      push @src_lsps, [0, $subdir, "$srcBaseDir/$subdir"];
+    }
+    if (! @src_lsps) {
+      error("no LSP directory found under -srcbase directory '$srcBaseDir'"
+	  . ((-e "$srcBaseDir/memmap.xmm" and -e "$srcBaseDir/specs")
+	     ? "\n(did you mean -mlsp instead of -srcbase ?)" : "") );
+    }
+  } else {
+    @src_lsps = map( [1, $_, "$prefix/xtensa-elf/lib/$_"],
+			grep(($diags or $_ ne 'ldapp'), @standard_lsps) );
+    $diags = ".done.";
+  }
+  print STDERR "${progname}: WARNING: ignoring option -diags (only relevant when regenerating standard LSPs)\n"
+	if $diags and $diags ne ".done.";
+  my @dst_paths = ();
+  if ($inPlace) {
+    @dst_paths = map( $_->[2], @src_lsps );
+  } elsif (defined($dstBaseDir)) {
+    mkdir $dstBaseDir unless -d $dstBaseDir;
+    @dst_paths = map( "$dstBaseDir/" . $_->[1], @src_lsps );
+  } else {
+    @dst_paths = ($dstLspDir);
+  }
+  my @dest_exists = grep(-e $_, @dst_paths);
+  if (!$optForce and @dest_exists) {
+    my $response;
+    do {
+      my $modifycore = 0;
+      if (defined($dstBaseDir)) {
+	print "WARNING! This will overwrite existing LSP directories under directory $dstBaseDir\n";
+      } elsif (!@specificLsps and !defined($srcBaseDir) and $inPlace) {
+	print "WARNING! This will modify all standard LSPs in the core package\n";
+	$modifycore = 1;
+      } elsif (defined($dstLspDir)) {
+	print "WARNING! This will modify a destination LSP which already exist: $dstLspDir\n";
+      } else {
+	print "WARNING! This will modify selected LSP(s), some or all of which already exist:\n",
+		map("     $_\n", @dest_exists);
+      }
+      print "(NOTE: due to -n, nothing will really be written)\n" if $doNothing;
+      print "Do you want to continue? (y/n) ";
+      $response = <STDIN>;
+      exit 0 if $response =~ /^\s*(n|no)\s*$/i;
+      if ($modifycore and $response =~ /^\s*(y|yes)\s*$/i) {
+	print "WARNING! Are you doubly sure?  Modifying the core package is not supported.\n";
+	print "WARNING! Regeneration of any standard LSP modifies the core package.\n";
+	print "WARNING! (You can use the -dstbase parameter to regenerate a copy instead.)\n";
+	print "(NOTE: due to -n, nothing will really be written)\n" if $doNothing;
+	print "Do you want to continue? (y/n) ";
+	$response = <STDIN>;
+	exit 0 if $response =~ /^\s*(n|no)\s*$/i;
+      }
+    } until ($response =~ /^\s*(y|yes)\s*$/i);
+  } elsif (!defined($dstBaseDir) and !@specificLsps and !defined($srcBaseDir) and $inPlace) {
+    print STDERR "WARNING:  Modifying standard LSPs in the core package.  This is not supported.\n";
+  }
+  foreach my $srclsp (@src_lsps) {
+    my ($standard, $name, $srcDir) = @$srclsp;
+    my $what = $standard ? "standard LSP $name" : "source LSP $name";
+    my $dstDir = $srcDir;
+    if (!$inPlace) {
+      $dstDir = defined($dstBaseDir) ? "$dstBaseDir/$name" : $dstLspDir;
+      defined($dstDir) or die "${progname}: INTERNAL ERROR: no destination LSP directory.\n";
+      print "${progname}: copying $what to $dstDir\n" unless $quiet;
+      -f $dstDir and error("found a file where expected a directory or nothing: $dstDir");
+      -d $srcDir or error("$what does not exist (directory not found)");
+      my @files = readdirsort($srcDir);
+      error("memory map file memmap.xmm not found in $what")
+      	unless grep($_ eq 'memmap.xmm', @files);
+      error("specs file not found in $what")
+      	unless grep($_ eq 'specs', @files);
+      unless ($doNothing) {
+	if (! -d $dstDir) {
+	  mkpath($dstDir, 0, 0777) or			
+	    error("cannot create destination directory $dstDir");
+	}
+	foreach my $file (@files) {
+	  next if $file eq 'ldscripts';
+	  my $srcFile = "$srcDir/$file";
+	  my $dstFile = "$dstDir/$file";
+	  next if -d $srcFile;		
+	  -d $dstFile and error("file '$file' in $what is a directory in '$dstDir'");
+	  -e $dstFile and (unlink($dstFile) or error("could not delete '$dstFile'"));
+	  copy($srcFile, $dstFile)
+	    or error("error copying file '$file' from $what to '$dstDir': $!");
+	  chmod(0644, $dstFile);
+	}
+      }
+    }
+    my $gencmd = "xt-genldscripts";
+    $gencmd .= " -defer"	if $deferStdErrors; 
+    $gencmd .= " -mrompack"	if $romOpt; 
+    $gencmd .= " -mlocalmems"	if $localMemOpt; 
+    $gencmd .= " -mvecbase $vecbase"		if defined($vecbase);
+    $gencmd .= " -mvecreset $vecreset"		if defined($vecreset);
+    $gencmd .= " -mvecselect $vecselect"	if defined($vecselect);
+    $gencmd .= " -syscore $syscorename"		if defined($syscorename);
+    $gencmd .= " -reset-table-vaddr $reset_table_vaddr" if defined($reset_table_vaddr);
+    $gencmd .= " -u"		if $updateMapFile;
+    $gencmd .= " -v"		if $verbose;
+    $gencmd .= " -q"		if $quiet;
+    $gencmd .= " -debug"	if $debug;
+    $gencmd .= " -std $name"	if $standard and $inPlace;
+    $gencmd .= " -b \"$dstDir\"" unless $standard and $inPlace;
+    $gencmd .= " -p"		if defined($mainMapFile) or $useReferenceMap;
+    $gencmd .= " -m $mainMapFile" if defined($mainMapFile);
+    $gencmd .= " -mref"		if $useReferenceMap;
+    foreach my $added (@addedMapFiles) {
+      my ($opt, $addedMap) = @$added;
+      $gencmd .= " $opt \"$addedMap\"";
+    }
+    print "${progname}: $gencmd\n" unless $quiet;
+    unless ($doNothing) {
+      my $rc = system("$^X -w $prefix/lib/$gencmd");
+      if ($rc == -1) {
+	error("xt-genldscripts failed to execute");
+      } elsif (($rc & 127) != 0) {
+	error("xt-genldscripts died due to signal ".($rc & 127));
+      } else {
+	my $exitcode = (($rc >> 8) & 0xff);
+	if ($exitcode != 0) {
+	  print STDERR "${progname}: Error: regeneration of the $name LSP failed (exit code $exitcode)\n";
+	  $errors++;
+	  last if $stopOnErrors;
+	}
+      }
+    }
+  }    
+  if ($errors > 0) {
+    error("regeneration of $errors of the ".scalar(@src_lsps)." LSP(s) failed")
+	unless $stopOnErrors or scalar(@src_lsps) == 1;
+    exit 1;
+  }
+  exit 0;
+}

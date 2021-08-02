@@ -1,0 +1,196 @@
+#// Customer ID=13943; Build=0x75f5e; Copyright (c) 2007-2012 by Tensilica Inc.  ALL RIGHTS RESERVED.
+#// These coded instructions, statements, and computer programs are the
+#// copyrighted works and confidential proprietary information of
+#// Tensilica Inc.  They may be adapted and modified by bona fide
+#// purchasers for internal use, but neither the original nor any adapted
+#// or modified version may be disclosed or distributed to third parties
+#// in any manner, medium, or form, in whole or in part, without the prior
+#// written consent of Tensilica Inc.
+
+
+system "sys"
+(
+  properties
+  (
+    type = "System";
+    version = "1.0";
+    variant = "";
+    loadfile_extension = "";
+    description = "";
+    onecyclevalue = "10.0";
+    onecycletime = "ns";
+    simulationresolution = "1 ps";
+    simulationdefaulttime = "1 ns";
+  )
+  parameters ()
+  components
+  (
+
+    instance "core0"
+    (
+      model   = "xtsc_core_sd";
+      version = "";
+      variant = "";
+
+      parameters
+      (
+      )
+
+    )
+
+    instance "dram0"
+    (
+      model   = "xtsc_memory_sd_2";
+      version = "";
+      variant = "";
+
+      parameters
+      (
+        "block_read_delay" = "1";
+        "block_write_delay" = "1";
+        "block_write_repeat" = "1";
+        "block_write_response" = "1";
+        "byte_width" = "8";
+        "rcw_response" = "1";
+        "read_delay" = "1";
+        "write_delay" = "1";
+      )
+
+    )
+
+    instance "core0_router"
+    (
+      model   = "xtsc_router_sd_3";
+      version = "";
+      variant = "";
+
+      parameters
+      (
+        "default_port_num" = "0";
+        "immediate_timing" = "true";
+        "routing_table" = "../../xtsc_dma_engine/core0_router.tab";
+      )
+
+    )
+
+    instance "dma"
+    (
+      model   = "xtsc_dma_engine_sd";
+      version = "";
+      variant = "";
+
+      parameters
+      (
+        "byte_width" = "8";
+        "clear_notify_value" = "true";
+        "reg_base_address" = "0x20001000";
+      )
+
+    )
+
+    instance "dma_router"
+    (
+      model   = "xtsc_router_sd_3";
+      version = "";
+      variant = "";
+
+      parameters
+      (
+        "default_port_num" = "0";
+        "immediate_timing" = "true";
+        "routing_table" = "../../xtsc_dma_engine/dma_router.tab";
+      )
+
+    )
+
+    instance "pif_arbiter"
+    (
+      model   = "xtsc_arbiter_sd_2";
+      version = "";
+      variant = "";
+
+      parameters
+      (
+      )
+
+    )
+
+    instance "pifmem"
+    (
+      model   = "xtsc_memory_sd_1";
+      version = "";
+      variant = "";
+
+      parameters
+      (
+        "block_read_delay" = "1";
+        "block_write_delay" = "1";
+        "block_write_repeat" = "1";
+        "block_write_response" = "1";
+        "byte_width" = "8";
+        "initial_value_file" = "../../xtsc_dma_engine/pifmem.dat";
+        "rcw_response" = "1";
+        "read_delay" = "1";
+        "write_delay" = "1";
+      )
+
+    )
+
+    instance "mmio"
+    (
+      model   = "xtsc_mmio_sd";
+      version = "";
+      variant = "";
+
+      parameters
+      (
+        "byte_width" = "8";
+        "swizzle_bytes" = "false";
+      )
+
+    )
+
+    instance "mmio_arbiter"
+    (
+      model   = "xtsc_arbiter_sd_2";
+      version = "";
+      variant = "";
+
+      parameters
+      (
+      )
+
+    )
+
+  )
+  connections
+  (
+    "core0::m_dram0p0_request_port<-->dram0::m_request_exports[0]" = "core0":"m_dram0p0_request_port" to "dram0":"m_request_exports[0]";
+    "dram0::m_respond_ports[0]<-->core0::m_dram0p0_respond_export" = "dram0":"m_respond_ports[0]" to "core0":"m_dram0p0_respond_export";
+    "core0::m_dram0p1_request_port<-->dram0::m_request_exports[1]" = "core0":"m_dram0p1_request_port" to "dram0":"m_request_exports[1]";
+    "dram0::m_respond_ports[1]<-->core0::m_dram0p1_respond_export" = "dram0":"m_respond_ports[1]" to "core0":"m_dram0p1_respond_export";
+    "core0::m_inbound_pif_respond_port<-->dma_router::m_respond_exports[1]" = "dma_router":"m_respond_exports[1]" to "core0":"m_inbound_pif_respond_port";
+    "core0::m_pif_request_port<-->core0_router::m_request_export" = "core0":"m_pif_request_port" to "core0_router":"m_request_export";
+    "core0_router::m_request_ports[0]<-->pif_arbiter::m_request_exports[1]" = "core0_router":"m_request_ports[0]" to "pif_arbiter":"m_request_exports[1]";
+    "core0_router::m_request_ports[1]<-->dma::m_request_export" = "core0_router":"m_request_ports[1]" to "dma":"m_request_export";
+    "core0_router::m_respond_port<-->core0::m_pif_respond_export" = "core0_router":"m_respond_port" to "core0":"m_pif_respond_export";
+    "dma::m_request_port<-->dma_router::m_request_export" = "dma":"m_request_port" to "dma_router":"m_request_export";
+    "dma::m_respond_port<-->core0_router::m_respond_exports[1]" = "dma":"m_respond_port" to "core0_router":"m_respond_exports[1]";
+    "dma_router::m_request_ports[0]<-->pif_arbiter::m_request_exports[0]" = "dma_router":"m_request_ports[0]" to "pif_arbiter":"m_request_exports[0]";
+    "dma_router::m_request_ports[1]<-->core0::m_inbound_pif_request_export" = "dma_router":"m_request_ports[1]" to "core0":"m_inbound_pif_request_export";
+    "dma_router::m_respond_port<-->dma::m_respond_export" = "dma_router":"m_respond_port" to "dma":"m_respond_export";
+    "pif_arbiter::m_request_port<-->pifmem::m_request_exports[0]" = "pif_arbiter":"m_request_port" to "pifmem":"m_request_exports[0]";
+    "pif_arbiter::m_respond_ports[0]<-->dma_router::m_respond_exports[0]" = "pif_arbiter":"m_respond_ports[0]" to "dma_router":"m_respond_exports[0]";
+    "pif_arbiter::m_respond_ports[1]<-->core0_router::m_respond_exports[0]" = "pif_arbiter":"m_respond_ports[1]" to "core0_router":"m_respond_exports[0]";
+    "pifmem::m_respond_ports[0]<-->pif_arbiter::m_respond_export" = "pifmem":"m_respond_ports[0]" to "pif_arbiter":"m_respond_export";
+    "core0_router::m_request_ports[2]<-->mmio_arbiter::m_request_exports[0]" = "mmio_arbiter":"m_request_exports[0]" to "core0_router":"m_request_ports[2]";
+    "mmio_arbiter::m_respond_ports[0]<-->core0_router::m_respond_exports[2]" = "core0_router":"m_respond_exports[2]" to "mmio_arbiter":"m_respond_ports[0]";
+    "dma_router::m_request_ports[2]<-->mmio_arbiter::m_request_exports[1]" = "mmio_arbiter":"m_request_exports[1]" to "dma_router":"m_request_ports[2]";
+    "mmio::m_respond_port<-->mmio_arbiter::m_respond_export" = "mmio":"m_respond_port" to "mmio_arbiter":"m_respond_export";
+    "mmio_arbiter::m_request_port<-->mmio::m_request_export" = "mmio_arbiter":"m_request_port" to "mmio":"m_request_export";
+    "mmio_arbiter::m_respond_ports[1]<-->dma_router::m_respond_exports[2]" = "dma_router":"m_respond_exports[2]" to "mmio_arbiter":"m_respond_ports[1]";
+    "mmio::m_BInterrupt06<-->core0::m_BInterrupt06" = "mmio":"m_BInterrupt06" to "core0":"m_BInterrupt06";
+  )
+  portmaps ()
+)
+

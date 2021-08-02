@@ -1,0 +1,108 @@
+/* Copyright Statement:
+ *
+ * This software/firmware and related documentation ("MediaTek Software") are
+ * protected under relevant copyright laws. The information contained herein is
+ * confidential and proprietary to MediaTek Inc. and/or its licensors. Without
+ * the prior written permission of MediaTek inc. and/or its licensors, any
+ * reproduction, modification, use or disclosure of MediaTek Software, and
+ * information contained herein, in whole or in part, shall be strictly
+ * prohibited.
+ *
+ * MediaTek Inc. (C) 2010. All rights reserved.
+ *
+ * BY OPENING THIS FILE, RECEIVER HEREBY UNEQUIVOCALLY ACKNOWLEDGES AND AGREES
+ * THAT THE SOFTWARE/FIRMWARE AND ITS DOCUMENTATIONS ("MEDIATEK SOFTWARE")
+ * RECEIVED FROM MEDIATEK AND/OR ITS REPRESENTATIVES ARE PROVIDED TO RECEIVER
+ * ON AN "AS-IS" BASIS ONLY. MEDIATEK EXPRESSLY DISCLAIMS ANY AND ALL
+ * WARRANTIES, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR
+ * NONINFRINGEMENT. NEITHER DOES MEDIATEK PROVIDE ANY WARRANTY WHATSOEVER WITH
+ * RESPECT TO THE SOFTWARE OF ANY THIRD PARTY WHICH MAY BE USED BY,
+ * INCORPORATED IN, OR SUPPLIED WITH THE MEDIATEK SOFTWARE, AND RECEIVER AGREES
+ * TO LOOK ONLY TO SUCH THIRD PARTY FOR ANY WARRANTY CLAIM RELATING THERETO.
+ * RECEIVER EXPRESSLY ACKNOWLEDGES THAT IT IS RECEIVER'S SOLE RESPONSIBILITY TO
+ * OBTAIN FROM ANY THIRD PARTY ALL PROPER LICENSES CONTAINED IN MEDIATEK
+ * SOFTWARE. MEDIATEK SHALL ALSO NOT BE RESPONSIBLE FOR ANY MEDIATEK SOFTWARE
+ * RELEASES MADE TO RECEIVER'S SPECIFICATION OR TO CONFORM TO A PARTICULAR
+ * STANDARD OR OPEN FORUM. RECEIVER'S SOLE AND EXCLUSIVE REMEDY AND MEDIATEK'S
+ * ENTIRE AND CUMULATIVE LIABILITY WITH RESPECT TO THE MEDIATEK SOFTWARE
+ * RELEASED HEREUNDER WILL BE, AT MEDIATEK'S OPTION, TO REVISE OR REPLACE THE
+ * MEDIATEK SOFTWARE AT ISSUE, OR REFUND ANY SOFTWARE LICENSE FEES OR SERVICE
+ * CHARGE PAID BY RECEIVER TO MEDIATEK FOR SUCH MEDIATEK SOFTWARE AT ISSUE.
+ *
+ * The following software/firmware and/or related documentation ("MediaTek
+ * Software") have been modified by MediaTek Inc. All revisions are subject to
+ * any receiver's applicable license agreements with MediaTek Inc.
+ */
+
+#ifndef USBPHY_H_
+#define USBPHY_H_
+
+#if CFG_FPGA_PLATFORM
+#include "i2c.h"
+#endif
+
+#define SSUSB_PHY_BASE			(SSUSB_SIFSLV_IPPC_BASE)
+#define PERI_GLOBALCON_PDN0_SET 	(PERICFG_BASE+0x008)
+#define USB0_PDN			1 << 10
+
+#if CFG_FPGA_PLATFORM
+#define USB_I2C_ID	I2C1	/* 0 - 6 */
+#define PATH_NORMAL	0
+#define PATH_PMIC	1
+
+#define USBPHY_I2C_READ8(addr, buffer)	 usb_i2c_read8(addr, buffer)
+#define USBPHY_I2C_WRITE8(addr, value)	 usb_i2c_write8(addr, value)
+#else
+#define APMIXEDSYS_PLL_TEST_CON0				(APMIXED_BASE + 0x0040)
+#define BV_PLLTESTCON0_PLLDIV_TEST				(1ul << 12)
+
+#define APMIXEDSYS_PLL_TEST_CON2				(APMIXED_BASE + 0x0048)
+#define BV_PLLTESTCON2_RG_UNIVPLL_192M_EN			(1ul <<  2)
+
+#define APMIXEDSYS_UNIVPLL_CON0 				(APMIXED_BASE + 0x0130)
+#define BV_UNIVPLLCON0_RG_UNIVPLL_SDM_PCW_CHG			(1ul << 31)
+#define BV_UNIVPLLCON0_RG_UNIVPLL_SDM_FRA_EN			(1ul <<  8)
+#define BM_UNIVPLLCON0_RG_UNIVPLL_POSDIV			(7ul <<  4)
+#define BV_UNIVPLLCON0_RG_UNIVPLL_POSDIV(n)			((((n)&7)*1ul)  <<  4)
+#define BV_UNIVPLLCON0_RG_UNIVPLL_EN				(1ul <<  0)
+#define BV_UNIVPLLCON0_RG_DIV_RSTB				(1ul <<  20)
+
+
+#define APMIXEDSYS_UNIVPLL_CON1 				(APMIXED_BASE + 0x0134)
+
+#define APMIXEDSYS_UNIVPLL_PWR_CON0 				(APMIXED_BASE + 0x013C)
+#define BV_UNIVPLLPWRCON0_DA_UNIVPLL_SDM_ISO_EN			(1ul <<  1)
+#define BV_UNIVPLLPWRCON0_DA_UNIVPLL_SDM_PWR_ON 		(1ul <<  0)
+
+#define TOPCKGEN_CLK_CFG_3					(TOPCKGEN_BASE + 0x0070)
+#define BM_CLKCFG3_CLK_USB30_SEL				(3ul << 8)
+#define BV_CLKCFG3_CLK_USB30_SEL_CLK26M				(0ul << 8)
+#define BV_CLKCFG3_CLK_USB30_SEL_UNIVPLL3_D2			(1ul << 8)
+#define BV_CLKCFG3_CLK_USB30_SEL_UNIVPLL3_D4			(2ul << 8)
+#define BV_CLKCFG3_CLK_USB30_SEL_UNIVPLL2_D4			(3ul << 8)
+#define SSUSB_CLOCK_MUX_SET(name)				BV_CLKCFG3_CLK_USB30_SEL_##name
+
+#endif
+
+#define USBPHY_READ8(offset)		__raw_readb(SSUSB_PHY_BASE+offset)
+#define USBPHY_WRITE8(offset, value)	__raw_writeb(value, SSUSB_PHY_BASE+offset)
+#define USBPHY_SET8(offset, mask)	USBPHY_WRITE8(offset, USBPHY_READ8(offset) | mask)
+#define USBPHY_CLR8(offset, mask)	USBPHY_WRITE8(offset, USBPHY_READ8(offset) & ~mask)
+
+#define USB_SET_BIT(BS,REG)			mt_reg_sync_writel((__raw_readl(REG) | (U32)(BS)), (REG))
+#define USB_CLR_BIT(BS,REG)			mt_reg_sync_writel((__raw_readl(REG) & (~(U32)(BS))), (REG))
+
+#ifdef MTK_USB_EXTCON_SUPPORT
+enum mt65xx_usb_extconn_type {
+	MT_USB_EXTCONN_UNKOWN = 0,
+	MT_USB_EXTCONN_STANDARDHOST = 1,
+	MT_USB_EXTCONN_CHARGINGHOST = 2,
+	MT_USB_EXTCONN_NONSTANDARDCHARGER = 3,
+	MT_USB_EXTCONN_STANDARDCHARGER = 4,
+	MT_USB_EXTCONN_MAXIMUM = 5,
+ };
+#endif
+
+#endif
+

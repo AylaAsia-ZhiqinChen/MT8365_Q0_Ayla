@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en-us" lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="copyright" content="(C) Copyright 2005"/>
+<meta name="DC.rights.owner" content="(C) Copyright 2005"/>
+<meta name="DC.Type" content="tconcept"/>
+<meta name="DC.Title" content="Width of Instruction Cache Interface"/>
+<meta name="abstract" content=""/>
+<meta name="description" content=""/>
+<meta name="DC.Relation" scheme="URI" content="../../config/nodes/g_intwidth.html"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/options/opt.dataWidthBits.html"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/options/opt.pifWidthBits.html"/>
+<meta name="DC.Format" content="XHTML"/>
+<meta name="DC.Identifier" content="opt-ic_widthBits"/>
+<link rel="stylesheet" type="text/css" href="../../commonltr.css"/>
+<link rel="stylesheet" type="text/css" href="../../cadence.css"/>
+<title>Width of Instruction Cache Interface</title>
+</head>
+<body id="opt-ic_widthBits">
+
+
+    <h1 class="title topictitle1">Width of Instruction Cache Interface</h1>
+
+    
+    <div class="body conbody"><p class="shortdesc"/>
+
+        <dl class="dl">
+		    
+		        <dt class="dt dlterm">Width of Instruction Cache interface</dt>
+
+		        <dd class="dd"><span class="ph">128</span></dd>
+
+		    
+		</dl>
+
+        <p class="p">Normally the instruction cache width should be the same as the instruction fetch width,
+            either 32-, 64-, or 128-bits. The instruction fetch width is the amount of data fetched
+            from the cache on each instruction fetch read access, and there is rarely any benefit to
+            having the instruction cache width wider than this, since wider memories usually consume
+            more power. One exception is when instruction cache refill time is critical, since a
+            wider instruction cache reduces this refill time, assuming a wider PIF interface is also
+            used.</p>
+
+        <p class="p">Must be at least the width of Instruction fetch Width and cannot exceed max(PIF,
+            InstFetch).</p>
+
+    </div>
+
+<div class="related-links">
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="../../config/nodes/g_intwidth.html">Interface Width Options</a></div>
+<div class="previouslink"><strong>Previous topic:</strong> <a class="link" href="../../config/options/opt.dataWidthBits.html" title="Width of interface to Data RAM, ROM, XLMI, Data Cache">Width of Data Memory/Cache Interface</a></div>
+<div class="nextlink"><strong>Next topic:</strong> <a class="link" href="../../config/options/opt.pifWidthBits.html">Width of PIF Interface</a></div>
+</div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en-us" lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="copyright" content="(C) Copyright 2005"/>
+<meta name="DC.rights.owner" content="(C) Copyright 2005"/>
+<meta name="DC.Type" content="tconcept"/>
+<meta name="DC.Title" content="Slave Exclusive Access Option"/>
+<meta name="abstract" content="Enable incoming exclusive access requests on the AXI slave port."/>
+<meta name="description" content="Enable incoming exclusive access requests on the AXI slave port."/>
+<meta name="DC.Relation" scheme="URI" content="../../config/nodes/g_intbridge.html"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/options/opt.master_exclaccess.html"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/options/opt.num_extn_exclmaster.html"/>
+<meta name="DC.Format" content="XHTML"/>
+<meta name="DC.Identifier" content="opt-slave_exclaccess"/>
+<link rel="stylesheet" type="text/css" href="../../commonltr.css"/>
+<link rel="stylesheet" type="text/css" href="../../cadence.css"/>
+<title>Slave Exclusive Access Option</title>
+</head>
+<body id="opt-slave_exclaccess">
+
+
+    <h1 class="title topictitle1"><span class="ph">Slave Exclusive Access</span> Option</h1>
+
+    
+    <div class="body conbody"><p class="shortdesc">Enable incoming exclusive access requests on the AXI slave port.</p>
+
+        <dl class="dl">
+            
+                <dt class="dt dlterm"><span class="ph">Slave Exclusive Access</span></dt>
+
+                <dd class="dd"><span class="ph">Selected</span></dd>
+
+            
+        </dl>
+
+        <p class="p">If selected, the inbound AXI (slave) port can accept inbound exclusive requests from
+            other AXI masters in the system that target its local data RAMs. This allows
+            applications running on multiple processors to share a semaphore in the Xtensa
+            processor’s data RAM.</p>
+
+        <p class="p">Note that there are certain restrictions on exclusive access support; for example,
+            exclusive access to an IRAM is not supported. If these restrictions are violated, the
+            slave responds to an exclusive load with an OKAY response instead of an EXOKAY response.
+            Otherwise, an EXOKAY response is sent and an exclusive access monitor is allocated
+            inside the processor. The exclusive store that follows may succeed and get an EXOKAY
+            response if the monitor indicates that atomicity of the exclusive read-write sequence
+            was maintained.</p>
+
+        
+    </div>
+
+<div class="related-links">
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="../../config/nodes/g_intbridge.html">Bus and Bridge Selections</a></div>
+<div class="previouslink"><strong>Previous topic:</strong> <a class="link" href="../../config/options/opt.master_exclaccess.html" title="Enable exclusive operations on the AXI master port to perform atomic access on a remote address.">Master Exclusive Access Option</a></div>
+<div class="nextlink"><strong>Next topic:</strong> <a class="link" href="../../config/options/opt.num_extn_exclmaster.html" title="Number of external exclusive masters for slave exclusive access.">Number of External Exclusive Masters Option</a></div>
+</div>
+</div>
+
+</body>
+</html>

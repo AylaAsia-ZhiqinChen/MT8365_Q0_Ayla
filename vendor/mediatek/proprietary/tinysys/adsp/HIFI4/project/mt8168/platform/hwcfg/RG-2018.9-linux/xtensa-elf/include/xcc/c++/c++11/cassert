@@ -1,0 +1,25 @@
+// cassert standard header
+// NOTE: no include guard
+
+ #if _IS_GHS
+  #ifndef assert
+extern "C" void assert(int);
+
+  #if defined(__NAMESPACES) && !defined(__EMBEDDED_CXX_HEADERS)
+namespace std { using ::assert; }
+  #endif /* defined(__NAMESPACES), etc. */
+
+ #endif /* assert */
+
+  #include <assert.h>
+ 
+
+ #else /* _IS_GHS */
+#include <yvals.h>
+#include <assert.h>
+ #endif /* _IS_GHS */
+
+/*
+ * Copyright (c) by P.J. Plauger. All rights reserved.
+ * Consult your license regarding permissions and restrictions.
+V6.50:1611 */

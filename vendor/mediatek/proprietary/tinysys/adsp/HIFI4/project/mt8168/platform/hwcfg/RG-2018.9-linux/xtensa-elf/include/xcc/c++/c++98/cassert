@@ -1,0 +1,9 @@
+// cassert standard header
+// NOTE: no include guard
+#include <c99/yvals.h>
+#include <c99/assert.h>
+
+/*
+ * Copyright (c) by P.J. Plauger. All rights reserved.
+ * Consult your license regarding permissions and restrictions.
+V6.40:1611 */

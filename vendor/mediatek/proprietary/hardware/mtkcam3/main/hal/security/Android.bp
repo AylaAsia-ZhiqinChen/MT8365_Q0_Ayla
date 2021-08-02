@@ -1,0 +1,43 @@
+// securecameratest lib for testing
+
+cc_library_static {
+    name: "libsecurecameratest",
+    proprietary: true,
+    owner: "mtk",
+
+    srcs: [
+        "utils/TestBase.cpp",
+        "camera/ACameraHelper.cpp",
+        "media/AImageReaderHelper.cpp",
+        "graphics/AllocatorHelper.cpp",
+        "graphics/MapperHelper.cpp",
+    ],
+
+    header_libs: [
+        "libnativewindow_headers",
+        "media_ndk_headers",
+        "libmtkcam_headers",
+    ],
+
+    static_libs: [
+        "libarect",
+        // build against the gtest library
+        "libgtest",
+        "libgrallocusage",
+        "android.hidl.token@1.0-utils",
+        "android.hardware.graphics.allocator@2.0",
+        "android.hardware.graphics.mapper@2.0",
+        "android.hardware.graphics.bufferqueue@1.0",
+        "android.hardware.graphics.common@1.0",
+        "vendor.mediatek.hardware.gpu@1.0",
+    ],
+
+    shared_libs: [
+        "libsync",
+        "libcamera2ndk_vendor",
+    ],
+
+    cflags: [
+        "-D__ANDROID_VNDK__",
+    ],
+}

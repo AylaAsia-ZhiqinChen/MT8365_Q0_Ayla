@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="mtk_beam_requires_nfc_p2p_enabled">অ্যান্ড্রয়েড বিম সক্রিয় করতে এনএফসি পি২পি মোড
+        আবশ্যক। আপনি কি পি২পি মোড সক্রিয় করতে চান?
+    </string>
+</resources>

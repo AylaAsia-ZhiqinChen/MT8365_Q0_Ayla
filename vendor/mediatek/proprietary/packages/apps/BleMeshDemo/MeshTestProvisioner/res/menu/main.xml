@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/addNetkey"
+        android:title="Add NetKey"
+        android:showAsAction="never"/>
+    <item
+        android:id="@+id/addAppkey"
+        android:title="Add AppKey"
+        android:showAsAction="never"/>
+    <item
+        android:id="@+id/keyRefresh"
+        android:title="Key Refresh"
+        android:showAsAction="never"/>
+    <item
+        android:id="@+id/startScan"
+        android:title="Start Scan"
+        android:showAsAction="never"/>
+    <item
+        android:id="@+id/stopScan"
+        android:title="Stop Scan"
+        android:showAsAction="never"/>
+    <item
+        android:id="@+id/dump"
+        android:title="dump"
+        android:showAsAction="never"/>
+    <item
+        android:id="@+id/home"
+        android:title="home"
+        android:showAsAction="never"/>
+    <item
+        android:id="@+id/meshMode"
+        android:title="Mesh Mode"
+        android:showAsAction="never">
+        <menu>
+            <item
+                android:id="@+id/meshMode_on"
+                android:title="On"/>
+            <item
+                android:id="@+id/meshMode_off"
+                android:title="Off"/>
+            <item
+                android:id="@+id/meshMode_standby"
+                android:title="Standby"/>
+        </menu>
+    </item>
+    <item
+        android:id="@+id/ota_op"
+        android:title="Ota_Op"
+        android:showAsAction="never">
+        <menu>
+            <item
+                android:id="@+id/ota_op_start"
+                android:title="Start"/>
+            <item
+                android:id="@+id/ota_op_stop"
+                android:title="Stop"/>
+            <item
+                android:id="@+id/ota_op_apply"
+                android:title="Apply"/>
+        </menu>
+    </item>
+
+</menu>

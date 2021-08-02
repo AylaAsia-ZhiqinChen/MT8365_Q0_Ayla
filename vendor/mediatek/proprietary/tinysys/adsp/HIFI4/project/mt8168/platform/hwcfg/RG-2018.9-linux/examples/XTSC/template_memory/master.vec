@@ -1,0 +1,55 @@
+// Customer ID=13943; Build=0x75f5e; Copyright (c) 2006-2010 Tensilica Inc.  ALL RIGHTS RESERVED.
+// 
+// These coded instructions, statements, and computer programs are the
+// copyrighted works and confidential proprietary information of
+// Tensilica Inc.  They may be adapted and modified by bona fide
+// purchasers for internal use, but neither the original nor any adapted
+// or modified version may be disclosed or distributed to third parties
+// in any manner, medium, or form, in whole or in part, without the prior
+// written consent of Tensilica Inc.
+
+/*
+delay POKE  address    sz byt0 byt1 byt2 byt3 . . .  */
+10    POKE  0x11110000  4 0x00 0x01 0x02 0x03
+
+/*
+delay PEEK  address    sz  */
+now   PEEK  0x11110000  4
+
+/*
+delay WRITE address    sz rt id pr pc BE     byt0 byt1 byt2 byt3 */
+10    WRITE 0x22220000  4  0  0  0  0 0x000F 0x00 0x01 0x02 0x03
+now   WRITE 0x22220004  4  0  0  0  0 0x000F 0x04 0x05 0x06 0x07
+wait  rsp 0 // This should be an RSP_NACC from the 2nd WRITE
+wait  rsp   // This should be a  RSP_OK   from the 1st WRITE
+
+/*
+delay READ  address    sz rt id pr pc  */
+10    READ  0x22220000  4  0  0  0  0  
+now   READ  0x22220004  4  0  0  0  0  
+wait  rsp 0 // This should be an RSP_NACC from the 2nd READ
+wait  rsp   // This should be a  RSP_OK   from the 1st READ
+
+/*
+delay RCW  address    sz rt id pr pc num last byt0 byt1 byt2 byt3 */
+10    RCW  0x33330000  4 0  0  0  0  2   0    0xba 0xbe 0xfa 0xce
+10    RCW  0x33330000  4 0  0  0  0  2   1    0xca 0xfe 0xf0 0x0d
+wait rsp
+
+/*
+delay BLOCK_WRITE address    sz rt id pr pc num last first  b0 b1 b2 b3 */
+10    BLOCK_WRITE 0x44440000  4 0  0  0  0  4   0    1       0  1  2  3
+10    BLOCK_WRITE 0x44440004  4 0  0  0  0  4   0    0       4  5  6  7
+10    BLOCK_WRITE 0x44440008  4 0  0  0  0  4   0    0       8  9 10 11
+10    BLOCK_WRITE 0x4444000C  4 0  0  0  0  4   1    0      12 13 14 15
+wait  rsp
+
+/*
+delay BLOCK_READ  address    sz rt id pr pc num */
+10    BLOCK_READ  0x44440000  4 0  0  0  0  4   
+wait  rsp
+wait  rsp
+wait  rsp
+wait  rsp
+
+info Master ran to completion.

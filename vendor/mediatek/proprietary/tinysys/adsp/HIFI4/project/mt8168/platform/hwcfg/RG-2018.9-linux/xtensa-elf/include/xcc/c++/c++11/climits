@@ -1,0 +1,17 @@
+// climits standard header
+#ifndef _CLIMITS_
+#define _CLIMITS_
+
+ #if _IS_GHS
+
+ #else /* _IS_GHS */
+#include <yvals.h>
+ #endif /* _IS_GHS */
+
+#include <limits.h>
+#endif /* _CLIMITS_ */
+
+/*
+ * Copyright (c) by P.J. Plauger. All rights reserved.
+ * Consult your license regarding permissions and restrictions.
+V6.50:1611 */

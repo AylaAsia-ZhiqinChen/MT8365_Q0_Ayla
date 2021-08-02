@@ -1,0 +1,54 @@
+#ifneq ($(strip $(TARGET_BUILD_VARIANT)),user)
+LOCAL_PATH:= $(call my-dir)
+
+ifeq ($(strip $(NFC_CHIP_SUPPORT)),yes)
+include $(CLEAR_VARS)
+LOCAL_MODULE := libdtaNfaProvider
+LOCAL_PROPRIETARY_MODULE := false
+LOCAL_MODULE_OWNER := mtk
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := SHARED_LIBRARIES
+LOCAL_MULTILIB := both
+LOCAL_SRC_FILES_arm := bin/arm/libdtaNfaProvider.so
+LOCAL_SRC_FILES_arm64 := bin/arm64/libdtaNfaProvider.so
+LOCAL_MODULE_SUFFIX := .so
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := libnfc_st_dta
+LOCAL_PROPRIETARY_MODULE := false
+LOCAL_MODULE_OWNER := mtk
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := SHARED_LIBRARIES
+LOCAL_MULTILIB := both
+LOCAL_SRC_FILES_arm := bin/arm/libnfc_st_dta.so
+LOCAL_SRC_FILES_arm64 := bin/arm64/libnfc_st_dta.so
+LOCAL_MODULE_SUFFIX := .so
+include $(BUILD_PREBUILT)
+
+ifneq ($(strip $(TARGET_BUILD_VARIANT)),user)
+include $(CLEAR_VARS)
+LOCAL_MODULE := STNFCDta
+LOCAL_PROPRIETARY_MODULE := false
+LOCAL_MODULE_OWNER := mtk
+LOCAL_SRC_FILES := bin/STNFCDta.apk
+LOCAL_CERTIFICATE := PRESIGNED
+LOCAL_MODULE_CLASS := APPS
+LOCAL_MODULE_SUFFIX := $(COMMON_ANDROID_PACKAGE_SUFFIX)
+LOCAL_DEX_PREOPT := false
+include $(BUILD_PREBUILT)
+endif
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := ixitdata.xml
+LOCAL_PROPRIETARY_MODULE := false
+LOCAL_MODULE_OWNER := mtk
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_PATH := $(TARGET_OUT_SYSTEM_ETC)
+LOCAL_SRC_FILES := res/ixitdata_micropross.xml
+include $(BUILD_PREBUILT)
+
+endif
+#endif
+

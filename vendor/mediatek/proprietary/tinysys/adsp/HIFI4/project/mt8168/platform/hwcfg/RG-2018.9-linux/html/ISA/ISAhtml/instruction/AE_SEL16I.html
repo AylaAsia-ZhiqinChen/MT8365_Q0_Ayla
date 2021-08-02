@@ -1,0 +1,1898 @@
+<html>
+  <head>
+    <title>
+      AE_SEL16I - Combine elements from two input registers into the output
+      register
+    </title>
+    <style type="text/css">
+      <!--
+	body {
+	background: white;
+	color: black;
+	font-family: Arial, Verdana, Myriad Web, Syntax, sans-serif;
+	margin-left: 2em;
+	margin-right: 2em;
+	}
+	#boundingbox {
+	background: white;
+	color: black;
+	font-family: Arial, Verdana, Myriad Web, Syntax, sans-serif;
+	position: relative;
+	width: 865px;
+	margin: 0 auto;
+	padding: 20px;
+	border-style: dashed;
+	border-width: 1px;
+	border-spacing: 10px;
+	border-collapse: separate;
+	}
+	a {
+	text-decoration: none;
+	}
+	a:visited {
+	color: blue;
+	}
+	a:link {
+	color: green;
+	}
+	a:active {
+	color: green;
+	}
+	a:hover {
+	color: green;
+	}
+	a:offsite {
+	color: green;
+	}
+	h1 {
+	font-size: 14pt;
+	font-weight: bold;
+	}
+	h1.center {
+	font-size: 14pt;
+	font-weight: bold;
+	text-align: center;
+	}
+	h2 {
+	font-size: 12pt;
+	}
+	caption {
+	padding-top: 1em;
+	}
+	table.thin {
+	border-width: thin;
+	border-spacing: 0px;
+	border-style: inset;
+	border-color: gray;
+	border-collapse: collapse;
+	background-color: rgb(250, 240, 230);
+	}
+	table th.thin {
+	border-width: thin;
+	padding: 3px;
+	border-style: inset;
+	border-color: gray;
+	background-color: white;
+	-moz-border-radius: 0px 0px 0px 0px;
+	}
+	table th.thin2 {
+	border-width: thin;
+	padding: 3px;
+	border-style: inset;
+	border-color: gray;
+	background-color: rgb(250, 240, 230);
+	-moz-border-radius: 0px 0px 0px 0px;
+	}
+	table td.thin {
+	border-width: thin;
+	padding: 3px;
+	border-style: inset;
+	border-color: gray;
+	background-color: white;
+	-moz-border-radius: 0px 0px 0px 0px;
+	}
+	table td.thin2 {
+	border-width: thin;
+	padding: 3px;
+	border-style: inset;
+	border-color: gray;
+	background-color: rgb(250, 240, 230);
+	-moz-border-radius: 0px 0px 0px 0px;
+	}
+	pre {
+	font-family: Lucidatypewriter, monospace;
+	font-size: 10pt;
+	}
+	.proto {
+	font-family: Lucidatypewriter, monospace;
+	font-size: 10pt;
+	padding-left: 1em;
+	text-indent: -1em;
+	}
+	.protohead {
+	font-family: Lucidatypewriter, monospace;
+	font-size: 10pt;
+	padding-left: 2em;
+	text-indent: -2em;
+	}
+	.protobody {
+	font-family: Lucidatypewriter, monospace;
+	font-size: 10pt;
+	padding-left: 4em;
+	text-indent: -2em;
+	}
+	.rotate {
+	display: block;
+	-webkit-transform: rotate(-90deg); 
+        -moz-transform:
+	rotate(-90deg);
+	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+	padding-top: 20px;                       
+}
+	.light {
+	font-size: 75%;
+	color: SlateGrey;
+	}
+	table.format {
+	border-width: thin;
+	border-spacing: 0px;
+	border-style: inset;
+	border-color: gray;
+	border-collapse: collapse;
+	background-color: rgb(250, 240, 230);
+	font-size: 75%;
+	}
+	table.format th {
+	border-width: thin;
+	padding: 3px;
+	border-style: inset;
+	border-color: gray;
+	background-color: #FFF5EE;
+	-moz-border-radius: 0px 0px 0px 0px;
+	vertical-align: bottom;
+	font-size: 75%;
+	}
+	table.format td {
+	border-width: thin;
+	padding: 3px;
+	border-style: inset;
+	border-color: gray;
+	background-color: white;
+	-moz-border-radius: 0px 0px 0px 0px;
+	font-size: 75%;
+	}
+	table.format td.opcodeBit_present {
+	background-color: #FFE4E1;
+	text-align: center;
+	}
+	table.format td.formatBit_present {
+	background-color: #EEE8AA;
+	text-align: center;
+	}
+	table.format td.slotBit_present {
+	background-color: #B0E0E6;
+	text-align: center;
+	vertical-align: bottom;
+	}
+	
+        -->
+    </style>
+  </head>
+  <body>
+    <h1>
+      AE_SEL16I &#8212; Combine elements from two input registers into the
+      output register
+    </h1>
+    <h2>
+      Instruction Word
+    </h2>
+    
+<table border="1" class="format">
+<tr><th width="130" nowrap>Slot<br>ae2_slot0</th><th>8<br>7</th><th>8<br>6</th><th>8<br>5</th><th>8<br>4</th><th>8<br>3</th><th>8<br>2</th><th>8<br>1</th><th>8<br>0</th><th>7<br>9</th><th>7<br>8</th><th>7<br>7</th><th>7<br>6</th><th>7<br>5</th><th>7<br>4</th><th>7<br>3</th><th>7<br>2</th><th>7<br>1</th><th>7<br>0</th><th>6<br>9</th><th>6<br>8</th><th>6<br>7</th><th>6<br>6</th><th>6<br>5</th><th>6<br>4</th><th>6<br>3</th><th>6<br>2</th><th>6<br>1</th><th>6<br>0</th><th>5<br>9</th><th>5<br>8</th><th>5<br>7</th><th>5<br>6</th><th>5<br>5</th><th>5<br>4</th><th>5<br>3</th><th>5<br>2</th><th>5<br>1</th><th>5<br>0</th><th>4<br>9</th><th>4<br>8</th><th>4<br>7</th><th>4<br>6</th><th>4<br>5</th><th>4<br>4</th><th>4<br>3</th><th>4<br>2</th><th>4<br>1</th><th>4<br>0</th><th>3<br>9</th><th>3<br>8</th><th>3<br>7</th><th>3<br>6</th><th>3<br>5</th><th>3<br>4</th><th>3<br>3</th><th>3<br>2</th><th>3<br>1</th><th>3<br>0</th><th>2<br>9</th><th>2<br>8</th><th>2<br>7</th><th>2<br>6</th><th>2<br>5</th><th>2<br>4</th><th>2<br>3</th><th>2<br>2</th><th>2<br>1</th><th>2<br>0</th><th>1<br>9</th><th>1<br>8</th><th>1<br>7</th><th>1<br>6</th><th>1<br>5</th><th>1<br>4</th><th>1<br>3</th><th>1<br>2</th><th>1<br>1</th><th>1<br>0</th><th>9</th><th>8</th><th>7</th><th>6</th><th>5</th><th>4</th><th>3</th><th>2</th><th>1</th><th>0</th></tr>
+<tr><td nowrap>Format ae_format88_2 - 88 bit(s)</td><td class="formatBit_present">0</td><td class="formatBit_present">0</td><td class="formatBit_present">0</td><td class="formatBit_present">0</td><td class="formatBit_present">0</td><td class="formatBit_present">0</td><td class="formatBit_present">0</td><td class="formatBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="formatBit_present">0</td><td class="formatBit_present">0</td><td class="formatBit_present">1</td><td class="formatBit_present">1</td><td class="formatBit_present">1</td><td class="formatBit_present">1</td></tr>
+<tr><td nowrap>AE_SEL16I</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+<tr><td nowrap>ae_fld_dr_to_dr_v</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">3</td><td class="slotBit_present">2</td><td class="slotBit_present">1</td><td class="slotBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+<tr><td nowrap>ae_fld_dr_to_dr_v0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">1</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">3</td><td class="slotBit_present">2</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+<tr><td nowrap>ae_fld_dr_to_dr_v1</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">3</td><td class="slotBit_present">2</td><td class="slotBit_present">1</td><td class="slotBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+<tr><td nowrap>ae_fld_selimm</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">3</td><td class="slotBit_present">2</td><td class="slotBit_present">1</td><td class="slotBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+</table>
+<br>
+<table border="1" class="format">
+<tr><th width="130" nowrap>Slot<br>ae_slot3</th><th>8<br>7</th><th>8<br>6</th><th>8<br>5</th><th>8<br>4</th><th>8<br>3</th><th>8<br>2</th><th>8<br>1</th><th>8<br>0</th><th>7<br>9</th><th>7<br>8</th><th>7<br>7</th><th>7<br>6</th><th>7<br>5</th><th>7<br>4</th><th>7<br>3</th><th>7<br>2</th><th>7<br>1</th><th>7<br>0</th><th>6<br>9</th><th>6<br>8</th><th>6<br>7</th><th>6<br>6</th><th>6<br>5</th><th>6<br>4</th><th>6<br>3</th><th>6<br>2</th><th>6<br>1</th><th>6<br>0</th><th>5<br>9</th><th>5<br>8</th><th>5<br>7</th><th>5<br>6</th><th>5<br>5</th><th>5<br>4</th><th>5<br>3</th><th>5<br>2</th><th>5<br>1</th><th>5<br>0</th><th>4<br>9</th><th>4<br>8</th><th>4<br>7</th><th>4<br>6</th><th>4<br>5</th><th>4<br>4</th><th>4<br>3</th><th>4<br>2</th><th>4<br>1</th><th>4<br>0</th><th>3<br>9</th><th>3<br>8</th><th>3<br>7</th><th>3<br>6</th><th>3<br>5</th><th>3<br>4</th><th>3<br>3</th><th>3<br>2</th><th>3<br>1</th><th>3<br>0</th><th>2<br>9</th><th>2<br>8</th><th>2<br>7</th><th>2<br>6</th><th>2<br>5</th><th>2<br>4</th><th>2<br>3</th><th>2<br>2</th><th>2<br>1</th><th>2<br>0</th><th>1<br>9</th><th>1<br>8</th><th>1<br>7</th><th>1<br>6</th><th>1<br>5</th><th>1<br>4</th><th>1<br>3</th><th>1<br>2</th><th>1<br>1</th><th>1<br>0</th><th>9</th><th>8</th><th>7</th><th>6</th><th>5</th><th>4</th><th>3</th><th>2</th><th>1</th><th>0</th></tr>
+<tr><td nowrap>Format ae_format88 - 88 bit(s)</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="formatBit_present">1</td><td class="formatBit_present">1</td><td class="formatBit_present">1</td><td class="formatBit_present">1</td><td class="formatBit_present">1</td></tr>
+<tr><td nowrap>AE_SEL16I</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">1</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+<tr><td nowrap>ae_fld_dr_to_dr_v</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">3</td><td class="slotBit_present">2</td><td class="slotBit_present">1</td><td class="slotBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+<tr><td nowrap>ae_fld_dr_to_dr_v0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">3</td><td class="slotBit_present">2</td><td class="slotBit_present">1</td><td class="slotBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+<tr><td nowrap>ae_fld_dr_to_dr_v1</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">3</td><td class="slotBit_present">2</td><td class="slotBit_present">1</td><td class="slotBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+<tr><td nowrap>ae_fld_selimm</td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">3</td><td class="slotBit_present">2</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">1</td><td class="slotBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+</table>
+<br>
+<table border="1" class="format">
+<tr><th width="130" nowrap>Slot<br>ae_slot0</th><th>8<br>7</th><th>8<br>6</th><th>8<br>5</th><th>8<br>4</th><th>8<br>3</th><th>8<br>2</th><th>8<br>1</th><th>8<br>0</th><th>7<br>9</th><th>7<br>8</th><th>7<br>7</th><th>7<br>6</th><th>7<br>5</th><th>7<br>4</th><th>7<br>3</th><th>7<br>2</th><th>7<br>1</th><th>7<br>0</th><th>6<br>9</th><th>6<br>8</th><th>6<br>7</th><th>6<br>6</th><th>6<br>5</th><th>6<br>4</th><th>6<br>3</th><th>6<br>2</th><th>6<br>1</th><th>6<br>0</th><th>5<br>9</th><th>5<br>8</th><th>5<br>7</th><th>5<br>6</th><th>5<br>5</th><th>5<br>4</th><th>5<br>3</th><th>5<br>2</th><th>5<br>1</th><th>5<br>0</th><th>4<br>9</th><th>4<br>8</th><th>4<br>7</th><th>4<br>6</th><th>4<br>5</th><th>4<br>4</th><th>4<br>3</th><th>4<br>2</th><th>4<br>1</th><th>4<br>0</th><th>3<br>9</th><th>3<br>8</th><th>3<br>7</th><th>3<br>6</th><th>3<br>5</th><th>3<br>4</th><th>3<br>3</th><th>3<br>2</th><th>3<br>1</th><th>3<br>0</th><th>2<br>9</th><th>2<br>8</th><th>2<br>7</th><th>2<br>6</th><th>2<br>5</th><th>2<br>4</th><th>2<br>3</th><th>2<br>2</th><th>2<br>1</th><th>2<br>0</th><th>1<br>9</th><th>1<br>8</th><th>1<br>7</th><th>1<br>6</th><th>1<br>5</th><th>1<br>4</th><th>1<br>3</th><th>1<br>2</th><th>1<br>1</th><th>1<br>0</th><th>9</th><th>8</th><th>7</th><th>6</th><th>5</th><th>4</th><th>3</th><th>2</th><th>1</th><th>0</th></tr>
+<tr><td nowrap>Format ae_format88 - 88 bit(s)</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="formatBit_present">1</td><td class="formatBit_present">1</td><td class="formatBit_present">1</td><td class="formatBit_present">1</td><td class="formatBit_present">1</td></tr>
+<tr><td nowrap>AE_SEL16I</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">1</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+<tr><td nowrap>ae_fld_dr_to_dr_v</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">3</td><td class="slotBit_present">2</td><td class="slotBit_present">1</td><td class="slotBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+<tr><td nowrap>ae_fld_dr_to_dr_v0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">3</td><td class="slotBit_present">2</td><td class="slotBit_present">1</td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+<tr><td nowrap>ae_fld_dr_to_dr_v1</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">3</td><td class="slotBit_present">2</td><td class="slotBit_present">1</td><td class="slotBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+<tr><td nowrap>ae_fld_selimm</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">3</td><td class="slotBit_present">2</td><td class="slotBit_present">1</td><td class="slotBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+</table>
+<br>
+<table border="1" class="format">
+<tr><th width="130" nowrap>Slot<br>Inst</th><th>8<br>7</th><th>8<br>6</th><th>8<br>5</th><th>8<br>4</th><th>8<br>3</th><th>8<br>2</th><th>8<br>1</th><th>8<br>0</th><th>7<br>9</th><th>7<br>8</th><th>7<br>7</th><th>7<br>6</th><th>7<br>5</th><th>7<br>4</th><th>7<br>3</th><th>7<br>2</th><th>7<br>1</th><th>7<br>0</th><th>6<br>9</th><th>6<br>8</th><th>6<br>7</th><th>6<br>6</th><th>6<br>5</th><th>6<br>4</th><th>6<br>3</th><th>6<br>2</th><th>6<br>1</th><th>6<br>0</th><th>5<br>9</th><th>5<br>8</th><th>5<br>7</th><th>5<br>6</th><th>5<br>5</th><th>5<br>4</th><th>5<br>3</th><th>5<br>2</th><th>5<br>1</th><th>5<br>0</th><th>4<br>9</th><th>4<br>8</th><th>4<br>7</th><th>4<br>6</th><th>4<br>5</th><th>4<br>4</th><th>4<br>3</th><th>4<br>2</th><th>4<br>1</th><th>4<br>0</th><th>3<br>9</th><th>3<br>8</th><th>3<br>7</th><th>3<br>6</th><th>3<br>5</th><th>3<br>4</th><th>3<br>3</th><th>3<br>2</th><th>3<br>1</th><th>3<br>0</th><th>2<br>9</th><th>2<br>8</th><th>2<br>7</th><th>2<br>6</th><th>2<br>5</th><th>2<br>4</th><th>2<br>3</th><th>2<br>2</th><th>2<br>1</th><th>2<br>0</th><th>1<br>9</th><th>1<br>8</th><th>1<br>7</th><th>1<br>6</th><th>1<br>5</th><th>1<br>4</th><th>1<br>3</th><th>1<br>2</th><th>1<br>1</th><th>1<br>0</th><th>9</th><th>8</th><th>7</th><th>6</th><th>5</th><th>4</th><th>3</th><th>2</th><th>1</th><th>0</th></tr>
+<tr><td nowrap>Format x24 - 24 bit(s)</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="formatBit_present">0</td><td> </td><td> </td><td> </td></tr>
+<tr><td nowrap>AE_SEL16I</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td></tr>
+<tr><td nowrap>ae_fld_dr_to_dr_v</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">3</td><td class="slotBit_present">2</td><td class="slotBit_present">1</td><td class="slotBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+<tr><td nowrap>ae_fld_dr_to_dr_v0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">3</td><td class="slotBit_present">2</td><td class="slotBit_present">1</td><td class="slotBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+<tr><td nowrap>ae_fld_dr_to_dr_v1</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">3</td><td class="slotBit_present">2</td><td class="slotBit_present">1</td><td class="slotBit_present">0</td><td> </td><td> </td><td> </td><td> </td></tr>
+<tr><td nowrap>ae_fld_selimm</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">3</td><td class="slotBit_present">2</td><td class="slotBit_present">1</td><td class="slotBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+</table>
+<br>
+<table border="1" class="format">
+<tr><th width="130" nowrap>Slot<br>ae3_slot1</th><th>8<br>7</th><th>8<br>6</th><th>8<br>5</th><th>8<br>4</th><th>8<br>3</th><th>8<br>2</th><th>8<br>1</th><th>8<br>0</th><th>7<br>9</th><th>7<br>8</th><th>7<br>7</th><th>7<br>6</th><th>7<br>5</th><th>7<br>4</th><th>7<br>3</th><th>7<br>2</th><th>7<br>1</th><th>7<br>0</th><th>6<br>9</th><th>6<br>8</th><th>6<br>7</th><th>6<br>6</th><th>6<br>5</th><th>6<br>4</th><th>6<br>3</th><th>6<br>2</th><th>6<br>1</th><th>6<br>0</th><th>5<br>9</th><th>5<br>8</th><th>5<br>7</th><th>5<br>6</th><th>5<br>5</th><th>5<br>4</th><th>5<br>3</th><th>5<br>2</th><th>5<br>1</th><th>5<br>0</th><th>4<br>9</th><th>4<br>8</th><th>4<br>7</th><th>4<br>6</th><th>4<br>5</th><th>4<br>4</th><th>4<br>3</th><th>4<br>2</th><th>4<br>1</th><th>4<br>0</th><th>3<br>9</th><th>3<br>8</th><th>3<br>7</th><th>3<br>6</th><th>3<br>5</th><th>3<br>4</th><th>3<br>3</th><th>3<br>2</th><th>3<br>1</th><th>3<br>0</th><th>2<br>9</th><th>2<br>8</th><th>2<br>7</th><th>2<br>6</th><th>2<br>5</th><th>2<br>4</th><th>2<br>3</th><th>2<br>2</th><th>2<br>1</th><th>2<br>0</th><th>1<br>9</th><th>1<br>8</th><th>1<br>7</th><th>1<br>6</th><th>1<br>5</th><th>1<br>4</th><th>1<br>3</th><th>1<br>2</th><th>1<br>1</th><th>1<br>0</th><th>9</th><th>8</th><th>7</th><th>6</th><th>5</th><th>4</th><th>3</th><th>2</th><th>1</th><th>0</th></tr>
+<tr><td nowrap>Format ae_format48 - 48 bit(s)</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="formatBit_present">1</td><td class="formatBit_present">1</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="formatBit_present">1</td><td class="formatBit_present">1</td><td class="formatBit_present">1</td><td class="formatBit_present">0</td></tr>
+<tr><td nowrap>AE_SEL16I</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="opcodeBit_present">1</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">0</td><td class="opcodeBit_present">1</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+<tr><td nowrap>ae_fld_dr_to_dr_v</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">3</td><td class="slotBit_present">2</td><td class="slotBit_present">1</td><td class="slotBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+<tr><td nowrap>ae_fld_dr_to_dr_v0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">3</td><td class="slotBit_present">2</td><td class="slotBit_present">1</td><td class="slotBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+<tr><td nowrap>ae_fld_dr_to_dr_v1</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">3</td><td class="slotBit_present">2</td><td class="slotBit_present">1</td><td class="slotBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+<tr><td nowrap>ae_fld_selimm</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td class="slotBit_present">3</td><td class="slotBit_present">2</td><td class="slotBit_present">1</td><td class="slotBit_present">0</td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+</table>
+<br>
+    <h2>
+      Assembler Syntax
+    </h2>
+    <p>
+      <code title="Instruction Mnemonic for Combine elements from two input registers into the output register">AE_SEL16I</code>
+      <span title="Write  of register file AE_DR indexed by the ae_fld_dr_to_dr_v field of the instruction word"><code>aed0..15(ae_dr_to_dr_v)</code></span>,
+      <span title="Read  of register file AE_DR indexed by the ae_fld_dr_to_dr_v0 field of the instruction word"><code>aed0..15(ae_dr_to_dr_v0)</code></span>,
+      <span title="Read  of register file AE_DR indexed by the ae_fld_dr_to_dr_v1 field of the instruction word"><code>aed0..15(ae_dr_to_dr_v1)</code></span>,
+      <code> 0..15</code>
+    </p>
+    <h2>
+      C Syntax
+    </h2>
+    #include &lt;xtensa/tie/xt_hifi2.h&gt;<P>extern ae_int16x4 AE_SEL16I(ae_int16x4 d0, ae_int16x4 d1, immediate i);
+</P>
+    <h2>
+      Description
+    </h2>
+    <P><IREF>AE_SEL16I</IREF> combines elements from the two input registers into the output register.  The elements selected depend on the value of the immediate.  Programmers should not use this instruction directly and should instead use one of the following intriniscs for 32-bit selects.</P> 
+
+AE_SEL32.LH : Concatenate the low element of the first input argument with the high element of the second.</P>
+
+AE_SEL32.HL : Concatenate the high element of the first input argument with the low element of the second.</P>
+
+AE_SEL32.HH : Concatenate the high element of the first input argument with the high element of the second.</P>
+
+AE_SEL32.LL : Concatenate the low element of the first input argument with the low element of the second.</P>
+
+For 16-bit selects, specify the four output elements in order from element 3 to element 0 numbering the first input argument from 7 to 4 and the second input argument from 3 to 0. 
+
+AE_SEL16.5432 </P>
+
+AE_SEL16.7520 </P>
+
+AE_SEL16.7610 </P>
+
+AE_SEL16.4321 </P>
+
+AE_SEL16.6543 </P>
+
+AE_SEL16.7632 </P>
+
+AE_SEL16.5410 </P>
+
+AE_SEL16.6420 </P>
+
+AE_SEL16.7362 </P>
+
+AE_SEL16.5146 </P></P>
+
+
+
+The immediate field imm is an encoded value choosing the permutations such as 5146 or 7520 using a 4-bit value.  For reference, the list below shows the encoded value versus the permutation.</P>
+
+<U>imm |  perm.</U></P>
+
+0   |  5432 </P>
+
+1   |  7632 </P>
+
+2   |  7610 </P>
+
+3   |  5410 </P>
+
+4   |  4321 </P>
+
+5   |  6543 </P>
+
+6   |  7520 </P>
+
+7   |  7531 (Used for AE_TRUNC16X4F32  operation) </P> 
+
+8   |  6420 </P>
+
+9   |  7362 </P>
+
+10  |  5146 </P>
+
+11  |  5140 </P>
+
+12  |  2301 </P>
+
+13  |  7160 </P>
+
+14  |  5342 </P>
+
+15  |  7531 </P>
+    <h2>
+      Implementation Pipeline
+    </h2>
+    <table class="thin">
+      <thead>
+	<tr>
+	  <th align="left" class="thin">
+	    In
+	  </th>
+	  <th align="left" class="thin">
+	    Out
+	  </th>
+	</tr>
+      </thead>
+      <tbody>
+	<tr>
+	  <td class="thin">
+	    <code>ae_dr_to_dr_v0&nbsp;Mstage</code>, <code>ae_dr_to_dr_v1&nbsp;Mstage</code>
+	  </td>
+	  <td class="thin">
+	    <code>ae_dr_to_dr_v&nbsp;Mstage</code>
+	  </td>
+	</tr>
+      </tbody>
+    </table>
+    <h2>
+      Protos that use AE_SEL16I
+    </h2>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_CVT16X4>AE_CVT16X4</a> { out ae_f16x4 d, in
+      ae_f32x2 dl, in ae_f32x2 dh }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> d, dl, dh, 8;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_CVT16X4_scalar>AE_CVT16X4_scalar</a> { out
+      ae_int16 p, in ae_int32 d0 }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> p, d0, d0, 8;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_CVT16X4_vector>AE_CVT16X4_vector</a> { out
+      ae_int16x4 p, in ae_int32x4 d0 }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> p, d0->d1, d0->d0, 8;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_INT16X4_MAX>AE_INT16X4_MAX</a> { out ae_int16x4
+      d, in ae_int16x4 d0, in ae_int16x4 d1 }{ae_int32x4 t0, ae_int32x4 t1,
+      ae_int32x4 r}{</div><div class=protobody><a
+      href=AE_SEXT32X2D1632.html>AE_SEXT32X2D16.32</a> t1->d0, d0;</div><div
+      class=protobody><a href=AE_SEXT32X2D1610.html>AE_SEXT32X2D16.10</a>
+      t1->d1, d0;</div><div class=protobody><a
+      href=AE_SEXT32X2D1632.html>AE_SEXT32X2D16.32</a> t0->d0, d1;</div><div
+      class=protobody><a href=AE_SEXT32X2D1610.html>AE_SEXT32X2D16.10</a>
+      t0->d1, d1;</div><div class=protobody><a href=AE_MAX32.html>AE_MAX32</a>
+      r->d0, t0->d0, t1->d0;</div><div class=protobody><a
+      href=AE_MAX32.html>AE_MAX32</a> r->d1, t0->d1, t1->d1;</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> d, r->d0, r->d1,
+      8;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_INT16X4_MIN>AE_INT16X4_MIN</a> { out ae_int16x4
+      d, in ae_int16x4 d0, in ae_int16x4 d1 }{ae_int32x4 t0, ae_int32x4 t1,
+      ae_int32x4 r}{</div><div class=protobody><a
+      href=AE_SEXT32X2D1632.html>AE_SEXT32X2D16.32</a> t1->d0, d0;</div><div
+      class=protobody><a href=AE_SEXT32X2D1610.html>AE_SEXT32X2D16.10</a>
+      t1->d1, d0;</div><div class=protobody><a
+      href=AE_SEXT32X2D1632.html>AE_SEXT32X2D16.32</a> t0->d0, d1;</div><div
+      class=protobody><a href=AE_SEXT32X2D1610.html>AE_SEXT32X2D16.10</a>
+      t0->d1, d1;</div><div class=protobody><a href=AE_MIN32.html>AE_MIN32</a>
+      r->d0, t0->d0, t1->d0;</div><div class=protobody><a
+      href=AE_MIN32.html>AE_MIN32</a> r->d1, t0->d1, t1->d1;</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> d, r->d0, r->d1,
+      8;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULAAR16P16X4S_vector>AE_MULAAR16P16X4S_vector</a>
+      { inout ae_int16x4 d, in ae_int16x4 d0, in ae_int16x4 d1 }{ae_int32x4
+      t}{</div><div class=protobody><a
+      href=AE_SEXT32X2D1632.html>AE_SEXT32X2D16.32</a> t->d0, d;</div><div
+      class=protobody><a href=AE_SEXT32X2D1610.html>AE_SEXT32X2D16.10</a>
+      t->d1, d;</div><div class=protobody><a
+      href=AE_MULA16X4.html>AE_MULA16X4</a> t->d0, t->d1, d0, d1;</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> d, t->d0, t->d1,
+      8;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULAF48Q32SP16S.H>AE_MULAF48Q32SP16S.H</a> {
+      inout ae_int64 d, in ae_int64 d0, in ae_int32x2 d1 }{ae_int32x2
+      tp}{</div><div class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> tp,
+      d1, d1, 1;</div><div class=protobody><a
+      href=AE_MULAF48Q32SP16SL.html>AE_MULAF48Q32SP16S.L</a> d, d0,
+      tp;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULAF48Q32SP16U.H>AE_MULAF48Q32SP16U.H</a> {
+      inout ae_int64 d, in ae_int64 d0, in ae_int32x2 d1 }{ae_int32x2
+      tp}{</div><div class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> tp,
+      d1, d1, 1;</div><div class=protobody><a
+      href=AE_MULAF48Q32SP16UL.html>AE_MULAF48Q32SP16U.L</a> d, d0,
+      tp;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULAFQ32SP16S.H>AE_MULAFQ32SP16S.H</a> { inout
+      ae_q56s d, in ae_q56s d0, in ae_p24x2s d1 }{ae_int32x2 tp}{</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> tp, d1, d1,
+      1;</div><div class=protobody><a
+      href=AE_MULAF48Q32SP16SL.html>AE_MULAF48Q32SP16S.L</a> d, d0,
+      tp;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULAFQ32SP16U.H>AE_MULAFQ32SP16U.H</a> { inout
+      ae_q56s d, in ae_q56s d0, in ae_p24x2s d1 }{ae_int32x2 tp}{</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> tp, d1, d1,
+      1;</div><div class=protobody><a
+      href=AE_MULAF48Q32SP16UL.html>AE_MULAF48Q32SP16U.L</a> d, d0,
+      tp;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULAQ32SP16S.H>AE_MULAQ32SP16S.H</a> { inout
+      ae_q56s d, in ae_q56s d0, in ae_p24x2s d1 }{ae_int32x2 tp}{</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> tp, d1, d1,
+      1;</div><div class=protobody><a
+      href=AE_MULAQ32SP16SL.html>AE_MULAQ32SP16S.L</a> d, d0, tp;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULAQ32SP16U.H>AE_MULAQ32SP16U.H</a> { inout
+      ae_q56s d, in ae_q56s d0, in ae_p24x2s d1 }{ae_int32x2 tp}{</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> tp, d1, d1,
+      1;</div><div class=protobody><a
+      href=AE_MULAQ32SP16UL.html>AE_MULAQ32SP16U.L</a> d, d0, tp;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULF48Q32SP16S.H>AE_MULF48Q32SP16S.H</a> { out
+      ae_int64 d, in ae_int64 d0, in ae_int32x2 d1 }{ae_int32x2 tp}{</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> tp, d1, d1,
+      1;</div><div class=protobody><a
+      href=AE_MULF48Q32SP16SL.html>AE_MULF48Q32SP16S.L</a> d, d0,
+      tp;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULF48Q32SP16U.H>AE_MULF48Q32SP16U.H</a> { out
+      ae_int64 d, in ae_int64 d0, in ae_int32x2 d1 }{ae_int32x2 tp}{</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> tp, d1, d1,
+      1;</div><div class=protobody><a
+      href=AE_MULF48Q32SP16UL.html>AE_MULF48Q32SP16U.L</a> d, d0,
+      tp;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULFQ32SP16S.H>AE_MULFQ32SP16S.H</a> { out
+      ae_q56s d, in ae_q56s d0, in ae_p24x2s d1 }{ae_int32x2 tp}{</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> tp, d1, d1,
+      1;</div><div class=protobody><a
+      href=AE_MULF48Q32SP16SL.html>AE_MULF48Q32SP16S.L</a> d, d0,
+      tp;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULFQ32SP16U.H>AE_MULFQ32SP16U.H</a> { out
+      ae_q56s d, in ae_q56s d0, in ae_p24x2s d1 }{ae_int32x2 tp}{</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> tp, d1, d1,
+      1;</div><div class=protobody><a
+      href=AE_MULF48Q32SP16UL.html>AE_MULF48Q32SP16U.L</a> d, d0,
+      tp;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULQ32SP16S.H>AE_MULQ32SP16S.H</a> { out ae_q56s
+      d, in ae_q56s d0, in ae_p24x2s d1 }{ae_int32x2 tp}{</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> tp, d1, d1,
+      1;</div><div class=protobody><a
+      href=AE_MULQ32SP16SL.html>AE_MULQ32SP16S.L</a> d, d0, tp;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULQ32SP16U.H>AE_MULQ32SP16U.H</a> { out ae_q56s
+      d, in ae_q56s d0, in ae_p24x2s d1 }{ae_int32x2 tp}{</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> tp, d1, d1,
+      1;</div><div class=protobody><a
+      href=AE_MULQ32SP16UL.html>AE_MULQ32SP16U.L</a> d, d0, tp;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULR16P16X4S_vector>AE_MULR16P16X4S_vector</a> {
+      out ae_int16x4 d, in ae_int16x4 d0, in ae_int16x4 d1 }{ae_int32x4
+      t}{</div><div class=protobody><a href=AE_MUL16X4.html>AE_MUL16X4</a>
+      t->d0, t->d1, d0, d1;</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> d, t->d0, t->d1, 8;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULSF48Q32SP16S.H>AE_MULSF48Q32SP16S.H</a> {
+      inout ae_int64 d, in ae_int64 d0, in ae_int32x2 d1 }{ae_int32x2
+      tp}{</div><div class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> tp,
+      d1, d1, 1;</div><div class=protobody><a
+      href=AE_MULSF48Q32SP16SL.html>AE_MULSF48Q32SP16S.L</a> d, d0,
+      tp;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULSF48Q32SP16U.H>AE_MULSF48Q32SP16U.H</a> {
+      inout ae_int64 d, in ae_int64 d0, in ae_int32x2 d1 }{ae_int32x2
+      tp}{</div><div class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> tp,
+      d1, d1, 1;</div><div class=protobody><a
+      href=AE_MULSF48Q32SP16UL.html>AE_MULSF48Q32SP16U.L</a> d, d0,
+      tp;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULSFQ32SP16S.H>AE_MULSFQ32SP16S.H</a> { inout
+      ae_q56s d, in ae_q56s d0, in ae_p24x2s d1 }{ae_int32x2 tp}{</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> tp, d1, d1,
+      1;</div><div class=protobody><a
+      href=AE_MULSF48Q32SP16SL.html>AE_MULSF48Q32SP16S.L</a> d, d0,
+      tp;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULSFQ32SP16U.H>AE_MULSFQ32SP16U.H</a> { inout
+      ae_q56s d, in ae_q56s d0, in ae_p24x2s d1 }{ae_int32x2 tp}{</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> tp, d1, d1,
+      1;</div><div class=protobody><a
+      href=AE_MULSF48Q32SP16UL.html>AE_MULSF48Q32SP16U.L</a> d, d0,
+      tp;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULSQ32SP16S.H>AE_MULSQ32SP16S.H</a> { inout
+      ae_q56s d, in ae_q56s d0, in ae_p24x2s d1 }{ae_int32x2 tp}{</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> tp, d1, d1,
+      1;</div><div class=protobody><a
+      href=AE_MULSQ32SP16SL.html>AE_MULSQ32SP16S.L</a> d, d0, tp;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULSQ32SP16U.H>AE_MULSQ32SP16U.H</a> { inout
+      ae_q56s d, in ae_q56s d0, in ae_p24x2s d1 }{ae_int32x2 tp}{</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> tp, d1, d1,
+      1;</div><div class=protobody><a
+      href=AE_MULSQ32SP16UL.html>AE_MULSQ32SP16U.L</a> d, d0, tp;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZAAFQ32SP16S.HH>AE_MULZAAFQ32SP16S.HH</a> {
+      out ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in
+      ae_int24x2 d3 }{ae_int32x2 td1, ae_int32x2 td3}{</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td1, d1, d1,
+      1;</div><div class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td3,
+      d3, d3, 1;</div><div class=protobody><a
+      href=AE_MULF48Q32SP16SL.html>AE_MULF48Q32SP16S.L</a> d, d0,
+      td1;</div><div class=protobody><a
+      href=AE_MULAF48Q32SP16SL.html>AE_MULAF48Q32SP16S.L</a> d, d2,
+      td3;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZAAFQ32SP16S.HH_S2>AE_MULZAAFQ32SP16S.HH_S2</a>
+      { out ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in
+      ae_int24x2 d3 }{ae_int32x2 td1, ae_int32x2 td3}{</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td1, d1, d1,
+      1;</div><div class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td3,
+      d3, d3, 1;</div><div class=protobody><a
+      href=AE_MULF48Q32SP16SL.html>AE_MULF48Q32SP16S.L</a> d, d0,
+      td1;</div><div class=protobody><a
+      href=AE_MULAF48Q32SP16SL.html>AE_MULAF48Q32SP16S.L</a> d, d2,
+      td3;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZAAFQ32SP16S.LH>AE_MULZAAFQ32SP16S.LH</a> {
+      out ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in
+      ae_int24x2 d3 }{ae_int32x2 td3}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> td3, d3, d3, 1;</div><div
+      class=protobody><a href=AE_MULF48Q32SP16SL.html>AE_MULF48Q32SP16S.L</a>
+      d, d0, d1;</div><div class=protobody><a
+      href=AE_MULAF48Q32SP16SL.html>AE_MULAF48Q32SP16S.L</a> d, d2,
+      td3;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZAAFQ32SP16S.LH_S2>AE_MULZAAFQ32SP16S.LH_S2</a>
+      { out ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in
+      ae_int24x2 d3 }{ae_int32x2 td3}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> td3, d3, d3, 1;</div><div
+      class=protobody><a href=AE_MULF48Q32SP16SL.html>AE_MULF48Q32SP16S.L</a>
+      d, d0, d1;</div><div class=protobody><a
+      href=AE_MULAF48Q32SP16SL.html>AE_MULAF48Q32SP16S.L</a> d, d2,
+      td3;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZAAFQ32SP16U.HH>AE_MULZAAFQ32SP16U.HH</a> {
+      out ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in
+      ae_int24x2 d3 }{ae_int32x2 td1, ae_int32x2 td3}{</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td1, d1, d1,
+      1;</div><div class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td3,
+      d3, d3, 1;</div><div class=protobody><a
+      href=AE_MULF48Q32SP16UL.html>AE_MULF48Q32SP16U.L</a> d, d0,
+      td1;</div><div class=protobody><a
+      href=AE_MULAF48Q32SP16UL.html>AE_MULAF48Q32SP16U.L</a> d, d2,
+      td3;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZAAFQ32SP16U.HH_S2>AE_MULZAAFQ32SP16U.HH_S2</a>
+      { out ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in
+      ae_int24x2 d3 }{ae_int32x2 td1, ae_int32x2 td3}{</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td1, d1, d1,
+      1;</div><div class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td3,
+      d3, d3, 1;</div><div class=protobody><a
+      href=AE_MULF48Q32SP16UL.html>AE_MULF48Q32SP16U.L</a> d, d0,
+      td1;</div><div class=protobody><a
+      href=AE_MULAF48Q32SP16UL.html>AE_MULAF48Q32SP16U.L</a> d, d2,
+      td3;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZAAFQ32SP16U.LH>AE_MULZAAFQ32SP16U.LH</a> {
+      out ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in
+      ae_int24x2 d3 }{ae_int32x2 td3}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> td3, d3, d3, 1;</div><div
+      class=protobody><a href=AE_MULF48Q32SP16UL.html>AE_MULF48Q32SP16U.L</a>
+      d, d0, d1;</div><div class=protobody><a
+      href=AE_MULAF48Q32SP16UL.html>AE_MULAF48Q32SP16U.L</a> d, d2,
+      td3;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZAAFQ32SP16U.LH_S2>AE_MULZAAFQ32SP16U.LH_S2</a>
+      { out ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in
+      ae_int24x2 d3 }{ae_int32x2 td3}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> td3, d3, d3, 1;</div><div
+      class=protobody><a href=AE_MULF48Q32SP16UL.html>AE_MULF48Q32SP16U.L</a>
+      d, d0, d1;</div><div class=protobody><a
+      href=AE_MULAF48Q32SP16UL.html>AE_MULAF48Q32SP16U.L</a> d, d2,
+      td3;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZAAQ32SP16S.HH>AE_MULZAAQ32SP16S.HH</a> { out
+      ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in ae_int24x2
+      d3 }{ae_int32x2 td1, ae_int32x2 td3}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> td1, d1, d1, 1;</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td3, d3, d3,
+      1;</div><div class=protobody><a
+      href=AE_MULQ32SP16SL.html>AE_MULQ32SP16S.L</a> d, d0, td1;</div><div
+      class=protobody><a href=AE_MULAQ32SP16SL.html>AE_MULAQ32SP16S.L</a> d,
+      d2, td3;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZAAQ32SP16S.HH_S2>AE_MULZAAQ32SP16S.HH_S2</a>
+      { out ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in
+      ae_int24x2 d3 }{ae_int32x2 td1, ae_int32x2 td3}{</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td1, d1, d1,
+      1;</div><div class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td3,
+      d3, d3, 1;</div><div class=protobody><a
+      href=AE_MULQ32SP16SL.html>AE_MULQ32SP16S.L</a> d, d0, td1;</div><div
+      class=protobody><a href=AE_MULAQ32SP16SL.html>AE_MULAQ32SP16S.L</a> d,
+      d2, td3;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZAAQ32SP16S.LH>AE_MULZAAQ32SP16S.LH</a> { out
+      ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in ae_int24x2
+      d3 }{ae_int32x2 td3}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> td3, d3, d3, 1;</div><div
+      class=protobody><a href=AE_MULQ32SP16SL.html>AE_MULQ32SP16S.L</a> d, d0,
+      d1;</div><div class=protobody><a
+      href=AE_MULAQ32SP16SL.html>AE_MULAQ32SP16S.L</a> d, d2, td3;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZAAQ32SP16S.LH_S2>AE_MULZAAQ32SP16S.LH_S2</a>
+      { out ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in
+      ae_int24x2 d3 }{ae_int32x2 td3}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> td3, d3, d3, 1;</div><div
+      class=protobody><a href=AE_MULQ32SP16SL.html>AE_MULQ32SP16S.L</a> d, d0,
+      d1;</div><div class=protobody><a
+      href=AE_MULAQ32SP16SL.html>AE_MULAQ32SP16S.L</a> d, d2, td3;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZAAQ32SP16U.HH>AE_MULZAAQ32SP16U.HH</a> { out
+      ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in ae_int24x2
+      d3 }{ae_int32x2 td1, ae_int32x2 td3}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> td1, d1, d1, 1;</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td3, d3, d3,
+      1;</div><div class=protobody><a
+      href=AE_MULQ32SP16UL.html>AE_MULQ32SP16U.L</a> d, d0, td1;</div><div
+      class=protobody><a href=AE_MULAQ32SP16UL.html>AE_MULAQ32SP16U.L</a> d,
+      d2, td3;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZAAQ32SP16U.HH_S2>AE_MULZAAQ32SP16U.HH_S2</a>
+      { out ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in
+      ae_int24x2 d3 }{ae_int32x2 td1, ae_int32x2 td3}{</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td1, d1, d1,
+      1;</div><div class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td3,
+      d3, d3, 1;</div><div class=protobody><a
+      href=AE_MULQ32SP16UL.html>AE_MULQ32SP16U.L</a> d, d0, td1;</div><div
+      class=protobody><a href=AE_MULAQ32SP16UL.html>AE_MULAQ32SP16U.L</a> d,
+      d2, td3;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZAAQ32SP16U.LH>AE_MULZAAQ32SP16U.LH</a> { out
+      ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in ae_int24x2
+      d3 }{ae_int32x2 td3}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> td3, d3, d3, 1;</div><div
+      class=protobody><a href=AE_MULQ32SP16UL.html>AE_MULQ32SP16U.L</a> d, d0,
+      d1;</div><div class=protobody><a
+      href=AE_MULAQ32SP16UL.html>AE_MULAQ32SP16U.L</a> d, d2, td3;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZAAQ32SP16U.LH_S2>AE_MULZAAQ32SP16U.LH_S2</a>
+      { out ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in
+      ae_int24x2 d3 }{ae_int32x2 td3}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> td3, d3, d3, 1;</div><div
+      class=protobody><a href=AE_MULQ32SP16UL.html>AE_MULQ32SP16U.L</a> d, d0,
+      d1;</div><div class=protobody><a
+      href=AE_MULAQ32SP16UL.html>AE_MULAQ32SP16U.L</a> d, d2, td3;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZASFQ32SP16S.HH>AE_MULZASFQ32SP16S.HH</a> {
+      out ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in
+      ae_int24x2 d3 }{ae_int32x2 td1, ae_int32x2 td3}{</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td1, d1, d1,
+      1;</div><div class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td3,
+      d3, d3, 1;</div><div class=protobody><a
+      href=AE_MULF48Q32SP16SL.html>AE_MULF48Q32SP16S.L</a> d, d0,
+      td1;</div><div class=protobody><a
+      href=AE_MULSF48Q32SP16SL.html>AE_MULSF48Q32SP16S.L</a> d, d2,
+      td3;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZASFQ32SP16S.HH_S2>AE_MULZASFQ32SP16S.HH_S2</a>
+      { out ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in
+      ae_int24x2 d3 }{ae_int32x2 td1, ae_int32x2 td3}{</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td1, d1, d1,
+      1;</div><div class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td3,
+      d3, d3, 1;</div><div class=protobody><a
+      href=AE_MULF48Q32SP16SL.html>AE_MULF48Q32SP16S.L</a> d, d0,
+      td1;</div><div class=protobody><a
+      href=AE_MULSF48Q32SP16SL.html>AE_MULSF48Q32SP16S.L</a> d, d2,
+      td3;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZASFQ32SP16S.LH>AE_MULZASFQ32SP16S.LH</a> {
+      out ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in
+      ae_int24x2 d3 }{ae_int32x2 td3}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> td3, d3, d3, 1;</div><div
+      class=protobody><a href=AE_MULF48Q32SP16SL.html>AE_MULF48Q32SP16S.L</a>
+      d, d0, d1;</div><div class=protobody><a
+      href=AE_MULSF48Q32SP16SL.html>AE_MULSF48Q32SP16S.L</a> d, d2,
+      td3;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZASFQ32SP16S.LH_S2>AE_MULZASFQ32SP16S.LH_S2</a>
+      { out ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in
+      ae_int24x2 d3 }{ae_int32x2 td3}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> td3, d3, d3, 1;</div><div
+      class=protobody><a href=AE_MULF48Q32SP16SL.html>AE_MULF48Q32SP16S.L</a>
+      d, d0, d1;</div><div class=protobody><a
+      href=AE_MULSF48Q32SP16SL.html>AE_MULSF48Q32SP16S.L</a> d, d2,
+      td3;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZASFQ32SP16U.HH>AE_MULZASFQ32SP16U.HH</a> {
+      out ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in
+      ae_int24x2 d3 }{ae_int32x2 td1, ae_int32x2 td3}{</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td1, d1, d1,
+      1;</div><div class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td3,
+      d3, d3, 1;</div><div class=protobody><a
+      href=AE_MULF48Q32SP16UL.html>AE_MULF48Q32SP16U.L</a> d, d0,
+      td1;</div><div class=protobody><a
+      href=AE_MULSF48Q32SP16UL.html>AE_MULSF48Q32SP16U.L</a> d, d2,
+      td3;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZASFQ32SP16U.HH_S2>AE_MULZASFQ32SP16U.HH_S2</a>
+      { out ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in
+      ae_int24x2 d3 }{ae_int32x2 td1, ae_int32x2 td3}{</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td1, d1, d1,
+      1;</div><div class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td3,
+      d3, d3, 1;</div><div class=protobody><a
+      href=AE_MULF48Q32SP16UL.html>AE_MULF48Q32SP16U.L</a> d, d0,
+      td1;</div><div class=protobody><a
+      href=AE_MULSF48Q32SP16UL.html>AE_MULSF48Q32SP16U.L</a> d, d2,
+      td3;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZASFQ32SP16U.LH>AE_MULZASFQ32SP16U.LH</a> {
+      out ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in
+      ae_int24x2 d3 }{ae_int32x2 td3}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> td3, d3, d3, 1;</div><div
+      class=protobody><a href=AE_MULF48Q32SP16UL.html>AE_MULF48Q32SP16U.L</a>
+      d, d0, d1;</div><div class=protobody><a
+      href=AE_MULSF48Q32SP16UL.html>AE_MULSF48Q32SP16U.L</a> d, d2,
+      td3;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZASFQ32SP16U.LH_S2>AE_MULZASFQ32SP16U.LH_S2</a>
+      { out ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in
+      ae_int24x2 d3 }{ae_int32x2 td3}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> td3, d3, d3, 1;</div><div
+      class=protobody><a href=AE_MULF48Q32SP16UL.html>AE_MULF48Q32SP16U.L</a>
+      d, d0, d1;</div><div class=protobody><a
+      href=AE_MULSF48Q32SP16UL.html>AE_MULSF48Q32SP16U.L</a> d, d2,
+      td3;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZASQ32SP16S.HH>AE_MULZASQ32SP16S.HH</a> { out
+      ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in ae_int24x2
+      d3 }{ae_int32x2 td1, ae_int32x2 td3}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> td1, d1, d1, 1;</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td3, d3, d3,
+      1;</div><div class=protobody><a
+      href=AE_MULQ32SP16SL.html>AE_MULQ32SP16S.L</a> d, d0, td1;</div><div
+      class=protobody><a href=AE_MULSQ32SP16SL.html>AE_MULSQ32SP16S.L</a> d,
+      d2, td3;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZASQ32SP16S.HH_S2>AE_MULZASQ32SP16S.HH_S2</a>
+      { out ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in
+      ae_int24x2 d3 }{ae_int32x2 td1, ae_int32x2 td3}{</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td1, d1, d1,
+      1;</div><div class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td3,
+      d3, d3, 1;</div><div class=protobody><a
+      href=AE_MULQ32SP16SL.html>AE_MULQ32SP16S.L</a> d, d0, td1;</div><div
+      class=protobody><a href=AE_MULSQ32SP16SL.html>AE_MULSQ32SP16S.L</a> d,
+      d2, td3;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZASQ32SP16S.LH>AE_MULZASQ32SP16S.LH</a> { out
+      ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in ae_int24x2
+      d3 }{ae_int32x2 td3}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> td3, d3, d3, 1;</div><div
+      class=protobody><a href=AE_MULQ32SP16SL.html>AE_MULQ32SP16S.L</a> d, d0,
+      d1;</div><div class=protobody><a
+      href=AE_MULSQ32SP16SL.html>AE_MULSQ32SP16S.L</a> d, d2, td3;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZASQ32SP16S.LH_S2>AE_MULZASQ32SP16S.LH_S2</a>
+      { out ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in
+      ae_int24x2 d3 }{ae_int32x2 td3}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> td3, d3, d3, 1;</div><div
+      class=protobody><a href=AE_MULQ32SP16SL.html>AE_MULQ32SP16S.L</a> d, d0,
+      d1;</div><div class=protobody><a
+      href=AE_MULSQ32SP16SL.html>AE_MULSQ32SP16S.L</a> d, d2, td3;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZASQ32SP16U.HH>AE_MULZASQ32SP16U.HH</a> { out
+      ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in ae_int24x2
+      d3 }{ae_int32x2 td1, ae_int32x2 td3}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> td1, d1, d1, 1;</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td3, d3, d3,
+      1;</div><div class=protobody><a
+      href=AE_MULQ32SP16UL.html>AE_MULQ32SP16U.L</a> d, d0, td1;</div><div
+      class=protobody><a href=AE_MULSQ32SP16UL.html>AE_MULSQ32SP16U.L</a> d,
+      d2, td3;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZASQ32SP16U.HH_S2>AE_MULZASQ32SP16U.HH_S2</a>
+      { out ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in
+      ae_int24x2 d3 }{ae_int32x2 td1, ae_int32x2 td3}{</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td1, d1, d1,
+      1;</div><div class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td3,
+      d3, d3, 1;</div><div class=protobody><a
+      href=AE_MULQ32SP16UL.html>AE_MULQ32SP16U.L</a> d, d0, td1;</div><div
+      class=protobody><a href=AE_MULSQ32SP16UL.html>AE_MULSQ32SP16U.L</a> d,
+      d2, td3;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZASQ32SP16U.LH>AE_MULZASQ32SP16U.LH</a> { out
+      ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in ae_int24x2
+      d3 }{ae_int32x2 td3}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> td3, d3, d3, 1;</div><div
+      class=protobody><a href=AE_MULQ32SP16UL.html>AE_MULQ32SP16U.L</a> d, d0,
+      d1;</div><div class=protobody><a
+      href=AE_MULSQ32SP16UL.html>AE_MULSQ32SP16U.L</a> d, d2, td3;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZASQ32SP16U.LH_S2>AE_MULZASQ32SP16U.LH_S2</a>
+      { out ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in
+      ae_int24x2 d3 }{ae_int32x2 td3}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> td3, d3, d3, 1;</div><div
+      class=protobody><a href=AE_MULQ32SP16UL.html>AE_MULQ32SP16U.L</a> d, d0,
+      d1;</div><div class=protobody><a
+      href=AE_MULSQ32SP16UL.html>AE_MULSQ32SP16U.L</a> d, d2, td3;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZSAFQ32SP16S.HH>AE_MULZSAFQ32SP16S.HH</a> {
+      out ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in
+      ae_int24x2 d3 }{ae_int32x2 td1, ae_int32x2 td3}{</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td1, d1, d1,
+      1;</div><div class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td3,
+      d3, d3, 1;</div><div class=protobody><a
+      href=AE_MULF48Q32SP16SL.html>AE_MULF48Q32SP16S.L</a> d, d2,
+      td3;</div><div class=protobody><a
+      href=AE_MULSF48Q32SP16SL.html>AE_MULSF48Q32SP16S.L</a> d, d0,
+      td1;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZSAFQ32SP16S.HH_S2>AE_MULZSAFQ32SP16S.HH_S2</a>
+      { out ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in
+      ae_int24x2 d3 }{ae_int32x2 td1, ae_int32x2 td3}{</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td1, d1, d1,
+      1;</div><div class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td3,
+      d3, d3, 1;</div><div class=protobody><a
+      href=AE_MULF48Q32SP16SL.html>AE_MULF48Q32SP16S.L</a> d, d2,
+      td3;</div><div class=protobody><a
+      href=AE_MULSF48Q32SP16SL.html>AE_MULSF48Q32SP16S.L</a> d, d0,
+      td1;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZSAFQ32SP16S.LH>AE_MULZSAFQ32SP16S.LH</a> {
+      out ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in
+      ae_int24x2 d3 }{ae_int32x2 td3}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> td3, d3, d3, 1;</div><div
+      class=protobody><a href=AE_MULF48Q32SP16SL.html>AE_MULF48Q32SP16S.L</a>
+      d, d2, td3;</div><div class=protobody><a
+      href=AE_MULSF48Q32SP16SL.html>AE_MULSF48Q32SP16S.L</a> d, d0,
+      d1;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZSAFQ32SP16S.LH_S2>AE_MULZSAFQ32SP16S.LH_S2</a>
+      { out ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in
+      ae_int24x2 d3 }{ae_int32x2 td3}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> td3, d3, d3, 1;</div><div
+      class=protobody><a href=AE_MULF48Q32SP16SL.html>AE_MULF48Q32SP16S.L</a>
+      d, d2, td3;</div><div class=protobody><a
+      href=AE_MULSF48Q32SP16SL.html>AE_MULSF48Q32SP16S.L</a> d, d0,
+      d1;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZSAFQ32SP16U.HH>AE_MULZSAFQ32SP16U.HH</a> {
+      out ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in
+      ae_int24x2 d3 }{ae_int32x2 td1, ae_int32x2 td3}{</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td1, d1, d1,
+      1;</div><div class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td3,
+      d3, d3, 1;</div><div class=protobody><a
+      href=AE_MULF48Q32SP16UL.html>AE_MULF48Q32SP16U.L</a> d, d2,
+      td3;</div><div class=protobody><a
+      href=AE_MULSF48Q32SP16UL.html>AE_MULSF48Q32SP16U.L</a> d, d0,
+      td1;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZSAFQ32SP16U.HH_S2>AE_MULZSAFQ32SP16U.HH_S2</a>
+      { out ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in
+      ae_int24x2 d3 }{ae_int32x2 td1, ae_int32x2 td3}{</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td1, d1, d1,
+      1;</div><div class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td3,
+      d3, d3, 1;</div><div class=protobody><a
+      href=AE_MULF48Q32SP16UL.html>AE_MULF48Q32SP16U.L</a> d, d2,
+      td3;</div><div class=protobody><a
+      href=AE_MULSF48Q32SP16UL.html>AE_MULSF48Q32SP16U.L</a> d, d0,
+      td1;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZSAFQ32SP16U.LH>AE_MULZSAFQ32SP16U.LH</a> {
+      out ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in
+      ae_int24x2 d3 }{ae_int32x2 td3}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> td3, d3, d3, 1;</div><div
+      class=protobody><a href=AE_MULF48Q32SP16UL.html>AE_MULF48Q32SP16U.L</a>
+      d, d2, td3;</div><div class=protobody><a
+      href=AE_MULSF48Q32SP16UL.html>AE_MULSF48Q32SP16U.L</a> d, d0,
+      d1;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZSAFQ32SP16U.LH_S2>AE_MULZSAFQ32SP16U.LH_S2</a>
+      { out ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in
+      ae_int24x2 d3 }{ae_int32x2 td3}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> td3, d3, d3, 1;</div><div
+      class=protobody><a href=AE_MULF48Q32SP16UL.html>AE_MULF48Q32SP16U.L</a>
+      d, d2, td3;</div><div class=protobody><a
+      href=AE_MULSF48Q32SP16UL.html>AE_MULSF48Q32SP16U.L</a> d, d0,
+      d1;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZSAQ32SP16S.HH>AE_MULZSAQ32SP16S.HH</a> { out
+      ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in ae_int24x2
+      d3 }{ae_int32x2 td1, ae_int32x2 td3}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> td1, d1, d1, 1;</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td3, d3, d3,
+      1;</div><div class=protobody><a
+      href=AE_MULQ32SP16SL.html>AE_MULQ32SP16S.L</a> d, d2, td3;</div><div
+      class=protobody><a href=AE_MULSQ32SP16SL.html>AE_MULSQ32SP16S.L</a> d,
+      d0, td1;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZSAQ32SP16S.HH_S2>AE_MULZSAQ32SP16S.HH_S2</a>
+      { out ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in
+      ae_int24x2 d3 }{ae_int32x2 td1, ae_int32x2 td3}{</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td1, d1, d1,
+      1;</div><div class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td3,
+      d3, d3, 1;</div><div class=protobody><a
+      href=AE_MULQ32SP16SL.html>AE_MULQ32SP16S.L</a> d, d2, td3;</div><div
+      class=protobody><a href=AE_MULSQ32SP16SL.html>AE_MULSQ32SP16S.L</a> d,
+      d0, td1;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZSAQ32SP16S.LH>AE_MULZSAQ32SP16S.LH</a> { out
+      ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in ae_int24x2
+      d3 }{ae_int32x2 td3}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> td3, d3, d3, 1;</div><div
+      class=protobody><a href=AE_MULQ32SP16SL.html>AE_MULQ32SP16S.L</a> d, d2,
+      td3;</div><div class=protobody><a
+      href=AE_MULSQ32SP16SL.html>AE_MULSQ32SP16S.L</a> d, d0, d1;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZSAQ32SP16S.LH_S2>AE_MULZSAQ32SP16S.LH_S2</a>
+      { out ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in
+      ae_int24x2 d3 }{ae_int32x2 td3}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> td3, d3, d3, 1;</div><div
+      class=protobody><a href=AE_MULQ32SP16SL.html>AE_MULQ32SP16S.L</a> d, d2,
+      td3;</div><div class=protobody><a
+      href=AE_MULSQ32SP16SL.html>AE_MULSQ32SP16S.L</a> d, d0, d1;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZSAQ32SP16U.HH>AE_MULZSAQ32SP16U.HH</a> { out
+      ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in ae_int24x2
+      d3 }{ae_int32x2 td1, ae_int32x2 td3}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> td1, d1, d1, 1;</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td3, d3, d3,
+      1;</div><div class=protobody><a
+      href=AE_MULQ32SP16UL.html>AE_MULQ32SP16U.L</a> d, d2, td3;</div><div
+      class=protobody><a href=AE_MULSQ32SP16UL.html>AE_MULSQ32SP16U.L</a> d,
+      d0, td1;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZSAQ32SP16U.HH_S2>AE_MULZSAQ32SP16U.HH_S2</a>
+      { out ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in
+      ae_int24x2 d3 }{ae_int32x2 td1, ae_int32x2 td3}{</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td1, d1, d1,
+      1;</div><div class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td3,
+      d3, d3, 1;</div><div class=protobody><a
+      href=AE_MULQ32SP16UL.html>AE_MULQ32SP16U.L</a> d, d2, td3;</div><div
+      class=protobody><a href=AE_MULSQ32SP16UL.html>AE_MULSQ32SP16U.L</a> d,
+      d0, td1;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZSAQ32SP16U.LH>AE_MULZSAQ32SP16U.LH</a> { out
+      ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in ae_int24x2
+      d3 }{ae_int32x2 td3}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> td3, d3, d3, 1;</div><div
+      class=protobody><a href=AE_MULQ32SP16UL.html>AE_MULQ32SP16U.L</a> d, d2,
+      td3;</div><div class=protobody><a
+      href=AE_MULSQ32SP16UL.html>AE_MULSQ32SP16U.L</a> d, d0, d1;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZSAQ32SP16U.LH_S2>AE_MULZSAQ32SP16U.LH_S2</a>
+      { out ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in
+      ae_int24x2 d3 }{ae_int32x2 td3}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> td3, d3, d3, 1;</div><div
+      class=protobody><a href=AE_MULQ32SP16UL.html>AE_MULQ32SP16U.L</a> d, d2,
+      td3;</div><div class=protobody><a
+      href=AE_MULSQ32SP16UL.html>AE_MULSQ32SP16U.L</a> d, d0, d1;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZSSFQ32SP16S.HH>AE_MULZSSFQ32SP16S.HH</a> {
+      out ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in
+      ae_int24x2 d3 }{ae_int32x2 td1, ae_int32x2 td3}{</div><div
+      class=protobody><a href=AE_MOVI.html>AE_MOVI</a> d, 0;</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td1, d1, d1,
+      1;</div><div class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td3,
+      d3, d3, 1;</div><div class=protobody><a
+      href=AE_MULSF48Q32SP16SL.html>AE_MULSF48Q32SP16S.L</a> d, d0,
+      td1;</div><div class=protobody><a
+      href=AE_MULSF48Q32SP16SL.html>AE_MULSF48Q32SP16S.L</a> d, d2,
+      td3;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZSSFQ32SP16S.HH_S2>AE_MULZSSFQ32SP16S.HH_S2</a>
+      { out ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in
+      ae_int24x2 d3 }{ae_int32x2 td1, ae_int32x2 td3}{</div><div
+      class=protobody><a href=AE_MOVI.html>AE_MOVI</a> d, 0;</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td1, d1, d1,
+      1;</div><div class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td3,
+      d3, d3, 1;</div><div class=protobody><a
+      href=AE_MULSF48Q32SP16SL.html>AE_MULSF48Q32SP16S.L</a> d, d0,
+      td1;</div><div class=protobody><a
+      href=AE_MULSF48Q32SP16SL.html>AE_MULSF48Q32SP16S.L</a> d, d2,
+      td3;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZSSFQ32SP16S.LH>AE_MULZSSFQ32SP16S.LH</a> {
+      out ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in
+      ae_int24x2 d3 }{ae_int32x2 td3}{</div><div class=protobody><a
+      href=AE_MOVI.html>AE_MOVI</a> d, 0;</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> td3, d3, d3, 1;</div><div
+      class=protobody><a
+      href=AE_MULSF48Q32SP16SL.html>AE_MULSF48Q32SP16S.L</a> d, d0,
+      d1;</div><div class=protobody><a
+      href=AE_MULSF48Q32SP16SL.html>AE_MULSF48Q32SP16S.L</a> d, d2,
+      td3;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZSSFQ32SP16S.LH_S2>AE_MULZSSFQ32SP16S.LH_S2</a>
+      { out ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in
+      ae_int24x2 d3 }{ae_int32x2 td3}{</div><div class=protobody><a
+      href=AE_MOVI.html>AE_MOVI</a> d, 0;</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> td3, d3, d3, 1;</div><div
+      class=protobody><a
+      href=AE_MULSF48Q32SP16SL.html>AE_MULSF48Q32SP16S.L</a> d, d0,
+      d1;</div><div class=protobody><a
+      href=AE_MULSF48Q32SP16SL.html>AE_MULSF48Q32SP16S.L</a> d, d2,
+      td3;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZSSFQ32SP16U.HH>AE_MULZSSFQ32SP16U.HH</a> {
+      out ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in
+      ae_int24x2 d3 }{ae_int32x2 td1, ae_int32x2 td3}{</div><div
+      class=protobody><a href=AE_MOVI.html>AE_MOVI</a> d, 0;</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td1, d1, d1,
+      1;</div><div class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td3,
+      d3, d3, 1;</div><div class=protobody><a
+      href=AE_MULSF48Q32SP16UL.html>AE_MULSF48Q32SP16U.L</a> d, d0,
+      td1;</div><div class=protobody><a
+      href=AE_MULSF48Q32SP16UL.html>AE_MULSF48Q32SP16U.L</a> d, d2,
+      td3;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZSSFQ32SP16U.HH_S2>AE_MULZSSFQ32SP16U.HH_S2</a>
+      { out ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in
+      ae_int24x2 d3 }{ae_int32x2 td1, ae_int32x2 td3}{</div><div
+      class=protobody><a href=AE_MOVI.html>AE_MOVI</a> d, 0;</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td1, d1, d1,
+      1;</div><div class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td3,
+      d3, d3, 1;</div><div class=protobody><a
+      href=AE_MULSF48Q32SP16UL.html>AE_MULSF48Q32SP16U.L</a> d, d0,
+      td1;</div><div class=protobody><a
+      href=AE_MULSF48Q32SP16UL.html>AE_MULSF48Q32SP16U.L</a> d, d2,
+      td3;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZSSFQ32SP16U.LH>AE_MULZSSFQ32SP16U.LH</a> {
+      out ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in
+      ae_int24x2 d3 }{ae_int32x2 td3}{</div><div class=protobody><a
+      href=AE_MOVI.html>AE_MOVI</a> d, 0;</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> td3, d3, d3, 1;</div><div
+      class=protobody><a
+      href=AE_MULSF48Q32SP16UL.html>AE_MULSF48Q32SP16U.L</a> d, d0,
+      d1;</div><div class=protobody><a
+      href=AE_MULSF48Q32SP16UL.html>AE_MULSF48Q32SP16U.L</a> d, d2,
+      td3;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZSSFQ32SP16U.LH_S2>AE_MULZSSFQ32SP16U.LH_S2</a>
+      { out ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in
+      ae_int24x2 d3 }{ae_int32x2 td3}{</div><div class=protobody><a
+      href=AE_MOVI.html>AE_MOVI</a> d, 0;</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> td3, d3, d3, 1;</div><div
+      class=protobody><a
+      href=AE_MULSF48Q32SP16UL.html>AE_MULSF48Q32SP16U.L</a> d, d0,
+      d1;</div><div class=protobody><a
+      href=AE_MULSF48Q32SP16UL.html>AE_MULSF48Q32SP16U.L</a> d, d2,
+      td3;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZSSQ32SP16S.HH>AE_MULZSSQ32SP16S.HH</a> { out
+      ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in ae_int24x2
+      d3 }{ae_int32x2 td1, ae_int32x2 td3}{</div><div class=protobody><a
+      href=AE_MOVI.html>AE_MOVI</a> d, 0;</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> td1, d1, d1, 1;</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td3, d3, d3,
+      1;</div><div class=protobody><a
+      href=AE_MULSQ32SP16SL.html>AE_MULSQ32SP16S.L</a> d, d0, td1;</div><div
+      class=protobody><a href=AE_MULSQ32SP16SL.html>AE_MULSQ32SP16S.L</a> d,
+      d2, td3;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZSSQ32SP16S.HH_S2>AE_MULZSSQ32SP16S.HH_S2</a>
+      { out ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in
+      ae_int24x2 d3 }{ae_int32x2 td1, ae_int32x2 td3}{</div><div
+      class=protobody><a href=AE_MOVI.html>AE_MOVI</a> d, 0;</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td1, d1, d1,
+      1;</div><div class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td3,
+      d3, d3, 1;</div><div class=protobody><a
+      href=AE_MULSQ32SP16SL.html>AE_MULSQ32SP16S.L</a> d, d0, td1;</div><div
+      class=protobody><a href=AE_MULSQ32SP16SL.html>AE_MULSQ32SP16S.L</a> d,
+      d2, td3;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZSSQ32SP16S.LH>AE_MULZSSQ32SP16S.LH</a> { out
+      ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in ae_int24x2
+      d3 }{ae_int32x2 td3}{</div><div class=protobody><a
+      href=AE_MOVI.html>AE_MOVI</a> d, 0;</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> td3, d3, d3, 1;</div><div
+      class=protobody><a href=AE_MULSQ32SP16SL.html>AE_MULSQ32SP16S.L</a> d,
+      d0, d1;</div><div class=protobody><a
+      href=AE_MULSQ32SP16SL.html>AE_MULSQ32SP16S.L</a> d, d2, td3;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZSSQ32SP16S.LH_S2>AE_MULZSSQ32SP16S.LH_S2</a>
+      { out ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in
+      ae_int24x2 d3 }{ae_int32x2 td3}{</div><div class=protobody><a
+      href=AE_MOVI.html>AE_MOVI</a> d, 0;</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> td3, d3, d3, 1;</div><div
+      class=protobody><a href=AE_MULSQ32SP16SL.html>AE_MULSQ32SP16S.L</a> d,
+      d0, d1;</div><div class=protobody><a
+      href=AE_MULSQ32SP16SL.html>AE_MULSQ32SP16S.L</a> d, d2, td3;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZSSQ32SP16U.HH>AE_MULZSSQ32SP16U.HH</a> { out
+      ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in ae_int24x2
+      d3 }{ae_int32x2 td1, ae_int32x2 td3}{</div><div class=protobody><a
+      href=AE_MOVI.html>AE_MOVI</a> d, 0;</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> td1, d1, d1, 1;</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td3, d3, d3,
+      1;</div><div class=protobody><a
+      href=AE_MULSQ32SP16UL.html>AE_MULSQ32SP16U.L</a> d, d0, td1;</div><div
+      class=protobody><a href=AE_MULSQ32SP16UL.html>AE_MULSQ32SP16U.L</a> d,
+      d2, td3;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZSSQ32SP16U.HH_S2>AE_MULZSSQ32SP16U.HH_S2</a>
+      { out ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in
+      ae_int24x2 d3 }{ae_int32x2 td1, ae_int32x2 td3}{</div><div
+      class=protobody><a href=AE_MOVI.html>AE_MOVI</a> d, 0;</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td1, d1, d1,
+      1;</div><div class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> td3,
+      d3, d3, 1;</div><div class=protobody><a
+      href=AE_MULSQ32SP16UL.html>AE_MULSQ32SP16U.L</a> d, d0, td1;</div><div
+      class=protobody><a href=AE_MULSQ32SP16UL.html>AE_MULSQ32SP16U.L</a> d,
+      d2, td3;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZSSQ32SP16U.LH>AE_MULZSSQ32SP16U.LH</a> { out
+      ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in ae_int24x2
+      d3 }{ae_int32x2 td3}{</div><div class=protobody><a
+      href=AE_MOVI.html>AE_MOVI</a> d, 0;</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> td3, d3, d3, 1;</div><div
+      class=protobody><a href=AE_MULSQ32SP16UL.html>AE_MULSQ32SP16U.L</a> d,
+      d0, d1;</div><div class=protobody><a
+      href=AE_MULSQ32SP16UL.html>AE_MULSQ32SP16U.L</a> d, d2, td3;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_MULZSSQ32SP16U.LH_S2>AE_MULZSSQ32SP16U.LH_S2</a>
+      { out ae_q56s d, in ae_q56s d0, in ae_int24x2 d1, in ae_q56s d2, in
+      ae_int24x2 d3 }{ae_int32x2 td3}{</div><div class=protobody><a
+      href=AE_MOVI.html>AE_MOVI</a> d, 0;</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> td3, d3, d3, 1;</div><div
+      class=protobody><a href=AE_MULSQ32SP16UL.html>AE_MULSQ32SP16U.L</a> d,
+      d0, d1;</div><div class=protobody><a
+      href=AE_MULSQ32SP16UL.html>AE_MULSQ32SP16U.L</a> d, d2, td3;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_RLadd4_rvec>AE_RLadd4_rvec</a> { out ae_int32
+      dout, in ae_int32 din, in ae_int32x4 d0 }{ae_int32x2 t, ae_int32 t2,
+      ae_int32 t3, ae_int32x2 t_1, ae_int32 t4}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> t, d0->d1, d0->d1, 0;</div><div
+      class=protobody><a href=AE_ADD32S.html>AE_ADD32S</a> t2, din,
+      t;</div><div class=protobody><a href=AE_ADD32S.html>AE_ADD32S</a> t3,
+      t2, d0->d1;</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> t_1, d0->d0, d0->d0, 0;</div><div
+      class=protobody><a href=AE_ADD32S.html>AE_ADD32S</a> t4, t3,
+      t_1;</div><div class=protobody><a href=AE_ADD32S.html>AE_ADD32S</a>
+      dout, t4, d0->d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_RLadd_rvec>AE_RLadd_rvec</a> { out ae_int32 dout,
+      in ae_int32 din, in ae_int32x2 d0 }{ae_int32x2 t, ae_int32
+      t2}{</div><div class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> t,
+      d0, d0, 0;</div><div class=protobody><a
+      href=AE_ADD32S.html>AE_ADD32S</a> t2, din, t;</div><div
+      class=protobody><a href=AE_ADD32S.html>AE_ADD32S</a> dout, t2,
+      d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_RLmula0_rvec>AE_RLmula0_rvec</a> { out ae_int32
+      dout, in ae_int32 din, in ae_int16x4 d0, in ae_int16x4 d1 }{ae_int32x2
+      t, ae_int32x2 t1, ae_int32x2 t2, ae_int32x2 t3, ae_int32x2
+      t4}{</div><div class=protobody><a href=AE_MOV.html>AE_MOV</a> t,
+      din;</div><div class=protobody><a href=AE_MUL16X4.html>AE_MUL16X4</a>
+      t1, t2, d0, d1;</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> t3, t1, t1, 1;</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> t4, t1, t1,
+      3;</div><div class=protobody><a href=AE_ADD32S.html>AE_ADD32S</a> t, t,
+      t3;</div><div class=protobody><a href=AE_ADD32S.html>AE_ADD32S</a> t, t,
+      t4;</div><div class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> t3,
+      t2, t2, 1;</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> t4, t2, t2, 3;</div><div
+      class=protobody><a href=AE_ADD32S.html>AE_ADD32S</a> t, t, t3;</div><div
+      class=protobody><a href=AE_ADD32S.html>AE_ADD32S</a> t, t, t4;</div><div
+      class=protobody><a href=AE_MOV.html>AE_MOV</a> dout, t;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_RLmuls0_rvec>AE_RLmuls0_rvec</a> { out ae_int32
+      dout, in ae_int32 din, in ae_int16x4 d0, in ae_int16x4 d1 }{ae_int32x2
+      t, ae_int32x2 t1, ae_int32x2 t2, ae_int32x2 t3, ae_int32x2
+      t4}{</div><div class=protobody><a href=AE_MOV.html>AE_MOV</a> t,
+      din;</div><div class=protobody><a href=AE_MUL16X4.html>AE_MUL16X4</a>
+      t1, t2, d0, d1;</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> t3, t1, t1, 1;</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> t4, t1, t1,
+      3;</div><div class=protobody><a href=AE_SUB32S.html>AE_SUB32S</a> t, t,
+      t3;</div><div class=protobody><a href=AE_SUB32S.html>AE_SUB32S</a> t, t,
+      t4;</div><div class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> t3,
+      t2, t2, 1;</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> t4, t2, t2, 3;</div><div
+      class=protobody><a href=AE_SUB32S.html>AE_SUB32S</a> t, t, t3;</div><div
+      class=protobody><a href=AE_SUB32S.html>AE_SUB32S</a> t, t, t4;</div><div
+      class=protobody><a href=AE_MOV.html>AE_MOV</a> dout, t;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_RLsub4_rvec>AE_RLsub4_rvec</a> { out ae_int32
+      dout, in ae_int32 din, in ae_int32x4 d0 }{ae_int32x2 t, ae_int32 t2,
+      ae_int32 t3, ae_int32x2 t_1, ae_int32 t4}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> t, d0->d1, d0->d1, 0;</div><div
+      class=protobody><a href=AE_SUB32S.html>AE_SUB32S</a> t2, din,
+      t;</div><div class=protobody><a href=AE_SUB32S.html>AE_SUB32S</a> t3,
+      t2, d0->d1;</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> t_1, d0->d0, d0->d0, 0;</div><div
+      class=protobody><a href=AE_SUB32S.html>AE_SUB32S</a> t4, t3,
+      t_1;</div><div class=protobody><a href=AE_SUB32S.html>AE_SUB32S</a>
+      dout, t4, d0->d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_RLsub_rvec>AE_RLsub_rvec</a> { out ae_int32 dout,
+      in ae_int32 din, in ae_int32x2 d0 }{ae_int32x2 t, ae_int32
+      t2}{</div><div class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> t,
+      d0, d0, 0;</div><div class=protobody><a
+      href=AE_SUB32S.html>AE_SUB32S</a> t2, din, t;</div><div
+      class=protobody><a href=AE_SUB32S.html>AE_SUB32S</a> dout, t2,
+      d0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_SEL16.2301>AE_SEL16.2301</a> { out ae_int16x4 d,
+      in ae_int16x4 d0, in ae_int16x4 d1 }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> d, d0, d1, 12;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_SEL16.4321>AE_SEL16.4321</a> { out ae_int16x4 d,
+      in ae_int16x4 d0, in ae_int16x4 d1 }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> d, d0, d1, 4;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_SEL16.5140>AE_SEL16.5140</a> { out ae_int16x4 d,
+      in ae_int16x4 d0, in ae_int16x4 d1 }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> d, d0, d1, 11;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_SEL16.5146>AE_SEL16.5146</a> { out ae_int16x4 d,
+      in ae_int16x4 d0, in ae_int16x4 d1 }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> d, d0, d1, 10;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_SEL16.5342>AE_SEL16.5342</a> { out ae_int16x4 d,
+      in ae_int16x4 d0, in ae_int16x4 d1 }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> d, d0, d1, 14;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_SEL16.5410>AE_SEL16.5410</a> { out ae_int16x4 d,
+      in ae_int16x4 d0, in ae_int16x4 d1 }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> d, d0, d1, 3;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_SEL16.5432>AE_SEL16.5432</a> { out ae_int16x4 d,
+      in ae_int16x4 d0, in ae_int16x4 d1 }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> d, d0, d1, 0;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_SEL16.6420>AE_SEL16.6420</a> { out ae_int16x4 d,
+      in ae_int16x4 d0, in ae_int16x4 d1 }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> d, d0, d1, 8;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_SEL16.6543>AE_SEL16.6543</a> { out ae_int16x4 d,
+      in ae_int16x4 d0, in ae_int16x4 d1 }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> d, d0, d1, 5;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_SEL16.7160>AE_SEL16.7160</a> { out ae_int16x4 d,
+      in ae_int16x4 d0, in ae_int16x4 d1 }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> d, d0, d1, 13;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_SEL16.7362>AE_SEL16.7362</a> { out ae_int16x4 d,
+      in ae_int16x4 d0, in ae_int16x4 d1 }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> d, d0, d1, 9;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_SEL16.7520>AE_SEL16.7520</a> { out ae_int16x4 d,
+      in ae_int16x4 d0, in ae_int16x4 d1 }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> d, d0, d1, 6;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_SEL16.7531>AE_SEL16.7531</a> { out ae_int16x4 d,
+      in ae_int16x4 d0, in ae_int16x4 d1 }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> d, d0, d1, 15;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_SEL16.7610>AE_SEL16.7610</a> { out ae_int16x4 d,
+      in ae_int16x4 d0, in ae_int16x4 d1 }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> d, d0, d1, 2;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_SEL16.7632>AE_SEL16.7632</a> { out ae_int16x4 d,
+      in ae_int16x4 d0, in ae_int16x4 d1 }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> d, d0, d1, 1;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_SEL16I>AE_SEL16I</a> { out ae_int16x4 d, in
+      ae_int16x4 d0, in ae_int16x4 d1, in immediate i }{}{</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> d, d0, d1, i +
+      0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_SEL16X4IR>AE_SEL16X4IR</a> { out ae_int16x4 v, in
+      ae_int16x4 v0, in ae_int16x4 v1, in immediate i }{}{</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> v, v1, v0, i +
+      0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_SEL24.HH>AE_SEL24.HH</a> { out ae_int24x2 d, in
+      ae_int32x2 d0, in ae_int32x2 d1 }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> d, d0, d1, 1;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_SEL24.HL>AE_SEL24.HL</a> { out ae_int24x2 d, in
+      ae_int32x2 d0, in ae_int32x2 d1 }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> d, d0, d1, 2;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_SEL24.LH>AE_SEL24.LH</a> { out ae_int24x2 d, in
+      ae_int32x2 d0, in ae_int32x2 d1 }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> d, d0, d1, 0;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_SEL24.LL>AE_SEL24.LL</a> { out ae_int24x2 d, in
+      ae_int32x2 d0, in ae_int32x2 d1 }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> d, d0, d1, 3;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_SEL32.HH>AE_SEL32.HH</a> { out ae_int32x2 d, in
+      ae_int32x2 d0, in ae_int32x2 d1 }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> d, d0, d1, 1;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_SEL32.HL>AE_SEL32.HL</a> { out ae_int32x2 d, in
+      ae_int32x2 d0, in ae_int32x2 d1 }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> d, d0, d1, 2;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_SEL32.LH>AE_SEL32.LH</a> { out ae_int32x2 d, in
+      ae_int32x2 d0, in ae_int32x2 d1 }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> d, d0, d1, 0;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_SEL32.LL>AE_SEL32.LL</a> { out ae_int32x2 d, in
+      ae_int32x2 d0, in ae_int32x2 d1 }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> d, d0, d1, 3;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_SEL32I>AE_SEL32I</a> { out ae_int32x2 d, in
+      ae_int32x2 d0, in ae_int32x2 d1, in immediate i }{}{</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> d, d0, d1, i +
+      0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_SEL32X2IR>AE_SEL32X2IR</a> { out ae_int32x2 v, in
+      ae_int32x2 v0, in ae_int32x2 v1, in immediate i }{}{</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> v, v1, v0, i +
+      0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_SELF32X2IR>AE_SELF32X2IR</a> { out ae_f32x2 v, in
+      ae_f32x2 v0, in ae_f32x2 v1, in immediate i }{}{</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> v, v1, v0, i +
+      0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_SELP24.HH>AE_SELP24.HH</a> { out ae_p24x2s d, in
+      ae_p24x2s d0, in ae_p24x2s d1 }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> d, d0, d1, 1;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_SELP24.HL>AE_SELP24.HL</a> { out ae_p24x2s d, in
+      ae_p24x2s d0, in ae_p24x2s d1 }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> d, d0, d1, 2;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_SELP24.LH>AE_SELP24.LH</a> { out ae_p24x2s d, in
+      ae_p24x2s d0, in ae_p24x2s d1 }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> d, d0, d1, 0;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_SELP24.LL>AE_SELP24.LL</a> { out ae_p24x2s d, in
+      ae_p24x2s d0, in ae_p24x2s d1 }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> d, d0, d1, 3;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_SELSX2IR>AE_SELSX2IR</a> { out xtfloatx2 v, in
+      xtfloatx2 v0, in xtfloatx2 v1, in immediate i }{}{</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> v, v1, v0, i +
+      0;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_SRLA16_vector>AE_SRLA16_vector</a> { out
+      ae_int16x4 aout, in ae_int16x4 var1, in int32 var2 }{ae_int32x2 t1,
+      ae_int32x2 t2}{</div><div class=protobody><a
+      href=AE_CVT32X2F1632.html>AE_CVT32X2F16.32</a> t1, var1;</div><div
+      class=protobody><a href=AE_CVT32X2F1610.html>AE_CVT32X2F16.10</a> t2,
+      var1;</div><div class=protobody><a href=AE_SRLA32.html>AE_SRLA32</a> t1,
+      t1, var2;</div><div class=protobody><a href=AE_SRLA32.html>AE_SRLA32</a>
+      t2, t2, var2;</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> aout, t1, t2, 7;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_TRUNC16X4F32>AE_TRUNC16X4F32</a> { out ae_f16x4
+      d, in ae_f32x2 dl, in ae_f32x2 dh }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> d, dl, dh, 7;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_TRUNC16X4F32_scalar>AE_TRUNC16X4F32_scalar</a> {
+      out ae_int16 p, in ae_int32 d0 }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> p, d0, d0, 7;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#AE_TRUNC16X4F32_vector>AE_TRUNC16X4F32_vector</a> {
+      out ae_int16x4 p, in ae_int32x4 d0 }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> p, d0->d1, d0->d0, 7;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a href=../protos.html#HIGH.S>HIGH.S</a> {
+      out xtfloat d, in xtfloatx2 d01 }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> d, d01, d01, 1;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a href=../protos.html#LOW.S>LOW.S</a> { out
+      xtfloat d, in xtfloatx2 d01 }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> d, d01, d01, 3;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a href=../protos.html#RADD.SX2>RADD.SX2</a>
+      { out xtfloat r, in xtfloatx2 s }{xtfloatx2 t}{</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> t, s, s,
+      0;</div><div class=protobody><a href=ADDS.html>ADD.S</a> r, t,
+      s;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a href=../protos.html#RMAX.S>RMAX.S</a> {
+      out xtfloat r, in xtfloatx2 s }{xtfloatx2 t}{</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> t, s, s,
+      0;</div><div class=protobody><a href=MAXS.html>MAX.S</a> r, t,
+      s;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a href=../protos.html#RMIN.S>RMIN.S</a> {
+      out xtfloat r, in xtfloatx2 s }{xtfloatx2 t}{</div><div
+      class=protobody><a href=AE_SEL16I.html>AE_SEL16I</a> t, s, s,
+      0;</div><div class=protobody><a href=MINS.html>MIN.S</a> r, t,
+      s;</div><div class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#SEL32_HH.SX2>SEL32_HH.SX2</a> { out xtfloatx2 d, in
+      xtfloatx2 d0, in xtfloatx2 d1 }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> d, d0, d1, 1;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#SEL32_HL.SX2>SEL32_HL.SX2</a> { out xtfloatx2 d, in
+      xtfloatx2 d0, in xtfloatx2 d1 }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> d, d0, d1, 2;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#SEL32_LH.SX2>SEL32_LH.SX2</a> { out xtfloatx2 d, in
+      xtfloatx2 d0, in xtfloatx2 d1 }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> d, d0, d1, 0;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#SEL32_LL.SX2>SEL32_LL.SX2</a> { out xtfloatx2 d, in
+      xtfloatx2 d0, in xtfloatx2 d1 }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> d, d0, d1, 3;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_f24_rtor_ae_f16>ae_f24_rtor_ae_f16</a> { out
+      ae_f16 a, in ae_f24 b }{ae_int32x2 t}{</div><div class=protobody><a
+      href=AE_SLAI32.html>AE_SLAI32</a> t, b, 8;</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> a, t, t, 7;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_f24x2_rtor_ae_f24>ae_f24x2_rtor_ae_f24</a> { out
+      ae_f24 d, in ae_f24x2 d01 }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> d, d01, d01, 3;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_f24x2_rtor_ae_int24>ae_f24x2_rtor_ae_int24</a> {
+      out ae_int24 a, in ae_f24x2 b }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> a, b, b, 3;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_f24x2_rtor_ae_int32>ae_f24x2_rtor_ae_int32</a> {
+      out ae_int32 a, in ae_f24x2 b }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> a, b, b, 3;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_f32_rtor_ae_f16>ae_f32_rtor_ae_f16</a> { out
+      ae_f16 a, in ae_f32 b }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> a, b, b, 7;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_f32x2_rtor_ae_f32>ae_f32x2_rtor_ae_f32</a> { out
+      ae_f32 d, in ae_f32x2 d01 }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> d, d01, d01, 3;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_f32x2_rtor_ae_int32>ae_f32x2_rtor_ae_int32</a> {
+      out ae_int32 a, in ae_f32x2 b }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> a, b, b, 3;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int24_rtor_ae_int16>ae_int24_rtor_ae_int16</a> {
+      out ae_int16 a, in ae_int24 b }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> a, b, b, 8;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int24x2_rtor_ae_f24>ae_int24x2_rtor_ae_f24</a> {
+      out ae_f24 a, in ae_int24x2 b }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> a, b, b, 3;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int24x2_rtor_ae_f32>ae_int24x2_rtor_ae_f32</a> {
+      out ae_f32 a, in ae_int24x2 b }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> a, b, b, 3;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int24x2_rtor_ae_int24>ae_int24x2_rtor_ae_int24</a>
+      { out ae_int24 d, in ae_int24x2 d01 }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> d, d01, d01, 3;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int32_rtor_ae_int16>ae_int32_rtor_ae_int16</a> {
+      out ae_int16 a, in ae_int32 b }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> a, b, b, 8;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int32x2_rtor_ae_f32>ae_int32x2_rtor_ae_f32</a> {
+      out ae_f32 a, in ae_int32x2 b }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> a, b, b, 3;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int32x2_rtor_ae_int32>ae_int32x2_rtor_ae_int32</a>
+      { out ae_int32 d, in ae_int32x2 d01 }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> d, d01, d01, 3;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int32x2_rtor_ae_int32u>ae_int32x2_rtor_ae_int32u</a>
+      { out ae_int32u d, in ae_int32x2 d01 }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> d, d01, d01, 3;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#ae_int32x4_rtor_ae_int16x4>ae_int32x4_rtor_ae_int16x4</a>
+      { out ae_int16x4 a, in ae_int32x4 b }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> a, b->d1, b->d0, 8;</div><div
+      class=protohead>}</div>
+    </div>
+    <div>
+      <div class=protohead>proto <a
+      href=../protos.html#xtfloatx2_rtor_xtfloat>xtfloatx2_rtor_xtfloat</a> {
+      out xtfloat d, in xtfloatx2 d01 }{}{</div><div class=protobody><a
+      href=AE_SEL16I.html>AE_SEL16I</a> d, d01, d01, 3;</div><div
+      class=protohead>}</div>
+    </div>
+  </body>
+</html>

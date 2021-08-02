@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--* Copyright Statement:
+ *
+ * This software/firmware and related documentation ("MediaTek Software") are
+ * protected under relevant copyright laws. The information contained herein
+ * is confidential and proprietary to MediaTek Inc. and/or its licensors.
+ * Without the prior written permission of MediaTek inc. and/or its licensors,
+ * any reproduction, modification, use or disclosure of MediaTek Software,
+ * and information contained herein, in whole or in part, shall be strictly prohibited.
+ *
+ * MediaTek Inc. (C) 2012. All rights reserved.
+ *
+ * BY OPENING THIS FILE, RECEIVER HEREBY UNEQUIVOCALLY ACKNOWLEDGES AND AGREES
+ * THAT THE SOFTWARE/FIRMWARE AND ITS DOCUMENTATIONS ("MEDIATEK SOFTWARE")
+ * RECEIVED FROM MEDIATEK AND/OR ITS REPRESENTATIVES ARE PROVIDED TO RECEIVER ON
+ * AN "AS-IS" BASIS ONLY. MEDIATEK EXPRESSLY DISCLAIMS ANY AND ALL WARRANTIES,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NONINFRINGEMENT.
+ * NEITHER DOES MEDIATEK PROVIDE ANY WARRANTY WHATSOEVER WITH RESPECT TO THE
+ * SOFTWARE OF ANY THIRD PARTY WHICH MAY BE USED BY, INCORPORATED IN, OR
+ * SUPPLIED WITH THE MEDIATEK SOFTWARE, AND RECEIVER AGREES TO LOOK ONLY TO SUCH
+ * THIRD PARTY FOR ANY WARRANTY CLAIM RELATING THERETO. RECEIVER EXPRESSLY ACKNOWLEDGES
+ * THAT IT IS RECEIVER'S SOLE RESPONSIBILITY TO OBTAIN FROM ANY THIRD PARTY ALL PROPER LICENSES
+ * CONTAINED IN MEDIATEK SOFTWARE. MEDIATEK SHALL ALSO NOT BE RESPONSIBLE FOR ANY MEDIATEK
+ * SOFTWARE RELEASES MADE TO RECEIVER'S SPECIFICATION OR TO CONFORM TO A PARTICULAR
+ * STANDARD OR OPEN FORUM. RECEIVER'S SOLE AND EXCLUSIVE REMEDY AND MEDIATEK'S ENTIRE AND
+ * CUMULATIVE LIABILITY WITH RESPECT TO THE MEDIATEK SOFTWARE RELEASED HEREUNDER WILL BE,
+ * AT MEDIATEK'S OPTION, TO REVISE OR REPLACE THE MEDIATEK SOFTWARE AT ISSUE,
+ * OR REFUND ANY SOFTWARE LICENSE FEES OR SERVICE CHARGE PAID BY RECEIVER TO
+ * MEDIATEK FOR SUCH MEDIATEK SOFTWARE AT ISSUE.
+ *
+ * The following software/firmware and/or related documentation ("MediaTek Software")
+ * have been modified by MediaTek Inc. All revisions are subject to any receiver's
+ * applicable license agreements with MediaTek Inc.
+ */  -->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_label">Operator Plugin APK</string>
+
+    <string name="Wifi_wfc_dialog_title">Wi-Fi calling</string>
+    <string name="Wifi_wfc_dialog_top_wording">You are now connected to Wi-Fi Network Name Wi-Fi Network</string>
+    <string name="Wifi_wfc_dialog_bottom_wording">When you see this symbol at the top of your screen after connected to a Wi-Fi network, you are able to make calls and send messages over Wi-Fi.</string>
+    <string name="Skip">SKIP</string>
+    <string name="Learn_more">LEARN MORE</string>
+    <string name="Next">NEXT</string>
+    <string name="Done">DONE</string>
+    <string name="Wfc_questions">Wi-Fi calling questions</string>
+    <string name="Wfc_off_summary">Disabled</string>
+    <string name="wfc_on_summary">Wi-Fi calling on</string>
+    <string name="connection_preference">Connection preference</string>
+    <string name="WiFi_preferred">Wi-Fi preferred</string>
+    <string name="Cellular_network_preferred">Cellular network preferred</string>
+    <string name="Never_use_cellular_network">Never use Cellular Network</string>
+    <string name="WiFi_preferred_summary">Use Wi-Fi for calls. If Wi-Fi is unavailable, use cellular network.(Default)</string>
+    <string name="Cellular_network_preferred_summary">Use cellular network for calls. If cellular network is unavailable use Wi-Fi.</string>
+    <string name="Never_use_cellular_network_summary">Use only Wi-Fi for calls. Do not use Cellular network, even if available.</string>
+    <string name="no_sim_present_error">No Sim present</string>
+    <string name="inavlid_sim_error">Error05: Invalid Sim</string>
+    <string name="airplane_mode_on">Airplane mode is on</string>
+    <string name="cellular_prefered_summary">Cellular preferred is your connection preference</string>
+    <string name="wifi_off_summary">Wi-Fi turned Off</string>
+    <string name="not_connected_to_wifi_summary">Not connected to Wi-Fi</string>
+    <string name="poor_wifi_signal_summary">Poor Wi-Fi signal</string>
+    <string name="wfc_enabling_summary">Enabling...</string>
+    <string name="wfc_disabling_summary">Disabling...</string>
+    <string name="wfc_ready_for_calls_summary">Ready for calls</string>
+    <string name="wfc_unknown_error_summary">Unknown error</string>
+    <string name="wfc_incorrect_sim_card_error">Error05: Invalid SIM card</string>
+
+    <!-- OP08: entry for mobile network settings network mode start-->
+    <string name="lte_on">LTE On (recommended)</string>
+    <string name="lte_off" translatable="false">LTE Off</string>
+    <string name="lte_3g" translatable="false">LTE/3G</string>
+    <string name="only_2g" translatable="false">2G only</string>
+
+    <string-array name="enabled_networks_2g_on_choices" translatable="false">
+        <item>@string/lte_on</item>
+        <item>@string/lte_off</item>
+        <item>@string/lte_3g</item>
+        <item>@string/only_2g</item>
+    </string-array>
+
+    <string-array name="network_mode_options_2g_on_values" translatable="false">
+        <item>"9"</item>
+        <item>"0"</item>
+        <item>"12"</item>
+        <item>"1"</item>
+    </string-array>
+
+    <string-array name="enabled_networks_2g_off_choices" translatable="false">
+        <item>@string/lte_on</item>
+        <item>@string/lte_off</item>
+        <item>@string/lte_3g</item>
+    </string-array>
+
+    <string-array name="network_mode_options_2g_off_values" translatable="false">
+        <item>"9"</item>
+        <item>"0"</item>
+        <item>"12"</item>
+    </string-array>
+    <!-- OP08: entry for mobile network settings network mode end-->
+
+    <!-- Disable 2G button start -->
+    <string name="network_button_disable_2g">Disable 2G</string>
+    <string name="network_button_disable_2g_summary">This setting disables 2G service on the device.</string>
+    <string name="dialog_disable_2g_Alert_title">Disable 2G?</string>
+    <string name="dialog_disable_2g_summary">This setting disables 2G service. If 2G service is disabled, some apps and functions may not work in locations where LTE or 3G is unavailable.</string>
+    <string name="dialog_disable_2g_alert_ok">Yes</string>
+    <string name="dialog_disable_2g_alert_cancel">No</string>
+    <!-- Disable 2G button end -->
+    <!-- Show pop up if move out of home network start -->
+    <string name="dialog_out_of_home_title">Out of Home Network</string>
+    <string name="dialog_out_of_home_summary">Roaming data is turned on. Roaming charges may apply as per your rate plan. To turn roaming data off please go to Settings -> Network &amp; Internet -> Mobile Network.</string>
+    <!-- Show pop up if move out of home network end -->
+</resources>

@@ -1,0 +1,110 @@
+bootstrap_go_package {
+    name: "soong-framework-mediatek",
+    pkgPath: "android/soong/framework/mediatek",
+    deps: [
+        "soong-android",
+        "soong-java",
+    ],
+    srcs: [
+        "framework.go",
+    ],
+    pluginFor: ["soong_build"],
+}
+
+mtk_framework_defaults {
+    name: "mediatek-framework_defaults",
+}
+
+java_library {
+    name: "mediatek-framework",
+    installable: true,
+    libs: [
+        "voip-common",
+        "mediatek-common",
+        "android.hardware.power-V1.0-java",
+        "vendor.mediatek.hardware.power-V2.0-java",
+        "vendor.mediatek.hardware.mtkpower-V1.0-java",
+    ],
+    static_libs: [
+        "vendor.mediatek.hardware.nvram-V1.0-java",
+    ],
+    defaults: [
+        "mediatek-framework_defaults",
+    ],
+    srcs: [
+        "camera/advcam/java/**/*.java",
+        "custom/java/**/*.java",
+        "filesystemprovider/java/**/*.java",
+        "gnssdebugreport/java/**/*.java",
+        "media/camcorder/java/**/*.java",
+        "media/dcfDecoder/java/**/*.java",
+        "media/matrixeffect/java/**/*.java",
+        "media/java/**/*.java",
+        "media/pq/java/**/*.java",
+        "sdkversion/java/**/*.java",
+        "settingsprovider/java/**/*.java",
+        "storage/java/**/*.java",
+        "util/java/**/*.java",
+        "widget/java/**/*.java",
+        "camera/mmsdk/java/**/*.java",
+        "core/java//**/*.java",
+        "services/core/java/com/mediatek/location/**/*.java",
+
+        // MMSDK
+        "camera/mmsdk/java/com/mediatek/mmsdk/IMMSdkService.aidl",
+
+        // AdvCam
+        "camera/mmsdk/java/com/mediatek/mmsdk/IEffectUser.aidl",
+
+        // for CaptureRequest
+        "camera/mmsdk/java/com/mediatek/mmsdk/IEffectUpdateListener.aidl",
+
+        // PowerHal
+        "camera/mmsdk/java/com/mediatek/mmsdk/ImageInfo.java",
+
+        //GnssDebugReport
+        "camera/mmsdk/java/com/mediatek/mmsdk/IMemory.aidl",
+        "camera/mmsdk/java/com/mediatek/mmsdk/IMemoryHeap.aidl",
+        "camera/mmsdk/java/com/mediatek/mmsdk/IImageTransformUser.aidl",
+        "camera/mmsdk/java/com/mediatek/mmsdk/IFeatureManager.aidl",
+        "camera/mmsdk/java/com/mediatek/mmsdk/IEffectFactory.aidl",
+        "camera/mmsdk/java/com/mediatek/mmsdk/IEffectHalClient.aidl",
+        "camera/mmsdk/java/com/mediatek/mmsdk/IEffectHal.aidl",
+        "camera/mmsdk/java/com/mediatek/mmsdk/IEffectListener.aidl",
+        "camera/mmsdk/java/com/mediatek/mmsdk/TrasformOptions.java",
+        "camera/mmsdk/java/com/mediatek/mmsdk/Rect.java",
+        "camera/mmsdk/java/com/mediatek/mmsdk/EffectHalVersion.java",
+        "camera/mmsdk/java/com/mediatek/mmsdk/BaseParameters.java",
+        "camera/mmsdk/java/com/mediatek/mmsdk/BinderHolder.java",
+        "core/java/com/mediatek/search/ISearchEngineManagerService.aidl",
+        "core/java/com/mediatek/datashaping/IDataShapingManager.aidl",
+        "camera/mmsdk/java/com/mediatek/mmsdk/callback/ICallbackClient.aidl",
+        "camera/advcam/java/com/mediatek/advcam/IAdvCamService.aidl",
+        "core/java/com/mediatek/powerhalmgr/IPowerHalMgr.aidl",
+        "gnssdebugreport/java/com/mediatek/gnssdebugreport/IDebugReportCallback.aidl",
+        "gnssdebugreport/java/com/mediatek/gnssdebugreport/IGnssDebugReportService.aidl",
+    ],
+    aidl: {
+        include_dirs: [
+            "frameworks/native/aidl/gui",
+            "frameworks/av/camera/aidl",
+        ],
+        local_include_dirs: [
+            "camera/mmsdk/java",
+            "gnssdebugreport/java",
+            "core/java",
+        ],
+    },
+    required: [
+        "libmediatek_exceptionlog",
+        "libpowerhalwrap_jni",
+        "libcustom_jni",
+        "libjni_pq",
+    ],
+/*
+    required: [
+        "libmpojni",
+        "libgifEncoder_jni",
+    ],
+*/
+}

@@ -1,0 +1,41 @@
+MET_PLF := $(MTK_PLATFORM)
+
+################################################################################
+# MET_EMI
+################################################################################
+FEATURE_EMI := $(if $(FEATURE_EMI),$(FEATURE_EMI),y)
+$(info FEATURE_EMI = $(FEATURE_EMI))
+
+ccflags-y += -DMET_PLF_CHIP_USE
+
+ifneq ($(FEATURE_EMI), n)
+    MET_EMI := y
+    MET_LEGACY_EMI := $(if $(FEATURE_LEGACY_EMI),$(FEATURE_LEGACY_EMI),y)
+
+    # for mtk_dramc.h
+    ifneq ("$(wildcard $(srctree)/drivers/misc/mediatek/dramc/$(MTK_PLATFORM)/mtk_dramc.h)","")
+        ccflags-y += -I$(srctree)/drivers/misc/mediatek/dramc/$(MTK_PLATFORM)/
+    else
+        MET_EMI = n
+        $(info ======== Missing $(srctree)/drivers/misc/mediatek/dramc/$(MTK_PLATFORM)/mtk_dramc.h ========)
+        $(info ======== disable MET_EMI ========)
+    endif
+else
+    MET_EMI := n
+endif
+
+$(info EMI_SEDA_VERSION = $(EMI_SEDA_VERSION))
+$(info EMI_DRAMC_VERSION = $(EMI_DRAMC_VERSION))
+
+ifeq ("$(EMI_DRAMC_VERSION)", "V2")
+    ccflags-y += -I$(MET_PLF_DIR)/dramc/V2/
+    met-$(MET_EMI) += $(MET_PLF)/dramc/V2/mtk_dramc.o
+endif
+
+ifeq ("$(EMI_SEDA_VERSION)", "SEDA3")
+    met-$(MET_EMI) += $(MET_PLF)/emi/SEDA3/met_emi.o
+    met-$(MET_EMI) += $(MET_PLF)/emi/SEDA3/mtk_emi_bm.o
+endif
+
+met-y += $(MET_PLF)/met_plf_chip_init.o
+met-y += $(MET_PLF)/met_plf_chip_trace.o

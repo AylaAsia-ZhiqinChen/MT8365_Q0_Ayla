@@ -1,0 +1,13 @@
+User / CoreID          : mediatek_ss2_hifi4/prod / hifi4_Aquila_E2_PROD
+BuildUniqueID          : 483166
+Config desc. name      : version9
+Config save Time       : 2018/08/05 09:14:22
+TIE source             : MATHFUN_V4.tie
+Build type             : Production
+Build time             : 2018/08/05 09:14:22
+Generator version      : RG-2018.9
+Build result           : Passed
+magic1                 : 1533485662350
+magic2                 : 1533485662350
+
+VSIA_Soft_IP_Tag % Process_Step Source % Vendor Tensilica, Inc. % Product XtensaLX % Version 7.0.9 % Date_Time 20180805_091422 % _CustomerID 13943 % _BuildID 483166

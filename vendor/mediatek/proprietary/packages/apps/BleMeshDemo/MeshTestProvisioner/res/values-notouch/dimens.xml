@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="node_list_height">50dp</dimen>
+    <dimen name="node_list_text_textsize">10sp</dimen>
+    <dimen name="node_list_status_textsize">8sp</dimen>
+    <dimen name="node_list_time_textsize">8sp</dimen>
+    <dimen name="node_list_heartbeat_textsize">8sp</dimen>
+
+    <dimen name="unprovisioned_name_textsize">10sp</dimen>
+    <dimen name="unprovisioned_status_textsize">8sp</dimen>
+
+    <dimen name="main_margin_lefet_right">25sp</dimen>
+
+</resources>

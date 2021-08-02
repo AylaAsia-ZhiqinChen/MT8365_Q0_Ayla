@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <LinearLayout
+        android:id="@+id/llShow"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+        <TextView
+            android:id="@+id/info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/info"
+            android:background="?android:attr/selectableItemBackground"
+            android:textSize="18sp"
+            android:padding="5dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray" />
+        <TextView
+            android:id="@+id/config"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/config"
+            android:background="?android:attr/selectableItemBackground"
+            android:textSize="18sp"
+            android:padding="5dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray" />
+        <TextView
+            android:id="@+id/message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/message"
+            android:background="?android:attr/selectableItemBackground"
+            android:textSize="18sp"
+            android:padding="5dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray" />
+        <TextView
+            android:id="@+id/connect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/connect"
+            android:background="?android:attr/selectableItemBackground"
+            android:textSize="18sp"
+            android:padding="5dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray" />
+        <TextView
+            android:id="@+id/disconnect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/disconnect"
+            android:background="?android:attr/selectableItemBackground"
+            android:textSize="18sp"
+            android:padding="5dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/llInfo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        >
+        <RelativeLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+        </RelativeLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/llConfig"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        >
+        <ListView
+            android:id="@+id/listConfig"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@android:color/darker_gray"
+            android:dividerHeight="1px"
+            >
+        </ListView>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/llMessage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone"
+        >
+        <ListView
+            android:id="@+id/listMessage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@android:color/darker_gray"
+            android:dividerHeight="1px"
+            >
+        </ListView>
+    </LinearLayout>
+
+
+
+
+</LinearLayout>

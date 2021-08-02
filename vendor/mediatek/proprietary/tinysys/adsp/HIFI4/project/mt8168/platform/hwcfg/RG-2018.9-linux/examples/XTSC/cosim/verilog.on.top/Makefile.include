@@ -1,0 +1,43 @@
+# Customer ID=13943; Build=0x75f5e; Copyright (c) 2006-2016 Cadence Design Systems, Inc.  ALL RIGHTS RESERVED.
+# These coded instructions, statements, and computer programs are the
+# copyrighted works and confidential proprietary information of
+# Cadence Design Systems, Inc.  They may be adapted and modified by bona fide
+# purchasers for internal use, but neither the original nor any adapted
+# or modified version may be disclosed or distributed to third parties
+# in any manner, medium, or form, in whole or in part, without the prior
+# written consent of Cadence Design Systems, Inc.
+
+
+XTTOOLS = /mtkeda/xtensa/Xplorer-7.0.9/XtDevTools/install/tools/RG-2018.9-linux/XtensaTools
+
+ifeq ($(shell set|grep -c "XTSC_RUN_COSIM_64BIT=\'\'"),1)
+  $(error The XTSC_RUN_COSIM_64BIT environment variable is set to the empty value.  Please either set it to 1 or unset/unsetenv it.)
+endif
+ifneq ($(XTSC_RUN_COSIM_64BIT),)
+ifneq ($(XTSC_RUN_COSIM_64BIT),1)
+  $(error The XTSC_RUN_COSIM_64BIT environment variable is set but not to 1.  Please either set it to 1 or unset/unsetenv it.)
+endif
+endif
+
+ifndef XTSC_RUN_COSIM_VENDOR
+XTSC_RUN_COSIM_VENDOR=cadence
+endif
+
+export XTENSA_SYSTEM = /proj/mtk05764/ALPS_Base/alps-dev-p0.mp1-mt8168.ep-adsp/vendor/mediatek/proprietary/tinysys/hifi_dsp/source/pub/project/mt8168/common/hwcfg/RG-2018.9-linux/config
+export XTENSA_CORE = hifi4_Aquila_E2_PROD
+
+
+XTENSA_XMP_ROOT    = $(CURDIR)/../../../XMP
+XTENSA_XMP_XSYS    = $(XTENSA_XMP_ROOT)/$(SYSTEM).xsys
+XTENSA_XMP_SYSTEM  = $(XTENSA_XMP_ROOT)/sys-x86-linux/$(SYSTEM)
+XTENSA_XMP_PACKAGE = $(XTENSA_XMP_SYSTEM)/package
+XTENSA_XMP_DEFS    = $(XTENSA_XMP_PACKAGE)/sys-defs.mk
+XTENSA_XMP_CORES   = $(XTENSA_XMP_PACKAGE)/cores
+XMP_XTENSA_SYSTEM  = $(XTENSA_XMP_PACKAGE)/config
+
+
+TARGET_CXX = $(XTTOOLS)/bin/xt-xcc
+TARGET_CFLAGS  = -g $(CUSTOM_TARGET_CFLAGS)
+TARGET_LIBS = -lm
+
+

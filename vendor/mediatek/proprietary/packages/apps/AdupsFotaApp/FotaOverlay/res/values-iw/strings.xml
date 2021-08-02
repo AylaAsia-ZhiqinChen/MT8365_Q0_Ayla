@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">עדכון אלחוטי</string>
+    <string name="check_now">בודק עדכונים</string>
+    <string name="option_settings">אפשרות הגדרות</string>
+    <string name="current_version_text">גרסה נוכחית:</string>
+    <string name="new_version_text">גרסה חדשה</string>
+    <string name="download_progress">קצב התקדמות:</string>
+    <string name="update_now">עדכן עכשיו</string>
+    <string name="update_later">עדכן יותר מאוחר</string>
+    <string name="battery_remove_title">אזהרה</string>
+    <string name="notification_content_title">עדכון אלחוטי</string>
+    <string name="notification_content_newversion">גרסה חדשה זמינה</string>
+    <string name="new_version_query">בדיקת עדכונים</string>
+    <string name="no_new_version">המערכת כעת מעודכנת</string>
+    <string name="network_error">חיבור לרשת נכשל</string>
+    <string name="unmount_sdcard">שגיאת כרטיס זיכרון, נא לבדוק.</string>
+    <string name="sdcard_crash_or_unmount">אין כרטיס זיכרון \ אין מספיק שטח אחסון במכשיר</string>
+    <string name="btn_pause">השהה</string>
+    <string name="btn_resume">המשך</string>
+    <string name="btn_download">הורד</string>
+    <string name="cancel_download_title">בטל</string>
+    <string name="cancel_download_content">פעולה זו תמחק את קובץ ההורדה</string>
+    <string name="cancel_download_positive_btn">כן</string>
+    <string name="cancel_download_negative_btn">לא</string>
+    <string name="update_prompt">המכשיר יאתחל מחדש ויכנס למצב שדרוג.התהליך כולו יימשך מספר דקות.במהלך הזמן הזה, אל תבצע פעולה כלשהי כדי למנוע את כישלון השדרוג.</string>
+    <string name="not_support_fota_title">אזהרה</string>
+    <string name="not_support_version">פוטה אינו נתמך במכשיר זה</string>
+    <string name="package_error_title">ההתקנה נכשלה</string>
+    <string name="package_error_message_invalid">שגיאת הורדה. אנא בדוק עדכון ונסה התקנה מחדש.</string>
+    <string name="updateSuccessTitle">התקנה הצליחה</string>
+    <string name="updateSuccess">שדרוג בוצע בהצלחה %s</string>
+    <string name="package_unzip">פעולת ביטול דחיסה לא תקינה, נא לא להפריע...</string>
+    <string name="package_unzip_error">שגיאת ביטול דחיסה</string>
+    <string name="upgrade_hint">לעדכון</string>
+    <string name="setting_autocheck">הגדרות בדיקה אוטומטית</string>
+    <string name="setting_autocheck_title">הגדרות מחזור</string>
+    <string name="setting_autocheck_hint">זמן מחזור לבדיקה אוטומטית</string>
+    <string name="setting_autocheck_schedule1">שבועי</string>
+    <string name="setting_autocheck_schedule2">דוּ שְׁבוּעִי</string>
+    <string name="setting_autocheck_schedule3">חודשי</string>
+    <string name="setting_only_wifi">עדכונים באמצעות Wi-Fi בלבד</string>
+    <string name="setting_only_wifi_hint">חבילות עדכון להוריד באמצעות Wi-Fi בלבד</string>
+    <string name="setting_autodownload">לאפשר הורדה אוטומטית תחת Wifi</string>
+    <string name="setting_autodownload_hint">חבילות העדכון יורדו באופן אוטומטי</string>
+    <string name="setting_network_tip">אתה נמצא ברשת 3G / 2G, יש לבחור במצב   [עדכונים באמצעות Wi-Fi בלבד] ולנסות שוב.</string>
+    <string name="reboot">אתחול מחדש...</string>
+    <string name="option_file_select">עדכונים מקומיים</string>
+    <string name="selected_update_zip">קובץ שנבחר:&#160;</string>
+    <string name="sdCard_update_tips_content"><Data><![CDATA[ <div style="font-size:15px;color:#4c4c4c"><p>1. אנא ודא הקובץ שנבחר הוא רשמי;</p>
+       	<p>2. עדכון תוכנה עלול למחוק את הנתונים שלך, אנא גבה לפני העדכון;</p>
+    		<p>3. התקנת קובץ שגוי תגרום לנזק במכשיר שלך;</p>
+        <p>4. לחץ על [עדכן כעת] ,המכשיר ייכנס למצב השחזור. נא לא להסיר את הסוללה ולא לבצע אך פעולה עד שהעדכון מושלם.</p></div> ]]> </Data>
+    </string>
+    <string name="sdCard_upgrade_hint">עדכון באמצעות כרטיס זיכרון</string>
+    <string name="sdCard_upgrade_find_update_file_fail">אין קובץ עדכון זמין</string>
+    <string name="sdCard_upgrade_update_file_fail_prompt">קובץ עדכון לא קיים, אנא בחר שוב.</string>
+    <string name="sdCard_upgrade_memory_space_not_enough">שגיאה</string>
+    <string name="sdCard_upgrade_copy_file_fail">העברה נכשלה</string>
+    <string name="sdCard_upgrade_copy_file_fail_prompt">העברה נכשלה, אנא נסה שוב</string>
+    <string name="sdCard_upgrade_copying">מעביר</string>
+    <string name="download_completed_text">ההורדה הושלמה, אנא לחץ להתקנה</string>
+    <string name="empty_directory">אין קובץ דחיסה בתיקייה זו</string>
+    <string name="sdcard_update_prompt">המכשיר שלך יהיה חסום אם תבחר ותוריד קובץ התקנה לא רשמי, ואו שהורדת הקובץ לא תהיה שלמה</string>
+    <string name="export_data">נתוני יצוא</string>
+    <string name="start_catch_log">מתחיל באיתור לוגים</string>
+    <string name="stop_catch_log">מתחיל באיתור לוגים</string>
+    <string name="remind_last_time">הזכר שוב</string>
+    <string name="pop_install_schedule1">עוד שעה 1</string>
+    <string name="pop_install_schedule2">עוד 4 שעות</string>
+    <string name="pop_install_schedule3">עוד 8 שעות</string>
+    <string name="pop_install_remind_title">עדכון - רמז</string>
+    <string name="pop_install_remind_content">הורדת הגרסה החדשה הושלמה, התקן אותה כעת.</string>
+    <string name="option_exit">יציאה</string>
+    <string name="ota_notify_download_pause_content">מושהה, לחץ כדי להמשיך</string>
+    <string name="ota_button_text_know">אני יודע</string>
+    <string name="ota_device_rooted_content">במכשיר זה בוצע Root, ולא ניתן לעדכן אותו!</string>
+    <string name="ota_battery_low">הכוח הנוכחי הוא פחות מ-% 1 $ d %%, אנא תשלום!</string>
+    <string name="ota_wifi_setting">הגדרות Wi-Fi</string>
+    <string name="ota_no_wifi_tip">תקשורת Wi-Fi לא זמינה כעת, האם אתה מאשר להוריד דרך הרשת?</string>
+    <string name="ota_full_rom_check">בדוק</string>
+    <string name="ota_optional_full_check">בדוק עדכון מלא</string>
+    <string name="ota_toast_no_network">הרשת לא מחוברת</string>
+    <string name="out_sdcard">כרטיס SD</string>
+    <string name="inner_sdcard">אחסון פנימי</string>
+    <string name="btn_ok">OK</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="htmlstring_version"><![CDATA[<div style=\'font-size:16px;color:#303030;\'><span style=\'word-break:break-all\'>]]></string>
+    <string name="htmlstring_version_end"><![CDATA[</span><br/>]]></string>
+    <string name="htmlstring_code_head"><![CDATA[<div style=\'font-size:14px;color:#8e8e8e;\'><span style=\'word-break:break-all\'>]]></string>
+    <string name="htmlstring_code_end"><![CDATA[</span><br/></div>]]></string>
+    <string name="match_imei">IMEI is illegal</string>
+    <string name="sdcard_crash_dir_un_build">The SDCard is not available!</string>
+    <string name="post_pro">%</string>
+    <string name="ab_install_fail">Install fail</string>
+    <string name="ab_install_success">Install successfully</string>
+    <string name="updated_need_reboot">Restart the cell phone to activate the updated version</string>
+    <string name="ab_isnatll_fail_reason">Reason：</string>
+    <string name="ab_installing">Installing</string>
+    <string name="ab_connect_fail">Connect reboot fail</string>
+    <string name="ab_battery_low">The update will be installed automatically when the battery is charged to more than %1$d%%</string>
+    <string name="ab_parms_illegal">Incorrect upgrade package parameter</string>
+    <string name="ab_reboot_now">Restart immediately</string>
+    <string name="tips_abDownOrInstall">In the downloading upgrade, do not upgrade locally at the same time</string>
+    <string name="tips_abInstall">In the installation, please do not check the full package.</string>
+    <string name="button_click_toast">Click too fast, Please try again later.</string>
+    <string name="about_wireless_update">About Wireless Update</string>
+    <string name="agree">AGREE</string>
+    <string name="analysis">App Analysis</string>
+    <string name="content">Choose to help improve your app by sharing its activity and crash-related data.</string>
+</resources>

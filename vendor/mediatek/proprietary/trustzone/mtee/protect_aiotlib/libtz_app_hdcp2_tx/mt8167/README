@@ -1,0 +1,13 @@
+Library of MTK HDCP Transmitter features.
+
+WHAT IT DOES?
+=============
+library used for HDCP algorithm to encrypt the protect content
+
+HOW IT WAS BUILT?
+==================
+
+HOW TO USE IT?
+==============
+Provide algorithm for HDCP userspace to do content protection.
+

@@ -1,0 +1,81 @@
+# Customer ID=13943; Build=0x75f5e; Copyright (c) 2006-2012 Tensilica Inc.  ALL RIGHTS RESERVED.
+# These coded instructions, statements, and computer programs are the
+# copyrighted works and confidential proprietary information of
+# Tensilica Inc.  They may be adapted and modified by bona fide
+# purchasers for internal use, but neither the original nor any adapted
+# or modified version may be disclosed or distributed to third parties
+# in any manner, medium, or form, in whole or in part, without the prior
+# written consent of Tensilica Inc.
+
+BASE_NAME := $(EXAMPLE_NAME)
+
+TIMEOUT = 60
+SELF_TIMEOUT = 30
+
+TIE_DSO = ../../TIE/example.tdk/lib-i686-Linux/libcas-example.so
+CORE_DSO = xtsc_core_sd/libxtsc_core_sd.so
+
+
+
+.PHONY: all target custom_target run debug clean custom_clean create_xtsc_core_sd clean_xtsc_core_sd 
+
+.PRECIOUS: %.c
+
+.SUFFIXES :
+.SUFFIXES : .c .cpp .cxx .o
+
+all: target
+
+custom_target:
+
+target: $(TARGET_OBJECTS) custom_target
+
+
+
+$(TIE_DSO): ../../TIE/example.tie
+	$(MAKE) -C ../.. tie
+
+
+%.c:
+	$(MKDIR) target
+	$(CP) $(TARGET_SOURCE_PATH)/$@ $@
+
+%.out: %.c $(TIE_DEPEND)
+	$(TARGET_CXX) $(TARGET_CFLAGS) -o $@ $< $(TARGET_LIBS)
+
+run: target
+	-$(SDSIM) --logfile run.log $(MAXLIBS) --script run.script $(RUNARGS)
+
+debug: target
+	-$(SDSIMDEBUG) $(MAXLIBS) sys.mxp $(RUNARGS)
+
+custom_clean:
+
+clean: custom_clean
+	-$(RM) *.o core.* *.log $(TARGET_OBJECTS)
+
+
+ifndef NO_XTSC_CORE_SD
+all: create_xtsc_core_sd
+clean: clean_xtsc_core_sd
+endif
+
+
+CORE_MEMORY_INTERFACES = -add=memory=pif
+
+create_xtsc_core_sd: $(CORE_DSO)
+
+$(CORE_DSO): xtsc_core_sd/xtsc_core_sd.cpp xtsc_core_sd/xtsc_core_sd.h
+	cd xtsc_core_sd && $(MAKE)
+        
+xtsc_core_sd/xtsc_core_sd.cpp: $(TIE_DEPEND)
+	-$(RMDIR) xtsc_core_sd
+	xt-gensdmodel -name=xtsc_core_sd \
+          -version=$(SOCDESIGNER_VERSION_NUMBER) \
+          -clear $(CORE_MEMORY_INTERFACES) \
+          $(ADDITIONAL_CORE_INTERFACES)
+        
+clean_xtsc_core_sd:
+	-$(RMDIR) xtsc_core_sd
+        
+

@@ -1,0 +1,19 @@
+
+#---------- System Variable define begin ---------
+ifneq ($(filter MTK_MT6630,$(MTK_BT_CHIP)),)
+LOCAL_CFLAGS += -DMTK_CHIP_COMBO
+endif
+ifneq ($(filter MTK_MT8167,$(MTK_BT_CHIP)),)
+LOCAL_CFLAGS += -DMTK_CHIP_CONSYS
+endif
+
+ifeq ($(MTK_MERGE_INTERFACE_SUPPORT), yes)
+LOCAL_CFLAGS += -D__MTK_MERGE_INTERFACE_SUPPORT__
+endif
+
+ifeq ($(TARGET_BUILD_VARIANT), eng)
+LOCAL_CFLAGS += -DBD_ADDR_AUTOGEN
+endif
+#---------- System Variable define end -----------
+
+

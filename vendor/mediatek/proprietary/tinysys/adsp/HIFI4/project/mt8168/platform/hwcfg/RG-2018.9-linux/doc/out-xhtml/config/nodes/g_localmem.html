@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en-us" lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="copyright" content="(C) Copyright 2005"/>
+<meta name="DC.rights.owner" content="(C) Copyright 2005"/>
+<meta name="DC.Type" content="tconcept"/>
+<meta name="DC.Title" content="Local Memories"/>
+<meta name="abstract" content=""/>
+<meta name="description" content=""/>
+<meta name="DC.Relation" scheme="URI" content="../../config/nodes/g_cache_localmem.html"/>
+<meta name="DC.Relation" scheme="URI" content="../options/opt.cfg_auto_mmap.html"/>
+<meta name="DC.Format" content="XHTML"/>
+<meta name="DC.Identifier" content="opt-gid_localmem"/>
+<link rel="stylesheet" type="text/css" href="../../commonltr.css"/>
+<link rel="stylesheet" type="text/css" href="../../cadence.css"/>
+<title>Local Memories</title>
+</head>
+<body id="opt-gid_localmem">
+
+
+    <h1 class="title topictitle1">Local Memories</h1>
+
+    
+    <div class="body conbody"><p class="shortdesc"/>
+
+        
+        <div class="section"><h2 class="title sectiontitle">Local Memory Details</h2>
+            
+            <div class="p">
+
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" id="opt-gid_localmem__d2672e3488" class="table" frame="border" border="1" rules="all"><caption><span class="tablecap">Table 1. Local Memories</span></caption>
+
+
+
+
+
+
+
+
+<thead class="thead" align="left">
+<tr class="row">
+
+<th class="entry" valign="top" id="d10312e46">Memory</th>
+
+<th class="entry" valign="top" id="d10312e49">Size</th>
+
+<th class="entry" valign="top" id="d10312e52">Address</th>
+
+<th class="entry" valign="top" id="d10312e55">Inbound PIF</th>
+
+<th class="entry" valign="top" id="d10312e58">Busy</th>
+
+<th class="entry" valign="top" id="d10312e62">Memory Errors</th>
+
+<th class="entry" valign="top" id="d10312e65">Banks</th>
+
+</tr>
+
+</thead>
+
+<tbody class="tbody">
+
+<tr class="row">
+<td class="entry" valign="top" headers="d10312e46 ">Instruction RAM 0</td>
+
+<td class="entry" valign="top" headers="d10312e49 ">64K</td>
+
+<td class="entry" valign="top" headers="d10312e52 ">0x40000000</td>
+
+<td class="entry" valign="top" headers="d10312e55 ">Selected</td>
+
+<td class="entry" valign="top" headers="d10312e58 ">Selected</td>
+
+<td class="entry" valign="top" headers="d10312e62 ">Not Selected</td>
+
+<td class="entry" valign="top" headers="d10312e65 ">1</td>
+
+</tr>
+
+<tr class="row">
+<td class="entry" valign="top" headers="d10312e46 ">Instruction RAM 1</td>
+
+<td class="entry" valign="top" headers="d10312e49 ">64K</td>
+
+<td class="entry" valign="top" headers="d10312e52 ">0x40010000</td>
+
+<td class="entry" valign="top" headers="d10312e55 ">Selected</td>
+
+<td class="entry" valign="top" headers="d10312e58 ">Selected</td>
+
+<td class="entry" valign="top" headers="d10312e62 ">Not Selected</td>
+
+<td class="entry" valign="top" headers="d10312e65 ">1</td>
+
+</tr>
+
+<tr class="row">
+<td class="entry" valign="top" headers="d10312e46 ">Data RAM 0</td>
+
+<td class="entry" valign="top" headers="d10312e49 ">256K</td>
+
+<td class="entry" valign="top" headers="d10312e52 ">0x1e000000</td>
+
+<td class="entry" valign="top" headers="d10312e55 ">Selected</td>
+
+<td class="entry" valign="top" headers="d10312e58 ">Selected</td>
+
+<td class="entry" valign="top" headers="d10312e62 ">Not Selected</td>
+
+<td class="entry" valign="top" headers="d10312e65 ">2</td>
+
+</tr>
+
+<tr class="row">
+<td class="entry" valign="top" headers="d10312e46 ">Data RAM 1</td>
+
+<td class="entry" valign="top" headers="d10312e49 ">256K</td>
+
+<td class="entry" valign="top" headers="d10312e52 ">0x1e040000</td>
+
+<td class="entry" valign="top" headers="d10312e55 ">Selected</td>
+
+<td class="entry" valign="top" headers="d10312e58 ">Selected</td>
+
+<td class="entry" valign="top" headers="d10312e62 ">Not Selected</td>
+
+<td class="entry" valign="top" headers="d10312e65 ">2</td>
+
+</tr>
+
+</tbody>
+
+</table>
+</div>
+
+</div>
+
+        </div>
+
+        <div class="section"><h2 class="title sectiontitle">Local Memory Options</h2>
+            
+            
+            <p class="p">Note that the "normal" L32R instruction which is used to load literals has a range of
+                256K bytes preceding the current PC, so the default positioning of instruction /
+                data puts data memories before instruction memories so the data memory can be used
+                for literal storage. If there is no data memory within range, the editor warns
+                because the compiler may have problems generating literals if compiling code into
+                that memory.</p>
+
+            <p class="p">Attributes that can be selected for local memory interfaces (inbound PIF, busy and
+                memory error) must be consistent for each memory type. E.g. if you configure 2 data
+                RAMs then either both must have inbound PIF configured, or neither.</p>
+
+            <p class="p">Selecting <strong class="ph b">Inbound PIF</strong> allows an external PIF master to read/write to Xtensa's
+                internal memories. When the inbound-PIF request option is enabled, an inbound-PIF
+                request buffer is added to the processor.</p>
+
+            <p class="p">Selecting <strong class="ph b">Busy</strong> will create an external interface to the processor that the
+                processor will check before writing to the memory.</p>
+<p class="p"><strong class="ph b">Banks</strong>: Data RAM and
+                Data ROM can optionally be configured in 2 or 4 banks. If multiple banks are
+                configured, then the data RAM is divided into banks so that successive data memory
+                width sized accesses go to different banks. At most one load or store can go to any
+                one bank in a cycle. </p>
+
+            <p class="p"><strong class="ph b">Split Read-Write port</strong>: For multiple load-store configurations, this brings out
+                the interfaces for all load-store units so you can handle the multiplexing and
+                banking ouside of the core. The alternative is to select CBOX which handles the
+                multiplexing inside the core.</p>
+
+            <p class="p">See the appropriate Data Book for more detailed
+                information.</p>
+</div>
+
+    </div>
+
+    <div class="related-links">
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="../../config/nodes/g_cache_localmem.html">Caches and Local Memories</a></div>
+</div>
+<div class="relinfo"><strong>Related information</strong><br/>
+<div><a class="link" href="../options/opt.cfg_auto_mmap.html" title="Xplorer can automatically position local memories for alignment and proximity needs">Automatically Select Memory Addresses</a></div>
+</div>
+</div>
+
+</body>
+</html>

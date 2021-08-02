@@ -1,0 +1,7 @@
+#on boot
+##LogProxyInSystem tool
+service loghidlsysservice /system/bin/loghidlsysservice
+    class main
+    disabled
+
+

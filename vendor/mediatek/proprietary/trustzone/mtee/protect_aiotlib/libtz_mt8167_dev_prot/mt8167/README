@@ -1,0 +1,23 @@
+The static library 'libtz_mt8167_dev_prot' is a TA library which provide the API to do cryptographic operation with device's secure information in MTK in-house TEE.
+
+
+WHAT IT DOES?
+=============
+
+The 'libtz_mt8167_dev_prot' provides the API to perform cryptographic functionality referring the per-device secret inside MTK in-house TEE.
+
+
+HOW IT WAS BUILT?
+==================
+
+All source/dependency modules of this module are already put in
+'vendor/mediatek/libs' folder.
+
+
+HOW TO USE IT?
+==============
+
+The libary 'libtz_mt8167_dev_prot' is linked with the image of MTK in-house TEE.
+It will be used to do cryptographic operation using device secret.
+
+All the source code of this library were written by MediaTek co..

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en-us" lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="copyright" content="(C) Copyright 2005"/>
+<meta name="DC.rights.owner" content="(C) Copyright 2005"/>
+<meta name="DC.Type" content="tconcept"/>
+<meta name="DC.Title" content="System Memories"/>
+<meta name="abstract" content="System RAM and ROM"/>
+<meta name="description" content="System RAM and ROM"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/pages/page.vectors.html"/>
+<meta name="DC.Format" content="XHTML"/>
+<meta name="DC.Identifier" content="opt-sysmems"/>
+<link rel="stylesheet" type="text/css" href="../../commonltr.css"/>
+<link rel="stylesheet" type="text/css" href="../../cadence.css"/>
+<title>System Memories</title>
+</head>
+<body id="opt-sysmems">
+
+
+    <h1 class="title topictitle1">System Memories</h1>
+
+    
+    <div class="body conbody"><p class="shortdesc">System RAM and ROM</p>
+
+        <div class="p">
+
+<div class="tablenoborder"><table cellpadding="4" cellspacing="0" summary="" id="opt-sysmems__d2813e4417" class="table" frame="border" border="1" rules="all"><caption><span class="tablecap">Table 1. System Memories</span></caption>
+
+
+
+
+<thead class="thead" align="left">
+<tr class="row">
+
+<th class="entry" valign="top" id="d21423e33">Memory</th>
+
+<th class="entry" valign="top" id="d21423e36">Base Address</th>
+
+<th class="entry" valign="top" id="d21423e39">Size</th>
+
+</tr>
+
+</thead>
+
+<tbody class="tbody">
+
+<tr class="row">
+<td class="entry" valign="top" headers="d21423e33 ">System RAM</td>
+
+<td class="entry" valign="top" headers="d21423e36 ">0x40020000</td>
+
+<td class="entry" valign="top" headers="d21423e39 ">2G</td>
+
+</tr>
+
+</tbody>
+
+</table>
+</div>
+
+</div>
+
+        <div class="p">System memory covers the entire 32-bit address space that is
+            not mapped to any configured local memory port. Generally, system memories are not part
+            of the processor configuration, but:<ul class="ul">
+                <li class="li">The XPG build process makes use of system memory for diagnostics if PIF is
+                    configured requiring that memories are configured.</li>
+
+                <li class="li">Vectors are, by default, automatically placed into memories and will default
+                    into system memory in most cases.</li>
+
+            </ul>
+</div>
+
+        <p class="p">Beyond the limitations noted above, system memories can be
+            added, removed, resized and repositioned as desired in your final system without
+            rebuilding the processor on the XPG. See the <span class="ph"><em class="ph i">Xtensa Linker Support Packages (LSPs) Reference Manual</em></span> for
+            information on changing and regenerating linker scripts to match the memory you intend
+            to use with software support.</p>
+
+        
+        
+
+    </div>
+
+<div class="related-links">
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="../../config/pages/page.vectors.html">Vector and System Memory Options</a></div>
+</div>
+</div>
+
+</body>
+</html>

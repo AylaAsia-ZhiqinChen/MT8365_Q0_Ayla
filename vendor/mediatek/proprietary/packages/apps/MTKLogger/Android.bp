@@ -1,0 +1,8 @@
+// Build log-handler.jar
+java_library {
+    name: "log-handler",
+    installable: true,
+    srcs: ["src/com/log/handler/**/*.java"],
+    static_libs: ["vendor.mediatek.hardware.log-V1.0-java"] + ["vendor.mediatek.hardware.lbs-V1.0-java"],
+}
+

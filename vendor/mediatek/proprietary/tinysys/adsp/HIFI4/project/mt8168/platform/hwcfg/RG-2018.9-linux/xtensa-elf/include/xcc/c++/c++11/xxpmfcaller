@@ -1,0 +1,47 @@
+// xxpmfcaller TR1 internal header
+// NOTE: no include guard
+
+#define _NAME _CLASS_NAME(_Pmf_caller)
+
+ #if _NARGS != 0
+template<class _Ret,
+	class _Arg0>
+	struct _NAME
+	{	// bind object and pointer to member function
+// apply to pointer to member function
+	template<class _Pmf,
+		_CLASS_FARG0>
+		static _Ret _Call_pmf(const volatile _Arg0*, _Pmf _Pm, _FARG0_F0)
+		{	// apply to reference to an object
+		return (_Fx0.*_Pm)(_F1_F2);
+		}
+
+	template<class _Pmf,
+		_CLASS_FARG0>
+		static _Ret _Call_pmf(const volatile void*, _Pmf _Pm, _FARG0_F0)
+		{	// apply to smart pointer of type _Farg0
+		return ((*_Fx0).*_Pm)(_F1_F2);
+		}
+
+	template<class _Pmf,
+		_CLASS_FARG0>
+		static _Ret _Apply_pmf(_Pmf _Pm, _FARG0_F0_REF)
+		{	// apply to reference to an object
+		return _Call_pmf<_Pmf, _FARG0_FARG1_REF>(&_Fx0, _Pm, _Fx0 _C_F1_F2);
+		}
+
+	template<class _Pmf,
+		_CLASS_FARG0>
+		static _Ret _Apply_pmf(_Pmf _Pm, _Farg0 *_Fx0 _C_FARG1_F1_REF)
+		{	// apply to pointer to an object
+		return _Call_pmf<_Pmf, _FARG0_FARG1_REF>(_Fx0, _Pm, *_Fx0 _C_F1_F2);
+		}
+	};
+ #endif /* _NARGS != 0 */
+
+#undef _NAME
+
+/*
+ * Copyright (c) 1992-2009 by P.J. Plauger.  ALL RIGHTS RESERVED.
+ * Consult your license regarding permissions and restrictions.
+V5.01:1611 */

@@ -1,0 +1,372 @@
+<!--
+ Customer ID=13943; Build=0x75f5e; Copyright (c) 2007-2010 by Tensilica Inc. ALL RIGHTS RESERVED. 
+ These coded instructions, statements, and computer programs are the
+ copyrighted works and confidential proprietary information of 
+ Tensilica Inc. Any rights to use, modify, and create derivative works 
+ of this file are set forth under the terms of your license agreement 
+ with Tensilica, Inc.
+-->
+<!--
+
+   -----------------------------------------------------------------------
+   Customer ID=13943; Build=0x75f5e; Copyright (c) 2010 by Tensilica Inc. ALL RIGHTS RESERVED.
+   These coded instructions, statements, and computer programs are the
+   copyrighted works and confidential proprietary information of 
+   Tensilica Inc. Any rights to use, modify, and create derivative works 
+   of this file are set forth under the terms of your license agreement 
+   with Tensilica, Inc.
+   -----------------------------------------------------------------------
+
+-->
+
+<html>
+<head>
+<title>Xtensa Configuration: `Xm_hifi4_Aquila_E2_PROD`</title>
+<style type="text/css">
+<!--
+body {
+  background:white;
+  margin:0;
+  font-family: Arial, Verdana, Myriad Web, Syntax, sans-serif;
+  text-align:center;
+  color:#333;
+}
+.signalshead { 
+  font-weight: bold;  
+  text-align:center;
+}
+.signalgroup { 
+  font-weight: bold;  
+}
+.clientside { 
+}
+.signalname { 
+  font-family: Arial, Verdana, Myriad Web, Syntax, sans-serif;
+}
+.signalwidth { 
+  font-family: "Lucida Console",Monaco5,monospace;
+  font-size: 0.8em;
+}
+.signalinout { 
+}
+.signaltiming { 
+}
+.signaloption { 
+  font-style: italic;
+  font-size: 0.8em;
+}
+
+#boundingbox { 
+  position: relative;
+  margin: 0 auto;
+  padding: 3px;
+  width: 900px;
+}
+/*--- external blocks --*/
+.myoutsidebox { 
+  border-style: solid;
+  border-width: 1px;
+  width: 120px;
+  font-family: "Lucida Console",Monaco5,monospace;
+  font-size: 1em;
+  overflow: hidden;
+}
+.spacer { 
+  border-style: none;
+  width: 120px;
+  height: 1em;
+}
+/*--- major blocks ---*/
+.myfloatleft { 
+  border-style: dashed;
+  border-color: white;
+  border-width: 1px;
+  float: left;
+}
+.xttop { 
+  border-style: solid;
+  border-color: green;
+  border-width: 2px;
+  float: left;
+}
+/*--- ports ---*/
+.myportbox { 
+  border-style: dashed;
+  border-color: white;
+  border-width: 1px;
+  vertical-align: middle;
+  font-family: "Lucida Console",Monaco5,monospace;
+  font-size: 1em;
+}
+.portleft { 
+  border-style: none;
+  height: 1em;
+  font-family: "Lucida Console",Monaco5,monospace;
+  text-align: left;
+}
+.portright { 
+  border-style: none;
+  height: 1em;
+  font-family: "Lucida Console",Monaco5,monospace;
+  text-align: right;
+}
+/*--- wires ---*/
+.mywireboundingbox { 
+  border-style: dashed;
+  border-color: white;
+  border-width: 1px;
+  width: 85px;
+  overflow: hidden;
+  float: left;
+}
+.mywirebox { 
+  border-style: dashed;
+  border-color: white;
+  border-width: 1px;
+  width: 85px;
+  vertical-align: middle;
+}
+.wireleft { 
+  background:white;
+  background-image:url(wireleft.png);
+  background-repeat:no-repeat;
+  background-position:right;
+  height: 1em;
+  width: 85px;
+}
+.wireright { 
+  background:white;
+  background-image:url(wireright.png);
+  background-repeat:no-repeat;
+  background-position:right;
+  height: 1em;
+  width: 85px;
+}
+.busleft { 
+  background:white;
+  background-image:url(busleft.png);
+  background-repeat:no-repeat;
+  background-position:right;
+  height: 1em;
+  width: 85px;
+}
+.busright { 
+  background:white;
+  background-image:url(busright.png);
+  background-repeat:no-repeat;
+  background-position:right;
+  height: 1em;
+  width: 85px;
+}
+-->
+</style>
+</head>
+
+<div id="boundingbox">
+
+<table border=1 cellpadding=3 cellspacing=1 rules=rows frame=hsides width=100%>
+<tr>
+  <th class=signalshead>Group</th>
+  <th class=signalshead>Signal Names</th>
+  <th class=signalshead>Bit-index</th>
+  <th class=signalshead>Direction</th>
+</tr>
+<tr><td rowspan=40><div class=signalgroup>AXI Master</div></td></tr>
+<tr><td class=signalname>ARADDR</td><td class=signalwidth>[32-1:0]</td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>ARBURST</td><td class=signalwidth>[2-1:0]</td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>ARCACHE</td><td class=signalwidth>[4-1:0]</td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>ARID</td><td class=signalwidth>[4-1:0]</td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>ARLEN</td><td class=signalwidth>[8-1:0]</td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>ARLOCK</td><td class=signalwidth></td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>ARPROT</td><td class=signalwidth>[3-1:0]</td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>ARQOS</td><td class=signalwidth>[4-1:0]</td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>ARREADY</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>ARSIZE</td><td class=signalwidth>[3-1:0]</td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>ARVALID</td><td class=signalwidth></td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>ARXTUSER</td><td class=signalwidth>[4-1:0]</td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>AWADDR</td><td class=signalwidth>[32-1:0]</td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>AWBURST</td><td class=signalwidth>[2-1:0]</td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>AWCACHE</td><td class=signalwidth>[4-1:0]</td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>AWID</td><td class=signalwidth>[4-1:0]</td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>AWLEN</td><td class=signalwidth>[8-1:0]</td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>AWLOCK</td><td class=signalwidth></td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>AWPROT</td><td class=signalwidth>[3-1:0]</td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>AWQOS</td><td class=signalwidth>[4-1:0]</td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>AWREADY</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>AWSIZE</td><td class=signalwidth>[3-1:0]</td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>AWVALID</td><td class=signalwidth></td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>AWXTUSER</td><td class=signalwidth>[4-1:0]</td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>BID</td><td class=signalwidth>[4-1:0]</td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>BREADY</td><td class=signalwidth></td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>BRESP</td><td class=signalwidth>[2-1:0]</td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>BVALID</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>RDATA</td><td class=signalwidth>[axiwidth-1:0]</td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>RID</td><td class=signalwidth>[4-1:0]</td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>RLAST</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>RREADY</td><td class=signalwidth></td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>RRESP</td><td class=signalwidth>[2-1:0]</td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>RVALID</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>WDATA</td><td class=signalwidth>[axiwidth-1:0]</td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>WLAST</td><td class=signalwidth></td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>WREADY</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>WSTRB</td><td class=signalwidth>[axiwidth/8-1:0]</td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>WVALID</td><td class=signalwidth></td><td class=signalinout>output</td></tr>
+<tr><td rowspan=38><div class=signalgroup>AXI Slave</div></td></tr>
+<tr><td class=signalname>ARADDR_S</td><td class=signalwidth>[32-1:0]</td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>ARBURST_S</td><td class=signalwidth>[2-1:0]</td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>ARCACHE_S</td><td class=signalwidth>[4-1:0]</td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>ARID_S</td><td class=signalwidth>[16-1:0]</td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>ARLEN_S</td><td class=signalwidth>[8-1:0]</td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>ARLOCK_S</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>ARPROT_S</td><td class=signalwidth>[3-1:0]</td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>ARQOS_S</td><td class=signalwidth>[4-1:0]</td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>ARREADY_S</td><td class=signalwidth></td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>ARSIZE_S</td><td class=signalwidth>[3-1:0]</td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>ARVALID_S</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>AWADDR_S</td><td class=signalwidth>[32-1:0]</td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>AWBURST_S</td><td class=signalwidth>[2-1:0]</td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>AWCACHE_S</td><td class=signalwidth>[4-1:0]</td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>AWID_S</td><td class=signalwidth>[16-1:0]</td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>AWLEN_S</td><td class=signalwidth>[8-1:0]</td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>AWLOCK_S</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>AWPROT_S</td><td class=signalwidth>[3-1:0]</td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>AWQOS_S</td><td class=signalwidth>[4-1:0]</td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>AWREADY_S</td><td class=signalwidth></td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>AWSIZE_S</td><td class=signalwidth>[3-1:0]</td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>AWVALID_S</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>BID_S</td><td class=signalwidth>[16-1:0]</td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>BREADY_S</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>BRESP_S</td><td class=signalwidth>[2-1:0]</td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>BVALID_S</td><td class=signalwidth></td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>RDATA_S</td><td class=signalwidth>[axiwidth-1:0]</td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>RID_S</td><td class=signalwidth>[16-1:0]</td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>RLAST_S</td><td class=signalwidth></td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>RREADY_S</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>RRESP_S</td><td class=signalwidth>[2-1:0]</td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>RVALID_S</td><td class=signalwidth></td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>WDATA_S</td><td class=signalwidth>[axiwidth-1:0]</td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>WLAST_S</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>WREADY_S</td><td class=signalwidth></td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>WSTRB_S</td><td class=signalwidth>[axiwidth/8-1:0]</td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>WVALID_S</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td rowspan=22><div class=signalgroup>Access Port</div></td></tr>
+<tr><td class=signalname>DBGEN</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>JTCK</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>JTDI</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>JTDO</td><td class=signalwidth></td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>JTDOEn</td><td class=signalwidth></td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>JTMS</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>JTRST</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>NIDEN</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>PADDR</td><td class=signalwidth>[32-1:0]</td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>PBCLK</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>PBCLKEN</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>PENABLE</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>PRDATA</td><td class=signalwidth>[32-1:0]</td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>PREADY</td><td class=signalwidth></td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>PRESETn</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>PSEL</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>PSLVERR</td><td class=signalwidth></td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>PWDATA</td><td class=signalwidth>[32-1:0]</td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>PWRITE</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>SPIDEN</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>SPNIDEN</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td rowspan=2><div class=signalgroup>AltResetVec</div></td></tr>
+<tr><td class=signalname>AltResetVec</td><td class=signalwidth>[31:0]</td><td class=signalinout>input</td></tr>
+<tr><td rowspan=2><div class=signalgroup>DRam0B0</div></td></tr>
+<tr><td class=signalname>DRam0BusyB0</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td rowspan=2><div class=signalgroup>DRam0B1</div></td></tr>
+<tr><td class=signalname>DRam0BusyB1</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td rowspan=2><div class=signalgroup>DRam1B0</div></td></tr>
+<tr><td class=signalname>DRam1BusyB0</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td rowspan=2><div class=signalgroup>DRam1B1</div></td></tr>
+<tr><td class=signalname>DRam1BusyB1</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td rowspan=22><div class=signalgroup>Debug</div></td></tr>
+<tr><td class=signalname>AFREADY</td><td class=signalwidth></td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>AFVALID</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>ATBYTES</td><td class=signalwidth>[2-1:0]</td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>ATCLK</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>ATCLKEN</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>ATDATA</td><td class=signalwidth>[32-1:0]</td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>ATID</td><td class=signalwidth>[7-1:0]</td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>ATREADY</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>ATRESETn</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>ATVALID</td><td class=signalwidth></td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>BreakIn</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>BreakInAck</td><td class=signalwidth></td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>BreakOut</td><td class=signalwidth></td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>BreakOutAck</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>CrossTriggerIn</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>CrossTriggerInAck</td><td class=signalwidth></td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>CrossTriggerOut</td><td class=signalwidth></td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>CrossTriggerOutAck</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>OCDHaltOnReset</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>TraceMemReady</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>XOCDMode</td><td class=signalwidth></td><td class=signalinout>output</td></tr>
+<tr><td rowspan=2><div class=signalgroup>EXPSTATE</div></td></tr>
+<tr><td class=signalname>TIE_EXPSTATE</td><td class=signalwidth>[31:0]</td><td class=signalinout>output</td></tr>
+<tr><td rowspan=5><div class=signalgroup>Fault Handling</div></td></tr>
+<tr><td class=signalname>DoubleExceptionError</td><td class=signalwidth></td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>PFatalError</td><td class=signalwidth></td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>PFaultInfo</td><td class=signalwidth>[32-1:0]</td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>PFaultInfoValid</td><td class=signalwidth></td><td class=signalinout>output</td></tr>
+<tr><td rowspan=2><div class=signalgroup>IMPWIRE</div></td></tr>
+<tr><td class=signalname>TIE_IMPWIRE</td><td class=signalwidth>[31:0]</td><td class=signalinout>input</td></tr>
+<tr><td rowspan=3><div class=signalgroup>IRam0</div></td></tr>
+<tr><td class=signalname>IRam0Busy</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>IRam0LoadStore</td><td class=signalwidth></td><td class=signalinout>output</td></tr>
+<tr><td rowspan=3><div class=signalgroup>IRam1</div></td></tr>
+<tr><td class=signalname>IRam1Busy</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>IRam1LoadStore</td><td class=signalwidth></td><td class=signalinout>output</td></tr>
+<tr><td rowspan=3><div class=signalgroup>Interrupt</div></td></tr>
+<tr><td class=signalname>BInterrupt</td><td class=signalwidth>[17:0]</td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>PWaitMode</td><td class=signalwidth></td><td class=signalinout>output</td></tr>
+<tr><td rowspan=4><div class=signalgroup>MFP1</div></td></tr>
+<tr><td class=signalname>TIE_MFP1_In</td><td class=signalwidth>[31:0]</td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>TIE_MFP1_Out</td><td class=signalwidth>[34:0]</td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>TIE_MFP1_Out_Req</td><td class=signalwidth></td><td class=signalinout>output</td></tr>
+<tr><td rowspan=4><div class=signalgroup>MFP2</div></td></tr>
+<tr><td class=signalname>TIE_MFP2_In</td><td class=signalwidth>[31:0]</td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>TIE_MFP2_Out</td><td class=signalwidth>[38:0]</td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>TIE_MFP2_Out_Req</td><td class=signalwidth></td><td class=signalinout>output</td></tr>
+<tr><td rowspan=10><div class=signalgroup>System Signals</div></td></tr>
+<tr><td class=signalname>BReset</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>CLK</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>DReset</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>PRID</td><td class=signalwidth>[15:0]</td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>RunStall</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>StatVectorSel</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>Strobe</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>TMode</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>TModeClkGateOverride</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td rowspan=16><div class=signalgroup>TracePort</div></td></tr>
+<tr><td class=signalname>PDebugData</td><td class=signalwidth>[31:0]</td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>PDebugEnable</td><td class=signalwidth></td><td class=signalinout>input</td></tr>
+<tr><td class=signalname>PDebugInbPif</td><td class=signalwidth>[7:0]</td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>PDebugInst</td><td class=signalwidth>[31:0]</td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>PDebugLS0Addr</td><td class=signalwidth>[31:0]</td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>PDebugLS0Data</td><td class=signalwidth>[31:0]</td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>PDebugLS0Stat</td><td class=signalwidth>[31:0]</td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>PDebugLS1Addr</td><td class=signalwidth>[31:0]</td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>PDebugLS1Data</td><td class=signalwidth>[31:0]</td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>PDebugLS1Stat</td><td class=signalwidth>[31:0]</td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>PDebugOutPif</td><td class=signalwidth>[7:0]</td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>PDebugPC</td><td class=signalwidth>[31:0]</td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>PDebugPrefetchL1Fill</td><td class=signalwidth>[3:0]</td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>PDebugPrefetchLookup</td><td class=signalwidth>[7:0]</td><td class=signalinout>output</td></tr>
+<tr><td class=signalname>PDebugStatus</td><td class=signalwidth>[7:0]</td><td class=signalinout>output</td></tr>
+<tr><td rowspan=2><div class=signalgroup>mfp1status</div></td></tr>
+<tr><td class=signalname>TIE_mfp1status</td><td class=signalwidth>[7:0]</td><td class=signalinout>input</td></tr>
+<tr><td rowspan=2><div class=signalgroup>mfp2status</div></td></tr>
+<tr><td class=signalname>TIE_mfp2status</td><td class=signalwidth>[7:0]</td><td class=signalinout>input</td></tr>
+<tr><td rowspan=2><div class=signalgroup>qi</div></td></tr>
+<tr><td class=signalname>TIE_qi</td><td class=signalwidth>[4:0]</td><td class=signalinout>output</td></tr>
+<tr><td rowspan=2><div class=signalgroup>qo</div></td></tr>
+<tr><td class=signalname>TIE_qo</td><td class=signalwidth>[4:0]</td><td class=signalinout>output</td></tr>
+<tr><td rowspan=2><div class=signalgroup>qo_trig</div></td></tr>
+<tr><td class=signalname>TIE_qo_trig</td><td class=signalwidth>[4:0]</td><td class=signalinout>output</td></tr>
+
+</table>
+</div>
+</html>
+

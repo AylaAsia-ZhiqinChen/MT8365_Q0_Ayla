@@ -1,0 +1,13 @@
+
+android_app {
+    name: "SecureElementGo",
+    overrides: [
+        "SecureElement",
+    ],
+    platform_apis: true,
+    static_libs: [
+        "android-common",
+    ],
+
+}
+

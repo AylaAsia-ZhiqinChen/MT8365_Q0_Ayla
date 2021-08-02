@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">軟體更新</string>
+    <string name="check_now">檢查更新</string>
+    <string name="option_settings">設定</string>
+    <string name="current_version_text">目前版本:</string>
+    <string name="new_version_text">發現新版本</string>
+    <string name="download_progress">下載進度:</string>
+    <string name="update_now">立刻安裝</string>
+    <string name="update_later">稍後安裝</string>
+    <string name="battery_remove_title">提示</string>
+    <string name="notification_content_title">系統更新</string>
+    <string name="notification_content_newversion">發現系统新版本，點擊進行下載</string>
+    <string name="new_version_query">檢查是否有更新...</string>
+    <string name="no_new_version">系統目前為最新狀態。</string>
+    <string name="network_error">網路連線失敗</string>
+    <string name="unmount_sdcard">SD 卡安裝錯誤，請檢查。</string>
+    <string name="sdcard_crash_or_unmount">未檢測到SD卡或存儲空間不足</string>
+    <string name="btn_pause">暫停</string>
+    <string name="btn_resume">繼續</string>
+    <string name="btn_download">下載</string>
+    <string name="btn_ok">確定</string>
+    <string name="btn_cancel">取消</string>
+    <string name="cancel_download_title">取消下載</string>
+    <string name="cancel_download_content">此操作會清除下載的檔案。</string>
+    <string name="cancel_download_positive_btn">是</string>
+    <string name="cancel_download_negative_btn">否</string>
+    <string name="update_prompt">設備即將重啟並進入升級模式，整個過程將會持續幾分鐘，在此期間請勿進行任何操作，以免造成升級失敗。</string>
+    <string name="not_support_fota_title">提示</string>
+    <string name="not_support_version">您的設備不支持系統更新功能</string>
+    <string name="package_error_title">安裝失敗</string>
+    <string name="package_error_message_invalid">升級包錯誤，請檢查更新並再次下載。</string>
+    <string name="updateSuccessTitle">安裝成功</string>
+    <string name="updateSuccess">您已經成功安裝版本\n<xliff:g example="gb.p37" id="version">%s</xliff:g></string>
+    <string name="package_unzip">更新包解壓中，請勿中斷...</string>
+    <string name="package_unzip_error">解壓失敗</string>
+    <string name="upgrade_hint">更新提示</string>
+    <string name="setting_autocheck">自動檢測間隔</string>
+    <string name="setting_autocheck_title">自動檢測設定</string>
+    <string name="setting_autocheck_hint">設定自動檢測周期</string>
+    <string name="setting_autocheck_schedule1">一天</string>
+    <string name="setting_autocheck_schedule2">三天</string>
+    <string name="setting_autocheck_schedule3">一周</string>
+    <string name="setting_only_wifi">僅限WiFi下載</string>
+    <string name="setting_only_wifi_hint">只允許在WiFi網路環境下下載更新包</string>
+    <string name="setting_autodownload">WLAN下自動下載</string>
+    <string name="setting_autodownload_hint">檢測到更新包後自動下載</string>
+    <string name="setting_network_tip">您目前處於非WiFi網路，無法下載更新包，取消【僅限WiFi下載】可恢復下載</string>
+    <string name="reboot">重新開機...</string>
+    <string name="option_file_select">本地升級</string>
+    <string name="selected_update_zip">已選擇升級包：</string>
+    <string name="sdCard_update_tips_content"><Data><![CDATA[ <div style="font-size:14px;color:#4c4c4c"><p>1.  請確認選擇的升級包是來自官方並且適配您的機型;</p>
+                                <p>2. 本地升級有可能會擦除您的數據，請及時做好數據備份;</p>
+                                <p>3. 安裝錯誤的升級包將有可能導致您的設備無法開機;</p>
+                                <p>4. 選擇【立即安裝】，設備將重啟並進入升級模式，安裝時間根據安裝包大小而不同，在此期間不要做任何操作，以免造成升級失敗。</p></div> ]]> </Data>
+    </string>
+    <string name="sdCard_upgrade_hint">升級提示</string>
+    <string name="sdCard_upgrade_find_update_file_fail">未找到升級包</string>
+    <string name="sdCard_upgrade_update_file_fail_prompt">升級包不存在，請檢查後重新選取</string>
+    <string name="sdCard_upgrade_memory_space_not_enough">錯誤提示</string>
+    <string name="sdCard_upgrade_copy_file_fail">拷貝失敗</string>
+    <string name="sdCard_upgrade_copy_file_fail_prompt">升級包拷貝失敗，請再試壹次</string>
+    <string name="sdCard_upgrade_copying">正在拷貝...</string>
+    <string name="download_completed_text">新版本已完成下載，點擊進行安裝</string>
+    <string name="empty_directory">該文件夾無zip格式文件!</string>
+    <string name="sdcard_update_prompt">如果您安裝非官方或不兼容的壓縮文件，您的設備可能會無法開機！</string>
+    <string name="export_data">導出Data相關數據</string>
+    <string name="start_catch_log">開始抓取log</string>
+    <string name="stop_catch_log">停止抓取log</string>
+    <string name="remind_last_time">再次提醒</string>
+    <string name="pop_install_schedule1">1小时后</string>
+    <string name="pop_install_schedule2">4小时后</string>
+    <string name="pop_install_schedule3">8小时后</string>
+    <string name="pop_install_remind_title">升級提醒</string>
+    <string name="pop_install_remind_content">系統新版本已下載完成，是否現在安裝？</string>
+    <string name="option_exit">退出</string>
+    <string name="htmlstring_version"><![CDATA[<div style=\'font-size:16px;color:#303030;\'><span style=\'word-break:break-all\'>]]></string>
+    <string name="htmlstring_version_end"><![CDATA[</span><br/>]]></string>
+    <string name="htmlstring_code_head"><![CDATA[<div style=\'font-size:14px;color:#8e8e8e;\'><span style=\'word-break:break-all\'>]]></string>
+    <string name="htmlstring_code_end"><![CDATA[</span><br/></div>]]></string>
+    <string name="ota_notify_download_pause_content">下載暫停,點擊繼續</string>
+    <string name="ota_button_text_know">知道了</string>
+    <string name="ota_device_rooted_content">手機已被ROOT,無法進行升級,請進入全量包檢測</string>
+    <string name="ota_battery_low">當前電量低於%1$d%%,請充電!</string>
+    <string name="ota_wifi_setting">WiFi設置</string>
+    <string name="ota_no_wifi_tip">當前為非wifi網絡,是否確定要下載?</string>
+    <string name="ota_full_rom_check">檢測</string>
+    <string name="ota_optional_full_check">檢測完整包</string>
+    <string name="ota_toast_no_network">本地網絡未連接</string>
+    <string name="out_sdcard">SD card</string>
+    <string name="inner_sdcard">Internal storage</string>
+    <string name="match_imei">IMEI is illegal</string>
+    <string name="sdcard_crash_dir_un_build">The SDCard is not available!</string>
+    <string name="post_pro">%</string>
+    <string name="ab_install_fail">系统安装失败</string>
+    <string name="ab_install_success">系统安装成功</string>
+    <string name="updated_need_reboot">系统安装成功,重启手机激活更新版本</string>
+    <string name="ab_isnatll_fail_reason">失敗原因：</string>
+    <string name="ab_installing">正在安裝</string>
+    <string name="ab_connect_fail">連接失敗</string>
+    <string name="ab_battery_low">充电到%2$d%%以上自动安装更新</string>
+    <string name="ab_parms_illegal">升級包參數有誤</string>
+    <string name="ab_reboot_now">立刻重啟</string>
+    <string name="tips_abDownOrInstall">正在下載陞級中，請勿同時進行本地陞級</string>
+    <string name="tips_abInstall">正在安裝中，請勿査詢全量包</string>
+    <string name="button_click_toast">點擊太頻繁，請稍候再試</string>
+    <string name="about_wireless_update">About Wireless Update</string>
+    <string name="agree">AGREE</string>
+    <string name="analysis">App Analysis</string>
+    <string name="content">Choose to help improve your app by sharing its activity and crash-related data.</string>
+</resources>

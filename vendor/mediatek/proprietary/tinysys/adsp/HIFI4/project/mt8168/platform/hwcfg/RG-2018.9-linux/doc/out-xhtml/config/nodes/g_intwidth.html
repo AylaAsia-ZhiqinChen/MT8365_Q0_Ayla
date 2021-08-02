@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en-us" lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="copyright" content="(C) Copyright 2005"/>
+<meta name="DC.rights.owner" content="(C) Copyright 2005"/>
+<meta name="DC.Type" content="tconcept"/>
+<meta name="DC.Title" content="Interface Width Options"/>
+<meta name="abstract" content=""/>
+<meta name="description" content=""/>
+<meta name="DC.Relation" scheme="URI" content="../../config/pages/page.interfaces.html"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/nodes/g_intprefetch.html"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/nodes/g_cache_localmem.html"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/options/opt.iFetchWidthBits.html"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/options/opt.dataWidthBits.html"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/options/opt.ic.widthBits.html"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/options/opt.pifWidthBits.html"/>
+<meta name="DC.Format" content="XHTML"/>
+<meta name="DC.Identifier" content="gid_intwidth"/>
+<link rel="stylesheet" type="text/css" href="../../commonltr.css"/>
+<link rel="stylesheet" type="text/css" href="../../cadence.css"/>
+<title>Interface Width Options</title>
+</head>
+<body id="gid_intwidth">
+
+
+    <h1 class="title topictitle1">Interface Width Options</h1>
+
+    
+    <div class="body conbody"><p class="shortdesc"/>
+
+        
+        <p class="p">These can all be selected from the Interfaces page
+            of the Xplorer Configuration Editor. The following simplified diagram shows the memory
+            interface widths:</p>
+
+        <div class="fig fignone"><span class="figcap">Figure 1. Memory Interface Widths</span>
+            
+            <img class="image" id="gid_intwidth__image_nll_5lc_53" src="../images/int-width-diag.png"/>
+        </div>
+
+        <p class="p"><span class="ph">Cadence</span> allows you to separately control the instruction fetch
+            width, the data cache/memory width, the instruction cache/memory width and the width of
+            the PIF inter- face. In general, wider widths give higher performance at a higher cost
+            in area. The instruction fetch width controls how many bits are fetched in a cycle from
+            the Icache or local memory into holding buffers. This parameter can be set to 32, 64 or
+            128. Configurations with 64-, 96- or 128-bit FLIX instructions are required to set this
+            parameter to 64- or 128-bits respectively. For configurations without wide instructions,
+            the use of a 64 or 128-bit fetch may still have two potential advantages. First, a taken
+            branch on <span class="ph">Cadence</span> processors suffers a minimum two cycle
+            penalty (three on configurations with a 7-stage pipe) assuming that the entire target
+            instruction can be fetched with a single load from the local instruction memory. The
+            fetch unit always fetches at least as much data as the size of the largest supported
+            instruction. However, the fetch unit always fetches aligned data. If the target
+            instruction crosses a 32-bit boundary assuming a 32-bit fetch width or a 64- or 128-bit
+            boundary assum-ing a 64- or 128-bit fetch width, then there is one additional cycle of
+            penalty. Fewer instructions cross 64- or 128-bit boundaries than 32-bit boundaries.
+            Therefore a processor with a wider fetch will suffer fewer branch bubbles. Second, for
+            straight line code, the use of a 64- or 128-bit fetch implies that the fetch unit needs
+            to fetch fewer times. Fetching a single 64- or 128-bit chunk of instructions consumes
+            less power than fetching multiple, 32-bit chunks. Of course, fetching 64- or 128-bits
+            consumes more power than fetching 32-bits, and if the application branches sufficiently
+            frequently, the use of a 64- or 128-bit fetch will not cut the number of fetches in
+            half. Therefore, which configuration option consumes less power depends on how
+            frequently branches are taken. </p>
+
+        <p class="p">The data cache or memory width controls how many bits are transferred from external
+            memory into the cache per cycle as well as how many bits can be loaded or stored from
+            the cache or local data memory every cycle. The width must be at least as large as the
+            largest load or store instruction and must be at least as large as the PIF. The PIF
+            width is the width of the memory interface from external memory to the local memories or
+            caches. It is also the data transfer width for non-local, uncached memory references.
+            Larger PIF widths enable faster handling of cache misses. It is typically better to make
+            your PIF width match your system bus width rather than externally bridge the processor
+            to a smaller system bus width. </p>
+
+        <p class="p">The Xtensa processor supports an optional hardware and software prefetch mechanism for
+            systems with large memory latency. When the processor detects a stream of cache misses
+            (either data or instruction), it can speculatively prefetch ahead up to four cache lines
+            and place them in a buffer close to the processor. In addition, the user can explicitly
+            control prefetching using the DPFR instruction. Prefetch is enabled by setting the
+            number of Cache Prefetch Entries. </p>
+
+        <div class="p">The interactions between the widths and other parameters are fairly complex, and are
+            enforced by the Xplorer Configuration Editor. The basic rules are as follows:<ul class="ul" id="gid_intwidth__ul_k4n_kzd_53">
+                <li class="li">ICache width &gt;= IFetch width</li>
+
+                <li class="li">ICache width &lt;= max(IFetch, PIF)</li>
+
+                <li class="li">IFetch width &gt;= Max instruction width</li>
+
+                <li class="li">Data width &gt;= PIF width</li>
+
+            </ul>
+</div>
+
+    </div>
+
+<div class="related-links">
+<ol class="olchildlinks">
+<li class="link olchildlink"><a href="../../config/options/opt.iFetchWidthBits.html">Width of Instruction Fetch Interface</a><br/>
+</li>
+<li class="link olchildlink"><a href="../../config/options/opt.dataWidthBits.html">Width of Data Memory/Cache Interface</a><br/>
+Width of interface to Data RAM, ROM, XLMI, Data Cache</li>
+<li class="link olchildlink"><a href="../../config/options/opt.ic.widthBits.html">Width of Instruction Cache Interface</a><br/>
+</li>
+<li class="link olchildlink"><a href="../../config/options/opt.pifWidthBits.html">Width of PIF Interface</a><br/>
+</li>
+</ol>
+
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="../../config/pages/page.interfaces.html">Interface Options</a></div>
+<div class="previouslink"><strong>Previous topic:</strong> <a class="link" href="../../config/nodes/g_intprefetch.html">Prefetch Options</a></div>
+<div class="nextlink"><strong>Next topic:</strong> <a class="link" href="../../config/nodes/g_cache_localmem.html">Caches and Local Memories</a></div>
+</div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,68 @@
+// Customer ID=13943; Build=0x75f5e; Copyright (c) 2014-2017 Cadence Design Systems, Inc.  ALL RIGHTS RESERVED.
+// These coded instructions, statements, and computer programs are the
+// copyrighted works and confidential proprietary information of
+// Cadence Design Systems, Inc.  They may be adapted and modified by bona fide
+// purchasers for internal use, but neither the original nor any adapted
+// or modified version may be disclosed or distributed to third parties
+// in any manner, medium, or form, in whole or in part, without the prior
+// written consent of Cadence Design Systems, Inc.
+
+
+// Purpose:
+//
+// Script to check the xtensa_rd_queue once per xtsc_driver_wait_event to see if there
+// is data to be read and drive a level-sensitive interrupt to the core if there is
+// (that is, if the queue is non-empty).
+//
+// Additional functionality when using TurboXim:
+// To avoid hogging a host CPU core when there is nothing to do, if the SystemC time
+// change since the previous xtsc_driver_wait_event is exactly equal to the TurboXim
+// quantum, then do an OS-level yield by calling xtsc_host_sleep for 1/4 second (250
+// milliseconds).
+//
+// Note: This uart example does not actually require an interrupt because the target 
+//       program will just poll on the return value status of write_char and read_char
+//       until there is data to send and/or receive (see write_c_str and read_line in
+//       target/dsp.c).
+//
+// Note: The interrupt value that this script drives is set by the xtsc.write() calls
+//       below.  A call to xtsc.write() is only made when the value changes.
+
+#include "$(XTSC_SCRIPT_FILE_PATH)/common.h"
+
+#lua_beg
+  turbo     = (xtsc.cmd("core0 is_fast_functional_mode") == "1")
+  interval  = tonumber(xtsc.cmd("xtsc xtsc_get_relaxed_simulation_interval"))
+  factor    = tonumber(xtsc.cmd("xtsc xtsc_get_system_clock_factor"))
+  quantum   = interval * factor
+  asserted  = false
+  before    = 0
+  prev      = "0"
+  xtsc.write("now 0")
+  while true do
+    next = xtsc.cmd("xtensa_rd_queue can_pop")
+    if (next ~= prev) then
+      if (next == "1") then
+        --xtsc.cmd("xtsc note asserting $(BInterruptXX)")
+        xtsc.write("now 1")
+        asserted = true
+      else
+        --xtsc.cmd("xtsc note de-asserting $(BInterruptXX)")
+        xtsc.write("now 0")
+        asserted = false
+      end
+      prev = next
+    end
+    xtsc.cmd("sc wait xtsc_driver_wait_event")
+    if (turbo and not asserted) then
+      now = tonumber(xtsc.cmd("sc sc_time_stamp"))
+      change = now - before
+      if (change == quantum) then
+        xtsc.cmd("xtsc xtsc_host_sleep 250")
+      end
+      before = now
+    end
+  end
+#lua_end
+
+

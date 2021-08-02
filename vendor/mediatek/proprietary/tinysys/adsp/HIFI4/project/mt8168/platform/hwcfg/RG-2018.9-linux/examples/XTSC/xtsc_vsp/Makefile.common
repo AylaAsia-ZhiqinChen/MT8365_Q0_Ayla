@@ -1,0 +1,241 @@
+# Customer ID=13943; Build=0x75f5e; Copyright (c) 2006-2017 Cadence Design Systems, Inc.  ALL RIGHTS RESERVED.
+# These coded instructions, statements, and computer programs are the
+# copyrighted works and confidential proprietary information of
+# Cadence Design Systems, Inc.  They may be adapted and modified by bona fide
+# purchasers for internal use, but neither the original nor any adapted
+# or modified version may be disclosed or distributed to third parties
+# in any manner, medium, or form, in whole or in part, without the prior
+# written consent of Cadence Design Systems, Inc.
+
+BASE_NAME := $(EXAMPLE_NAME)
+COMP_NAME := $(EXAMPLE_NAME)
+
+TIMEOUT = 60
+SELF_TIMEOUT = 30
+
+ifdef XTSC_64BIT
+TIE_DSO = ../../TIE/example.tdk/lib-i686-Linux/libcas-example-x86_64.so
+else
+TIE_DSO = ../../TIE/example.tdk/lib-i686-Linux/libcas-example.so
+endif
+
+
+
+.PHONY: all target custom_target run debug clean custom_clean create_xtsc_core_vsp clean_xtsc_core_vsp
+
+.PRECIOUS: %.c
+
+.SUFFIXES :
+.SUFFIXES : .c .cpp .cxx .o
+
+all: target
+
+custom_target:
+
+target: $(TARGET_OBJECTS) custom_target
+
+
+
+$(TIE_DSO): ../../TIE/example.tie
+	$(MAKE) -C ../.. tie
+
+
+%.c:
+	-$(MKDIR) target
+	$(CP) $(TARGET_SOURCE_PATH)/$@ $@
+
+%.out: %.c $(TIE_DEPEND)
+	$(TARGET_CXX) $(TARGET_CFLAGS) -o $@ $< $(TARGET_LIBS)
+
+custom_clean:
+
+
+ifndef NO_XTSC_CORE_VSP
+all: create_xtsc_core_vsp
+elab: create_xtsc_core_vsp
+system.conf: create_xtsc_core_vsp
+clean: clean_xtsc_core_vsp
+endif
+
+
+CORE_MEMORY_INTERFACES = -add=memory=pif
+
+create_xtsc_core_vsp: xtsc_core_vsp/xtsc_core_vsp.so
+
+xtsc_core_vsp/xtsc_core_vsp.so: xtsc_core_vsp/xtsc_core_vsp.cpp
+	cd xtsc_core_vsp && $(MAKE) xtsc_core_vsp.so
+        
+xtsc_core_vsp/xtsc_core_vsp.cpp: $(TIE_DEPEND)
+	-$(RMDIR) xtsc_core_vsp
+	xt-genvspmodel $(XTENSA_PARAMS_CMD) \
+          -name=xtsc_core_vsp \
+          -version=$(CADENCE_XTSC_DIR) \
+          -clear \
+          $(CORE_MEMORY_INTERFACES) \
+          $(ADDITIONAL_CORE_INTERFACES)
+
+clean_xtsc_core_vsp:
+	-$(RMDIR) xtsc_core_vsp
+        
+
+
+
+
+
+.PHONY: all elab run clean info xtsc_library_check
+
+all: target elab
+
+
+%.o: %.cpp %.h
+	$(CXX) $< $(CXXFLAGS)
+
+system.conf: 
+	ncsc_run -GCC_VERS $(GCC_VERS) -nocopyright \
+          -tlm2 \
+          -D SC_INCLUDE_DYNAMIC_PROCESSES \
+          -I $(XTENSA_SW_TOOLS)/include/xtsc \
+          -I $(XTENSA_SW_TOOLS)/include \
+          -I $(CDS_INST_DIR)/tools/esl/include \
+          -I $(CDS_INST_DIR)/tools/esl/models \
+          -I ./xtsc_core_vsp \
+          sc_main.cpp \
+          $(WRAPPER_DSO) \
+          -L $(XTSC_LIBRARY_PATH) \
+          -lxtsc_sh \
+          -lxtsc_comp_sh \
+          -lxtsc_vsp \
+          -L $(XTENSA_SW_TOOLS)/$(LIBDIR)/$(ISSDIR) \
+          -lxtmp \
+          -lsimxtcore \
+          -llog4xtensa \
+          -lxtlua \
+          -L $(XTENSA_SW_TOOLS)/$(LIBDIR) \
+          -lxtparams \
+          -savevpconfig system \
+          -scconfig system.conf:gen \
+          -nowarn CONFEXIST \
+          -vspdebug all \
+          -debug \
+          -unbuffered \
+          -sc_main \
+          -Wl,-rpath,$(CDS_INST_DIR)/tools/systemc/$(SYSTEMC_LIBDIR) \
+          -Wl,-rpath,$(XTSC_LIBRARY_PATH) \
+          -Wl,-rpath,$(XTENSA_SW_TOOLS)/$(LIBDIR)/$(ISSDIR) \
+          -Wl,-rpath,$(XTENSA_SW_TOOLS)/$(LIBDIR) \
+          -stop elab
+
+elab: system.conf
+	ncsc_run -GCC_VERS $(GCC_VERS) -nocopyright \
+          -tlm2 \
+          -D SC_INCLUDE_DYNAMIC_PROCESSES \
+          -I $(XTENSA_SW_TOOLS)/include/xtsc \
+          -I $(XTENSA_SW_TOOLS)/include \
+          -I $(CDS_INST_DIR)/tools/esl/include \
+          -I $(CDS_INST_DIR)/tools/esl/models \
+          -I ./xtsc_core_vsp \
+          sc_main.cpp \
+          $(WRAPPER_DSO) \
+          -L $(XTSC_LIBRARY_PATH) \
+          -lxtsc_sh \
+          -lxtsc_comp_sh \
+          -lxtsc_vsp \
+          -L $(XTENSA_SW_TOOLS)/$(LIBDIR)/$(ISSDIR) \
+          -lxtmp \
+          -lsimxtcore \
+          -llog4xtensa \
+          -lxtlua \
+          -L $(XTENSA_SW_TOOLS)/$(LIBDIR) \
+          -lxtparams \
+          -savevpconfig system \
+          -scconfig system.conf \
+          -nowarn CONFEXIST \
+          -vspdebug all \
+          -debug \
+          -unbuffered \
+          -sc_main \
+          -Wl,-rpath,$(CDS_INST_DIR)/tools/systemc/$(SYSTEMC_LIBDIR) \
+          -Wl,-rpath,$(XTSC_LIBRARY_PATH) \
+          -Wl,-rpath,$(XTENSA_SW_TOOLS)/$(LIBDIR)/$(ISSDIR) \
+          -Wl,-rpath,$(XTENSA_SW_TOOLS)/$(LIBDIR) \
+          -stop elab
+
+eswdebug:
+	$(RLWRAP) ncsim \
+          -scmemdebug \
+          -input ../setup.tcl \
+          $(COMMAND_LINE_ARGS) \
+          -loadcfc :cfcbootstrap \
+          -loadpal xtsc_core_vsp_pal \
+          -layout eswdebug \
+            sc_main
+
+
+run: target
+	ncsim \
+          -scmemdebug \
+          -sctlmrecord \
+          $(COMMAND_LINE_ARGS) \
+          -loadcfc :cfcbootstrap \
+          -loadpal xtsc_core_vsp_pal \
+            sc_main
+
+debug: target
+	$(RLWRAP) ncsim \
+          -scmemdebug \
+          -sctlmrecord \
+          -input ../setup.tcl \
+          $(COMMAND_LINE_ARGS) \
+          -loadcfc :cfcbootstrap \
+          -loadpal xtsc_core_vsp_pal \
+            sc_main
+
+vprun: 
+	$(RLWRAP) vprun -vpc vpconfig/system/system.vpc -scconfig system.conf -tcl -use ncsim -input ../setup.tcl -vspdebug all
+
+
+target: $(TARGET_OBJECTS)
+
+%.out: %.c 
+	xt-xcc -g -O0 -o $@ $<
+
+clean: custom_clean
+	ncsc_run -clean
+	-$(RM) *.log *.vcd *.dump
+	-$(RM) *.o core.* $(TARGET_OBJECTS)
+	-$(RMDIR) vpconfig
+
+
+xtsc_library_check:
+	@ls -al $(XTSC_LIBRARY_PATH)/libxtsc_sh.so > /dev/null
+
+
+info:
+	-uname -a
+	@echo XTSC libraries: $(XTSC_LIBRARY_PATH)
+	-ls -al $(XTSC_LIBRARY_PATH)/*.so
+	@echo cadence info - expecting version compatible with XTSC libraries in $(CADENCE_XTSC_DIR):
+	-which ncsim
+	-ls -al `which ncsim`
+	-ncsim -version
+	@echo GCC info - expecting version 4.1.2 or 4.4.5: $(CXX)
+	-which $(CXX)
+	-ls -al `which $(CXX)`
+	-$(CXX) -dumpversion
+	-$(CXX) -v
+	@echo Linker \(ld\) info
+	-which ld
+	-ls -al `which ld`
+	-ld -v
+	@echo LD_LIBRARY_PATH: $(LD_LIBRARY_PATH)
+	@echo PATH: $(PATH)
+	-make xtsc_library_check
+	@echo 
+	@echo "==========================================================================="
+	@echo "=                              N o t e                                    ="
+	@echo "=                                                                         ="
+	@echo "=  Please provide the above information if you contact Tensilica Support  ="
+	@echo "=  regarding any build issues.                                            ="
+	@echo "==========================================================================="
+	@echo 
+

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<carrier_config>
+    <boolean name="mtk_carrier_turn_off_wifi_before_e911" value="true" />
+</carrier_config>

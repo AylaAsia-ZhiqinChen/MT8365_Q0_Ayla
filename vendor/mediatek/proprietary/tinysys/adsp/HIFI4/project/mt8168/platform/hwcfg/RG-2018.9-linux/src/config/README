@@ -1,0 +1,14 @@
+README for Xtensa Configuration Description (Xtensa HAL) Header Files
+------------------------------------------------------------------------
+
+The configuration-specific header files here are intended for general
+use by open source packages that require Xtensa processor configuration
+information.
+
+The macros defined by these headers are a significant subset of the
+Xtensa compile-time HAL documented in the Xtensa System Software
+Reference Manual.  These headers also define other, undocumented macros.
+However, to help ensure portability to future versions of these header
+files, the use of undocumented macros is to be avoided.
+
+

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">Aktualizace systému</string>
+    <string name="check_now">Zkontrolovat aktualizace</string>
+    <string name="option_settings">Nastavení</string>
+    <string name="current_version_text">Verze v telefonu:</string>
+    <string name="new_version_text">Nová verze</string>
+    <string name="download_progress">Stahování:</string>
+    <string name="update_now">Aktualizovat nyní</string>
+    <string name="update_later">Aktualizovat později</string>
+    <string name="battery_remove_title">Upozornění</string>
+    <string name="notification_content_title">Aktualizace systému</string>
+    <string name="notification_content_newversion">Je k dispozici nová verze.</string>
+    <string name="new_version_query">Kontroluji aktualizace...</string>
+    <string name="no_new_version">Váš systém je aktuální.</string>
+    <string name="network_error">Připojení k síti selhalo</string>
+    <string name="unmount_sdcard">Chyba při načtení SD karty, zkontrolujte ji prosím.</string>
+    <string name="sdcard_crash_or_unmount">Chyba SD karty. Zkontrolujte SD kartu a zkuste to znovu.</string>
+    <string name="btn_pause">Pozastavit</string>
+    <string name="btn_resume">Obnovit</string>
+    <string name="btn_download">Stáhnout</string>
+    <string name="btn_ok">OK</string>
+    <string name="btn_cancel">Zrušit</string>
+    <string name="cancel_download_title">Zrušit stahování</string>
+    <string name="cancel_download_content">Tato operace smaže stažený soubor.</string>
+    <string name="cancel_download_positive_btn">Ano</string>
+    <string name="cancel_download_negative_btn">Ne</string>
+    <string name="update_prompt">Zařízení se restartuje a vstoupí do režimu upgradu. Celý proces bude trvat několik minut, během této doby neprovádějte žádnou operaci, abyste zabránili selhání upgradu.</string>
+    <string name="not_support_fota_title">Upozornění</string>
+    <string name="not_support_version">Váš telefon nepodporuje aktualizaci systému vzduchem</string>
+    <string name="package_error_title">Instalace se nezdařila</string>
+    <string name="package_error_message_invalid">Chyba balíčku. Zkontrolujte aktualizaci a stáhněte ji znovu.</string>
+    <string name="updateSuccessTitle">Instalace úspěšná</string>
+    <string name="updateSuccess">Systém byl úspěšně aktualizován na verzi <xliff:g example="gb.p37" id="version">%s</xliff:g>.</string>
+    <string name="package_unzip">Soubory se rozbalují, čekejte...</string>
+    <string name="package_unzip_error">Chyba při rozbalování souborů</string>
+    <string name="upgrade_hint">Nápověda k aktualizaci</string>
+    <string name="setting_autocheck">Automaticky kontrolovat dostupné aktualizace</string>
+    <string name="setting_autocheck_title">Nastavení kontroly</string>
+    <string name="setting_autocheck_hint">Nastavení automatické kontroly aktualizace</string>
+    <string name="setting_autocheck_schedule1">jednou</string>
+    <string name="setting_autocheck_schedule2">tři dny</string>
+    <string name="setting_autocheck_schedule3">Týdně</string>
+    <string name="setting_only_wifi">Aktualizovat pouze přes WiFi</string>
+    <string name="setting_only_wifi_hint">Aktualizační soubor bude stžen pouze s připojením přes WiFi</string>
+    <string name="setting_autodownload">Povolit automatické stahování</string>
+    <string name="setting_autodownload_hint">Aktualizační soubory budou staženy automaticky</string>
+    <string name="setting_network_tip">Jste připojeni k síti mobilního operátora. Změňte volbu na [Aktualizace pouze přes Wi-Fi] a zkuste to znovu.</string>
+    <string name="reboot">Restartuji...</string>
+    <string name="option_file_select">Místní aktualizace</string>
+    <string name="selected_update_zip">Vybraný soubor: </string>
+    <string name="sdCard_update_tips_content"><Data><![CDATA[ <div style="font-size:13px;color:#4c4c4c"><p>1. Please make sure the selected file is official;</p>
+                                <p>2. Local Update may wipe your data, please backup before updating;</p>
+                                <p>3. Install the wrong update file will damage your device;</p>
+                                <p>4. Click [Update now] button, your device will enter into the Recovery Mode. Please do not remove the battery and do nothing until the update has been completed.</p></div> ]]> </Data>
+    </string>
+    <string name="sdCard_upgrade_hint">Oznámení:</string>
+    <string name="sdCard_upgrade_find_update_file_fail">Nejsou k dispozici žádné aktualizační soubory</string>
+    <string name="sdCard_upgrade_update_file_fail_prompt">Aktualizační soubor neexistuje. Opakujte výběr.</string>
+    <string name="sdCard_upgrade_memory_space_not_enough">Chyba</string>
+    <string name="sdCard_upgrade_copy_file_fail">Vložení se nezdařilo</string>
+    <string name="sdCard_upgrade_copy_file_fail_prompt">Vložení se nezdařilo. Zkuste to znovu!</string>
+    <string name="sdCard_upgrade_copying">Vkládání…</string>
+    <string name="download_completed_text">Stažení bylo dokončeno. Kliknutím zahájíte instalaci</string>
+    <string name="empty_directory">Tato složka neobsahuje žádný soubor ZIP!</string>
+    <string name="sdcard_update_prompt">Pokud zvolíte instalaci neoficiálního nebo nekompatibilního souboru ZIP, zařízení se zablokuje!</string>
+    <string name="export_data">Stáhnout soubor protokolu</string>
+    <string name="start_catch_log">Spustit záznam protokolů</string>
+    <string name="stop_catch_log">Ukončit záznam protokolů</string>
+    <string name="remind_last_time">Připomenout znovu</string>
+    <string name="pop_install_schedule1">Za 1 hodinu</string>
+    <string name="pop_install_schedule2">Za 4 hodiny</string>
+    <string name="pop_install_schedule3">Za 8 hodin</string>
+    <string name="pop_install_remind_title">Nápověda k aktualizaci</string>
+    <string name="pop_install_remind_content">Nová verze byla stažena. Nyní ji nainstalujte.</string>
+    <string name="option_exit">Ukončit</string>
+    <string name="htmlstring_version"><![CDATA[<div style=\'font-size:16px;color:#303030;\'><span style=\'word-break:break-all\'>]]></string>
+    <string name="htmlstring_version_end"><![CDATA[</span><br/>]]></string>
+    <string name="htmlstring_code_head"><![CDATA[<div style=\'font-size:14px;color:#8e8e8e;\'><span style=\'word-break:break-all\'>]]></string>
+    <string name="htmlstring_code_end"><![CDATA[</span><br/></div>]]></string>
+    <string name="ota_notify_download_pause_content">Pozastaveno. Kliknutím můžete pokračovat</string>
+    <string name="ota_button_text_know">Vím</string>
+    <string name="ota_device_rooted_content">Byla prolomena ochrana zařízení (root), aktualizaci nelze provést!</string>
+    <string name="ota_battery_low">Aktuální baterie je kratší než %1$d%%, prosím nabite!</string>
+    <string name="ota_wifi_setting">Nastavení připojení Wi-Fi</string>
+    <string name="ota_no_wifi_tip">Připojení Wi-Fi momentálně není k dispozici. Stáhnout prostřednictvím mobilní sítě?</string>
+    <string name="ota_full_rom_check">Zkontrolovat</string>
+    <string name="ota_optional_full_check">Zkontrolovat dostupnost úplné aktualizace</string>
+    <string name="ota_toast_no_network">Síť není připojena</string>
+    <string name="out_sdcard">Karta SD</string>
+    <string name="inner_sdcard">Interní úložiště</string>
+    <string name="match_imei">IMEI is illegal</string>
+    <string name="sdcard_crash_dir_un_build">The SDCard is not available!</string>
+    <string name="post_pro">%</string>
+    <string name="ab_install_fail">Install fail</string>
+    <string name="ab_install_success">Install successfully</string>
+    <string name="updated_need_reboot">Restart the cell phone to activate the updated version</string>
+    <string name="ab_isnatll_fail_reason">Reason：</string>
+    <string name="ab_installing">Installing</string>
+    <string name="ab_connect_fail">Connect reboot fail</string>
+    <string name="ab_battery_low">The update will be installed automatically when the battery is charged to more than %5$d%%</string>
+    <string name="ab_parms_illegal">Incorrect upgrade package parameter</string>
+    <string name="ab_reboot_now">Restart immediately</string>
+    <string name="tips_abDownOrInstall">In the downloading upgrade, do not upgrade locally at the same time</string>
+    <string name="tips_abInstall">In the installation, please do not check the full package.</string>
+    <string name="button_click_toast">Click too fast, Please try again later.</string>
+    <string name="about_wireless_update">About Wireless Update</string>
+    <string name="agree">AGREE</string>
+    <string name="analysis">App Analysis</string>
+    <string name="content">Choose to help improve your app by sharing its activity and crash-related data.</string>
+</resources>

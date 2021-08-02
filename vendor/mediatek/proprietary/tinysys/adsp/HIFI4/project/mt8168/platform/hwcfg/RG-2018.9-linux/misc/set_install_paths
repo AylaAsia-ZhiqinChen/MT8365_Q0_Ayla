@@ -1,0 +1,74 @@
+#!/bin/sh
+# Set the installation directories for the Xtensa tools.
+# $Id$
+
+# Customer ID=13943; Build=0x75f5e; Copyright (c) 2003-2007 Tensilica Inc.  ALL RIGHTS RESERVED.
+# These coded instructions, statements, and computer programs are the
+# copyrighted works and confidential proprietary information of Tensilica Inc.
+# They may not be modified, copied, reproduced, distributed, or disclosed to
+# third parties in any manner, medium, or form, in whole or in part, without
+# the prior written consent of Tensilica Inc.
+
+# This can only be done once after unpacking the tar file for a
+# configuration.  If you want to move the tools again, you will
+# need to start over from the tar file.
+
+# Function to convert relative paths to absolute.
+rel2abs() {
+    case "$1" in
+    /*)
+	echo $1
+	;;
+    *)
+	curdir=`pwd`
+	if [ "X$curdir" = "X/" ]; then
+	    echo "/$1"
+	else
+	    echo "$curdir/$1"
+	fi
+    esac
+}
+
+if [ $# != 3 ];  then
+    echo "Usage: set_install_paths <tools_root> <xtensa_root> <config_root>"
+    echo
+    echo "ATTENTION: For T1040 and later Xtensa releases, this script is"
+    echo "intended for internal use only.  Please use the top-level 'install'"
+    echo "script to install a new Xtensa configuration."
+    exit 1
+fi
+
+tools="$1"
+prefix="$2"
+config_prefix="$3"
+
+# make sure the directories are accessible
+if [ ! -d "$tools" ]; then
+    echo "Error: \"$tools\" does not exist or is not a directory"
+    exit 1
+fi
+if [ ! -d "$prefix" ]; then
+    echo "Error: \"$prefix\" does not exist or is not a directory"
+    exit 1
+fi
+if [ ! -d "$config_prefix" ]; then
+    echo "Error: \"$config_prefix\" does not exist or is not a directory"
+    exit 1
+fi
+
+# make sure paths are absolute
+$tools = `rel2abs "$tools"`
+$prefix = `rel2abs "$prefix"`
+$config_prefix = `rel2abs "$config_prefix"`
+
+# make sure there are no double-slashes or trailing slashes in the paths
+# (some of the hardware tools are picky about this)
+tools=`echo "$tools" | sed -e 's|//|/|g' -e 's|/$||'`
+prefix=`echo "$prefix" | sed -e 's|//|/|g' -e 's|/$||'`
+config_prefix=`echo "$config_prefix" | sed -e 's|//|/|g' -e 's|/$||'`
+
+# run the script to set the paths for the software tools
+"$tools/bin/perl" -w "$config_prefix/misc/fix_install_paths" "$tools" "$prefix" "$config_prefix"
+
+# run the script to set the paths for the hardware files
+"$config_prefix/misc/fix_hw_install_paths" "$tools" "$prefix" "$config_prefix"

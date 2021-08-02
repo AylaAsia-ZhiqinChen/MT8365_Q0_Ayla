@@ -1,0 +1,5 @@
+#if __cplusplus >= 201103
+#include <c++11/cassert>
+#else
+#include <c++98/cassert>
+#endif

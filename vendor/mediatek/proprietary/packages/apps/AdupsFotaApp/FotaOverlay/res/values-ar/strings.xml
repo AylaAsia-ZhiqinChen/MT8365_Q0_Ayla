@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">تحديث النظام</string>
+    <string name="check_now">التحقق من وجود تحديثات</string>
+    <string name="option_settings">إعدادات</string>
+    <string name="current_version_text">"الإصدار الحالي :"</string>
+    <string name="new_version_text">إصدارة جديدة</string>
+    <string name="download_progress">:معدل التقدم</string>
+    <string name="update_now">التحديث الآن</string>
+    <string name="update_later">التحديث في وقت لاحق</string>
+    <string name="battery_remove_title">تحذير</string>
+    <string name="notification_content_title">تحديث الاتصال اللاسلكي</string>
+    <string name="notification_content_newversion">هناك إصدار جديد متاح</string>
+    <string name="new_version_query">...جارٍ التحقق من وجود تحديثات</string>
+    <string name="no_new_version">النظام محدّث حاليًا</string>
+    <string name="network_error">فشل اتصال الشبكة</string>
+    <string name="unmount_sdcard">خطأ في تثبيت بطاقة الذاكرة الرقمية المؤمنة، يُرجى التحقق من ذلك</string>
+    <string name="sdcard_crash_or_unmount">خطأ في بطاقة الذاكرة الرقمية المؤمنة. يُرجى التحقق من بطاقة الذاكرة الرقمية المؤمنة، والمحاولة مرة أخرى</string>
+    <string name="btn_pause">إيقاف مؤقت</string>
+    <string name="btn_resume">استئناف</string>
+    <string name="btn_download">تنزيل</string>
+    <string name="btn_ok">موافق</string>
+    <string name="btn_cancel">إلغاء</string>
+    <string name="cancel_download_title">إلغاء التنزيل</string>
+    <string name="cancel_download_content">ستؤدي هذه العملية إلى حذف ملف التنزيل</string>
+    <string name="cancel_download_positive_btn">نعم</string>
+    <string name="cancel_download_negative_btn">لا</string>
+    <string name="update_prompt">وستعاود المعدات العمل من جديد وستدخل في نموذج الترقية، وستستغرق العملية بأكملها بضع دقائق، وينبغي خلالها الامتناع عن القيام بأي عمليات من شأنها أن تؤدي إلى فشل التصعيد.</string>
+    <string name="not_support_fota_title">تحذير</string>
+    <string name="not_support_version">FOTA لا يدعم جهازك ميزة</string>
+    <string name="package_error_title">فشل التثبيت</string>
+    <string name="package_error_message_invalid">خطأ في الحزمة. يُرجى التحقق من التحديث، وتنزيله مرة أخرى</string>
+    <string name="updateSuccessTitle">تم التثبيت بنجاح</string>
+    <string name="updateSuccess">لقد قمت بالفعل بتثبيت الإصدار <xliff:g example="gb.p37" id="version">%s</xliff:g>.</string>
+    <string name="package_unzip">...جارٍ فك ضغط الحزمة، لا تقاطع العملية</string>
+    <string name="package_unzip_error">خطأ بعملية فك الضغط</string>
+    <string name="upgrade_hint">تلميح للتحديث</string>
+    <string name="setting_autocheck">التحقق تلقائيًا من وجود تحديثات</string>
+    <string name="setting_autocheck_title">إعدادات التحقق التلقائي</string>
+    <string name="setting_autocheck_hint">تعيين الدورة للتحقق تلقائيًا من وجود تحديثات</string>
+    <string name="setting_autocheck_schedule1">يوم واحد</string>
+    <string name="setting_autocheck_schedule2">ثلاثة أيام</string>
+    <string name="setting_autocheck_schedule3">كل أسبوع</string>
+    <string name="setting_only_wifi">تنزيل التحديثات عبر الشبكة اللاسلكية فقط</string>
+    <string name="setting_only_wifi_hint">سيتم تنزيل حزم الترقية عبر الشبكة اللاسلكية وايفاي فقط</string>
+    <string name="setting_autodownload">السماح بعمليات التنزيل التلقائية</string>
+    <string name="setting_autodownload_hint">سيتم تنزيل حزم التحديثات تلقائيًا</string>
+    <string name="setting_network_tip">أنت على شبكة 2G/3G، يُرجى تغيير خيار [إجراء التحديث عبر اتصال Wi-Fi فقط]، والمحاولة مرة أخرى</string>
+    <string name="reboot">إعادة تشغيل...</string>
+    <string name="sdCard_upgrade_memory_space_not_enough">خطأ</string>
+    <string name="sdCard_upgrade_copying">جاري اللصق</string>
+    <string name="option_file_select">التحديثات المحلية</string>
+    <string name="selected_update_zip">الملف المختار</string>
+    <string name="sdCard_update_tips_content"><Data><![CDATA[ <div style="font-size:14px;color:#4c4c4c"><p>1.يرجى التأكد من الملف المحدد رسمي.</p>
+    <p>2. التحديث المحلي قد يمسح البيانات الخاصة بك،يرجي تتم الإحتياطية من قبل التحديث. </p>
+    <p>3. تحميل التحديث الخطأ قد يسبب مشكلة في جهازك.</p>
+    <p>4. اضعط على زر [تحديث الان] سوف يدخل جهازك في وضع التحديث. الرجاء عدم نزع البطارية من الجهاز اثناء التحديث لان ذلك قد يسبب فشل التحديث.</p></div> ]]> </Data>
+    </string>
+    <string name="sdCard_upgrade_hint">تلميحات التحديث</string>
+    <string name="sdCard_upgrade_find_update_file_fail">لا يوجد ملف تحديث متوفر</string>
+    <string name="sdCard_upgrade_update_file_fail_prompt">ملف التحديث غير موجود، الرجاء الاختيار مجددا.</string>
+    <string name="sdCard_upgrade_copy_file_fail">فشل لصق الملف</string>
+    <string name="sdCard_upgrade_copy_file_fail_prompt">فشل لصق الملف ، يرجى المحاولة مرة أخرى!</string>
+    <string name="download_completed_text">تم التحميل، الرجاء الضغط للتركيب</string>
+    <string name="empty_directory">لا توجد ملفات مضغوطة في هذا المجلد!</string>
+    <string name="sdcard_update_prompt">جهازك سوف يتعطل إذا اخترت وتركيب ملف مضغوط غير رسمي أو غير متوافق!</string>
+    <string name="export_data">تصدير البيانات</string>
+    <string name="start_catch_log">بدء التقاط التسجيل</string>
+    <string name="stop_catch_log">إيقاف التقاط التسجيل</string>
+    <string name="remind_last_time">التذكير مجددًا</string>
+    <string name="pop_install_schedule1">بعد ساعة واحدة</string>
+    <string name="pop_install_schedule2">بعد 4 ساعات</string>
+    <string name="pop_install_schedule3">بعد 8 ساعات</string>
+    <string name="pop_install_remind_title">تلميح عملية التحديث</string>
+    <string name="pop_install_remind_content">لقد تم تنزيل الإصدار الجديد، يرجى تثبيته الآن.</string>
+    <string name="option_exit">خروج</string>
+    <string name="htmlstring_version"><![CDATA[<div style=\'font-size:16px;direction: rtl;color:#303030;\'><span style=\'word-break:break-all\'>]]></string>
+    <string name="htmlstring_version_end"><![CDATA[</span><br/>]]></string>
+    <string name="htmlstring_code_head"><![CDATA[<div style=\'font-size:14px;direction: rtl;color:#8e8e8e;\'><span style=\'word-break:break-all\'>]]></string>
+    <string name="htmlstring_code_end"><![CDATA[</span><br/></div>]]></string>
+    <string name="ota_notify_download_pause_content">تم التوقف مؤقتًا، انقر للمتابعة</string>
+    <string name="ota_button_text_know">أعلم</string>
+    <string name="ota_device_rooted_content">تم إنشاء جذر للجهاز، وتعذّر تحديثه!</string>
+    <string name="ota_battery_low">الطاقة الحالية أقل من٪ 1 $ d ٪٪ ، يرجى الشحن!</string>
+    <string name="ota_wifi_setting">إعدادات شبكة Wi-Fi</string>
+    <string name="ota_no_wifi_tip">شبكة Wi-Fi غير متاحة الآن، قم بالتأكيد على إجراء التنزيل عبر الشبكة؟</string>
+    <string name="ota_full_rom_check">فحص</string>
+    <string name="ota_optional_full_check">فحص التحديث الكامل</string>
+    <string name="ota_toast_no_network">تعذّر الاتصال بالشبكة</string>
+    <string name="out_sdcard">بطاقة SD</string>
+    <string name="inner_sdcard">وحدة التخزين الداخلية</string>
+    <string name="match_imei">IMEI is illegal</string>
+    <string name="sdcard_crash_dir_un_build">The SDCard is not available!</string>
+    <string name="post_pro">%</string>
+    <string name="ab_install_fail">Install fail</string>
+    <string name="ab_install_success">Install successfully</string>
+    <string name="updated_need_reboot">Restart the cell phone to activate the updated version</string>
+    <string name="ab_isnatll_fail_reason">Reason：</string>
+    <string name="ab_installing">Installing</string>
+    <string name="ab_connect_fail">Connect reboot fail</string>
+    <string name="ab_battery_low">The update will be installed automatically when the battery is charged to more than %2$d%%</string>
+    <string name="ab_parms_illegal">Incorrect upgrade package parameter</string>
+    <string name="ab_reboot_now">Restart immediately</string>
+    <string name="tips_abDownOrInstall">In the downloading upgrade, do not upgrade locally at the same time</string>
+    <string name="tips_abInstall">In the installation, please do not check the full package.</string>
+    <string name="button_click_toast">Click too fast, Please try again later.</string>
+    <string name="about_wireless_update">حول التحديث اللاسلكي</string>
+    <string name="agree">AGREE</string>
+    <string name="analysis">App Analysis</string>
+    <string name="content">Choose to help improve your app by sharing its activity and crash-related data.</string>
+</resources>

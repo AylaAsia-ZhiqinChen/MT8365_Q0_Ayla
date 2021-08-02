@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en-us" lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="copyright" content="(C) Copyright 2005"/>
+<meta name="DC.rights.owner" content="(C) Copyright 2005"/>
+<meta name="DC.Type" content="tconcept"/>
+<meta name="DC.Title" content="Pipeline Options"/>
+<meta name="abstract" content="The default pipeline is 5 stage; LX processors can optionally be configured to have a 7 stage pipeline."/>
+<meta name="description" content="The default pipeline is 5 stage; LX processors can optionally be configured to have a 7 stage pipeline."/>
+<meta name="DC.Relation" scheme="URI" content="../../config/nodes/g_isaisa.html"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/options/opt.l32r.html"/>
+<meta name="DC.Format" content="XHTML"/>
+<meta name="DC.Identifier" content="opt-tempPipeLength"/>
+<link rel="stylesheet" type="text/css" href="../../commonltr.css"/>
+<link rel="stylesheet" type="text/css" href="../../cadence.css"/>
+<title>Pipeline Options</title>
+</head>
+<body id="opt-tempPipeLength">
+
+
+    <h1 class="title topictitle1">Pipeline Options</h1>
+
+    
+    <div class="body conbody"><p class="shortdesc">The default pipeline is 5 stage; LX processors can optionally be configured to have a
+        7 stage pipeline.</p>
+
+        <dl class="dl">
+            
+                <dt class="dt dlterm">Pipeline length</dt>
+
+                <dd class="dd"><span class="ph">7</span></dd>
+
+            
+            
+                <dt class="dt dlterm">Instruction Memory Fetch Latency</dt>
+
+                <dd class="dd"><span class="ph">2</span></dd>
+
+            
+            
+            
+                <dt class="dt dlterm">Cycle of Execute stage</dt>
+
+                <dd class="dd"><span class="ph">1</span></dd>
+
+            
+            
+                <dt class="dt dlterm">Cycle of Modify stage</dt>
+
+                <dd class="dd"><span class="ph">3</span></dd>
+
+            
+            
+                <dt class="dt dlterm">Cycle of Write-back stage</dt>
+
+                <dd class="dd"><span class="ph">4</span></dd>
+
+            
+        </dl>
+
+        <p class="p">The base <span class="ph">Cadence</span> processor is a 5-stage pipeline
+            micro-architecture with a single stage dedicated to data memory and another stage
+            dedicated to instruction fetch. For large local memories (caches or on chip local
+            memories) on configurations being clocked aggressively, the speed of the memory can
+            limit the speed of the processor core. For such configurations, <span class="ph">Cadence</span> offers the option of adding two extra stages to the
+            pipeline, one to the instruction fetch and another to the data memory. The use of these
+            extra stages allow for larger and slower local memories without impacting the processor
+            clock rate. These extra stages increase the branch penalty by one cycle and the load-use
+            delay by one cycle. Therefore, they potentially slow down an application's speed, as
+            measured in number of clocks required to complete the application. Some, applications,
+            mostly DSP, will not slow down appreciably. However, control type code can slow down 15%
+            or more. </p>
+
+    </div>
+
+<div class="related-links">
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="../../config/nodes/g_isaisa.html">ISA Configuration Options</a></div>
+<div class="previouslink"><strong>Previous topic:</strong> <a class="link" href="../../config/options/opt.l32r.html" title="Select what hardware support options to include for L32R.">L32R Hardware Support Option</a></div>
+</div>
+</div>
+
+</body>
+</html>

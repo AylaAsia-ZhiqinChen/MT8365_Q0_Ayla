@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en-us" lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="copyright" content="(C) Copyright 2005"/>
+<meta name="DC.rights.owner" content="(C) Copyright 2005"/>
+<meta name="DC.Type" content="tconcept"/>
+<meta name="DC.Title" content="Prefetch Options"/>
+<meta name="abstract" content=""/>
+<meta name="description" content=""/>
+<meta name="DC.Relation" scheme="URI" content="../../config/pages/page.interfaces.html"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/nodes/g_intpif.html"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/nodes/g_intwidth.html"/>
+<meta name="DC.Relation" scheme="URI" content="../../config/options/opt.prefetchEntries.html"/>
+<meta name="DC.Format" content="XHTML"/>
+<meta name="DC.Identifier" content="gid_intprefetch"/>
+<link rel="stylesheet" type="text/css" href="../../commonltr.css"/>
+<link rel="stylesheet" type="text/css" href="../../cadence.css"/>
+<title>Prefetch Options</title>
+</head>
+<body id="gid_intprefetch">
+
+
+    <h1 class="title topictitle1">Prefetch Options</h1>
+
+    
+    <div class="body conbody"><p class="shortdesc"/>
+
+        
+        <p class="p">These can all be selected from the Interfaces page of
+            the Xplorer Configuration Editor.</p>
+
+        <p class="p">Selecting a non-zero count of cache prefetch entries option selects whether prefetch is
+            included; the other options modify its behaviour.</p>
+
+        <p class="p">Xtensa processors can prefetch to instruction and data caches if the relevant cache
+            configuration options are compatible. If not, then prefetch will only be supported to
+            the data cache. The requirements for prefetching to both instruction and data caches are
+            as follows:</p>
+
+        <ul class="ul">
+            <li class="li">Xtensa LX5 and X10 processors and earlier: The instruction and data cache line
+                widths must be the same, plus the instuction cache and data cache access widths must
+                be the same</li>
+
+            <li class="li">Xtensa LX6, LX7 and X11 processors and later: The instruction and data cache line
+                widths must still be the same, but the access width restriction is relaxed as
+                described in the appropriate Data Book. Note that the conditions have changed, so
+                make sure to check with the Data Book corresponding to the specific release you will
+                use to generate hardware.</li>
+
+        </ul>
+
+    </div>
+
+<div class="related-links">
+<ol class="olchildlinks">
+<li class="link olchildlink"><a href="../../config/options/opt.prefetchEntries.html">Cache Prefetch Entries</a><br/>
+Controls how many cache lines can be held in the prefetch buffer</li>
+</ol>
+
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a class="link" href="../../config/pages/page.interfaces.html">Interface Options</a></div>
+<div class="previouslink"><strong>Previous topic:</strong> <a class="link" href="../../config/nodes/g_intpif.html">PIF Options</a></div>
+<div class="nextlink"><strong>Next topic:</strong> <a class="link" href="../../config/nodes/g_intwidth.html">Interface Width Options</a></div>
+</div>
+</div>
+
+</body>
+</html>

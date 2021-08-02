@@ -1,0 +1,22 @@
+cc_library_shared {
+    srcs: ["ion.c"],
+    name: "libion_mtk",
+    proprietary: true,
+    owner: "mtk",
+    export_include_dirs: ["include"],
+    include_dirs: ["system/core/include"],
+    header_libs: [
+        "device_kernel_headers",
+    ],
+    shared_libs: [
+        "libion",
+        "liblog",
+        "libdl",
+        "libion_ulit",
+    ],
+
+}
+
+optional_subdirs = [
+    "*",
+]
