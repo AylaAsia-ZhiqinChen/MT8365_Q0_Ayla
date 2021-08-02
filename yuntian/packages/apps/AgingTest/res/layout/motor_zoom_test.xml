@@ -1,0 +1,44 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	tools:context=".MotorZoomActivity" >
+
+	<SurfaceView
+		android:layout_marginTop="20dp"
+		android:id="@+id/surfaceView1"
+		android:layout_gravity="center_horizontal"
+		android:layout_width="480px"
+		android:layout_height="640px"
+		android:layout_alignParentTop="true" />
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:gravity="bottom|center_horizontal"
+		android:layout_marginBottom="20dp"
+		android:orientation="vertical" >
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/test_time_title"
+			android:textSize="@dimen/test_time_title_size" />
+
+		<TextView
+			android:id="@+id/test_time"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="@dimen/test_time_margin_top"
+			android:textColor="@color/test_time_color"
+			android:textSize="@dimen/test_time_size" />
+
+		<Button
+			android:id="@+id/stop_test"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="@dimen/stop_test_margin_top"
+			android:text="@string/stop" />
+	</LinearLayout>
+
+</FrameLayout>

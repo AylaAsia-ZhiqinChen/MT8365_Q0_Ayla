@@ -1,0 +1,1697 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+AndroidManifest.xml配置说明：
+    （１）所以添加<action android:name="android.intent.action.FACTORY_TEST" />的Activity，都将被当做测试项添加到测试列表中。
+    （２）meta-data名称为com.android.factorytest.group的值，指明该测试项属于那个测试集合，默认测试集合有系统（System）、屏幕（Screen）
+        、铃声（Ring）、电话（Phone）、附件（Annex）、无线设备（Wireless）、传感器（Sensor）、相机（Camera）、按键（Key)以及测试结果（Result)，
+        最终使用的使用资源ID，因此不能直接使用字符串。
+    （３）meta-data名称为com.android.factorytest.title的值，指明该测试项的标题，最终使用的使用资源ID，因此不能直接使用字符串。
+    （４）meta-data名称为com.android.factorytest.group_priority的值，指明该测试组排列顺序优先级，最终使用的使用资源ID，因此不能直接使用字符串。
+    （５）meta-data名称为com.android.factorytest.enabled的值，指明该测试是否可用，即是否将该测试项添加到测试列表中，最终使用的使用资源ID
+     　　，因此不能直接使用字符串。
+    （６）intent-filter中的priority的值，指明该测试项在该测试集合中的排列优先级。
+    （７）所有测试项上面的值必须全部都要设置，排序的值应从１开始。
+    （８）非测试项禁止填写上面属性（除测试结果Activity外（TestResultActivity)）。
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    coreApp="true"
+    package="com.android.factorytest"
+    android:sharedUserId="android.uid.system"
+    android:versionCode="1"
+    android:versionName="V1.0">
+
+    <!--
+    android:sharedUserId="android.uid.system"
+    coreApp="true"
+    -->
+
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.WRITE_MEDIA_STORAGE" />
+    <uses-permission android:name="android.permission.CALL_PRIVILEGED" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
+    <uses-permission android:name="android.permission.NFC" />
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+    <uses-permission android:name="android.permission.CHANGE_COMPONENT_ENABLED_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+    <uses-feature
+        android:name="android.hardware.nfc"
+        android:required="false" />
+
+    <application
+        android:name=".FactoryTestApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        <!-- 主界面 -->
+        <activity
+            android:name=".FactoryTest"
+            android:configChanges="locale|layoutDirection"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+         <!--       <category android:name="android.intent.category.LAUNCHER" />-->
+            </intent-filter>
+        </activity>
+
+        <!-- 测试结果显示 -->
+        <activity
+            android:name=".TestResultActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/test_result_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/result_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/result_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/test_result_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/result_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/test_result_enabled" />
+        </activity>
+
+        <!-- 测试集合测试列表 -->
+        <activity 
+        android:screenOrientation="portrait"
+        android:name=".TestListActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name=".TestWatermarkService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <!-- 启动测试暗码广播接收器 -->
+        <receiver android:name=".FactoryTestReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+	    <!--yuntian longyao add暗码控制隐藏和显示水印-->
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SECRET_CODE" />
+                <data
+                    android:host="@string/show_hide_watermark_code"
+                    android:scheme="android_secret_code" />
+            </intent-filter>
+            <!--yuntian longyao end暗码控制隐藏和显示水印-->
+        </receiver>
+         
+		<!-- 人脸测试-->
+		<activity
+            android:name=".face.FaceTest"
+            android:configChanges="locale|layoutDirection"
+            android:label="@string/face_test_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/face_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/face_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/face_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/face_test_priority" />
+           <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/face_test_enabled" />
+        </activity>
+        <!-- 锁体测试-->
+		<activity
+            android:name=".lock.LockTest"
+            android:configChanges="locale|layoutDirection"
+            android:label="@string/lock_test_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/lock_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/lock_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/lock_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/lock_test_priority" />
+           <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/lock_test_enabled" />
+        </activity>
+        <!-- 指纹测试-->
+		<activity
+            android:name=".finger.FingerTest"
+            android:configChanges="locale|layoutDirection"
+            android:label="@string/finger_test_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/finger_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/finger_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/finger_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/finger_test_priority" />
+           <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/finger_test_enabled" />
+        </activity>
+
+        <!--   指纹跑马灯测试-->
+        <activity
+            android:name=".fingerlight.FingerLightTest"
+            android:configChanges="locale|layoutDirection"
+            android:label="@string/light_test_title">
+        <intent-filter>
+            <action android:name="android.intent.action.FACTORY_TEST" />
+        </intent-filter>
+        <meta-data
+            android:name="com.android.factorytest.group"
+            android:resource="@string/light_test_group_title" />
+        <meta-data
+            android:name="com.android.factorytest.group_priority"
+            android:resource="@integer/light_test_group_priority" />
+        <meta-data
+            android:name="com.android.factorytest.title"
+            android:resource="@string/light_test_title" />
+        <meta-data
+            android:name="com.android.factorytest.priority"
+            android:resource="@integer/light_test_priority" />
+        <meta-data
+            android:name="com.android.factorytest.enabled"
+            android:resource="@bool/light_test_enabled" />
+        </activity>
+
+        <!--   门把按钮测试-->
+        <activity
+            android:name=".doorbutton.DoorButtonTest"
+            android:configChanges="locale|layoutDirection"
+            android:label="@string/door_button_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/door_button_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/door_button_test_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/door_button_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/door_button_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/door_button_test_enabled" />
+        </activity>
+
+        <!--   版本信息-->
+        <activity
+            android:name=".versioninfo.VersionInfo"
+            android:configChanges="locale|layoutDirection"
+            android:label="@string/version_info_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/version_info_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/version_info_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/version_info_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/version_info_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/version_info_enabled" />
+        </activity>
+
+        <!--   恢复出厂设置-->
+        <activity
+            android:name=".reset.Reset"
+            android:configChanges="locale|layoutDirection"
+            android:label="@string/reset_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/reset_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/reset_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/reset_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/reset_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/reset_enabled" />
+        </activity>
+
+        <!--   写sn-->
+        <activity
+            android:name=".writesn.WriteSn"
+            android:configChanges="locale|layoutDirection"
+            android:label="@string/write_sn_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/write_sn_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/write_sn_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/write_sn_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/write_sn_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/write_sn_enabled" />
+        </activity>
+        
+        <!--   降噪麦测试-->
+        <activity
+            android:name=".talkmic.TalkMic"
+            android:configChanges="locale|layoutDirection"
+            android:label="@string/talk_mic_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/talk_mic_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/talk_mic_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/talk_mic_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/talk_mic_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/talk_mic_enabled" />
+        </activity>
+        
+    
+        
+        <!-- =======================系统（System）测试集合Activity注册列表=================== -->
+        <!-- 系统版本测试 -->
+        <activity
+            android:name=".system.SystemVersionTest"
+            android:screenOrientation="portrait"
+            android:label="@string/system_version_test_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/system_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/system_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/system_version_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/system_version_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/system_version_test_enabled" />
+        </activity>
+
+        <!-- 校准综测测试 -->
+        <activity
+            android:name=".system.RfCaliTest"
+            android:screenOrientation="portrait"
+            android:label="@string/rf_cali_test_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/system_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/system_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/rf_cali_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/rf_cali_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/rf_cali_test_enabled" />
+        </activity>
+
+        <!-- 系统时间测试 -->
+        <activity
+            android:name=".system.RtcTest"
+            android:screenOrientation="portrait"
+            android:label="@string/rtc_test_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/system_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/system_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/rtc_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/rtc_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/rtc_test_enabled" />
+        </activity>
+
+        <!-- =======================屏幕（Screen）测试集合Activity注册列表=================== -->
+        <!-- 屏幕颜色测试 -->
+        <activity
+            android:name=".screen.ScreenColorTest"
+            android:screenOrientation="portrait"
+            android:label="@string/screen_color_test_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/screen_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/screen_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/screen_color_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/screen_color_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/screen_color_test_enabled" />
+        </activity>
+
+        <!-- 屏幕背光测试 -->
+        <activity
+            android:name=".screen.ScreenBacklightTest"
+            android:screenOrientation="portrait"
+            android:label="@string/screen_backlight_test_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/screen_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/screen_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/screen_backlight_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/screen_backlight_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/screen_backlight_test_enabled" />
+        </activity>
+
+        <!-- 单指触摸测试 -->
+        <activity
+            android:name=".screen.SingleFingerTouchTest"
+            android:screenOrientation="portrait"
+            android:label="@string/single_finger_touch_test_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/screen_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/screen_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/single_finger_touch_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/single_finger_touch_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/single_finger_touch_test_enabled" />
+        </activity>
+
+        <!-- 多指触摸测试 -->
+        <activity
+            android:name=".screen.MultiFingerTouchTest"
+            android:screenOrientation="portrait"
+            android:label="@string/multi_finger_touch_test_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/screen_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/screen_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/multi_finger_touch_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/multi_finger_touch_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/multi_finger_touch_test_enabled" />
+        </activity>
+
+        <!-- =======================铃声（Ring）测试集合Activity注册列表=================== -->
+        <!-- 马达测试 -->
+        <activity
+            android:name=".ring.MotorTest"
+            android:screenOrientation="portrait"
+            android:label="@string/motor_test_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/ring_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/ring_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/motor_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/motor_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/motor_test_enabled" />
+        </activity>
+
+        <!-- 扬声器测试 -->
+        <activity
+            android:name=".ring.SpeakerTest"
+            android:screenOrientation="portrait"
+            android:label="@string/speaker_test_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/ring_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/ring_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/speaker_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/speaker_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/speaker_test_enabled" />
+        </activity>
+
+        <!-- =======================电话（Phone）测试集合Activity注册列表=================== -->
+        <!-- 话筒回音测试 -->
+        <activity
+            android:name=".phone.MicrophoneEchoTest"
+            android:screenOrientation="portrait"
+            android:label="@string/microphone_echo_test_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/phone_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/phone_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/microphone_echo_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/microphone_echo_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/microphone_echo_test_enabled" />
+        </activity>
+
+        <!-- SIM卡测试 -->
+        <activity
+            android:name=".phone.SIMCardTest"
+            android:screenOrientation="portrait"
+            android:label="@string/sim_card_test_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/phone_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/phone_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/sim_card_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/sim_card_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/sim_card_test_enabled" />
+        </activity>
+
+        <!-- 听筒测试 -->
+        <activity
+            android:name=".phone.HandsetTest"
+            android:screenOrientation="portrait"
+            android:label="@string/handset_test_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/phone_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/phone_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/handset_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/handset_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/handset_test_enabled" />
+        </activity>
+        
+        <!-- 双扬声器测试 -->
+        <activity
+            android:name=".annex.DualMicrophoneTest"
+            android:screenOrientation="portrait"
+            android:label="@string/dual_microphone_test_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/phone_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/phone_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/dual_microphone_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/dual_microphone_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/dual_microphone_test_enabled" />
+        </activity>
+        
+        <!-- 通话测试 -->
+        <activity
+            android:name=".phone.CallTest"
+            android:screenOrientation="portrait"
+            android:label="@string/call_test_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/phone_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/phone_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/call_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/call_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/call_test_enabled" />
+        </activity>
+
+        <!-- 移动数据测试 -->
+        <activity
+            android:name=".phone.MobileDataTest"
+            android:screenOrientation="portrait"
+            android:label="@string/mobile_data_test_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/phone_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/phone_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/mobile_data_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/mobile_data_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/mobile_data_test_enabled" />
+        </activity>
+
+        <!-- =======================附件（Annex）测试集合Activity注册列表=================== -->
+        <!-- SDCard测试 -->
+        <activity
+            android:name=".annex.SDCardTest"
+            android:screenOrientation="portrait"
+            android:label="@string/sdcard_test_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/annex_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/annex_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/sdcard_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/sdcard_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/sdcard_test_enabled" />
+        </activity>
+
+        <!-- 充电测试 -->
+        <activity
+            android:name=".annex.ChargeTest"
+            android:screenOrientation="portrait"
+            android:label="@string/charge_test_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/annex_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/annex_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/charge_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/charge_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/charge_test_enabled" />
+        </activity>
+
+        <!-- 耳机测试 -->
+        <activity
+            android:name=".annex.HeadsetTest"
+            android:screenOrientation="portrait"
+            android:label="@string/headset_test_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/annex_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/annex_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/headset_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/headset_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/headset_test_enabled" />
+        </activity>
+
+        <!-- type-c耳机测试 -->
+        <activity
+            android:name=".annex.TypeCHeadsetTest"
+            android:screenOrientation="portrait"
+            android:label="@string/typec_headset_test_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/annex_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/annex_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/typec_headset_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/type_headset_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/typec_headset_test_enabled" />
+        </activity>
+        <!-- type-c数字耳机测试 -->
+        <activity
+            android:name=".annex.TypeCDigitalHeadsetTest"
+            android:screenOrientation="portrait"
+            android:label="@string/typec_digital_headset_test_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/annex_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/annex_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/typec_digital_headset_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/typec_digital_headset_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/typec_digital_headset_test_enabled" />
+        </activity>
+
+        <!-- type-c模拟耳机测试 -->
+        <activity
+            android:name=".annex.TypeCAnalogHeadsetTest"
+            android:screenOrientation="portrait"
+            android:label="@string/typec_analog_headset_test_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/annex_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/annex_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/typec_analog_headset_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/typec_analog_headset_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/typec_analog_headset_test_enabled" />
+        </activity>
+
+        <!-- OTG功能测试 -->
+        <activity
+            android:name=".annex.OTGTest"
+            android:screenOrientation="portrait"
+            android:label="@string/otg_test_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/annex_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/annex_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/otg_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/otg_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/otg_test_enabled" />
+        </activity>
+
+        <!--    LED指示灯测试    -->
+        <activity android:name=".annex.LedTest"
+			android:screenOrientation="portrait"
+            android:label="@string/led_test_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/annex_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/annex_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/led_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/led_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/led_test_enabled" />
+        </activity>
+        
+        <!--    Scan扫描头测试    -->
+        <activity android:name=".annex.ScanTest"
+			android:screenOrientation="portrait"
+            android:label="@string/scan_test_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/annex_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/annex_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/scan_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/scan_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/scan_test_enabled" />
+        </activity>
+        
+        <!--    安全模块测试    -->
+        <activity android:name=".annex.SafeModuleTest"
+			android:screenOrientation="portrait"
+            android:label="@string/safemodule_test_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/annex_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/annex_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/safemodule_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/safemodule_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/safemodule_test_enabled" />
+        </activity>
+        
+        
+         <!-- PSAM卡测试 -->
+        <activity
+            android:name=".annex.PSAMCardTest"
+            android:screenOrientation="portrait"
+            android:label="@string/psam_card_test_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/annex_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/annex_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/psam_card_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/psam_card_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/sim_card_test_enabled" />
+        </activity>
+        
+        <!--    RS485通讯串口测试    -->
+        <activity android:name=".annex.SerialPortTest"
+			android:screenOrientation="portrait"
+            android:label="@string/serialport_test_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/annex_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/annex_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/serialport_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/serialport_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/serialport_test_enabled" />
+        </activity>
+
+		<!-- M6耳机测试 -->
+        <activity
+            android:name=".annex.MsixHeadsetTest"
+            android:screenOrientation="portrait"
+            android:label="@string/msix_headset_test_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/annex_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/annex_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/msix_headset_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/msix_headset_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/msix_headset_test_enabled" />
+        </activity>
+
+        <!--    RS485通讯串口测试    -->
+        <activity android:name=".annex.SerialPortSimpleTest"
+			android:screenOrientation="portrait"
+            android:label="@string/serialport_simple_test_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/annex_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/annex_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/serialport_simple_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/serialport_simple_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/serialport_simple_test_enabled" />
+        </activity>
+        <!-- =======================无线设备（Wireless）测试集合Activity注册列表=================== -->
+        <!-- 收音机测试 -->
+        <activity
+            android:name=".wireless.FmRadioTest"
+            android:screenOrientation="portrait"
+            android:label="@string/fm_radio_test_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/wireless_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/wireless_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/fm_radio_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/fm_radio_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/fm_radio_test_enabled" />
+        </activity>
+
+        <!-- DMR测试 -->
+        <activity
+            android:name=".wireless.DMRTest"
+            android:screenOrientation="portrait"
+            android:label="@string/dmr_test_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/wireless_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/wireless_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/dmr_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/dmr_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/dmr_test_enabled" />
+        </activity>
+
+        <!-- WIFI测试 -->
+        <activity
+            android:name=".wireless.WifiTest"
+            android:screenOrientation="portrait"
+            android:label="@string/wifi_test_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/wireless_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/wireless_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/wifi_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/wifi_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/wifi_test_enabled" />
+        </activity>
+
+        <!-- 蓝牙测试 -->
+        <activity
+            android:name=".wireless.BluetoothTest"
+            android:screenOrientation="portrait"
+            android:label="@string/bluetooth_test_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/wireless_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/wireless_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/bluetooth_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/bluetooth_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/bluetooth_test_enabled" />
+        </activity>
+
+        <!-- 定位测试 -->
+        <activity
+            android:name=".wireless.GpsTest"
+            android:screenOrientation="portrait"
+            android:label="@string/gps_test_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/wireless_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/wireless_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/gps_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/gps_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/gps_test_enabled" />
+        </activity>
+
+		<!-- BLE测试 -->
+        <activity
+            android:name=".wireless.BleTest"
+            android:screenOrientation="portrait"
+            android:label="@string/ble_test_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/wireless_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/wireless_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/ble_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/ble_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/ble_test_enabled" />
+        </activity>
+        
+        <!-- =======================传感器（Sensor）测试集合Activity注册列表=================== -->
+        <!-- 重力传感器测试（重力传感器测试） -->
+        <activity
+            android:name=".sensor.GravitySensorTest"
+            android:screenOrientation="portrait"
+            android:label="@string/gravity_sensor_test_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/sensor_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/sensor_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/gravity_sensor_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/gravity_sensor_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/gravity_sensor_test_enabled" />
+        </activity>
+
+        <!-- 光感传感器测试 -->
+        <activity
+            android:name=".sensor.LightSensorTest"
+            android:screenOrientation="portrait"
+            android:label="@string/light_sensor_test_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/sensor_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/sensor_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/light_sensor_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/light_sensor_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/light_sensor_test_enabled" />
+        </activity>
+
+        <!-- 距离传感器测试 -->
+        <activity
+            android:name=".sensor.ProximitySensorTest"
+            android:screenOrientation="portrait"
+            android:label="@string/proximity_sensor_test_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/sensor_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/sensor_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/proximity_sensor_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/proximity_sensor_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/proximity_sensor_test_enabled" />
+        </activity>
+
+        <!-- 指纹传感器测试 -->
+        <activity
+            android:name=".sensor.FingerprintSensorTest"
+            android:screenOrientation="portrait"
+            android:label="@string/fingerprint_sensor_test_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/sensor_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/sensor_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/fingerprint_sensor_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/fingerprint_sensor_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/fingerprint_sensor_test_enabled" />
+        </activity>
+
+        <!-- NFC近场通信测试 -->
+        <activity
+            android:name=".sensor.NFCSensorTest"
+            android:screenOrientation="portrait"
+            android:label="@string/nfc_sensor_test_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.nfc.action.TECH_DISCOVERED" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.nfc.action.TECH_DISCOVERED"
+                android:resource="@xml/nfc_tech_filter" />
+
+            <intent-filter>
+                <action android:name="android.nfc.action.TAG_DISCOVERED" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/sensor_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/sensor_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/nfc_sensor_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/nfc_sensor_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/nfc_sensor_test_enabled" />
+        </activity>
+
+        <!-- 加速计传感器测试 -->
+        <activity
+            android:name=".sensor.AccelerometerSensorTest"
+            android:screenOrientation="portrait"
+            android:label="@string/accelerometer_sensor_test_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/sensor_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/sensor_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/accelerometer_sensor_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/accelerometer_sensor_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/accelerometer_sensor_test_enabled" />
+        </activity>
+
+        <!-- 磁力传感器测试 -->
+        <activity
+            android:name=".sensor.MagneticFieledSensorTest"
+            android:screenOrientation="portrait"
+            android:label="@string/magnetic_fieled_sensor_test_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/sensor_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/sensor_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/magnetic_fieled_sensor_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/magnetic_fieled_sensor_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/magnetic_fieled_sensor_test_enabled" />
+        </activity>
+
+        <!-- 压力传感器测试 -->
+        <activity
+            android:name=".sensor.PressureSensorTest"
+            android:screenOrientation="portrait"
+            android:label="@string/pressure_sensor_test_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/sensor_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/sensor_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/pressure_sensor_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/pressure_sensor_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/pressure_sensor_test_enabled" />
+        </activity>
+
+        <!-- 陀螺仪传感器测试 -->
+        <activity
+            android:name=".sensor.GyroscopeSensorTest"
+            android:screenOrientation="portrait"
+            android:label="@string/gyroscope_sensor_test_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/sensor_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/sensor_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/gyroscope_sensor_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/gyroscope_sensor_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/gyroscope_sensor_test_enabled" />
+        </activity>
+
+        <!-- 计步传感器测试 -->
+        <activity
+            android:name=".sensor.StepCountSensorTest"
+            android:screenOrientation="portrait"
+            android:label="@string/step_count_sensor_test_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/sensor_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/sensor_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/step_count_sensor_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/step_count_sensor_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/step_count_sensor_test_enabled" />
+        </activity>
+
+        <!-- =======================相机（Camera）测试集合Activity注册列表=================== -->
+        <!-- 前摄像头测试 -->
+        <activity
+            android:name=".camera.FrontCameraTest"
+            android:label="@string/front_camera_test_title"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/camera_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/camera_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/front_camera_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/front_camera_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/front_camera_test_enabled" />
+        </activity>
+
+        <!-- 后摄像头测试测试 -->
+        <activity
+            android:name=".camera.BackCameraTest"
+            android:label="@string/back_camera_test_title"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/camera_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/camera_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/back_camera_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/back_camera_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/back_camera_test_enabled" />
+        </activity>
+
+        <!-- 虹膜摄像头测试 -->
+        <activity
+            android:name=".camera.IrisCameraTest"
+            android:label="@string/iris_camera_test_title"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/camera_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/camera_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/iris_camera_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/iris_camera_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/iris_camera_test_enabled" />
+        </activity>
+        
+        <!-- 相机扫描头测试 -->
+        <activity
+            android:name=".camera.ScanCameraTest"
+            android:label="@string/scan_camera_test_title"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/camera_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/camera_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/scan_camera_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/scan_camera_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/scan_camera_test_enabled" />
+        </activity>
+        
+        <!-- 手电筒测试 -->
+        <activity
+            android:name=".camera.ElectricTorchTest"
+            android:label="@string/electric_torch_test_title"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/camera_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/camera_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/electric_torch_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/electric_torch_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/electric_torch_test_enabled" />
+        </activity>
+        <!-- =======================按键（Key）测试集合Activity注册列表=================== -->
+        <!-- 按键测试 -->
+        <activity
+            android:name=".key.KeyTest"
+            android:screenOrientation="portrait"
+            android:label="@string/key_test_title">
+            <intent-filter>
+                <action android:name="android.intent.action.FACTORY_TEST" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.factorytest.group"
+                android:resource="@string/key_group_title" />
+            <meta-data
+                android:name="com.android.factorytest.group_priority"
+                android:resource="@integer/key_group_priority" />
+            <meta-data
+                android:name="com.android.factorytest.title"
+                android:resource="@string/key_test_title" />
+            <meta-data
+                android:name="com.android.factorytest.priority"
+                android:resource="@integer/key_test_priority" />
+            <meta-data
+                android:name="com.android.factorytest.enabled"
+                android:resource="@bool/key_test_enabled" />
+        </activity>
+
+    </application>
+
+</manifest>

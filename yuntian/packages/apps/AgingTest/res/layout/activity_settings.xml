@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/reboot_container"
+                android:layout_width="@dimen/set_time_container_width"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/report_container_margin_top"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/reboot_title"
+                    android:textSize="@dimen/time_text_size" />
+
+                <EditText
+                    android:id="@+id/reboot_time"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:hint="@integer/default_test_time"
+                    android:inputType="numberSigned"
+                    android:nextFocusForward="@+id/sleep_time"
+                    android:singleLine="true"
+                    android:textSize="@dimen/time_text_size" />
+
+                <TextView
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|right"
+                    android:text="@string/times"
+                    android:textSize="@dimen/time_text_size" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/sleep_container"
+                android:layout_width="@dimen/set_time_container_width"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/report_container_margin_top"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/sleep_title"
+                    android:textSize="@dimen/time_text_size" />
+
+                <EditText
+                    android:id="@+id/sleep_time"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:hint="@integer/default_test_time"
+                    android:inputType="numberSigned"
+                    android:nextFocusForward="@+id/vibrate_time"
+                    android:singleLine="true"
+                    android:textSize="@dimen/time_text_size" />
+
+                <TextView
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|right"
+                    android:text="@string/times"
+                    android:textSize="@dimen/time_text_size" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/vibrate_container"
+                android:layout_width="@dimen/set_time_container_width"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/report_container_margin_top"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/vibrate_title"
+                    android:textSize="@dimen/time_text_size" />
+
+                <EditText
+                    android:id="@+id/vibrate_time"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:hint="@integer/default_test_time"
+                    android:inputType="numberSigned"
+                    android:nextFocusForward="@+id/receiver_time"
+                    android:singleLine="true"
+                    android:textSize="@dimen/time_text_size" />
+
+                <TextView
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|right"
+                    android:text="@string/min"
+                    android:textSize="@dimen/time_text_size" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/receiver_container"
+                android:layout_width="@dimen/set_time_container_width"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/report_container_margin_top"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/receiver_title"
+                    android:textSize="@dimen/time_text_size" />
+
+                <EditText
+                    android:id="@+id/receiver_time"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:hint="@integer/default_test_time"
+                    android:inputType="numberSigned"
+                    android:nextFocusForward="@+id/taking_picture_time"
+                    android:singleLine="true"
+                    android:textSize="@dimen/time_text_size" />
+
+                <TextView
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|right"
+                    android:text="@string/min"
+                    android:textSize="@dimen/time_text_size" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/front_taking_picture_container"
+                android:layout_width="@dimen/set_time_container_width"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/report_container_margin_top"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/front_taking_picture_title"
+                    android:textSize="@dimen/time_text_size" />
+
+                <EditText
+                    android:id="@+id/front_taking_picture_time"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:hint="@integer/default_test_time"
+                    android:inputType="numberSigned"
+                    android:nextFocusForward="@+id/back_taking_picture_time"
+                    android:singleLine="true"
+                    android:textSize="@dimen/time_text_size" />
+
+                <TextView
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|right"
+                    android:text="@string/min"
+                    android:textSize="@dimen/time_text_size" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/back_taking_picture_container"
+                android:layout_width="@dimen/set_time_container_width"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/report_container_margin_top"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/back_taking_picture_title"
+                    android:textSize="@dimen/time_text_size" />
+
+                <EditText
+                    android:id="@+id/back_taking_picture_time"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:hint="@integer/default_test_time"
+                    android:inputType="numberSigned"
+                    android:nextFocusForward="@+id/play_video_time"
+                    android:singleLine="true"
+                    android:textSize="@dimen/time_text_size" />
+
+                <TextView
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|right"
+                    android:text="@string/min"
+                    android:textSize="@dimen/time_text_size" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/play_video_container"
+                android:layout_width="@dimen/set_time_container_width"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/report_container_margin_top"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/play_video_title"
+                    android:textSize="@dimen/time_text_size" />
+
+                <EditText
+                    android:id="@+id/play_video_time"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:hint="@integer/default_test_time"
+                    android:inputType="numberSigned"
+                    android:nextFocusForward="@+id/ok"
+                    android:singleLine="true"
+                    android:textSize="@dimen/time_text_size" />
+
+                <TextView
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|right"
+                    android:text="@string/min"
+                    android:textSize="@dimen/time_text_size" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/motor_container"
+                android:layout_width="@dimen/set_time_container_width"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/report_container_margin_top"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/camera_motor_test_title"
+                    android:textSize="@dimen/time_text_size" />
+
+                <EditText
+                    android:id="@+id/motor_time"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:hint="@integer/default_test_time"
+                    android:inputType="numberSigned"
+                    android:nextFocusForward="@+id/ok"
+                    android:singleLine="true"
+                    android:textSize="@dimen/time_text_size" />
+
+                <TextView
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|right"
+                    android:text="@string/times"
+                    android:textSize="@dimen/time_text_size" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/flashlight_container"
+                android:layout_width="@dimen/set_time_container_width"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/report_container_margin_top"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/flashlight_title"
+                    android:textSize="@dimen/time_text_size" />
+
+                <EditText
+                    android:id="@+id/flashlight_time"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:hint="@integer/default_test_time"
+                    android:inputType="numberSigned"
+                    android:nextFocusForward="@+id/ok"
+                    android:singleLine="true"
+                    android:textSize="@dimen/time_text_size" />
+
+                <TextView
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|right"
+                    android:text="@string/min"
+                    android:textSize="@dimen/time_text_size" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/loudspeaker_container"
+                android:layout_width="@dimen/set_time_container_width"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/report_container_margin_top"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/loudspeaker_title"
+                    android:textSize="@dimen/time_text_size" />
+
+                <EditText
+                    android:id="@+id/loudspeaker_time"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:hint="@integer/default_test_time"
+                    android:inputType="numberSigned"
+                    android:nextFocusForward="@+id/screen_time"
+                    android:singleLine="true"
+                    android:textSize="@dimen/time_text_size" />
+
+                <TextView
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|right"
+                    android:text="@string/min"
+                    android:textSize="@dimen/time_text_size" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/screen_container"
+            android:layout_width="@dimen/set_time_container_width"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/report_container_margin_top"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/screen_title"
+                android:textSize="@dimen/time_text_size" />
+
+            <EditText
+                android:id="@+id/screen_time"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:hint="@integer/default_test_time"
+                android:inputType="numberSigned"
+                android:nextFocusForward="@+id/reset_container"
+                android:singleLine="true"
+                android:textSize="@dimen/time_text_size" />
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|right"
+                android:text="@string/min"
+                android:textSize="@dimen/time_text_size" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/reset_container"
+            android:layout_width="@dimen/set_time_container_width"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/report_container_margin_top"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/reset_title"
+                android:textSize="@dimen/time_text_size" />
+
+            <EditText
+                android:id="@+id/reset_time"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:hint="@integer/default_test_time"
+                android:inputType="numberSigned"
+                android:nextFocusForward="@+id/ok"
+                android:singleLine="true"
+                android:textSize="@dimen/time_text_size" />
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|right"
+                android:text="@string/min"
+                android:textSize="@dimen/time_text_size" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingBottom="@dimen/activity_vertical_margin">
+
+            <Button
+                android:id="@+id/ok"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:paddingTop="@dimen/button_padding_top"
+                android:paddingBottom="@dimen/button_padding_bottom"
+                android:text="@string/ok" />
+
+            <Button
+                android:id="@+id/cancel"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/button_margin_left"
+                android:layout_weight="1"
+                android:paddingTop="@dimen/button_padding_top"
+                android:paddingBottom="@dimen/button_padding_bottom"
+                android:text="@string/cancel" />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

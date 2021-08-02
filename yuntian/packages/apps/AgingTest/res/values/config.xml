@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <!-- 测试项选项框是否默认勾选 -->
+    <bool name="default_reboot_value">false</bool>
+    <bool name="default_sleep_value">false</bool>
+    <bool name="default_vibrate_value">false</bool>
+    <bool name="default_receiver_value">false</bool>
+    <bool name="default_front_taking_picture_value">false</bool>
+    <bool name="default_back_taking_picture_value">false</bool>
+    <bool name="default_play_video_value">false</bool>
+    <bool name="default_camera_motor_value">false</bool>
+    <bool name="default_flashlight_value">false</bool>
+    <bool name="default_loudspeaker_value">false</bool>
+    <bool name="default_circulation_value">false</bool>
+    <bool name="default_screen_value">false</bool>
+    <bool name="default_reset_value">false</bool>
+    <bool name="clear_result_on_start">true</bool>
+    <bool name="clear_state_on_start">false</bool>
+    
+    <bool name="reboot_visible">true</bool>
+    <bool name="sleep_visible">true</bool>
+    <bool name="vibrate_visible">true</bool>
+    <bool name="receiver_visible">true</bool>
+    <bool name="front_taking_picture_visible">true</bool>
+    <bool name="back_taking_picture_visible">true</bool>
+    <bool name="play_video_visible">true</bool>
+    <bool name="camera_motor_visible">true</bool>
+    <bool name="flash_light_visible">true</bool>
+    <bool name="loudspeaker_visible">true</bool>
+    <bool name="screen_visible">false</bool>
+    <bool name="reset_visible">false</bool>
+    <bool name="select_all_visible">false</bool>
+
+    <integer name="default_test_time">10</integer>
+    <integer name="default_total_test_time">240</integer>
+    <integer name="default_reboot_time">20</integer>
+    <integer name="default_sleep_time">20</integer>
+    <integer name="default_vibrate_time">20</integer>
+    <integer name="default_receiver_time">20</integer>
+    <integer name="default_front_taking_picture_time">20</integer>
+    <integer name="default_back_taking_picture_time">20</integer>
+    <integer name="default_play_video_time">20</integer>
+    <integer name="default_camera_preview_time">20</integer>
+    <integer name="default_camera_motor_time">20</integer>
+    <integer name="default_screen_time">20</integer>
+    <integer name="default_reset_time">1</integer>
+    <integer name="reboot_delayed">5000</integer>
+    <integer name="wake_up_delayed">5000</integer>
+    <integer name="go_to_sleep_delayed">5000</integer>
+    <integer name="circulation_delayed">3000</integer>
+    
+    <string name="aging_test_secret_code">1234</string>
+  <string name="bowayaftersales_code">2264482</string>
+	<integer name="vibrate_repeat_times">0</integer>
+    <integer-array name="vibrate_time">
+        <item>0</item>
+        <item>1000</item>
+        <item>0</item>
+        <item>1000</item>
+    </integer-array>
+    <bool name="use_total_test_time">false</bool>
+</resources>

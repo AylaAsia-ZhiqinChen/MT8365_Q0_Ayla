@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="test_title_color">#ffff0000</color>
+    <color name="fail_text_color">#ffff0000</color>
+    <color name="pass_text_color">#ff00ff00</color>
+    <color name="not_test_text_color">#ffe1bf00</color>
+    <color name="test_time_color">#ff00ff00</color>
+    <color name="white">#ffffffff</color>
+    <color name="red">#ffff0000</color>
+    <color name="green">#ff00ff00</color>
+    <color name="gray">#ff666666</color>
+    <color name="dark_green">#049f04</color>
+    <color name="crimson">#b70000</color>
+    <color name="blue">#ff0000ff</color>
+    <color name="yellow">#ffffff00</color>
+    <color name="purple">#ffff00ff</color>
+    <color name="black_gray">#ff333333</color>
+    <color name="black">#ff000000</color>
+</resources>

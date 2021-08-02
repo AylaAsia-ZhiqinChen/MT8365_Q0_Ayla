@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--    属于系统版本测试的测试项集合（值为该测试项的完整类名）      -->
+    <string-array name="system_version_test_groups">
+        <item>com.android.factorytest.system.SystemVersionTest</item>
+    </string-array>
+
+    <!--    属于综测校准测试的测试项集合集合（值为该测试项的完整类名）    -->
+    <string-array name="rf_cali_test_groups">
+        <item>com.android.factorytest.system.RfCaliTest</item>
+    </string-array>
+
+    <!--    属于系统时间测试的测试项集合（值为该测试项的完整类名）    -->
+    <string-array name="rtc_test_groups">
+        <item>com.android.factorytest.system.RtcTest</item>
+    </string-array>
+
+    <!--    属于屏幕颜色测试的测试项集合（值为该测试项的完整类名）    -->
+    <string-array name="screen_color_test_groups">
+        <item>com.android.factorytest.screen.ScreenColorTest</item>
+    </string-array>
+
+    <!--    属于屏幕背光测试的测试项集合（值为该测试项的完整类名）    -->
+    <string-array name="screen_back_light_test_groups">
+        <item>com.android.factorytest.screen.ScreenBacklightTest</item>
+    </string-array>
+
+    <!--    属于单指触摸测试的测试项集合（值为该测试项的完整类名）    -->
+    <string-array name="single_finger_touch_test_groups">
+        <item>com.android.factorytest.screen.SingleFingerTouchTest</item>
+    </string-array>
+
+    <!--    属于多指触摸测试的测试项集合（值为该测试项的完整类名）    -->
+    <string-array name="multi_finger_touch_test_groups">
+        <item>com.android.factorytest.screen.MultiFingerTouchTest</item>
+    </string-array>
+
+    <!--    属于马达测试的测试项集合（值为该测试项的完整类名）  -->
+    <string-array name="motor_test_groups">
+        <item>com.android.factorytest.ring.MotorTest</item>
+    </string-array>
+
+    <!--    属于扬声器测试的测试项集合（值为该测试项的完整类名）  -->
+    <string-array name="speaker_test_groups">
+        <item>com.android.factorytest.ring.SpeakerTest</item>
+    </string-array>
+
+    <!--    属于话筒回音测试的测试项集合（值为该测试项的完整类名）    -->
+    <string-array name="micro_phone_echo_test_groups">
+        <item>com.android.factorytest.phone.MicrophoneEchoTest</item>
+    </string-array>
+
+    <!--    属于SIM卡测试的测试项集合（值为该测试项的完整类名）    -->
+    <string-array name="sim_card_test_groups">
+        <item>com.android.factorytest.phone.SIMCardTest</item>
+    </string-array>
+
+    <!--    属于听筒测试的测试项集合（值为该测试项的完整类名）  -->
+    <string-array name="handset_test_groups">
+        <item>com.android.factorytest.phone.HandsetTest</item>
+    </string-array>
+
+    <!--    属于通话测试的测试项集合（值为该测试项的完整类名）  -->
+    <string-array name="call_test_groups">
+        <item>com.android.factorytest.phone.CallTest</item>
+    </string-array>
+
+    <!--    属于移动数据测试的测试项集合（值为该测试项的完整类名）  -->
+    <string-array name="mobile_data_test_groups">
+        <item>com.android.factorytest.phone.MobileDataTest</item>
+    </string-array>
+
+    <!--    属于SDCard测试的测试项集合（值为该测试项的完整类名）  -->
+    <string-array name="sdcard_test_groups">
+        <item>com.android.factorytest.annex.SDCardTest</item>
+    </string-array>
+
+    <!--    属于充电测试的测试项集合（值为该测试项的完整类名）  -->
+    <string-array name="charge_test_groups">
+        <item>com.android.factorytest.annex.ChargeTest</item>
+    </string-array>
+
+    <!--    属于耳机测试的测试项集合（值为该测试项的完整类名）  -->
+    <string-array name="headset_test_groups">
+        <item>com.android.factorytest.annex.HeadsetTest</item>
+    </string-array>
+    <!--    属于属于type-c数字耳机测试的测试项集合（值为该测试项的完整类名）  -->
+    <string-array name="typec_digital_headset_test_groups">
+        <item>com.android.factorytest.annex.TypeCDigitalHeadsetTest</item>
+    </string-array>
+
+    <!--    属于属于type-c模拟耳机测试的测试项集合（值为该测试项的完整类名）  -->
+    <string-array name="typec_analog_headset_test_groups">
+        <item>com.android.factorytest.annex.TypeCAnalogHeadsetTest</item>
+    </string-array>
+    <!--属于M6耳机测试的测试项集合（值为该测试项的完整类名）-->
+    <string-array name="msix_headset_test_groups">
+        <item>com.android.factorytest.annex.MsixHeadsetTest</item>
+    </string-array>
+
+    <!--    属于属于type-c耳机测试的测试项集合（值为该测试项的完整类名）  -->
+    <string-array name="typec_headset_test_groups">
+        <item>com.android.factorytest.annex.TypeCHeadsetTest</item>
+    </string-array>
+
+    <!--    属于OTG测试的测试项集合（值为该测试项的完整类名）  -->
+    <string-array name="otg_test_groups">
+        <item>com.android.factorytest.annex.OTGTest</item>
+    </string-array>
+
+    <!--    属于双麦克风测试的测试项集合（值为该测试项的完整类名）  -->
+    <string-array name="dual_microphone_test_groups">
+        <item>com.android.factorytest.annex.DualMicrophoneTest</item>
+    </string-array>
+
+    <!--    属于LED指示灯测试的测试项集合（值为该测试项的完整类名）  -->
+    <string-array name="led_test_groups">
+        <item>com.android.factorytest.annex.LedTest</item>
+    </string-array>
+
+    <!--属于Scan扫描头测试的测试项集合（值为该测试项的完整类名）  -->
+    <string-array name="scan_test_groups">
+        <item>com.android.factorytest.annex.ScanTest</item>
+    </string-array>
+
+     <!--属于安全模块测试的测试项集合（值为该测试项的完整类名）  -->
+    <string-array name="safemodule_test_groups">
+        <item>com.android.factorytest.annex.SafeModuleTest</item>
+    </string-array>
+
+    <!--属于PSAM卡测试的测试项集合（值为该测试项的完整类名）    -->
+    <string-array name="psam_card_test_groups">
+        <item>com.android.factorytest.annex.PSAMCardTest</item>
+    </string-array>
+
+    <!--    属于RS485串口测试的测试项集合（值为该测试项的完整类名）  -->
+    <string-array name="serialport_test_groups">
+        <item>com.android.factorytest.annex.SerialPortTest</item>
+    </string-array>
+
+    <!--    属于串口测试的测试项集合（值为该测试项的完整类名）  -->
+    <string-array name="serialport_simple_test_groups">
+        <item>com.android.factorytest.annex.SerialPortSimpleTest</item>
+    </string-array>
+
+    <!--    属于收音机测试的测试项集合（值为该测试项的完整类名）     -->
+    <string-array name="fmradio_test_groups">
+        <item>com.android.factorytest.wireless.FmRadioTest</item>
+    </string-array>
+
+    <!--    属于DMR测试的测试项集合（值为该测试项的完整类名）    -->
+    <string-array name="dmr_test_groups">
+        <item>com.android.factorytest.wireless.DMRTest</item>
+    </string-array>
+
+    <!--    属于WIFI测试的测试项集合（值为该测试项的完整类名）    -->
+    <string-array name="wifi_test_groups">
+        <item>com.android.factorytest.wireless.WifiTest</item>
+    </string-array>
+
+    <!--    属于蓝牙测试的测试项集合（值为该测试项的完整类名）  -->
+    <string-array name="bluetooth_test_groups">
+        <item>com.android.factorytest.wireless.BluetoothTest</item>
+    </string-array>
+
+    <!--    属于定位测试的测试项集合（值为该测试项的完整类名）     -->
+    <string-array name="gps_test_groups">
+        <item>com.android.factorytest.wireless.GpsTest</item>
+    </string-array>
+    
+    <!--    属于BLE测试的测试项集合（值为该测试项的完整类名）     -->
+    <string-array name="ble_test_groups">
+        <item>com.android.factorytest.wireless.BleTest</item>
+    </string-array>
+
+    <!--    属于重力传感器测试（重力传感器测试）的测试项集合（值为该测试项的完整类名）   -->
+    <string-array name="gravity_sensor_test_groups">
+        <item>com.android.factorytest.sensor.GravitySensorTest</item>
+    </string-array>
+
+    <!--    属于光感传感器测试的测试项集合（值为该测试项的完整类名）   -->
+    <string-array name="light_sensor_test_groups">
+        <item>com.android.factorytest.sensor.LightSensorTest</item>
+    </string-array>
+
+    <!--    属于距离传感器测试的测试项集合（值为该测试项的完整类名）   -->
+    <string-array name="proximity_sensor_test_groups">
+        <item>com.android.factorytest.sensor.ProximitySensorTest</item>
+    </string-array>
+
+    <!--    属于指纹传感器测试的测试项集合（值为该测试项的完整类名）   -->
+    <string-array name="fingerprint_sensor_test_groups">
+        <item>com.android.factorytest.sensor.FingerprintSensorTest</item>
+    </string-array>
+
+    <!--    属于NFC近场通信传感器测试的测试项集合（值为该测试项的完整类名）   -->
+    <string-array name="nfc_sensor_test_groups">
+        <item>com.android.factorytest.sensor.NFCSensorTest</item>
+    </string-array>
+
+    <!--    属于加速计传感器测试的测试项集合（值为该测试项的完整类名）   -->
+    <string-array name="accelerometer_sensor_test_groups">
+        <item>com.android.factorytest.sensor.AccelerometerSensorTest</item>
+    </string-array>
+
+    <!--    属于磁力传感器测试的测试项集合（值为该测试项的完整类名）   -->
+    <string-array name="magnetic_fieled_sensor_test_groups">
+        <item>com.android.factorytest.sensor.MagneticFieledSensorTest</item>
+    </string-array>
+
+    <!--    属于压力传感器测试的测试项集合（值为该测试项的完整类名）   -->
+    <string-array name="pressure_sensor_test_groups">
+        <item>com.android.factorytest.sensor.PressureSensorTest</item>
+    </string-array>
+
+    <!--    属于陀螺仪传感器测试的测试项集合（值为该测试项的完整类名）   -->
+    <string-array name="gyroscope_sensor_test_groups">
+        <item>com.android.factorytest.sensor.GyroscopeSensorTest</item>
+    </string-array>
+
+    <!--    属于计步传感器测试的测试项集合（值为该测试项的完整类名）   -->
+    <string-array name="step_count_sensor_test_groups">
+        <item>com.android.factorytest.sensor.StepCountSensorTest</item>
+    </string-array>
+
+    <!--    属于前摄像头测试的测试项集合（值为该测试项的完整类名）      -->
+    <string-array name="front_camera_test_groups">
+        <item>com.android.factorytest.camera.FrontCameraTest</item>
+    </string-array>
+
+    <!--    属于后摄像头测试的测试项集合（值为该测试项的完整类名）      -->
+    <string-array name="back_camera_test_groups">
+        <item>com.android.factorytest.camera.BackCameraTest</item>
+    </string-array>
+    <!--    属于扫描摄像头测试的测试项集合（值为该测试项的完整类名）      -->
+    <string-array name="scan_camera_test_groups">
+        <item>com.android.factorytest.camera.ScanCameraTest</item>
+    </string-array>
+    <!--    属于虹膜测试的测试项集合（值为该测试项的完整类名）      -->
+    <string-array name="iris_camera_test_groups">
+        <item>com.android.factorytest.camera.IrisCameraTest</item>
+    </string-array>
+
+    <!--    属于手电筒测试的测试项集合（值为该测试项的完整类名）      -->
+    <string-array name="electric_torch_test_groups">
+        <item>com.android.factorytest.camera.ElectricTorchTest</item>
+    </string-array>
+
+
+    <!--    属于按键测试的测试项集合（值为该测试项的完整类名）  -->
+    <string-array name="key_test_groups">
+        <item>com.android.factorytest.key.KeyTest</item>
+    </string-array>
+
+    <!--    属于测试结果的Activity集合（值为该测试项的完整类名）      -->
+    <string-array name="test_result_groups">
+        <item>com.android.factorytest.TestResultActivity</item>
+    </string-array>
+     <!--    属于人脸测试的测试项集合（值为该测试项的完整类名）  -->
+    <string-array name="face_test_groups">
+        <item>com.android.factorytest.face.FaceTest</item>
+    </string-array>
+     <!--    属于锁体测试的测试项集合（值为该测试项的完整类名）  -->
+    <string-array name="lock_test_groups">
+        <item>com.android.factorytest.lock.LockTest</item>
+    </string-array>
+     <!--    属于指纹测试的测试项集合（值为该测试项的完整类名）  -->
+    <string-array name="finger_test_groups">
+        <item>com.android.factorytest.finger.FingerTest</item>
+    </string-array>
+
+    <!--    多指触摸测试中手指圆圈的颜色      -->
+    <integer-array name="multi_finger_touch_finger_colors">
+        <item>@color/red</item>
+        <item>@color/green</item>
+        <item>@color/blue</item>
+        <item>@color/yellow</item>
+        <item>@color/purple</item>
+        <item>@color/red</item>
+        <item>@color/green</item>
+        <item>@color/blue</item>
+        <item>@color/yellow</item>
+        <item>@color/purple</item>
+    </integer-array>
+
+    <!--    屏幕颜色测试使用的颜色数组       -->
+    <integer-array name="screen_color_test_colors">
+        <item>@color/white</item>
+        <item>@color/red</item>
+        <item>@color/green</item>
+        <item>@color/blue</item>
+        <item>@color/black</item>
+    </integer-array>
+
+    <!--    屏幕背光测试使用颜色数组    -->
+    <integer-array name="screen_backlight_test_colors">
+        <item>@color/white</item>
+        <item>@color/black</item>
+    </integer-array>
+
+    <!--    马达测试的振动时间   -->
+    <integer-array name="motor_test_vibrator_times">
+        <item>0</item>
+        <item>1000</item>
+        <item>0</item>
+        <item>1000</item>
+    </integer-array>
+
+    <!-- 按键测试中按键的名称数组 -->
+    <string-array name="key_names">
+        <item>Home</item>
+        <item>Menu</item>
+        <item>Back</item>
+        <item>Power</item>
+        <item>Volume Up</item>
+        <item>Volume Down</item>
+    </string-array>
+
+    <!--    按键测试中按键值，该值的顺序必须与上面的按键名称一一对应    -->
+    <integer-array name="key_codes">
+        <item>3</item>
+        <item>82</item>
+        <item>4</item>
+        <item>26</item>
+        <item>24</item>
+        <item>25</item>
+    </integer-array>
+
+</resources>

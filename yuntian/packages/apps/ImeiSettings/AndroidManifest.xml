@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    coreApp="true"
+    package="com.android.imeisettings"
+    android:sharedUserId="android.uid.phone">
+    <!--Yuntian:modify phone crash at 2018-03-28 15:37 by yuntian22 {{&& -->
+    <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="28" />
+    <!--&&}}-->
+    
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:process="com.android.phone"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".ImeiSettings"
+            android:process="com.android.phone"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <receiver android:name=".SettingsReceiver"
+				android:process="com.android.phone">
+            <intent-filter android:priority="2147483647">
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SECRET_CODE" />
+
+                <data
+                    android:host="@string/secret_code"
+                    android:scheme="android_secret_code" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".UpdateService"
+            android:process="com.android.phone"
+            android:enabled="true"
+            android:exported="true"></service>
+    </application>
+
+</manifest>

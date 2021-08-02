@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">老化测试</string>
+    <string name="mapp_name">M老化测试</string>
+    <string name="action_test_time">测试设置</string>
+    <string name="action_test_report">测试报告</string>
+    <string name="aging_test_tip">"1. 确认手机未设定锁屏密码: 设置 > 安全和隐私 > 屏幕解锁方式= 无密码解锁\n2. 保证足够的电量或将USB连接上电源\n3.勾选:设置 > 开发者选项 > 不锁定屏幕\n4.当老化测试运行时不要触碰任何按键</string>
+    <string name="reboot_title">重启</string>
+    <string name="sleep_title">休眠</string>
+    <string name="vibrate_title">振动</string>
+    <string name="receiver_title">听筒</string>
+    <string name="camera_motor_title">摄像头马达</string>
+    <string name="front_taking_picture_title">前摄拍照</string>
+    <string name="back_taking_picture_title">后摄拍照</string>
+    <string name="play_video_title">播放视频</string>
+    <string name="circulation_title">循环</string>
+    <string name="start">开始</string>
+    <string name="reset">恢复出厂设置</string>
+    <string name="stop">结束</string>
+    <string name="setting_activity_title">设置时间</string>
+    <string name="ok">确定</string>
+    <string name="cancel">退出</string>
+    <string name="report_activity_title">老化测试报告</string>
+    <string name="setting_success">设置成功</string>
+    <string name="setting_fail">设置失败</string>
+    <string name="fail">失败</string>
+    <string name="pass">通过</string>
+    <string name="not_tested">未测试</string>
+    <string name="reboot_test_title">重启测试</string>
+    <string name="test_time_title">测试时间:</string>
+    <string name="camera_motor_time_title">测试次数:</string>
+    <string name="sleep_test_title">睡眠测试</string>
+    <string name="vibrate_test_title">振动测试</string>
+    <string name="receiver_test_title">听筒测试</string>
+    <string name="taking_picture_test_title">拍照测试</string>
+    <string name="camera_motor_test_title">摄像头马达测试</string>
+    <string name="play_video_test_title">播放视频测试</string>
+    <string name="default_time_string">00:00</string>
+    <string name="testing_tip">正在进行测试，只能点结束按钮退出</string>
+    <string name="thousand">10</string>
+    <string name="autofocus_failed">对焦失败</string>
+    <string name="falsh_title">闪光灯</string>
+    <string name="torch_title">手电筒</string>
+    <string name="flashlight_title">闪光灯</string>
+    <string name="loudspeaker_title">扬声器</string>
+    <string name="reset_title">恢复出厂设置</string>
+    <string name="reset_test_title">恢复出厂设置测试</string>
+    <string name="set_times">设置恢复出厂设置次数</string>
+    <string name="toolarge_tip">只能设置1到126!</string>
+    <string name="times">次</string>
+    <string name="min">分钟</string>
+    <string name="screen_title">屏幕</string>
+    <string name="screen_test_title">屏幕测试</string>
+    <string name="select_all_title">全选</string>
+    <string name="total_time_title">总测试时间</string>
+</resources>

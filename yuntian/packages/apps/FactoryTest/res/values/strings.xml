@@ -1,0 +1,578 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!--    应用及主界面标题    -->
+    <string name="app_name">FactoryTest</string>
+    <!--    版本名称    -->
+    <string name="version_name">V1.0</string>
+    <!--    启动测试的暗码     -->
+    <string name="factory_test_secret_code">8888</string>
+
+    <!--    系统测试集合标题    -->
+    <string name="system_group_title">System</string>
+    <!--    屏幕测试集合标题    -->
+    <string name="screen_group_title">Screen</string>
+    <!--    铃声测试集合标题    -->
+    <string name="ring_group_title">Ring&#038;Vibra</string>
+    <!--    电话测试集合名称    -->
+    <string name="phone_group_title">Phone</string>
+    <!--    附件测试集合名称    -->
+    <string name="annex_group_title">Annex</string>
+    <!--    无线设备测试集合名称  -->
+    <string name="wireless_group_title">Wireless</string>
+    <!--    传感器测试集合标题   -->
+    <string name="sensor_group_title">Sensor</string>
+    <!--    相机测试集合名称    -->
+    <string name="camera_group_title">Camera</string>
+    <!--    按键测试集合名称    -->
+    <string name="key_group_title">Key</string>
+    <!--    测试结果集合名称    -->
+    <string name="result_group_title">TestReport</string>
+
+    <!--    测试结果Activity标题  -->
+    <string name="test_result_title">TestReport</string>
+    <!--    SDCard测试Activity标题      -->
+    <string name="sdcard_test_title">SDCard Test</string>
+    <!--    OTG测试项Activity标题    -->
+    <string name="otg_test_title">OTG Test</string>
+    <!--    充电测试Activity标题      -->
+    <string name="charge_test_title">Charge Test</string>
+    <!--    耳机测试Activity标题      -->
+    <string name="headset_test_title">Headset Test</string>
+    <!--    M6耳机测试Activity标题      -->
+    <string name="msix_headset_test_title">M6 Headset Test</string>
+    <!--    耳机测试Activity标题      -->
+    <string name="typec_digital_headset_test_title">"TYPE-C Digital Headset Test"</string>
+    <!--    耳机测试Activity标题      -->
+    <string name="typec_analog_headset_test_title">"TYPE-C Analog Headset Test"</string>
+    <!--    耳机测试Activity标题      -->
+    <string name="typec_headset_test_title">"TYPE-C Headset Test"</string>
+    <!--    双麦克风测试Activity标题     -->
+    <string name="dual_microphone_test_title">Dual Microphone Test</string>
+    <!--    LED指示灯测试Activity标题  -->
+    <string name="led_test_title">LED Test</string>
+    <!--    Scan扫描头测试Activity标题  -->
+    <string name="scan_test_title">Scan Test</string>
+    <!--    安全模块测试Activity标题  -->
+    <string name="safemodule_test_title">SafeModule Test</string>
+    <!--    485串口测试Activity标题  -->
+    <string name="serialport_test_title">SerialPort Test</string>
+    <!--    串口测试Activity标题  -->
+    <string name="serialport_simple_test_title">"SerialPort Simple Test"</string>
+    <!--    前摄像头测试Activity标题      -->
+    <string name="front_camera_test_title">Front Camera Test</string>
+    <!--    后摄像头测试Activity标题      -->
+    <string name="back_camera_test_title">Back Camera Test</string>
+    <!--    扫描摄像头测试Activity标题      -->
+    <string name="scan_camera_test_title">Scan Camera Test</string>
+    <!--    虹膜摄像头测试Activity标题      -->
+    <string name="iris_camera_test_title">Iris Camera Test</string>
+    <!--    手电筒测试Activity标题      -->
+    <string name="electric_torch_test_title">"Electric Torch Test"</string>     
+    <!--    按键测试Activity标题      -->
+    <string name="key_test_title">Key Test</string>
+    <!--    话筒回音测试Activity标题    -->
+    <string name="microphone_echo_test_title">Microphone Echo Test</string>
+    <!--    SIM卡测试Activity标题       -->
+    <string name="sim_card_test_title">SIM Test</string>
+    <!--    PSAM卡测试Activity标题       -->
+    <string name="psam_card_test_title">PSAM Test</string>
+    <!--    听筒测试Activity标题      -->
+    <string name="handset_test_title">Handset Test</string>
+    <!--    通话测试Activity标题  -->
+    <string name="call_test_title">Call Test</string>
+    <!--    移动数据测试Activity标题  -->
+    <string name="mobile_data_test_title">"Moblie Data Test"</string>
+    <!--    移动数据测试Activity标题  -->
+    <string name="mobile_data_test_website">http://www.wangzhi360.com</string>
+    <!--    马达测试Activity标题      -->
+    <string name="motor_test_title">Motor Test</string>
+    <!--    扬声器测试Activity标题     -->
+    <string name="speaker_test_title">Speaker Test</string>
+    <!--    屏幕颜色测试Activity标题      -->
+    <string name="screen_color_test_title">Screen Color Test</string>
+    <!--    屏幕背光测试Activity标题      -->
+    <string name="screen_backlight_test_title">Screen Backlight Test</string>
+    <!--    单指触摸测试Activity标题      -->
+    <string name="single_finger_touch_test_title">Single Finger Test</string>
+    <!--    多指触摸测试Activity标题      -->
+    <string name="multi_finger_touch_test_title">Multi Finger Test</string>
+    <!--    重力传感器测试（重力传感器测试）Activity标题   -->
+    <string name="gravity_sensor_test_title">Gravity Sensor Test</string>
+    <!--    光感传感器测试Activity标题   -->
+    <string name="light_sensor_test_title">Light Sensor Test</string>
+    <!--    距离传感器测试Activity标题   -->
+    <string name="proximity_sensor_test_title">Proximity Sensor Test</string>
+    <!--    指纹传感器测试Activity标题   -->
+    <string name="fingerprint_sensor_test_title">Fingerprint Test</string>
+    <!--    NFC近场通信测试Activity标题 -->
+    <string name="nfc_sensor_test_title">NFC Test</string>
+    <!--    加速计传感器测试Activity标题 -->
+    <string name="accelerometer_sensor_test_title">Accelerometer Test</string>
+    <!--    磁力传感器测试Activity标题 -->
+    <string name="magnetic_fieled_sensor_test_title">Magnetic Fieled Test</string>
+    <!--    压力传感器测试Activity标题 -->
+    <string name="pressure_sensor_test_title">Pressure Test</string>
+    <!--    陀螺仪传感器测试Activity标题 -->
+    <string name="gyroscope_sensor_test_title">Gyroscope Test</string>
+    <!--    计步传感器测试Activity标题 -->
+    <string name="step_count_sensor_test_title">Step Count Test</string>
+    <!--    系统版本测试Activity标题    -->
+    <string name="system_version_test_title">System Version Test</string>
+    <!--    校准综测测试Activity标题    -->
+    <string name="rf_cali_test_title">RF Cali Test</string>
+    <!--    系统时间测试Activity标题    -->
+    <string name="rtc_test_title">System Clock Test</string>
+    <!--    收音机测试Activity标题     -->
+    <string name="fm_radio_test_title">FMRadio Test</string>
+    <!--    DMR测试Activity标题     -->
+    <string name="dmr_test_title">"DMR Test"</string>
+    <string name="dmr_test_result">DMR Test Result:</string>
+    <!--    WIFI测试Activity标题        -->
+    <string name="wifi_test_title">Wifi Test</string>
+    <!--    蓝牙测试Activity标题      -->
+    <string name="bluetooth_test_title">Bluetooth Test</string>
+    <!--    定位测试Activity标题      -->
+    <string name="gps_test_title">GPS Test</string>
+    <!--    自动测试按钮名称    -->
+    <string name="auto_test_title">Auto Test</string>
+    <!--    主界面（FactoryTest）GridView中未定义的测试项名称  -->
+    <string name="undefined_test_title">Empty</string>
+    <!--    测试组没有测试项提示语     -->
+    <string name="not_found_test_item">No test item</string>
+    <!--    测试组资源ID非法提示语    -->
+    <string name="illegal_test_group">Illegal test group</string>
+    <!--    测试结果Activity未知状态字符串   -->
+    <string name="test_result_not_tested_text">Not tested</string>
+    <!--    测试结果Activity通过状态字符串   -->
+    <string name="test_result_pass_text">Pass</string>
+    <!--    测试结果Activity失败状态字符串   -->
+    <string name="test_result_fail_text">Fail</string>
+    <!--    测试结果Activity列表重置测试结果标题    -->
+    <string name="reset_result_title">Reset</string>
+    <!--    测试结果Activity界面列表ID标题    -->
+    <string name="test_result_id_title">ID</string>
+    <!--    测试结果Activity界面列表测试标题    -->
+    <string name="test_item_title">Title</string>
+    <!--    测试结果Activity列表测试结果标题    -->
+    <string name="test_item_result_title">Result</string>
+    <!--    测试界面底部测试通过按钮名称      -->
+    <string name="pass_button_text">Pass</string>
+    <!--    测试界面底部测试失败按钮名称      -->
+    <string name="fail_button_text">Fail</string>
+    <!--    测试过程中非法退出测试提示语      -->
+    <string name="exit_test_tip">Please exit the test by clicking on the pass or fail button</string>
+    <!--    系统版本测试中的Android版本号标题    -->
+    <string name="android_version_test_title">Android Version：</string>
+    <!--    系统版本测试中的内核版本号标题     -->
+    <string name="kernel_vesiont_test_title">Kernel Version：</string>
+    <!--    系统版本测试中的编译序号标题      -->
+    <string name="software_version_test_title">Software Version：</string>
+    <!--    系统版本测试中的设备ID标题      -->
+    <string name="device_id_test_title">Device IMEI：</string>
+    <!--    自动测试通过提示语              -->
+    <string name="auto_test_pass_tip">"Test passed, the application will enter the next test in "<xliff:g id="system">%d</xliff:g>" second"</string>
+    <!--    自动测试失败提示语              -->
+    <string name="auto_test_fail_tip">"Test failed, the application will enter the next test in "<xliff:g id="system">%d</xliff:g>" second"</string>
+    <!--    校准综测测试中GSM序列号标题     -->
+    <string name="gsm_serial_test_title">"GSM SN："</string>
+    <!--    Sogou SN1序列号标题     -->
+    <string name="sn1_test_title">"SN1："</string>
+    <!--    Sogou SNN序列号标题    -->
+    <string name="snn_test_title">"SNN："</string>
+    <!--    通过字符串   -->
+    <string name="pass">Pass</string>
+    <!--    失败字符串   -->
+    <string name="fail">Fail</string>
+    <!--    校准综测测试中校准标题     -->
+    <string name="calibration_test_title">"Calibration："</string>
+    <!--    校准综测测试中综测标题     -->
+    <string name="comprehensive_surver_test_title">"Comprehensive Surver："</string>
+    <!--    系统时间测试中系统时间标题   -->
+    <string name="system_clock_test_title">System Clock</string>
+    <!--    屏幕颜色测试中继续测试提示语      -->
+    <string name="screen_color_test_continue_tip">Tap the screen to continue</string>
+    <!--    屏幕颜色测试中测试完成提示语      -->
+    <string name="screen_color_test_finish_tip">Test passed</string>
+    <!--    马达测试提示语     -->
+    <string name="motor_test_tip">Touch screen to test vibration</string>
+    <!--    扬声器测试提示语    -->
+    <string name="speaker_test_play_tip">Playing music</string>
+    <!--    扬声器测试使用的音频测试文件名     -->
+    <string name="speaker_test_media_name">Test.ogg</string>
+    <!--    扬声器测试失败提示语      -->
+    <string name="speaker_test_play_fail"><xliff:g id="system">%s</xliff:g>" playback failed"</string>
+    <!--    通话测试中的测试号码      -->
+    <string name="call_test_number">112</string>
+    <!--    听筒测试提示语    -->
+    <string name="handset_test_play_tip">Playing music</string>
+    <!--    听筒测试使用的音频测试文件名     -->
+    <string name="handset_test_media_name">Test.ogg</string>
+    <!--    话筒回音测试开始录音按钮名称      -->
+    <string name="microphone_echo_test_start_record_title">Start recording</string>
+    <!--    话筒回音测试播放录音按钮名称      -->
+    <string name="microphone_echo_test_play_record_title">Play recording</string>
+    <!--    充电测试成功获取电池状态标题      -->
+    <string name="charge_test_battery_status_pass">"Battery state："&lt;font color="green"&gt;<xliff:g id="system">%s</xliff:g>&lt;/font&gt;</string>
+    <!--    充电测试获取电池状态失败标题      -->
+    <string name="charge_test_battery_status_fail">"Batter state："&lt;font color="red"&gt;<xliff:g id="system">%s</xliff:g>&lt;/font&gt;</string>
+    <!--    充电测试电池状态未知字符    -->
+    <string name="charge_test_battery_status_unknown">"Unknown"</string>
+    <!--    充电测试电池正在充电字符    -->
+    <string name="charge_test_battery_status_charging">Charging</string>
+    <!--    充电测试电池无法充电字符    -->
+    <string name="charge_test_battery_status_discharging">No charge</string>
+    <!--    充电测试电池已充满字符     -->
+    <string name="charge_test_battery_status_full">Filled</string>
+    <!--    充电测试电池未充电字符     -->
+    <string name="charge_test_battery_status_not_charging">Uncharged</string>
+    <!--    充电测试成功获取电池电压标题      -->
+    <string name="charge_test_battery_voltage_pass">"Battery voltage："&lt;font color="green"&gt;<xliff:g id="system">%s</xliff:g>&lt;/font&gt;</string>
+    <!--    充电测试获取电池电压失败标题      -->
+    <string name="charge_test_battery_voltage_fail">"Battery voltage："&lt;font color="red"&gt;<xliff:g id="system">%s</xliff:g>&lt;/font&gt;</string>
+    <!--    充电测试电池状态未知字符    -->
+    <string name="charge_test_battery_voltage_unknown">Unknown</string>
+    <!--    充电测试成功获取设备供电方式标题  -->
+    <string name="charge_test_battery_plugged_pass">"Charge type："&lt;font color="green"&gt;<xliff:g id="system">%s</xliff:g>&lt;/font&gt;</string>
+    <!--    充电测试成功获取设备供电方式标题  -->
+    <string name="charge_test_battery_plugged_fail">"Charge type："&lt;font color="red"&gt;<xliff:g id="system">%s</xliff:g>&lt;/font&gt;</string>
+    <!--    充电测试直流供电字符      -->
+    <string name="charge_test_battery_plugged_ac">Adapter charging</string>
+    <!--    充电测试USB供电字符     -->
+    <string name="charge_test_battery_plugged_usb">USB charging</string>
+    <!--    充电测试无线供电字符      -->
+    <string name="charge_test_battery_plugged_wireless">Wireless charging</string>
+    <!--    充电测试未知供电方式字符    -->
+    <string name="charge_test_battery_plugged_unknown">Unknown</string>
+    <!--    充电测试成功获取电池充电电流标题  -->
+    <string name="charge_test_battery_current_pass">"Charge current："&lt;font color="green"&gt;<xliff:g id="system">%s</xliff:g>&lt;/font&gt;</string>
+    <!--    充电测试成功获取电池充电电流标题  -->
+    <string name="charge_test_battery_current_fail">"Charge current："&lt;font color="red【"&gt;<xliff:g id="system">%s</xliff:g>&lt;/font&gt;</string>
+    <!--    充电测试获取充电电流失败字符  -->
+    <string name="charge_test_unknown_current">Obtain fail</string>
+    <!--    耳机测试耳机未插入字符     -->
+    <string name="headset_test_headset_not_plugged">Headset not inserted</string>
+    <!--    耳机测试耳机已插入字符     -->
+    <string name="headset_test_headset_plugged">Headset inserted</string>
+    <!--    耳机测试开始录音字符      -->
+    <string name="headset_test_start_recorder">Start recording</string>
+    <!--    耳机测试开始播放字符      -->
+    <string name="headset_test_start_play">Start playing</string>
+    <!--    摄像头支持闪光灯，测试注意字符串    -->
+    <string name="camera_flash_test_tip">"The camera supports flashing lights, please note that the flash is on!"</string>
+    <!--    没有找到前摄像头错误提示    -->
+    <string name="front_camera_not_found">Did not find the front camera</string>
+    <!--    没有找到后摄像头错误提示    -->
+    <string name="back_camera_not_found">Did not find the back camera</string>
+    <!--    没有找到虹膜摄像头错误提示    -->
+    <string name="iris_camera_not_found">Did not find the iris camera</string>
+    <!--    无法打开摄像头     -->
+    <string name="camera_open_fail">Camera failed to open</string>
+    <!--    当前光感值标题     -->
+    <string name="current_light_value_title">Current value：</string>
+    <!--    设备不支持光感传感器  -->
+    <string name="light_sensor_not_support">The device does not support light sensor</string>
+    <!--    距离传感器距离值标题  -->
+    <string name="proximity_sensor_distance_title">Distance data:</string>
+    <!--    距离传感器原始数据标题 -->
+    <string name="proximity_sensor_origin_title">Origin data:</string>
+    <!--   获取光感传感器失败提示信息    -->
+    <string name="obtain_proximity_sensor_fail">Failed to get light sensor</string>
+    <!--    重力传感器X轴数值标题 -->
+    <string name="gravity_x_axis_value_title">X-axis value:</string>
+    <!--    重力传感器Y轴数值标题 -->
+    <string name="gravity_y_axis_value_title">Y-axis value:</string>
+    <!--    重力传感器Z轴数值标题 -->
+    <string name="gravity_z_axis_value_title">Z-axis value:</string>
+    <!--    获取重力传感器失败提示信息   -->
+    <string name="obtain_gravity_sensor_fail">Failed to get gravity sensor</string>
+    <!--    Wifi当前状态标题  -->
+    <string name="wifi_state_title">Current wifi state:</string>
+    <!--    Wifi列表标题    -->
+    <string name="wifi_list_title">Currently scanned Wifi list:</string>
+    <!--    Wifi信号强调字符串 -->
+    <string name="wifi_signal_title">"Signal strength: %d"</string>
+    <!--    Wifi列表为空字符串 -->
+    <string name="empty_wifi_list">Empty</string>
+    <!--    Wifi正在打开状态字符串   -->
+    <string name="wifi_openning_state_text">Opening</string>
+    <!--    Wifi已经打开状态字符串   -->
+    <string name="wifi_opened_state_text">Opened</string>
+    <!--    Wifi正在关闭状态字符串   -->
+    <string name="wifi_closing_state_text">Closing</string>
+    <!--    Wifi已经关闭状态字符串   -->
+    <string name="wifi_closed_state_text">Closed</string>
+    <!--    Wifi状态未知字符串 -->
+    <string name="wifi_unknow_state_text">Unknown</string>
+    <!--    Wifi正在扫描提示字符串   -->
+    <string name="scanning_wifi_title">Scanning</string>
+    <!--    蓝牙当前状态标题    -->
+    <string name="bluetooth_state_title">Current bluetooth state: </string>
+    <!--    蓝牙当前扫描到的列表标题    -->
+    <string name="bluetooth_list_title">Currently scanned bluetooth list: </string>
+    <!--    蓝牙信号强度字符串   -->
+    <string name="bluetooth_signal_title">"Signal strength：%d"</string>
+    <!--    蓝牙列表为空字符串 -->
+    <string name="empty_bluetooth_list">Empty</string>
+    <!--    蓝牙正在打开状态字符串 -->
+    <string name="bluetooth_turning_on_state_text">Opening</string>
+    <!--    蓝牙已经打开状态字符串 -->
+    <string name="bluetooth_on_state_text">Opened</string>
+    <!--    蓝牙正在关闭状态字符串 -->
+    <string name="bluetooth_turning_off_state_text">Closing</string>
+    <!--    蓝牙已经关闭状态字符串 -->
+    <string name="bluetooth_off_state_text">Closed</string>
+    <!--    蓝牙状态未知字符串   -->
+    <string name="bluetooth_unknow_state_text">Unknown</string>
+    <!--    正在扫描蓝牙设备字符串 -->
+    <string name="scanning_bluetooth_devices_title">Scanning</string>
+    <!--    GPS当前状态标题   -->
+    <string name="gps_state_title">Currently GPS state：</string>
+    <!--    GPS搜索卫星用时标题   -->
+    <string name="search_satellite_time_cost">Search time cost：</string>
+    <!--    当前GPS搜索到的卫星列表   -->
+    <string name="gps_list_title">Currently searched satellite list: </string>
+    <!--    GPS搜索到卫星为空字符串   -->
+    <string name="empty_satellite_list">Empty</string>
+    <!--    GPS卫星信噪比字符串 -->
+    <string name="satellite_snr_title">"SNR：%s"</string>
+    <!--    GPS关闭状态字符串  -->
+    <string name="gps_close_title">Closed</string>
+    <!--    GPS开启状态字符串  -->
+    <string name="gps_open_title">Opened</string>
+    <!--    GPS搜星用时字符串  -->
+    <string name="location_use_time">%ds</string>
+    <!--    卫星编号字符串 -->
+    <string name="satellite_id">"Satellite Id：%d</string>
+    <!--    搜索卫星提示字符串   -->
+    <string name="searching_satellite">Scanning</string>
+    <!--    SIM卡测试结果标题   -->
+    <string name="sim_info_title">SIM<xliff:g id="soltId">%d</xliff:g> test result</string>
+    <!--    默认SIM卡测试结果标题   -->
+    <string name="default_sim_info_title">SIM test result</string>
+    <!--    未插入SIM卡提示字符串    -->
+    <string name="empty_sim_list">SIM not inserted</string>
+    <!--    未插入SIM卡测试结果 -->
+    <string name="sim_card_not_insert">SIM not inserted</string>
+    <!--    Sim卡国家标识标题  -->
+    <string name="sim_country_iso_title">"Country ISO：%s"</string>
+    <!--    SIM卡订阅信息ID  -->
+    <string name="sim_subid_title">"Subscription ID：%d"</string>
+    <!--    SIM卡运营商编码信息标题   -->
+    <string name="sim_operator_title">"Operator：%s"</string>
+    <!--    SIM卡运营商名称标题 -->
+    <string name="sim_operator_name_title">"Operator name：%s"</string>
+    <!--    SIM卡序列号 -->
+    <string name="sim_sn_title">"SN：%s"</string>
+    <!--    SIM卡设备ID标题  -->
+    <string name="sim_device_id_title">"Device ID：%s"</string>
+    <!--    SIM卡电话号码标题  -->
+    <string name="sim_number_title">"Number：%s"</string>
+    <!--    默认PSAM芯片测试结果标题   -->
+    <string name="psam_chip_title">PSAM chip test result:</string>
+    <!--    默认PSAM卡测试结果标题 -->
+    <string name="psam_card_title">PSAM card test result:</string>
+    <!--    SDCard状态标题  -->
+    <string name="sdcard_state_title">"SDCard state："</string>
+    <!--    SDCard总存储标题 -->
+    <string name="sdcard_total_size_title">"SDCard total size："</string>
+    <!--    SDCard可用存储标题    -->
+    <string name="sdcard_free_size_title">"SDCard free size："</string>
+    <!--    SDCard未插入字符串    -->
+    <string name="sdcard_not_insert">Not inserted</string>
+    <!--    SDCard已插入字符串    -->
+    <string name="sdcard_insert">Inserted</string>
+    <!--    SDCard未知存储状态字符串   -->
+    <string name="sdcard_unknown_state">"--"</string>
+    <!--    OTG磁盘状态字符串  -->
+    <string name="otg_disk_state_title">OTG disk state：</string>
+    <!--    OTG磁盘总存储字符串 -->
+    <string name="otg_disk_total_size_title">OTG disk total size：</string>
+    <!--    OTG磁盘可用存储字符串    -->
+    <string name="otg_disk_free_size_title">OTG disk free size：</string>
+    <!--    OTG磁盘名称字符串      -->
+    <string name="otg_disk_name_title">OTG disk name：</string>
+    <!--    OTG磁盘已插入状态字符串   -->
+    <string name="otg_disk_insert">Inserted</string>
+    <!--    OTG磁盘未插入状态字符串   -->
+    <string name="otg_disk_not_insert">Not inserted</string>
+    <!--    OTG磁盘状态未知字符串    -->
+    <string name="otg_disk_unknown_state">--</string>
+    <!--    设置NFC活动可用失败后提示  -->
+    <string name="nfc_sensor_test_disabled_tip">Failed to start NFC test item</string>
+    <!--    NFC测试提示信息   -->
+    <string name="nfc_test_tip">Please keep the magnetic card near the back of the phone</string>
+    <!--    NFC测试通过提示信息   -->
+    <string name="nfc_test_pass_tip">Test pass</string>
+    <!--    获取NfcAdapter对象失败提示语 -->
+    <string name="nfc_adapter_is_null">Failed to get NFC device</string>
+    <!--    FM测试电台信息提示  -->
+    <string name="fmradio_test_station_tip">"Test station：%s"</string>
+    <!--    FM播放按钮标题    -->
+    <string name="play_fmradio_station">Play</string>
+    <!--    FM停止播放按钮标题  -->
+    <string name="stop_fmradio_station">Stop</string>
+    <!--    FM播放失败提示    -->
+    <string name="play_fmradio_fail">Play fail</string>
+    <!--    FM停止播放失败提示    -->
+    <string name="stop_fmradio_fail">Stop play fail</string>
+    <!--    指纹测试提示信息    -->
+    <string name="fingerprint_test_tip">Please put the test finger on the fingerprint sensor on the back of the phone</string>
+    <!--    指纹测试通过提示信息  -->
+    <string name="fingerprint_test_pass_tip">Test pass</string>
+    <!--    多指触摸测试提示字符串 -->
+    <string name="multi_finger_touch_tip_text">Place multiple fingers on the screen for testing</string>
+    <!--    主麦克风测试标题   -->
+    <string name="main_microphone_title">Main</string>
+    <!--    副麦克风测试标题   -->
+    <string name="sub_microphone_title">Sub</string>
+    <!--    双麦克风测试标题     -->
+    <string name="dual_microphone_title">Dual</string>
+    <!--    双麦克风测试提示信息  -->
+    <string name="dual_microphone_tips_text">"Test method:\n Blow gently on the main wheat sub wheat, then play the recording"</string>
+    <!--    双麦克风录音按钮标题    -->
+    <string name="dual_microphone_record_title">Record</string>
+    <!--    双麦克风播放按钮标题    -->
+    <string name="dual_microphone_play_title">Play</string>
+    <!--    双麦克风测试状态信息  -->
+    <string name="dual_microphone_test_state">"Currently Test：%s"</string>
+    <!--    双麦克风测试无法找到录音文件错误提示  -->
+    <string name="record_file_not_exists">Play fail, file not exist</string>
+    <!--    双麦克风测试录音失败错误提示  -->
+    <string name="dual_microphone_test_record_fail">Record fail</string>
+    <!--    关闭LED灯标题    -->
+    <string name="turn_off_led_title">Turn off LED</string>
+    <!--    红色LED灯标题    -->
+    <string name="red_led_title">Red LED</string>
+    <!--    蓝色LED灯标题    -->
+    <string name="blue_led_title">Blue LED</string>
+    <!--    绿色LED灯标题    -->
+    <string name="green_led_title">Green LED</string>
+    <!--    白色LED灯标题    -->
+    <string name="white_led_title">White LED</string>
+    <!--    按键LED灯标题    -->
+    <string name="key_led_title">Key LED</string>
+    <!--    获取加速计传感器失败提示信息   -->
+    <string name="obtain_accelerometer_sensor_fail">Failed to get Accelerometer sensor</string>
+    <!--    获取陀螺仪传感器失败提示信息   -->
+    <string name="obtain_gyroscope_sensor_fail">Failed to get Gyroscope sensor</string>
+    <!--    获取磁力传感器失败提示信息   -->
+    <string name="obtain_magnetic_fieled_sensor_fail">Failed to get Magnetic Fieled sensor</string>
+    <!--    获取压力传感器失败提示信息   -->
+    <string name="obtain_pressure_sensor_fail">Failed to get Pressure sensor</string>
+    <!--    获取计步传感器失败提示信息   -->
+    <string name="obtain_step_count_sensor_fail">Failed to get Step Count sensor</string>
+    <!--	当前计步步数标题	-->
+    <string name="current_step_count">Current Step Count</string>
+    <!--	当前气压强度标题	-->
+    <string name="current_air_pressure">Current air pressure</string>
+    <!--	罗盘正北方向指示文本	-->
+    <string name="cardinal_north">N</string>
+    <!--	罗盘正东方向指示文本	-->
+    <string name="cardinal_east">E</string>
+    <!--	罗盘正南向指示文本	-->
+    <string name="cardinal_south">S</string>
+    <!--	罗盘正西向指示文本	-->
+    <string name="cardinal_west">W</string>
+    <!--	停止测试文本	-->
+    <string name="stop_test">Stop test</string>
+    <!--	开始测试文本	-->
+    <string name="start_test">Start test</string>
+    <!--    手电筒关闭状态字符串  -->    
+    <string name="electric_torch_close_title">"Turn off torch"</string>
+    <!--    手电筒开启状态字符串  -->
+    <string name="electric_torch_open_title">"Turn on torch"</string> 
+    
+    <!--    测试成功字符串  -->
+    <string name="test_success">Success</string>        
+    <!--    测试失败字符串  -->
+    <string name="test_fail">Fail</string>  
+    <!--    默认Scan扫描头测试结果标题   -->
+    <string name="scan_info_title">Scan test result:</string>
+    <!--    默认安全模块测试结果标题   -->
+    <string name="safemodule_info_title">SafeModule test result:</string>
+    <string name="laser_infrared_test_btn">Laser infrared test</string>
+    <!--    RS485发送数据标题   -->
+    <string name="send_data_tiltle">Sending data:</string>
+    <!--    RS485接收数据标题   -->
+    <string name="receive_data_tiltle">Receive data:</string>
+    <!--    RS485测试结果标题   -->
+    <string name="serial_port_test_result">Test result:</string>
+    <!--    RS485测试成功提示  -->
+    <string name="serial_port_test_success">Test success!</string>
+    <!--    RS485测试接收错误字符串5次提示  -->
+    <string name="recv_error_string_five">Received error string five times!</string>
+    <!--    Uart服务还没起来提示   -->
+    <string name="uart_service_not_ready">Uart service is not ready! Please wait a moment...</string>
+    <!--yuntian longyao add 暗码控制隐藏和显示水印-->
+    <string name="show_hide_watermark_code">6666</string>
+    <string name="show_watermark">show watermark</string>
+    <string name="hide_watermark">hide watermark</string>
+    <!--yuntian longyao end 暗码控制隐藏和显示水印-->
+    <!--   人脸测试集合名称    -->
+    <string name="face_group_title">"face Test"</string>
+    <!--   人脸测试Activity标题    -->
+    <string name="face_test_title">Face Test</string>
+    <!--   人脸文本    -->
+    <string name="start_face">Click to start face test</string>
+    <!--  锁体测试集合名称    -->
+    <string name="lock_group_title">"Lock Test"</string>
+    <!--   锁体测试Activity标题    -->
+    <string name="lock_test_title">Lock Test</string>
+    <!--   锁体文本    -->
+    <string name="start_lock">Click to start lock test</string>
+    <!-- 指纹测试集合名称    -->
+    <string name="finger_group_title">"Finger Test"</string>
+    <!--   指纹测试Activity标题    -->
+    <string name="finger_test_title">Finger Test</string>
+    <!--   指纹文本    -->
+    <string name="start_finger">Click to start Finger test</string>
+    <!--    BLE测试Activity标题      -->
+    <string name="ble_test_title">BLE Test</string>
+    <!--    BLE测试结果标题      -->
+    <string name="ble_test_result_title">BLE current state</string>
+    <!--    BLE测试结果ok      -->
+    <string name="ble_test_result_ok">BLE ok</string> 
+    <!--    BLE测试结果fail    -->
+    <string name="ble_test_result_fail">BLE fail</string>
+    
+    <!--    恢复出厂设置按键-->
+    <string name="reset">Reset</string>
+    <!--    恢复出厂设置集合名称-->
+    <string name="reset_group_title">Reset</string>
+    <!--    恢复出厂设置标题-->
+    <string name="reset_title">Reset</string>
+    <!--    版本信息按键-->
+    <string name="version_info">Version info</string>
+    <!--    版本信息集合名称-->
+    <string name="version_info_group_title">Version info</string>
+    <!--    版本信息标题-->
+    <string name="version_info_title">Version info</string>
+    <!--    门把按钮测试按键-->
+    <string name="door_button">Door button test</string>
+    <!--    门把按钮测试名称-->
+    <string name="door_button_group_title">Door button test</string>
+    <!--    门把按钮测试标题-->
+    <string name="door_button_title">Door button test</string>
+    <!--    指纹跑马灯测试按键-->
+    <string name="light_test">Light test</string>
+    <!--    指纹跑马灯测试名称-->
+    <string name="light_test_group_title">Light test</string>
+    <!--    指纹跑马灯测试标题-->
+    <string name="light_test_title">Light test</string>
+    <!--    复位键测试提醒-->
+    <string name="reset_key_title">"请留意音量键左侧(小孔)的复位键,功能是否正常!"</string>
+    <!--    写sn按键-->
+    <string name="write_sn">写sn</string>
+    <!--    写sn名称-->
+    <string name="write_sn_group_title">写sn</string>
+    <!--    写sn标题-->
+    <string name="write_sn_title">写sn</string>
+    <!--    降噪麦按键-->
+    <string name="talk_mic">降噪麦</string>
+    <!--    降噪麦称-->
+    <string name="talk_mic_group_title">降噪麦</string>
+    <!--    降噪麦标题-->
+    <string name="talk_mic_title">降噪麦</string>
+    <string name="please_unplug_charger">The LED lamp can be tested normally only when it is not charged</string>
+</resources>
+

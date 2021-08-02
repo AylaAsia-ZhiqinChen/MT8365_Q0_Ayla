@@ -1,0 +1,25 @@
+<resources>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="set_time_container_width">320dp</dimen>
+    <dimen name="report_container_margin_top">5dp</dimen>
+    <dimen name="report_container_margin_bottom">16dp</dimen>
+    <dimen name="test_title_text_size">16sp</dimen>
+    <dimen name="button_container_margin_top">8dp</dimen>
+    <dimen name="button_container_margin_left">16dp</dimen>
+    <dimen name="button_container_margin_right">16dp</dimen>
+    <dimen name="button_padding_top">8dp</dimen>
+    <dimen name="button_padding_bottom">8dp</dimen>
+    <dimen name="button_margin_left">32dp</dimen>
+    <dimen name="time_text_size">16sp</dimen>
+    <dimen name="report_title_text_size">16sp</dimen>
+    <dimen name="report_text_size">18sp</dimen>
+    <dimen name="test_time_title_size">32sp</dimen>
+    <dimen name="test_time_margin_top">16dp</dimen>
+    <dimen name="test_time_size">28sp</dimen>
+    <dimen name="stop_test_margin_top">24dp</dimen>
+    <dimen name="checkbox_container_margin_left">110dp</dimen>
+
+</resources>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/test_result_bg"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/test_result_paddingbottom"
+    android:paddingLeft="@dimen/test_result_paddingleft"
+    android:paddingRight="@dimen/test_result_paddingright">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:padding="2dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/test_result_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|left"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            android:textSize="@dimen/test_item_text_size"
+            android:text="@string/test_result_title"
+            android:textColor="@color/dark_green"/>
+
+        <Button
+            android:id="@+id/test_result_reset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/reset_result_title"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/test_result_list_bg"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/test_result_item_height"
+            android:weightSum="10"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:text="@string/test_result_id_title"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/test_result_item_text_size"
+                android:textStyle="bold"
+                android:typeface="sans"/>
+
+            <View
+                android:layout_width="1px"
+                android:layout_height="match_parent"
+                android:background="@drawable/line_v"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="6"
+                android:gravity="center"
+                android:text="@string/test_item_title"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/test_result_item_text_size"
+                android:textStyle="bold"
+                android:typeface="sans"/>
+
+            <View
+                android:layout_width="1px"
+                android:layout_height="match_parent"
+                android:background="@drawable/line_v"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:text="@string/test_item_result_title"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/test_result_item_text_size"
+                android:textStyle="bold"
+                android:typeface="sans" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/head_view"
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:background="@drawable/line_h"/>
+
+        <ListView
+            android:id="@+id/test_result_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@drawable/line_h"
+            android:dividerHeight="2px"
+            android:fadingEdge="none"
+            android:scrollbars="none"
+            android:scrollingCache="false"/>
+
+        <View
+            android:id="@+id/foot_view"
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:visibility="gone"
+            android:background="@drawable/line_h"/>
+
+    </LinearLayout>
+
+</LinearLayout>

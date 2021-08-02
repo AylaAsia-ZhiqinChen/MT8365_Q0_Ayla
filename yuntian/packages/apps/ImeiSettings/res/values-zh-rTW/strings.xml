@@ -1,0 +1,18 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">"設置IMEI號"</string>
+    <string name="setting_imei">"設置IMEI"</string>
+
+    <string name="setting">"設置"</string>
+    <string name="ok">"確定"</string>
+    <string name="success">"設置IMEI號成功，請重啟手機"</string>
+    <string name="fail">"設置IMEI號失敗，請重啟手機"</string>
+    <string name="sim1_imei_length_limit_tip">"SIM1的IMEI號長度應為"<xliff:g id="length">%d</xliff:g></string>
+    <string name="sim2_imei_length_limit_tip">"SIM２的IMEI號長度應為"<xliff:g id="length">%d</xliff:g></string>
+    <string name="sim1_imei_value_limit_tip">"SIM1 IMEI號不能為"<xliff:g id="length">%s</xliff:g></string>
+    <string name="sim2_imei_value_limit_tip">"SIM1 IMEI號不能為"<xliff:g id="length">%s</xliff:g></string>
+    <string name="setting_dialog_msg">"正在寫入，請稍後..."</string>
+    <string name="clear_nv">"清除NV"</string>
+    <string name="clear_success">"清除成功"</string>
+    <string name="clear_fail">"清除失敗"</string>
+    <string name="forbid_setting_imei">"在非機主模式下禁用IMEI設定"</string>
+</resources>

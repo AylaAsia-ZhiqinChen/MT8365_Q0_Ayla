@@ -1,0 +1,194 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.android.agingtest.AgingTest" >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:text="@string/aging_test_tip" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+           	android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical" >
+
+            <CheckBox
+                android:id="@+id/reboot_test"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="left"
+                android:checked="@bool/default_reboot_value"
+                android:text="@string/reboot_title"
+                android:textSize="@dimen/test_title_text_size" />
+
+            <CheckBox
+                android:id="@+id/sleep_test"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/reboot_test"
+                android:layout_below="@+id/reboot_test"
+                android:checked="@bool/default_sleep_value"
+                android:text="@string/sleep_title"
+                android:textSize="@dimen/test_title_text_size" />
+
+            <CheckBox
+                android:id="@+id/vibrate_test"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/sleep_test"
+                android:layout_below="@+id/sleep_test"
+                android:checked="@bool/default_vibrate_value"
+                android:text="@string/vibrate_title"
+                android:textSize="@dimen/test_title_text_size" />
+
+            <CheckBox
+                android:id="@+id/receiver_test"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/vibrate_test"
+                android:layout_below="@+id/vibrate_test"
+                android:checked="@bool/default_receiver_value"
+                android:text="@string/receiver_title"
+                android:textSize="@dimen/test_title_text_size" />
+
+            <CheckBox
+                android:id="@+id/front_taking_picture_test"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/receiver_test"
+                android:layout_below="@+id/receiver_test"
+                android:checked="@bool/default_front_taking_picture_value"
+                android:text="@string/front_taking_picture_title"
+                android:textSize="@dimen/test_title_text_size" />
+            
+            <CheckBox
+                android:id="@+id/back_taking_picture_test"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/front_taking_picture_test"
+                android:layout_below="@+id/front_taking_picture_test"
+                android:checked="@bool/default_back_taking_picture_value"
+                android:text="@string/back_taking_picture_title"
+                android:textSize="@dimen/test_title_text_size" />
+
+            <CheckBox
+                android:id="@+id/play_video_test"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/taking_picture_test"
+                android:layout_below="@+id/taking_picture_test"
+                android:checked="@bool/default_play_video_value"
+                android:text="@string/play_video_title"
+                android:textSize="@dimen/test_title_text_size" />
+
+         <!--    <CheckBox
+                android:id="@+id/circulation_test"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/play_video_test"
+                android:layout_below="@+id/play_video_test"
+                android:checked="@bool/default_circulation_value"
+                android:text="@string/circulation_title"
+                android:textSize="@dimen/test_title_text_size" /> -->
+        </LinearLayout>
+        <LinearLayout
+        	android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical"
+        	>
+           <CheckBox
+                android:id="@+id/camera_motor_test"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="@bool/default_camera_motor_value"
+                android:text="@string/camera_motor_test_title"
+                android:textSize="@dimen/test_title_text_size" />
+           
+           <CheckBox
+                android:id="@+id/flashlight_test"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="@bool/default_flashlight_value"
+                android:text="@string/flashlight_title"
+                android:textSize="@dimen/test_title_text_size" />
+           <CheckBox
+                android:id="@+id/loudspeaker_test"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="@bool/default_loudspeaker_value"
+                android:text="@string/loudspeaker_title"
+                android:textSize="@dimen/test_title_text_size" />
+            <CheckBox
+                android:id="@+id/screen_test"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="@bool/default_screen_value"
+                android:text="@string/screen_title"
+                android:textSize="@dimen/test_title_text_size" />
+
+            <CheckBox
+                android:id="@+id/reset_test"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="@bool/default_camera_motor_value"
+                android:text="@string/reset_title"
+                android:textSize="@dimen/test_title_text_size" />
+        </LinearLayout>
+    </LinearLayout>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_marginLeft="@dimen/button_container_margin_left"
+        android:layout_marginRight="@dimen/button_container_margin_right"
+        android:layout_marginTop="@dimen/button_container_margin_top" >
+        
+        <Button 
+            android:id="@+id/select_all"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/button_padding_top"
+            android:paddingBottom="@dimen/button_padding_bottom"
+            android:text="@string/select_all_title"/>
+
+        <Button 
+            android:id="@+id/start"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/button_padding_top"
+            android:paddingBottom="@dimen/button_padding_bottom"
+            android:text="@string/start"/>
+        
+        <!--Button
+            android:id="@+id/stop" 
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:paddingTop="@dimen/button_padding_top"
+            android:paddingBottom="@dimen/button_padding_bottom"
+            android:layout_marginLeft="@dimen/button_margin_left"
+            android:text="@string/stop"/-->
+    </LinearLayout>
+
+</LinearLayout>

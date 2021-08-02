@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="white">#ffffffff</color>
+    <color name="red">#ffff0000</color>
+    <color name="green">#ff00ff00</color>
+    <color name="test_pass_color">#03ab03</color>
+    <color name="test_fail_color">#dc1c03</color>
+    <color name="test_unknown_color">#e5b402</color>
+    <color name="gray">#ff666666</color>
+    <color name="dark_green">#049f04</color>
+    <color name="crimson">#b70000</color>
+    <color name="text_view_text_color">#ffc1c1c1</color>
+    <color name="blue">#ff0000ff</color>
+    <color name="yellow">#ffffff00</color>
+    <color name="purple">#ffff00ff</color>
+    <color name="black_gray">#ff333333</color>
+    <color name="black">#ff000000</color>
+    <color name="test_tip_text_color">#66666666</color>
+    
+    <!--    罗盘背景颜色      -->
+    <color name="compass_view_background_color">#ff555555</color>
+    <!--    罗盘刻度文本颜色    -->
+    <color name="compass_view_marker_text_color">#aaffffff</color>
+    <!--    罗盘刻度颜色      -->
+    <color name="compass_view_marker_color">#aaffffff</color>
+    <!--	北极指示三角形颜色	-->
+    <color name="compass_view_triangle_color">#ffff0000</color>
+    <!--	当前角度字体颜色	-->
+    <color name="compass_view_angle_text_color">#ffffffff</color>
+
+</resources>

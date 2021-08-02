@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--    是否支持系统版本测试  -->
+    <bool name="enabled_system_version_test">true</bool>
+    <!--    是否支持综测校准测试  -->
+    <bool name="enabled_rf_cali_test">true</bool>
+    <!--    是否支持系统时间测试  -->
+    <bool name="enabled_rtc_test">true</bool>
+    <!--    是否支持屏幕色彩测试  -->
+    <bool name="enabled_screen_color_test">true</bool>
+    <!--    是否支持屏幕背光测试  -->
+    <bool name="enabled_screen_back_light_test">true</bool>
+    <!--    是否支持单指触摸测试  -->
+    <bool name="enabled_single_finger_touch_test">true</bool>
+    <!--    是否支持多指触摸测试  -->
+    <bool name="enabled_mulit_finger_touch_test">true</bool>
+    <!--    是否支持振动测试    -->
+    <bool name="enabled_motor_test">true</bool>
+    <!--    是否支持铃声测试    -->
+    <bool name="enabled_speaker_test">true</bool>
+    <!--    是否支持话筒回音测试  -->
+    <bool name="enabled_micro_phone_echo_test">true</bool>
+    <!--    是否支持SIM卡测试     -->
+    <bool name="enabled_sim_card_test">true</bool>
+    <!--    是否支持PSAM卡测试     -->
+    <bool name="enabled_psam_card_test">false</bool>
+    <!--    是否支持听筒测试    -->
+    <bool name="enabled_handset_test">true</bool>
+    <!--    是否支持通话测试    -->
+    <bool name="enabled_call_test">true</bool>
+    <!--    是否支持移动数据测试    -->
+    <bool name="enabled_mobile_data_test">false</bool>
+    <!--    是否支持SDCard测试    -->
+    <bool name="enabled_sdcard_test">true</bool>
+    <!--    是否支持充电测试    -->
+    <bool name="enabled_charge_test">true</bool>
+    <!--    是否支持耳机测试    -->
+    <bool name="enabled_headset_test">true</bool>
+    <!--    是否支持type-c数字耳机测试    -->
+    <bool name="enabled_typec_digital_headset_test">false</bool>
+    <!--    是否支持type-c模拟耳机测试    -->
+    <bool name="enabled_typec_analog_headset_test">false</bool>
+    <!--    是否支持M6耳机测试    -->
+    <bool name="enabled_msix_headset_test">false</bool>
+    <!--    是否支持type-c耳机测试    -->
+    <bool name="enabled_typec_headset_test">false</bool>
+    <!--    是否支持双麦克风测试 -->
+    <bool name="enabled_dual_microphone_test">false</bool>
+    <!--    是否支持LED指示灯测试    -->
+    <bool name="enabled_led_test">false</bool>
+    <!--    是否支持Scan扫描头测试    -->
+    <bool name="enabled_scan_test">false</bool>
+     <!--    是否支持安全模块测试    -->
+    <bool name="enabled_safemodule_test">false</bool>
+    <!--    是否支持RS485串口测试    -->
+    <bool name="enabled_serialport_test">false</bool>
+    <!--    是否支持串口测试    -->
+    <bool name="enabled_serialport_simple_test">false</bool>
+    <!--    是否支持OTG功能测试 -->
+    <bool name="enabled_otg_test">true</bool>
+    <!--    是否支持收音机测试   -->
+    <bool name="enabled_fmradio_test">true</bool>
+    <!--    是否支持WIFI测试  -->
+    <bool name="enabled_wifi_test">true</bool>
+    <!--    是否支持DMR测试  -->
+    <bool name="enabled_dmr_test">false</bool>
+    <!--    是否支持蓝牙测试    -->
+    <bool name="enabled_bluetooth_test">true</bool>
+    <!--    是否支持GPS测试   -->
+    <bool name="enabled_gps_test">true</bool>
+    <!--    是否支持BLE测试   -->
+    <bool name="enabled_ble_test">false</bool>
+    <!--    是否支持重力传感器测试 -->
+    <bool name="enabled_gravity_sensor_test">true</bool>
+    <!--    是否支持距离传感器测试 -->
+    <bool name="enabled_proximity_sensor_test">true</bool>
+    <!--    是否支持光感传感器测试 -->
+    <bool name="enabled_light_sensor_test">true</bool>
+    <!--    是否支持指纹测试    -->
+    <bool name="enabled_fingerprint_sensor_test">false</bool>
+    <!--    是否支持NFC测试   -->
+    <bool name="enabled_nfc_sensor_test">true</bool>
+    <!--    是否支持加速计传感器测试   -->
+    <bool name="enabled_accelerometer_sensor_test">false</bool>
+    <!--    是否支持磁力传感器测试   -->
+    <bool name="enabled_magnetic_fieled_sensor_test">false</bool>
+    <!--    是否支持压力传感器测试   -->
+    <bool name="enabled_pressure_sensor_test">false</bool>
+    <!--    是否支持陀螺仪传感器测试   -->
+    <bool name="enabled_gyroscope_sensor_test">false</bool>
+    <!--    是否支持计步传感器测试   -->
+    <bool name="enabled_step_count_sensor_test">false</bool>
+    <!--    是否支持前摄像头测试  -->
+    <bool name="enabled_front_camera_test">true</bool>
+    <!--    是否支持扫描摄像头测试  -->
+    <bool name="enabled_scan_camera_test">false</bool>
+    <!--    是否支持后摄像头测试  -->
+    <bool name="enabled_back_camera_test">true</bool>
+    <!--    是否支持虹膜摄像头测试 -->
+    <bool name="enabled_iris_camera_test">false</bool>
+    <!--    是否支持手电筒测试 -->
+    <bool name="enabled_electric_torch_test">false</bool> 
+    <!--    是否支持按键测试    -->
+    <bool name="enabled_key_test">true</bool>
+    <!--    是否支持显示测试结果  -->
+    <bool name="enabled_test_result">true</bool>
+     <!--    是否支持人脸测试结果  -->
+     <bool name="enabled_face_test">false</bool>
+     <!--    是否支持锁体测试结果  -->
+     <bool name="enabled_lock_test">false</bool>
+     <!--    是否支持指纹测试结果  -->
+     <bool name="enabled_finger_test">false</bool>
+
+    <!--    测试结果Activity是否可用，即是否显示在测试结果列表中    -->
+    <bool name="test_result_enabled">true</bool>
+    <!--    SDCard测试是否可用，即是否显示在附件测试列表中    -->
+    <bool name="sdcard_test_enabled">true</bool>
+    <!--    OTG测试是否可用，即是否显示在附件测试列表中    -->
+    <bool name="otg_test_enabled">true</bool>
+    <!--    充电测试Activity是否可用，即是否显示在附件测试列表中  -->
+    <bool name="charge_test_enabled">true</bool>
+    <!--    耳机测试Activity是否可用，即是否显示在附件测试列表中  -->
+    <bool name="headset_test_enabled">true</bool>
+    <!--    typec数字耳机测试Activity是否可用，即是否显示在附件测试列表中  -->
+    <bool name="typec_digital_headset_test_enabled">false</bool>
+    <!--    typec模拟耳机测试Activity是否可用，即是否显示在附件测试列表中  -->
+    <bool name="typec_analog_headset_test_enabled">false</bool>
+    <!--    M6耳机测试Activity是否可用，即是否显示在附件测试列表中  -->
+    <bool name="msix_headset_test_enabled">false</bool>
+    <!--    typec耳机测试Activity是否可用，即是否显示在附件测试列表中  -->
+    <bool name="typec_headset_test_enabled">false</bool>
+    <!--    前摄像头测试Activity是否可用，即是否显示在相机测试列表中  -->
+    <bool name="front_camera_test_enabled">true</bool>
+    <!--    后摄像头测试Activity是否可用，即是否显示在相机测试列表中  -->
+    <bool name="back_camera_test_enabled">true</bool>
+    <!--    扫描摄像头测试Activity是否可用，即是否显示在相机测试列表中  -->
+    <bool name="scan_camera_test_enabled">false</bool>
+    <!--    虹膜摄像头测试Activity是否可用，即是否显示在相机测试列表中  -->
+    <bool name="iris_camera_test_enabled">false</bool>
+    <!--    手电筒测试Activity是否可用，即是否显示在相机测试列表中  -->
+    <bool name="electric_torch_test_enabled">false</bool>    
+    <!--    按键测试Activity是否可用，即是否显示在按键测试列表中  -->
+    <bool name="key_test_enabled">true</bool>
+    <!--    话筒回音测试Activity是否可用，即是否显示在电话测试列表中    -->
+    <bool name="microphone_echo_test_enabled">true</bool>
+    <!--    双麦克风测试Activity是否可用，即是否在铃声测试列表中显示 -->
+    <bool name="dual_microphone_test_enabled">true</bool>
+    <!--    LED指示灯测试Activity是否可用，即是否在铃声测试列表中显示 -->
+    <bool name="led_test_enabled">true</bool>
+    <!--    Scan扫描头测试Activity是否可用，即是否在附件测试列表中显示 -->
+    <bool name="scan_test_enabled">false</bool>
+    <!--    安全模块测试Activity是否可用，即是否在附件测试列表中显示 -->
+    <bool name="safemodule_test_enabled">false</bool>
+     <!--   RS485串口测试Activity是否可用，即是否在附件测试列表中显示 -->
+    <bool name="serialport_test_enabled">false</bool>
+     <!--   串口测试Activity是否可用，即是否在附件测试列表中显示 -->
+    <bool name="serialport_simple_test_enabled">false</bool>
+    <!--    SIM卡测试Activity是否可用，即是否显示在电话测试列表中    -->
+    <bool name="sim_card_test_enabled">true</bool>
+     <!--    PSAM卡测试Activity是否可用，即是否显示在电话测试列表中    -->
+    <bool name="psam_card_test_enabled">false</bool>
+    <!--    听筒测试Activity是否可用，即是否显示在电话测试列表中      -->
+    <bool name="handset_test_enabled">true</bool>
+    <!--    通话测试Activity是否可用，即是否在电话测试列表中显示  -->
+    <bool name="call_test_enabled">true</bool>
+    <!--    移动数据测试Activity是否可用，即是否在电话测试列表中显示  -->
+    <bool name="mobile_data_test_enabled">false</bool>
+    <!--    马达测试Activity是否可用，即是否在铃声测试列表中显示  -->
+    <bool name="motor_test_enabled">true</bool>
+    <!--    扬声器测试Activity是否可用，即是否在铃声测试列表中显示 -->
+    <bool name="speaker_test_enabled">true</bool>
+    <!--    屏幕颜色测试Activity是否可用，即是否在屏幕测试集合列表中显示  -->
+    <bool name="screen_color_test_enabled">true</bool>
+    <!--    屏幕背光测试Activity是否可用，即是否在屏幕测试集合列表中显示  -->
+    <bool name="screen_backlight_test_enabled">true</bool>
+    <!--    单指触摸测试Activity是否可用，即是否在屏幕测试集合列表中显示  -->
+    <bool name="single_finger_touch_test_enabled">true</bool>
+    <!--    多指触摸测试Activity是否可用，即是否在屏幕测试集合列表中显示  -->
+    <bool name="multi_finger_touch_test_enabled">true</bool>
+    <!--    重力传感器测试Activity是否可用，即是否在传感器测试集合列表中显示   -->
+    <bool name="gravity_sensor_test_enabled">true</bool>
+    <!--    光感传感器测试Activity是否可用，即是否在传感器测试集合列表中显示    -->
+    <bool name="light_sensor_test_enabled">true</bool>
+    <!--    距离传感器测试Activity是否可用，即是否在传感器测试集合列表中显示    -->
+    <bool name="proximity_sensor_test_enabled">true</bool>
+    <!--    指纹传感器测试Activity是否可用，即是否在传感器测试集合列表中显示    -->
+    <bool name="fingerprint_sensor_test_enabled">false</bool>
+    <!--    NFC近场通信传感器测试Activity是否可用，即是否在传感器测试集合列表中显示    -->
+    <bool name="nfc_sensor_test_enabled">true</bool>
+    <!--    加速计传感器测试Activity是否可用，即是否在传感器测试集合列表中显示    -->
+    <bool name="accelerometer_sensor_test_enabled">false</bool>
+    <!--    磁力传感器测试Activity是否可用，即是否在传感器测试集合列表中显示    -->
+    <bool name="magnetic_fieled_sensor_test_enabled">false</bool>
+    <!--    压力传感器测试Activity是否可用，即是否在传感器测试集合列表中显示    -->
+    <bool name="pressure_sensor_test_enabled">false</bool>
+    <!--    陀螺仪传感器测试Activity是否可用，即是否在传感器测试集合列表中显示    -->
+    <bool name="gyroscope_sensor_test_enabled">false</bool>
+    <!--    计步传感器测试Activity是否可用，即是否在传感器测试集合列表中显示    -->
+    <bool name="step_count_sensor_test_enabled">false</bool>
+    <!--    系统版本测试Activity是否可用，即是否在传感器测试集合列表中显示     -->
+    <bool name="system_version_test_enabled">true</bool>
+    <!--    校准综测测试Activity是否可用，即是否在传感器测试集合列表中显示     -->
+    <bool name="rf_cali_test_enabled">true</bool>
+    <!--    系统时间测试Activity是否可用，即是否在传感器测试集合列表中显示     -->
+    <bool name="rtc_test_enabled">true</bool>
+    <!--    收音机测试Activity是否可用，即是否在无线设备测试集合列表中显示     -->
+    <bool name="fm_radio_test_enabled">true</bool>
+    <!--    WIFI测试Activity是否可用，即是否在无线设备测试集合列表中显示      -->
+    <bool name="wifi_test_enabled">true</bool>
+    <!--    DMR测试Activity是否可用，即是否在无线设备测试集合列表中显示      -->
+    <bool name="dmr_test_enabled">false</bool>
+    <!--    蓝牙测试Activity是否可用，即是否在无线设备测试集合列表中显示      -->
+    <bool name="bluetooth_test_enabled">true</bool>
+    <!--    定位测试Activity是否可用，即是否在无线设备测试集合列表中显示      -->
+    <bool name="gps_test_enabled">true</bool>
+    <!--    BLE测试Activity是否可用，即是否在无线设备测试集合列表中显示      -->
+    <bool name="ble_test_enabled">false</bool>
+    <!--    单指触摸测试是否支持对角线测试     -->
+    <bool name="enabled_single_finger_touch_test_diagonal">true</bool>
+    <!--    重力传感器在不支持三轴的情况下是否显示Z轴数值 -->
+    <bool name="enabled_show_gravity_z_axis_value">true</bool>
+    <!--    是否开启防呆测试功能  -->
+    <bool name="enabled_fighting_test">true</bool>
+    <!--    是否支持红色LED灯  -->
+    <bool name="support_red_led">true</bool>
+    <!--    是否支持蓝色LED灯  -->
+    <bool name="support_blue_led">true</bool>
+    <!--    是否支持绿色LED灯  -->
+    <bool name="support_green_led">true</bool>
+    <!--    是否支持白色LED灯  -->
+    <bool name="support_white_led">false</bool>
+    <!--    是否支持按键LED灯  -->
+    <bool name="support_key_led">false</bool>
+    <!--    是否支持人脸测试    -->
+    <bool name="face_test_enabled">false</bool>
+    <!--    是否支持锁体测试    -->
+    <bool name="lock_test_enabled">false</bool>
+    <!--    是否支持指纹测试    -->
+    <bool name="finger_test_enabled">false</bool>
+    <!--    恢复出厂设置-->
+    <bool name="reset_enabled">false</bool>
+    <!--    版本信息设置-->
+    <bool name="version_info_enabled">false</bool>
+    <!--    门把按键测试-->
+    <bool name="door_button_test_enabled">false</bool>
+    <!--    指纹跑马灯测试-->
+    <bool name="light_test_enabled">false</bool>
+    <!--    写sn-->
+    <bool name="write_sn_enabled">false</bool>
+    <!--    降噪麦测试-->
+    <bool name="talk_mic_enabled">false</bool>
+    <!--    是否显示sogou sn1  -->
+    <bool name="support_sogou_sn1">false</bool>
+    <!--    是否显示sogou snn  -->
+    <bool name="support_sogou_snn">false</bool>
+    <!--    后摄测试使用系统相机  -->
+    <bool name="invoking_system_camera">false</bool>
+    <!--    是否隐藏系统版本测试里面的IMEI的显示  -->
+    <bool name="support_hide_device_imei">false</bool>
+    <!--    是否隐藏SMT和MMI的水印  -->
+    <bool name="support_hide_water_mark">false</bool>
+    <!--    耳机测试只播放音乐  -->
+    <bool name="headset_test_only_play_music">false</bool>
+    <!--    扫描头测试直接调用第三方应用测试  -->
+    <bool name="use_sdlgui_app">false</bool>
+</resources>

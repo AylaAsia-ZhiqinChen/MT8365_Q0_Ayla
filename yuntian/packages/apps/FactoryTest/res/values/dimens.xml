@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--    主界面（FactoryTest）顶部填充距离    -->
+    <dimen name="factory_test_activity_paddingtop">16dp</dimen>
+    <!--    主界面（FactoryTest)底部填充距离    -->
+    <dimen name="factory_test_activity_paddingbottom">16dp</dimen>
+    <!--    主界面（FactoryTest)左填充距离     -->
+    <dimen name="factory_test_activity_paddingleft">8dp</dimen>
+    <!--    主界面（FactoryTest)右填充距离     -->
+    <dimen name="factory_test_activity_paddingright">8dp</dimen>
+    <!--    主界面（FactoryTest）自动测试按钮高度    -->
+    <dimen name="auto_test_height">64dp</dimen>
+    <!--    主界面（FactoryTest）自动测试按钮填充距离  -->
+    <dimen name="auto_test_padding">8dp</dimen>
+    <!--    主界面（FactoryTest）自动测试按钮文字大小  -->
+    <dimen name="auto_test_text_size">26sp</dimen>
+    <!--    主界面（FactoryTest）GridLayout垂直边距   -->
+    <dimen name="gridlayout_vertical_margin">16dp</dimen>
+    <!--    主界面（FactoryTest）GridLayout水平边距   -->
+    <dimen name="gridlayout_horizontal_margin">8dp</dimen>
+    <!--    主界面（FactoryTest）GridLayout项的高度   -->
+    <dimen name="gridlayout_item_height">64dp</dimen>
+    <!--    测试组测试列表左填充距离    -->
+    <dimen name="group_test_item_paddingleft">8dp</dimen>
+    <!--    测试组测试列表右填充距离    -->
+    <dimen name="group_test_item_padddingright">8dp</dimen>
+    <!--    测试结果界面测试标题字符大小  -->
+    <dimen name="test_result_text_size">18sp</dimen>
+    <!--    测试结果界面列表字符大小    -->
+    <dimen name="test_result_item_text_size">12sp</dimen>
+    <!--    测试结果界面列表高度  -->
+    <dimen name="test_result_item_height">24dp</dimen>
+    <!--    测试结果界面左填充距离     -->
+    <dimen name="test_result_paddingleft">8dp</dimen>
+    <!--    测试结果界面右填充距离     -->
+    <dimen name="test_result_paddingright">8dp</dimen>
+    <!--    测试结果界面底部填充距离    -->
+    <dimen name="test_result_paddingbottom">8dp</dimen>
+    <!--    测试界面底部测试按钮容器高度  -->
+    <dimen name="test_bottom_button_container_height">96dp</dimen>
+    <!--    测试界面底部测试按钮的高度   -->
+    <dimen name="test_bottom_button_height">72dp</dimen>
+    <!--    测试界面底部测试按钮的宽度   -->
+    <dimen name="test_bottom_button_width">72dp</dimen>
+    <!--    测试界面底部测试通过按钮左偏移距离   -->
+    <dimen name="test_bottom_pass_button_margin_left">16dp</dimen>
+    <!--    测试界面底部测试失败按钮右偏移距离   -->
+    <dimen name="test_bottom_fail_button_margin_right">16dp</dimen>
+    <!--    测试信息字体大小    -->
+    <dimen name="test_item_text_size">18sp</dimen>
+    <!--    测试信息距上条信息的距离    -->
+    <dimen name="test_item_margin_top">4dp</dimen>
+    <!--    测试信息大字体大小  -->
+    <dimen name="test_item_big_text_size">32sp</dimen>
+    <!--    测试信息特大字体大小  -->
+    <dimen name="test_item_big_large_text_size">36sp</dimen>
+    <!--    多指触摸测试中手指圆圈的半径大小    -->
+    <dimen name="multi_finger_touch_finger_radius">32dp</dimen>
+    <!--    多指触摸测试中手指位置文字大小     -->
+    <dimen name="multi_finger_touch_position_text_size">16sp</dimen>
+    <!--    多指触摸测试中手指位置文件填充边距       -->
+    <dimen name="multi_finger_touch_text_padding">4dp</dimen>
+    <!--    屏幕颜色测试中测试提示语的字体大小       -->
+    <dimen name="test_tip_text_size">21sp</dimen>
+    <!--    按键测试按钮文字大小      -->
+    <integer name="key_test_item_text_size">12</integer>
+    <!--    按键测试按钮高度    -->
+    <dimen name="key_test_item_height">48dp</dimen>
+    <!--    按键测试按钮最大宽度  -->
+    <dimen name="key_test_item_max_width">128dp</dimen>
+    <!--    按键测试按钮列之间的间距 -->
+    <dimen name="key_test_item_column_space">2dp</dimen>
+    <!--    按键测试按钮行之间的间距    -->
+    <dimen name="key_test_item_row_space">2dp</dimen>
+    <!--	计步传感器测试当前步数标题字体大小	-->
+    <dimen name="current_step_count_title_text_size">32sp</dimen>
+    <!--	计步传感器测试当前步数字体大小	-->
+    <dimen name="current_step_count_text_size">48sp</dimen>
+    <!--	气压传感器测试当前气压强度标题字体大小	-->
+    <dimen name="current_air_pressure_title_text_size">32sp</dimen>
+    <!--	气压传感器测试当前强度字体大小	-->
+    <dimen name="current_air_pressure_text_size">48sp</dimen>
+</resources>

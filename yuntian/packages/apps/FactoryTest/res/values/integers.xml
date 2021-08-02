@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--    版本号     -->
+    <integer name="version_code">1</integer>
+
+    <!--    系统测试集合在所有测试集合中显示的优先级    -->
+    <integer name="system_group_priority">1</integer>
+    <!--    屏幕测试集合在所有测试集合中显示的优先级    -->
+    <integer name="screen_group_priority">2</integer>
+    <!--    铃声测试集合在所有测试集合中显示的优先级    -->
+    <integer name="ring_group_priority">3</integer>
+    <!--    电话测试集合在所有测试集合中显示的优先级    -->
+    <integer name="phone_group_priority">4</integer>
+    <!--    附件测试集合在所有测试集合中显示的优先级  -->
+    <integer name="annex_group_priority">5</integer>
+    <!--    无线设备测试集合在所有测试集合中显示的优先级  -->
+    <integer name="wireless_group_priority">6</integer>
+    <!--    传感器测试集合在所有测试集合中显示的优先级   -->
+    <integer name="sensor_group_priority">7</integer>
+    <!--    相机测试集合在所有测试集合中显示的优先级    -->
+    <integer name="camera_group_priority">8</integer>
+    <!--    按键测试集合在所有测试集合中显示的优先级    -->
+    <integer name="key_group_priority">9</integer>
+    <!--    人脸测试集合在所有集合中显示的优先级    -->
+    <integer name="face_group_priority">10</integer>
+     <!--    锁体测试集合在所有集合中显示的优先级    -->
+    <integer name="lock_group_priority">11</integer>
+     <!--    测试指纹集合在所有集合中显示的优先级    -->
+    <integer name="finger_group_priority">12</integer>
+    <!--    门把按键测试在所有集合中显示的优先级  -->
+    <integer name="door_button_test_group_priority">13</integer>
+    <!--    指纹跑马灯测试在所有集合中显示的优先级  -->
+    <integer name="light_test_group_priority">14</integer>
+    <!--    版本信息在所有集合中显示的优先级    -->
+    <integer name="version_info_group_priority">15</integer>
+    <!--    降噪麦在所有集合中显示的优先级  -->
+    <integer name="talk_mic_group_priority">16</integer>
+    <!--    测试结果集合在所有集合中显示的优先级    -->
+    <integer name="result_group_priority">17</integer>
+    <!--    恢复出厂设置在所有集合中显示的优先级  -->
+    <integer name="reset_group_priority">18</integer>
+    <!--    写sn在所有集合中显示的优先级  -->
+    <integer name="write_sn_group_priority">19</integer>
+
+    <!--    系统版本测试Activity在系统测试集合中显示的优先级    -->
+    <integer name="system_version_test_priority">1</integer>
+    <!--    校准综测测试Activity在系统测试集合中显示的优先级    -->
+    <integer name="rf_cali_test_priority">2</integer>
+    <!--    系统时间测试Activity在系统测试集合中显示的优先级    -->
+    <integer name="rtc_test_priority">3</integer>
+
+    <!--    屏幕颜色测试Activity在屏幕测试集合中显示的优先级    -->
+    <integer name="screen_color_test_priority">1</integer>
+    <!--    屏幕背光测试Activity在屏幕测试集合中显示的优先级    -->
+    <integer name="screen_backlight_test_priority">2</integer>
+    <!--    单指触摸测试Activity在屏幕测试集合中显示的优先级    -->
+    <integer name="single_finger_touch_test_priority">3</integer>
+    <!--    多指触摸测试Activity在屏幕测试集合中显示的优先级    -->
+    <integer name="multi_finger_touch_test_priority">4</integer>
+
+    <!--    马达测试Activity在铃声测试集合中显示的优先级      -->
+    <integer name="motor_test_priority">1</integer>
+    <!--    扬声器测试Activity在铃声测试集合中显示的优先级     -->
+    <integer name="speaker_test_priority">2</integer>
+
+    <!--    话筒回音测试Activity在电话测试集合中显示的优先级    -->
+    <integer name="microphone_echo_test_priority">1</integer>
+    <!--    SIM卡测试Activity在电话测试集合中显示的优先级    -->
+    <integer name="sim_card_test_priority">2</integer>
+    <!--    听筒测试Activity在电话测试集合中显示的优先级  -->
+    <integer name="handset_test_priority">3</integer>
+    <!--    通话测试Activity在电话测试集合中显示的优先级  -->
+    <integer name="call_test_priority">4</integer>
+    <!--    移动数据测试Activity在电话测试集合中显示的优先级    -->
+    <integer name="mobile_data_test_priority">5</integer>
+
+    <!--    SDCard测试Activity在附件测试集合中显示的优先级    -->
+    <integer name="sdcard_test_priority">1</integer>
+    <!--    充电测试在附件测试集合中显示的优先级    -->
+    <integer name="charge_test_priority">2</integer>
+    <!--    耳机测试在附件测试集合中显示的优先级    -->
+    <integer name="headset_test_priority">3</integer>
+    <!--    type-c耳机测试在附件测试集合中显示的优先级    -->
+    <integer name="type_headset_test_priority">4</integer>
+    <!--    OTG测试在附件测试集合中显示的优先级    -->
+    <!--    type-c数字耳机测试在附件测试集合中显示的优先级    -->
+    <integer name="typec_digital_headset_test_priority">5</integer>
+    <!--    type-c模拟耳机测试在附件测试集合中显示的优先级    -->
+    <integer name="typec_analog_headset_test_priority">6</integer>
+    <integer name="otg_test_priority">7</integer>
+    <!--    双麦克风测试在附件测试集合中显示的优先级     -->
+    <integer name="dual_microphone_test_priority">8</integer>
+    <!--    LED指示灯测试在附件测试集合中显示的优先级    -->
+    <integer name="led_test_priority">9</integer>
+    <!--     Scan扫描头测试在附件测试集合中显示的优先级    -->
+    <integer name="scan_test_priority">10</integer>
+    <!--     安全模块测试在附件测试集合中显示的优先级    -->
+    <integer name="safemodule_test_priority">11</integer>
+    <!--    PSAM卡测试在附件测试集合中显示的优先级   -->
+    <integer name="psam_card_test_priority">12</integer>
+    <!--     RS485串口测试在附件测试集合中显示的优先级    -->
+    <integer name="serialport_test_priority">13</integer>
+    <!--    M6机测试在附件测试集合中显示的优先级    -->
+    <integer name="msix_headset_test_priority">14</integer>
+    <!--     串口测试在附件测试集合中显示的优先级    -->
+    <integer name="serialport_simple_test_priority">15</integer>
+
+    <!--    收音机测试在无线设备测试集合中显示的优先级   -->
+    <integer name="fm_radio_test_priority">1</integer>
+    <!--    WIFI测试在无线设备测试集合中显示的优先级  -->
+    <integer name="wifi_test_priority">2</integer>
+    <!--    蓝牙测试在无线设备测试集合中显示的优先级    -->
+    <integer name="bluetooth_test_priority">3</integer>
+    <!--    定位测试在无线设备测试集合中显示的优先级    -->
+    <integer name="gps_test_priority">4</integer>
+    <!--    BLE测试在无线设备测试集合中显示的优先级    -->
+    <integer name="ble_test_priority">5</integer>
+    <!--    DMR测试在无线设备测试集合中显示的优先级  -->
+    <integer name="dmr_test_priority">6</integer>
+
+    <!--    重力传感器测试在传感器测试集合中显示的优先级 -->
+    <integer name="gravity_sensor_test_priority">1</integer>
+    <!--    光感传感器测试在传感器测试集合中显示的优先级  -->
+    <integer name="light_sensor_test_priority">2</integer>
+    <!--    距离传感器测试在传感器测试集合中显示的优先级  -->
+    <integer name="proximity_sensor_test_priority">3</integer>
+    <!--    指纹传感器测试在传感器测试集合中显示的优先级  -->
+    <integer name="fingerprint_sensor_test_priority">4</integer>
+    <!--    NFC近场通信传感器测试在传感器测试集合中显示的优先级  -->
+    <integer name="nfc_sensor_test_priority">5</integer>
+    <!--    加速计传感器测试在传感器测试集合中显示的优先级  -->
+    <integer name="accelerometer_sensor_test_priority">6</integer>
+    <!--    磁力传感器测试在传感器测试集合中显示的优先级  -->
+    <integer name="magnetic_fieled_sensor_test_priority">7</integer>
+    <!--    压力传感器测试在传感器测试集合中显示的优先级  -->
+    <integer name="pressure_sensor_test_priority">8</integer>
+    <!--    陀螺仪传感器测试在传感器测试集合中显示的优先级  -->
+    <integer name="gyroscope_sensor_test_priority">9</integer>
+    <!--    计步传感器测试在传感器测试集合中显示的优先级  -->
+    <integer name="step_count_sensor_test_priority">10</integer>
+    <!--    前摄像头测试在相机测试集合中显示的优先级      -->
+    <integer name="front_camera_test_priority">1</integer>
+    <!--    后摄像头测试在相机测试集合中显示的优先级    -->
+    <integer name="back_camera_test_priority">2</integer>
+    <!--    虹膜像头测试在相机测试集合中显示的优先级    -->
+    <integer name="iris_camera_test_priority">3</integer>
+    <!--    手电筒测试在相机测试集合中显示的优先级    -->
+    <integer name="electric_torch_test_priority">4</integer>    
+    <!--    扫描摄像头测试在相机测试集合中显示的优先级    -->
+    <integer name="scan_camera_test_priority">5</integer>  
+    
+    <!--    按键测试在按键测试集合中显示的优先级      -->
+    <integer name="key_test_priority">1</integer>
+    
+     <!--    人脸测试在人脸试集合中显示的优先级      -->
+     <integer name="face_test_priority">1</integer>
+      <!--   锁体测试在人脸试集合中显示的优先级      -->
+     <integer name="lock_test_priority">1</integer>
+      <!--   指纹测试在人脸试集合中显示的优先级      -->
+     <integer name="finger_test_priority">1</integer>
+    <!--   版本信息在版本信息集合中显示的优先级      -->
+    <integer name="version_info_priority">1</integer>
+    <!--   门把按键测试在门把按键测试集合中显示的优先级      -->
+    <integer name="door_button_test_priority">1</integer>
+    <!--    指纹跑马灯测试在指纹跑马灯测试集合中显示的优先级  -->
+    <integer name="light_test_priority">1</integer>
+    <!--   恢复出厂设置在恢复出厂设置集合中显示的优先级      -->
+    <integer name="reset_priority">1</integer>
+    <!--   写sn在写sn集合中显示的优先级      -->
+    <integer name="write_sn_priority">1</integer>
+    <!--   降噪麦在写降噪麦集合中显示的优先级      -->
+    <integer name="talk_mic_priority">1</integer>
+    <!--    测试结果Activity在结果测试结果集合中显示的优先级    -->
+    <integer name="result_priority">1</integer>
+
+    <!--    主界面（FactoryTest）GridLayout中每项的文字大小   -->
+    <integer name="grid_layout_item_text_size">18</integer>
+    <!--    主界面（FactoryTest）GridView布局栏数    -->
+    <integer name="test_group_column_count">2</integer>
+    <!--    自动测试时测试完成后自动跳转到下一个测试的延迟时间，单位：秒   -->
+    <integer name="auto_test_delayed_time">3000</integer>
+    <!--    屏幕背光测试循环次数      -->
+    <integer name="screen_backlight_test_times">5</integer>
+    <!--    屏幕背光测试切换颜色延迟时间      -->
+    <integer name="screen_backlight_switch_color_delayed_time">1000</integer>
+    <!--    单指触摸测试正方形宽度     -->
+    <integer name="single_finger_touch_test_square_width">45</integer>
+    <!--    单指触摸测试正方形线条宽度   -->
+    <integer name="single_finger_touch_test_square_line_width">1</integer>
+    <!--    单指触摸测试路径线条宽度   -->
+    <integer name="single_finger_touch_test_path_width">8</integer>
+    <!--	SIM卡测试中要显示的SIM卡数量	-->
+    <integer name="sim_count">2</integer>
+    <!--    Wifi测试项中Wifi列表空视图文字大小   -->
+    <integer name="wifi_list_empty_view_text_size">24</integer>
+    <!--    蓝牙测试项中蓝牙列表空视图文字大小   -->
+    <integer name="bluetooth_list_empty_view_text_size">24</integer>
+    <!--    按键测试多少列显示   -->
+    <integer name="key_test_gridlayout_max_columns">1</integer>
+    <!--    FM测试电台频率    -->
+    <integer name="fmradio_test_station">897</integer>
+    <!--    摄像头测试预览界面方向旋转度数    -->
+    <integer name="camera_test_orientation_degree">0</integer>   
+    
+    <!--    指南针中间指示竖线的宽度        -->
+    <integer name="compass_view_center_line_width">8</integer>
+    <!--    指南针中间指示竖线的高度        -->
+    <integer name="compass_view_center_line_height">100</integer>
+    <!--    指南针刻度盘刻度高度           -->
+    <integer name="compass_view_marker_height">30</integer>
+    <!--    指南针刻度盘30度倍数的刻度宽度    -->
+    <integer name="compass_view_main_marker_width">6</integer>
+    <!--    指南针刻度盘2度倍数的刻度宽度     -->
+    <integer name="compass_view_sub_marker_width">3</integer>
+    <!--    北极指示三角形底边长度            -->
+    <integer name="compass_view_triangle_width">30</integer>
+    <!--    北极指示三角形高度       -->
+    <integer name="compass_view_triangle_height">30</integer>
+    <!--    罗盘刻度值文本字体大小     -->
+    <integer name="compass_view_marker_angle_text_size">18</integer>
+    <!--    北极指示三角形距离罗盘大小   -->
+    <integer name="compass_view_triangle_margin">10</integer>
+    <!--    方向文本距离罗盘大小  -->
+    <integer name="compass_view_direction_margin">20</integer>
+    <!--    罗盘刻度值距离北极指示三角形顶部的距离 -->
+    <integer name="compass_view_angle_text_margin_triangle">10</integer> 
+    <!--	当前角度字体大小		-->
+    <integer name="compass_view_angle_text_size">38</integer>
+
+</resources>

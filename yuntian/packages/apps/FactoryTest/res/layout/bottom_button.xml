@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bottom_button_container"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/test_bottom_button_container_height"
+    android:layout_alignParentBottom="true">
+
+    <Button
+        android:id="@+id/bt_pass"
+        android:layout_width="@dimen/test_bottom_button_width"
+        android:layout_height="@dimen/test_bottom_button_height"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/test_bottom_pass_button_margin_left"
+        android:background="@drawable/ic_pass_bt_bg"
+        android:text="@string/pass_button_text"/>
+
+    <Button
+        android:id="@+id/bt_fail"
+        android:layout_width="@dimen/test_bottom_button_width"
+        android:layout_height="@dimen/test_bottom_button_height"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/test_bottom_fail_button_margin_right"
+        android:background="@drawable/ic_failed_bt_bg"
+        android:text="@string/fail_button_text"/>
+</RelativeLayout>

@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.android.agingtest.AgingTest" >
+
+    <item
+        android:id="@+id/action_test_time"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/action_test_time"/>
+    
+    <item
+        android:id="@+id/action_test_report"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/action_test_report"/>
+
+</menu>

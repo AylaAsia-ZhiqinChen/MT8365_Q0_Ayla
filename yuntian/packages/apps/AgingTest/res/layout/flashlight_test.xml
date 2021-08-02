@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical" >
+    
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		>
+		<Button
+			android:id="@+id/flash_mode"
+			android:layout_width="0dp"
+			android:layout_weight="1"
+			android:layout_height="wrap_content"
+			android:text="@string/falsh_title"
+			/>
+		<Button
+			android:id="@+id/torch_mode"
+			android:layout_width="0dp"
+			android:layout_weight="1"
+			android:layout_height="wrap_content"
+			android:text="@string/torch_title"
+			/>
+	</LinearLayout>
+    <TextView 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/test_time_title_size"
+        android:text="@string/test_time_title"/>
+    <TextView 
+        android:id="@+id/test_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/test_time_margin_top"
+        android:textSize="@dimen/test_time_size"
+        android:textColor="@color/test_time_color"
+        />
+    
+    <Button 
+        android:id="@+id/stop_test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/stop_test_margin_top"
+        android:text="@string/stop"/>
+    
+
+</LinearLayout>

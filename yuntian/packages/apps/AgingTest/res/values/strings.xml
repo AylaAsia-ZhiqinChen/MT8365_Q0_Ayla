@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">AgingTest</string>
+    <string name="mapp_name">MAgingTest</string>
+    <string name="action_test_time">Test time</string>
+    <string name="action_test_report">Test report</string>
+    <string name="aging_test_tip">"1. Make sure no lock pattern or password is set on the device: Settings > Security > Screen lock = None\n2. Usb must be connected\n3. Select:Settings > Developer options > Stay Awake\n4. Do not press any keys on the device while the AgingTest is running</string>
+    <string name="reboot_title">Reboot</string>
+    <string name="sleep_title">Sleep</string>
+    <string name="vibrate_title">Vibrate</string>
+    <string name="receiver_title">Receiver</string>
+    <string name="camera_motor_title">Motor</string>
+    <string name="front_taking_picture_title">Front taking picture</string>
+    <string name="back_taking_picture_title">Back taking picture</string>
+    <string name="play_video_title">Play video</string>
+    <string name="circulation_title">Circulation</string>
+    <string name="start">Start</string>
+    <string name="reset">Restore factory settings</string>
+    <string name="stop">Stop</string>
+    <string name="setting_activity_title">Set Time</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="report_activity_title">Aging test report</string>
+    <string name="setting_success">Setting success</string>
+    <string name="setting_fail">Setting fail</string>
+    <string name="fail">FAIL</string>
+    <string name="pass">PASS</string>
+    <string name="not_tested">NOT TESTED</string>
+    <string name="reboot_test_title">Reboot test</string>
+    <string name="test_time_title">Test time:</string>
+    <string name="camera_motor_time_title">Test number:</string>
+    <string name="sleep_test_title">Sleep test</string>
+    <string name="vibrate_test_title">Vibrate test</string>
+    <string name="receiver_test_title">Receiver test</string>
+    <string name="taking_picture_test_title">Taking picture test</string>
+    <string name="camera_motor_test_title">Camera motor test</string>
+    <string name="play_video_test_title">Play video test</string>
+    <string name="default_time_string">00:00</string>
+    <string name="testing_tip">The test is in progress. You can only click the end button to exit</string>
+    <string name="thousand">10</string>
+    <string name="autofocus_failed">zoom failed</string>
+    <string name="falsh_title">Flash</string>
+    <string name="torch_title">Torch</string>
+    <string name="flashlight_title">FlashLight</string>
+    <string name="loudspeaker_title">LoudSpeaker</string>
+    <string name="reset_title">Reset Phone</string>
+    <string name="reset_test_title">Restore Factory Test</string>
+    <string name="set_times">Set reset times</string>
+    <string name="toolarge_tip">Only 1 to 126 can be set!</string>
+    <string name="times">times</string>
+    <string name="min">minute</string>
+    <string name="screen_title">Screen</string>
+    <string name="screen_test_title">Screen test</string>
+    <string name="select_all_title">Select all</string>
+    <string name="total_time_title">Total test time</string>
+</resources>
