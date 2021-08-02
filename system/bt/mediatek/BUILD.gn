@@ -1,0 +1,26 @@
+static_library("libbt-mtk_cust") {
+  sources = [
+    "bta/av/mtk_bta_av_act.cc",
+    "bta/ag/mtk_bta_ag_cmd.cc",
+    "btif/src/mtk_btif_rc.cc",
+    "config/log_mode.cc",
+    "config/log_time.cc",
+    "config/mtk_stack_config.cc",
+    "hci/fw_logger_filter.cc",
+    "hci/fw_logger_switch.cc",
+    "hci/hci_inbound_data_monitor.cc",
+    "hci/twrite.cc",
+    "interop/interop_mtk.cc",
+    "stack/sdp/mtk_sdp_service.cc",
+  ]
+
+  include_dirs = [
+    "include",
+    "//",
+    "//include",
+    "//btif/include",
+    "//btcore/include",
+    "//hci/include",
+    "//stack/include",
+  ]
+}

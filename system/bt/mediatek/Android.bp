@@ -1,0 +1,124 @@
+cc_defaults {
+    name: "libbt-mtk_cust_defaults",
+    defaults: ["fluoride_defaults"],
+    include_dirs: [
+        "system/bt",
+        "system/bt/bta/include",
+        "system/bt/bta/sys/",
+        "system/bt/btif/include",
+        "system/bt/btif/avrcp",
+        "system/bt/include",
+        "system/bt/btcore/include",
+        "system/bt/hci/include",
+        "system/bt/stack/include",
+        "system/bt/stack/btm/btm_int.h",
+        "system/bt/utils/include",
+        "system/bt/udrv/include",
+        "system/bt/packet/avrcp",
+        "system/bt/packet/base",
+        "system/bt/profile/avrcp",
+        "system/bt/udrv/include"
+    ],
+    static_libs: [
+        "lib-bt-packets",
+        "libbluetooth-types",
+        "libosi",
+    ],
+}
+
+// mediatek static library for target
+// ========================================================
+cc_library_static {
+    name: "libbt-mtk_cust",
+    defaults: [
+        "libbt-mtk_cust_defaults",
+        "mtk_hcidebug_defaults",
+    ],
+    local_include_dirs: ["include"],
+
+    srcs: [
+        "bta/av/mtk_bta_av_act.cc",
+        "bta/ag/mtk_bta_ag_cmd.cc",
+        "bta/hh/bta_hh_le.cc",
+        "interop/interop_mtk.cc",
+        "stack/sdp/mtk_sdp_utils.cc",
+        "stack/l2cap/l2c_api.cc",
+        "stack/btm/btm_sco.cc",
+        "stack/a2dp/a2dp_sbc_encoder.cc",
+        "btif/mtk_btif_av.cc",
+        "btif/mtk_btif_ble_scanner.cc",
+        "config/log_mode.cc",
+        "config/log_time.cc",
+        "config/mtk_stack_config.cc",
+        "config/snoop_log_config.cc",
+        "hci/fw_logger_filter.cc",
+        "hci/fw_logger_switch.cc",
+        "hci/hci_inbound_data_monitor.cc",
+        "hci/log_file_controller.cc",
+        "hci/log_tree_mgr.cc",
+        "hci/log_writer.cc",
+        "hci/logs_stats.cc",
+        "hci/snoop_packetizer.cc",
+        "hci/twrite.cc",
+        "log/bt_log_command_handler.cc",
+        "log/bt_log_controller.cc",
+        "log/bt_log_tool.cc",
+        "log/bt_logmode_watcher.cc",
+        "stack/sdp/mtk_sdp_service.cc",
+        "utils/socket_client.cc",
+        "utils/socket_server.cc",
+        "utils/mtk_util.cc",
+        "packet/avrcp/application_setting_text_values_packet.cc",
+        "packet/avrcp/application_setting_values_packet.cc",
+        "packet/avrcp/list_application_setting_packet.cc",
+        "packet/avrcp/mtk_register_notification_packet.cc",
+        "profile/avrcp/mtk_device.cc",
+    ],
+}
+
+// for now, mock IOT list for native test in which source file
+// have IOT list related code
+// ========================================================
+cc_library_static {
+    name: "libbt-mtk_cust-for-test",
+    defaults: ["fluoride_defaults"],
+    host_supported: true,
+
+    srcs: [
+        "test/common/interop_mtk_mock.cc",
+    ],
+}
+
+// MTK cust unit tests for target
+// ========================================================
+cc_test {
+    name: "mtk-bt-cust-unit-test",
+    defaults: ["fluoride_defaults"],
+    test_suites: ["device-tests"],
+    local_include_dirs: ["include"],
+    include_dirs: [
+        "system/core/base/include",
+    ],
+    srcs: [
+       "test/bluetooth_log_unittest.cc",
+    ],
+    shared_libs: [
+        "android.hardware.bluetooth@1.0",
+        "libhidlbase",
+        "libhidltransport",
+        "libhwbinder",
+        "libbase",
+        "liblog",
+        "libcutils",
+        "libdl",
+        "libprotobuf-cpp-lite",
+        "libutils",
+    ],
+    static_libs: [
+        "libbt-hci",
+        "libbt-mtk_cust",
+        "libbt-protos-lite",
+        "libgmock",
+        "libosi",
+    ],
+}
