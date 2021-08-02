@@ -1,0 +1,295 @@
+/* Copyright Statement:
+*
+* This software/firmware and related documentation ("MediaTek Software") are
+* protected under relevant copyright laws. The information contained herein
+* is confidential and proprietary to MediaTek Inc. and/or its licensors.
+* Without the prior written permission of MediaTek inc. and/or its licensors,
+* any reproduction, modification, use or disclosure of MediaTek Software,
+* and information contained herein, in whole or in part, shall be strictly prohibited.
+*
+* MediaTek Inc. (C) 2010. All rights reserved.
+*
+* BY OPENING THIS FILE, RECEIVER HEREBY UNEQUIVOCALLY ACKNOWLEDGES AND AGREES
+* THAT THE SOFTWARE/FIRMWARE AND ITS DOCUMENTATIONS ("MEDIATEK SOFTWARE")
+* RECEIVED FROM MEDIATEK AND/OR ITS REPRESENTATIVES ARE PROVIDED TO RECEIVER ON
+* AN "AS-IS" BASIS ONLY. MEDIATEK EXPRESSLY DISCLAIMS ANY AND ALL WARRANTIES,
+* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NONINFRINGEMENT.
+* NEITHER DOES MEDIATEK PROVIDE ANY WARRANTY WHATSOEVER WITH RESPECT TO THE
+* SOFTWARE OF ANY THIRD PARTY WHICH MAY BE USED BY, INCORPORATED IN, OR
+* SUPPLIED WITH THE MEDIATEK SOFTWARE, AND RECEIVER AGREES TO LOOK ONLY TO SUCH
+* THIRD PARTY FOR ANY WARRANTY CLAIM RELATING THERETO. RECEIVER EXPRESSLY ACKNOWLEDGES
+* THAT IT IS RECEIVER'S SOLE RESPONSIBILITY TO OBTAIN FROM ANY THIRD PARTY ALL PROPER LICENSES
+* CONTAINED IN MEDIATEK SOFTWARE. MEDIATEK SHALL ALSO NOT BE RESPONSIBLE FOR ANY MEDIATEK
+* SOFTWARE RELEASES MADE TO RECEIVER'S SPECIFICATION OR TO CONFORM TO A PARTICULAR
+* STANDARD OR OPEN FORUM. RECEIVER'S SOLE AND EXCLUSIVE REMEDY AND MEDIATEK'S ENTIRE AND
+* CUMULATIVE LIABILITY WITH RESPECT TO THE MEDIATEK SOFTWARE RELEASED HEREUNDER WILL BE,
+* AT MEDIATEK'S OPTION, TO REVISE OR REPLACE THE MEDIATEK SOFTWARE AT ISSUE,
+* OR REFUND ANY SOFTWARE LICENSE FEES OR SERVICE CHARGE PAID BY RECEIVER TO
+* MEDIATEK FOR SUCH MEDIATEK SOFTWARE AT ISSUE.
+*
+* The following software/firmware and/or related documentation ("MediaTek Software")
+* have been modified by MediaTek Inc. All revisions are subject to any receiver's
+* applicable license agreements with MediaTek Inc.
+*/
+
+
+#ifndef ANDROID_INCLUDE_BT_MESH_PARAM_H
+#define ANDROID_INCLUDE_BT_MESH_PARAM_H
+
+#include <stdint.h>
+#include "bluetooth.h"
+
+__BEGIN_DECLS
+
+
+#define MESH_PARAM_MODEL_INVALID_ELEMENT_INDEX 0xFFFF
+
+/*The Algorithm values*/
+#define MESH_PARAM_PROV_CAPABILITY_ALGORITHM_FIPS_P256_ELLIPTIC_CURVE    (1<<0)    /**< Capabilities bit indicating that the FIPS P256 Elliptic Curve algorithm is supported. */
+
+/*The Supported Public key OOB type */
+#define MESH_PARAM_PROV_CAPABILITY_OOB_PUBLIC_KEY_TYPE_INBAND            (0)       /**< Capabilities bit indicating that the public key is available in-band. If no public key type is set, this is the default */
+#define MESH_PARAM_PROV_CAPABILITY_OOB_PUBLIC_KEY_TYPE_OOB               (1<<0)    /**< Capabilities bit indicating that the public key is available OOB. */
+
+/*Provision OOB Info */
+#define MESH_PARAM_PROV_OOB_INFO_FIELD_OTHER                          (1 << 0x00)   /**< Other location */
+#define MESH_PARAM_PROV_OOB_INFO_FIELD_ELECTRONIC_URI                 (1 << 0x01)   /**< Electronic / URI. */
+#define MESH_PARAM_PROV_OOB_INFO_FIELD_2D_MACHINE_READABLE_CODE       (1 << 0x02)   /**< 2D machine-readable code. */
+#define MESH_PARAM_PROV_OOB_INFO_FIELD_BAR_CODE                       (1 << 0x03)   /**< Bar code */
+#define MESH_PARAM_PROV_OOB_INFO_FIELD_NFC                            (1 << 0x04)   /**< Near Field Communication (NFC) */
+#define MESH_PARAM_PROV_OOB_INFO_FIELD_NUMBER                         (1 << 0x05)   /**< Number */
+#define MESH_PARAM_PROV_OOB_INFO_FIELD_STRING                         (1 << 0x06)   /**< String */
+#define MESH_PARAM_PROV_OOB_INFO_FIELD_ON_BOX                         (1 << 0x0B)   /**< On box */
+#define MESH_PARAM_PROV_OOB_INFO_FIELD_INSIDE_BOX                     (1 << 0x0C)   /**< Inside box */
+#define MESH_PARAM_PROV_OOB_INFO_FIELD_ON_PIECE_OF_PAPER              (1 << 0x0D)   /**< On piece of paper */
+#define MESH_PARAM_PROV_OOB_INFO_FIELD_INSIDE_MANUAL                  (1 << 0x0E)   /**< Inside manual */
+#define MESH_PARAM_PROV_OOB_INFO_FIELD_ON_DEVICE                      (1 << 0x0F)   /**< On device */
+
+/*OOB type description */
+#define MESH_PARAM_PROV_START_ALGORITHM_FIPS_P256_ELLIPTIC_CURVE      (0x00)    /**< FIPS P256 Elliptic Curve */
+#define MESH_PARAM_PROV_START_PUBLIC_KEY_NO_OOB                       (0x00)    /**< No OOB Public Key is used */
+#define MESH_PARAM_PROV_START_PUBLIC_KEY_OOB                          (0x01)    /**< OOB Public Key is used */
+
+/*The Authentication Method values */
+#define MESH_PARAM_PROV_START_AUTHEN_METHOD_NO_OOB                    (0x00)    /**< No OOB authentication is used */
+#define MESH_PARAM_PROV_START_AUTHEN_METHOD_STATIC_OOB                (0x01)    /**< Static OOB authentication is used */
+#define MESH_PARAM_PROV_START_AUTHEN_METHOD_OUTPUT_OOB                (0x02)    /**< Output OOB authentication is used */
+#define MESH_PARAM_PROV_START_AUTHEN_METHOD_INPUT_OOB                 (0x03)    /**< Input OOB authentication is used */
+#define MESH_PARAM_PROV_CAPABILITY_OOB_STATIC_TYPE_SUPPORTED          (1<<0)    /**< Capabilities bit indicating that static OOB authentication is supported. */
+
+/*Sig Group address type description */
+#define MESH_PARAM_ADDR_GROUP_PROXIES_VALUE    0xFFFC  /**< All-proxies group address. */
+#define MESH_PARAM_ADDR_GROUP_FRIENDS_VALUE    0xFFFD  /**< All-friends group address. */
+#define MESH_PARAM_ADDR_GROUP_RELAYS_VALUE     0xFFFE  /**< All-relays group address. */
+#define MESH_PARAM_ADDR_GROUP_NODES_VALUE      0xFFFF  /**< All-nodes group address. */
+
+/*Primary network key */
+#define MESH_PARAM_GLOBAL_PRIMARY_NETWORK_KEY_INDEX  (0x0)    /**< Primary network key index in mesh, can't be modified.*/
+
+/* Location description */
+#define MESH_PARAM_MODEL_ELEMENT_LOCATION_FIRST              0x0001
+#define MESH_PARAM_MODEL_ELEMENT_LOCATION_SECOND             0x0002
+#define MESH_PARAM_MODEL_ELEMENT_LOCATION_FRONT              0x0100
+#define MESH_PARAM_MODEL_ELEMENT_LOCATION_BACK               0x0101
+#define MESH_PARAM_MODEL_ELEMENT_LOCATION_TOP                0x0102
+#define MESH_PARAM_MODEL_ELEMENT_LOCATION_BOTTOM             0x0103
+#define MESH_PARAM_MODEL_ELEMENT_LOCATION_UPPER              0x0104
+#define MESH_PARAM_MODEL_ELEMENT_LOCATION_LOWER              0x0105
+#define MESH_PARAM_MODEL_ELEMENT_LOCATION_MAIN               0x0106
+
+/*SIG Generic model ID */
+#define MESH_PARAM_SIG_MODEL_ID_CONFIGURATION_SERVER 0x0000
+#define MESH_PARAM_SIG_MODEL_ID_CONFIGURATION_CLIENT 0x0001
+#define MESH_PARAM_SIG_MODEL_ID_HEALTH_SERVER 0x0002
+#define MESH_PARAM_SIG_MODEL_ID_HEALTH_CLIENT 0x0003
+#define MESH_PARAM_SIG_MODEL_ID_GENERIC_ONOFF_SERVER    0x1000
+#define MESH_PARAM_SIG_MODEL_ID_GENERIC_ONOFF_CLIENT    0x1001
+#define MESH_PARAM_SIG_MODEL_ID_GENERIC_LEVEL_SERVER    0x1002
+#define MESH_PARAM_SIG_MODEL_ID_GENERIC_LEVEL_CLIENT    0x1003
+#define MESH_PARAM_SIG_MODEL_ID_GENERIC_DEFAULT_TRANSITION_TIME_SERVER    0x1004
+#define MESH_PARAM_SIG_MODEL_ID_GENERIC_DEFAULT_TRANSITION_TIME_CLIENT    0x1005
+#define MESH_PARAM_SIG_MODEL_ID_GENERIC_POWER_ONOFF_SERVER    0x1006
+#define MESH_PARAM_SIG_MODEL_ID_GENERIC_POWER_ONOFF_SETUP_SERVER    0x1007
+#define MESH_PARAM_SIG_MODEL_ID_GENERIC_POWER_ONOFF_CLIENT    0x1008
+#define MESH_PARAM_SIG_MODEL_ID_GENERIC_POWER_LEVEL_SERVER    0x1009
+#define MESH_PARAM_SIG_MODEL_ID_GENERIC_POWER_LEVEL_SETUP_SERVER    0x100a
+#define MESH_PARAM_SIG_MODEL_ID_GENERIC_POWER_LEVEL_CLENT    0x100b
+#define MESH_PARAM_SIG_MODEL_ID_GENERIC_BATTERY_SERVER    0x100c
+#define MESH_PARAM_SIG_MODEL_ID_GENERIC_BATTERY_CLIENT    0c100d
+#define MESH_PARAM_SIG_MODEL_ID_GENERIC_LOCATION_SERVER    0x100e
+#define MESH_PARAM_SIG_MODEL_ID_GENERIC_LOCATION_SETUP_SERVER    0x100f
+#define MESH_PARAM_SIG_MODEL_ID_GENERIC_LOCATION_CLIENT    0x1010
+#define MESH_PARAM_SIG_MODEL_ID_GENERIC_ADMIN_PROPERTY_SERVER    0x1011
+#define MESH_PARAM_SIG_MODEL_ID_GENERIC_MANUFACTURER_PROPERTY_SERVER    0x1012
+#define MESH_PARAM_SIG_MODEL_ID_GENERIC_USER_PROPERTY_SERVER    0x1013
+#define MESH_PARAM_SIG_MODEL_ID_GENERIC_CLIENT_PROPERTY_SERVER    0x1014
+#define MESH_PARAM_SIG_MODEL_ID_GENERIC_PROPERTY_CLENT    0x1015
+
+/*Generic On Off Model Message Definition*/
+#define MESH_PARAM_MSG_GENERIC_ONOFF_GET               0x8201
+#define MESH_PARAM_MSG_GENERIC_ONOFF_SET               0x8202
+#define MESH_PARAM_MSG_GENERIC_ONOFF_SET_UNRELIABLE    0x8203
+#define MESH_PARAM_MSG_GENERIC_ONOFF_STATUS            0x8204
+
+/*Generic Level Model Message Definition*/
+#define MESH_PARAM_MSG_GENERIC_LEVEL_GET                                 0x8205
+#define MESH_PARAM_MSG_GENERIC_LEVEL_SET                                 0x8206
+#define MESH_PARAM_MSG_GENERIC_LEVEL_SET_UNACKNOWLEDGED                  0x8207
+#define MESH_PARAM_MSG_GENERIC_LEVEL_STATUS                              0x8208
+#define MESH_PARAM_MSG_GENERIC_DELTA_SET                                 0x8209
+#define MESH_PARAM_MSG_GENERIC_DELTA_SET_UNACKNOWLEDGED                  0x820A
+#define MESH_PARAM_MSG_GENERIC_MOVE_SET                                  0x820B
+#define MESH_PARAM_MSG_GENERIC_MOVE_SET_UNACKNOWLEDGED                   0x820C
+
+/*LIGHTNESS Model Message Definition*/
+#define MESH_PARAM_MSG_LIGHT_LIGHTNESS_GET                               0x824B
+#define MESH_PARAM_MSG_LIGHT_LIGHTNESS_SET                               0x824C
+#define MESH_PARAM_MSG_LIGHT_LIGHTNESS_SET_UNACKNOWLEDGED                0x824D
+#define MESH_PARAM_MSG_LIGHT_LIGHTNESS_STATUS                            0x824E
+#define MESH_PARAM_MSG_LIGHT_LIGHTNESS_LINEAR_GET                        0x824F
+#define MESH_PARAM_MSG_LIGHT_LIGHTNESS_LINEAR_SET                        0x8250
+#define MESH_PARAM_MSG_LIGHT_LIGHTNESS_LINEAR_SET_UNACKNOWLEDGED         0x8251
+#define MESH_PARAM_MSG_LIGHT_LIGHTNESS_LINEAR_STATUS                     0x8252
+#define MESH_PARAM_MSG_LIGHT_LIGHTNESS_LAST_GET                          0x8253
+#define MESH_PARAM_MSG_LIGHT_LIGHTNESS_LAST_STATUS                       0x8254
+#define MESH_PARAM_MSG_LIGHT_LIGHTNESS_DEFAULT_GET                       0x8255
+#define MESH_PARAM_MSG_LIGHT_LIGHTNESS_DEFAULT_STATUS                    0x8256
+#define MESH_PARAM_MSG_LIGHT_LIGHTNESS_RANGE_GET                         0x8257
+#define MESH_PARAM_MSG_LIGHT_LIGHTNESS_RANGE_STATUS                      0x8258
+#define MESH_PARAM_MSG_LIGHT_LIGHTNESS_DEFAULT_SET                       0x8259
+#define MESH_PARAM_MSG_LIGHT_LIGHTNESS_DEFAULT_SET_UNACKNOWLEDGED        0x825A
+#define MESH_PARAM_MSG_LIGHT_LIGHTNESS_RANGE_SET                         0x825B
+#define MESH_PARAM_MSG_LIGHT_LIGHTNESS_RANGE_SET_UNACKNOWLEDGED          0x825C
+
+/*CTL Model Message Definition*/
+#define MESH_PARAM_MSG_LIGHT_CTL_GET                                     0x825D
+#define MESH_PARAM_MSG_LIGHT_CTL_SET                                     0x825E
+#define MESH_PARAM_MSG_LIGHT_CTL_SET_UNACKNOWLEDGED                      0x825F
+#define MESH_PARAM_MSG_LIGHT_CTL_STATUS                                  0x8260
+#define MESH_PARAM_MSG_LIGHT_CTL_TEMPERATURE_GET                         0x8261
+#define MESH_PARAM_MSG_LIGHT_CTL_TEMPERATURE_RANGE_GET                   0x8262
+#define MESH_PARAM_MSG_LIGHT_CTL_TEMPERATURE_RANGE_STATUS                0x8263
+#define MESH_PARAM_MSG_LIGHT_CTL_TEMPERATURE_SET                         0x8264
+#define MESH_PARAM_MSG_LIGHT_CTL_TEMPERATURE_SET_UNACKNOWLEDGED          0x8265
+#define MESH_PARAM_MSG_LIGHT_CTL_TEMPERATURE_STATUS                      0x8266
+#define MESH_PARAM_MSG_LIGHT_CTL_DEFAULT_GET                             0x8267
+#define MESH_PARAM_MSG_LIGHT_CTL_DEFAULT_STATUS                          0x8268
+#define MESH_PARAM_MSG_LIGHT_CTL_DEFAULT_SET                             0x8269
+#define MESH_PARAM_MSG_LIGHT_CTL_DEFAULT_SET_UNACKNOWLEDGED              0x826A
+#define MESH_PARAM_MSG_LIGHT_CTL_TEMPERATURE_RANGE_SET                   0x826B
+#define MESH_PARAM_MSG_LIGHT_CTL_TEMPERATURE_RANGE_SET_UNACKNOWLEDGED    0x826C
+
+/*HSL Model Message Definition*/
+#define MESH_PARAM_MSG_LIGHT_HSL_GET                                     0x826D
+#define MESH_PARAM_MSG_LIGHT_HSL_HUE_GET                                 0x826E
+#define MESH_PARAM_MSG_LIGHT_HSL_HUE_SET                                 0x826F
+#define MESH_PARAM_MSG_LIGHT_HSL_HUE_SET_UNACKNOWLEDGED                  0x8270
+#define MESH_PARAM_MSG_LIGHT_HSL_HUE_STATUS                              0x8271
+#define MESH_PARAM_MSG_LIGHT_HSL_SATURATION_GET                          0x8272
+#define MESH_PARAM_MSG_LIGHT_HSL_SATURATION_SET                          0x8273
+#define MESH_PARAM_MSG_LIGHT_HSL_SATURATION_SET_UNACKNOWLEDGED           0x8274
+#define MESH_PARAM_MSG_LIGHT_HSL_SATURATION_STATUS                       0x8275
+#define MESH_PARAM_MSG_LIGHT_HSL_SET                                     0x8276
+#define MESH_PARAM_MSG_LIGHT_HSL_SET_UNACKNOWLEDGED                      0x8277
+#define MESH_PARAM_MSG_LIGHT_HSL_STATUS                                  0x8278
+#define MESH_PARAM_MSG_LIGHT_HSL_TARGET_GET                              0x8279
+#define MESH_PARAM_MSG_LIGHT_HSL_TARGET_STATUS                           0x827A
+#define MESH_PARAM_MSG_LIGHT_HSL_DEFAULT_GET                             0x827B
+#define MESH_PARAM_MSG_LIGHT_HSL_DEFAULT_STATUS                          0x827C
+#define MESH_PARAM_MSG_LIGHT_HSL_RANGE_GET                               0x827D
+#define MESH_PARAM_MSG_LIGHT_HSL_RANGE_STATUS                            0x827E
+#define MESH_PARAM_MSG_LIGHT_HSL_DEFAULT_SET                             0x827F
+#define MESH_PARAM_MSG_LIGHT_HSL_DEFAULT_SET_UNACKNOWLEDGED              0x8280
+#define MESH_PARAM_MSG_LIGHT_HSL_RANGE_SET                               0x8281
+#define MESH_PARAM_MSG_LIGHT_HSL_RANGE_SET_UNACKNOWLEDGED                0x8282
+
+/*Health model message definition*/
+#define MESH_PARAM_MSG_HEALTH_CURRENT_STATUS 0x04
+#define MESH_PARAM_MSG_HEALTH_FAULT_STATUS   0x05
+#define MESH_PARAM_MSG_HEALTH_FAULT_CLEAR    0x802F
+#define MESH_PARAM_MSG_HEALTH_FAULT_CLEAR_UNACKNOWLEDGED 0x8030
+#define MESH_PARAM_MSG_HEALTH_FAULT_GET  0x8031
+#define MESH_PARAM_MSG_HEALTH_FAULT_TEST 0x8032
+#define MESH_PARAM_MSG_HEALTH_FAULT_TEST_UNACKNOWLEDGED  0x8033
+#define MESH_PARAM_MSG_HEALTH_PERIOD_GET 0x8034
+#define MESH_PARAM_MSG_HEALTH_PERIOD_SET 0x8035
+#define MESH_PARAM_MSG_HEALTH_PERIOD_SET_UNACKNOWLEDGED  0x8036
+#define MESH_PARAM_MSG_HEALTH_PERIOD_STATUS  0x8037
+#define MESH_PARAM_MSG_HEALTH_ATTENTION_GET  0x8004
+#define MESH_PARAM_MSG_HEALTH_ATTENTION_SET  0x8005
+#define MESH_PARAM_MSG_HEALTH_ATTENTION_SET_UNACKNOWLEDGED   0x8006
+#define MESH_PARAM_MSG_HEALTH_ATTENTION_STATUS   0x8007
+
+/*Vendor Models Definition */
+#define MESH_PARAM_VENDOR_MODEL_ID(companyid, modelid) ((companyid << 16) | modelid)
+#define MESH_PARAM_MODEL_COMPANY_ID_NONE 0xFFFF
+#define MESH_PARAM_VENDOR_COMPANY_ID     0x000a
+#define MESH_PARAM_VENDOR_MODEL_ID1      0x002A
+#define MESH_PARAM_VENDOR_MODEL_ID2      0x002B
+#define MESH_PARAM_VENDOR_OPCODE_1       0xC1
+#define MESH_PARAM_VENDOR_OPCODE_2       0xC2
+#define MESH_PARAM_VENDOR_OPCODE_3       0x0001
+#define MESH_PARAM_VENDOR_OPCODE_4       0x0002
+
+
+/*CTL State and bind*/
+#define MESH_PARAM_MODEL_BINDING_PRESENT_VALUE   0x1
+#define MESH_PARAM_MODEL_BINDING_TARGET_VALUE    0x2
+#define MESH_PARAM_MODEL_BINDING_BOTH_VALUE      (MESH_PARAM_MODEL_BINDING_PRESENT_VALUE | MESH_PARAM_MODEL_BINDING_TARGET_VALUE)
+#define MESH_PARAM_MODEL_BINDING_MASK            0x3
+
+#define MESH_PARAM_MODEL_STATE_GENERIC_ON_OFF                  0x1
+#define MESH_PARAM_MODEL_STATE_GENERIC_LEVEL                   0x2
+#define MESH_PARAM_MODEL_STATE_LIGHTING_LIGHTNESS_ACTUAL       0x20
+#define MESH_PARAM_MODEL_STATE_LIGHTING_LIGHTNESS_LINEAR       0x40
+#define MESH_PARAM_MODEL_STATE_LIGHTING_LIGHTNESS_RANGE        0x80
+#define MESH_PARAM_MODEL_STATE_LIGHTING_CTL_LIGHTNESS          0x100
+#define MESH_PARAM_MODEL_STATE_LIGHTING_CTL_TEMPERATURE        0x200
+#define MESH_PARAM_MODEL_STATE_MASK                            0x7FF
+
+typedef enum {
+    MESH_PARAM_STATE_IDLE,
+    MESH_PARAM_STATE_PROVISIONING,
+    MESH_PARAM_STATE_PROVISIONED,
+    MESH_PARAM_STATE_GET_COMPOSITION,
+    MESH_PARAM_STATE_GET_COMPOSITION_DONE,
+    MESH_PARAM_STATE_ADD_APPKEY,
+    MESH_PARAM_STATE_ADD_APPKEY_DONE,
+    MESH_PARAM_STATE_BIND_MODEL,
+    MESH_PARAM_STATE_BIND_MODEL_DONE,
+    MESH_PARAM_STATE_DONE,
+}MESH_PARAM_STATE_T;
+
+/** @brief Status codes for messages */
+#define MESH_PARAM_ACCESS_MSG_STATUS_SUCCESS     0                        /**< Success */
+
+
+#define MESH_PARAM_MSG_RESEND_COUNT  (0x01)
+#define MESH_PARAM_MSG_RESEND_INTERVAL  (6)  //unit is second
+
+#define MESH_PARAM_COMPOSITION_DATA_LEN           10
+
+#define MESH_PARAM_CMD_KEY_CNF    "MESH"
+#define VERSION "MESH_SDK_V86897"
+#define MESH_PARAM_MESH_MAX_BDADDR_STR_LEN (18)
+
+#define MESH_PARAM_MESH_SUCCESS 0
+#define MESH_PARAM_MESH_FAILED (-1)
+
+#define MESH_PARAM_MAX_ARGS 25
+#define MESH_PARAM_MAX_KEY_LEN    32
+
+#define MESH_PARAM_MAX_PATH_LEN   256
+#define MESH_PARAM_HISTORY_FILE   ".MESH_PARAM_history"
+
+#define MESH_PARAM_MAX_MODULES    40
+
+static uint8_t deviceUuid[MESHIF_UUID_SIZE] =
+{
+    0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88, 0x99, 0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff
+};
+
+__END_DECLS
+
+#endif /* ANDROID_INCLUDE_BT_MESH_PARAM_H */
