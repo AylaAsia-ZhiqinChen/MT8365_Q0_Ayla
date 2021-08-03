@@ -1,0 +1,39 @@
+/* SPDX-License-Identifier: GPL-2.0
+ *
+ * Copyright (c) 2019 MediaTek Inc.
+ */
+
+#ifndef __HELIO_DVFSRC_OPP_MT8168_H
+#define __HELIO_DVFSRC_OPP_MT8168_H
+
+#include <linux/pm_qos.h>
+
+enum ddr_opp {
+	DDR_OPP_0 = 0,
+	DDR_OPP_1,
+	DDR_OPP_2,
+	DDR_OPP_NUM,
+	DDR_OPP_UNREQ = PM_QOS_EMI_OPP_DEFAULT_VALUE,
+};
+
+enum vcore_opp {
+	VCORE_OPP_0 = 0,
+	VCORE_OPP_1,
+	VCORE_OPP_2,
+	VCORE_OPP_NUM,
+	VCORE_OPP_UNREQ = PM_QOS_VCORE_OPP_DEFAULT_VALUE,
+};
+
+enum vcore_dvfs_opp {
+	VCORE_DVFS_OPP_0 = 0,
+	VCORE_DVFS_OPP_1,
+	VCORE_DVFS_OPP_2,
+	VCORE_DVFS_OPP_3,
+	VCORE_DVFS_OPP_4,
+	VCORE_DVFS_OPP_5,
+	VCORE_DVFS_OPP_NUM,
+	VCORE_DVFS_OPP_UNREQ = PM_QOS_VCORE_DVFS_FIXED_OPP_DEFAULT_VALUE,
+};
+
+#endif /* __HELIO_DVFSRC_OPP_MT8168_H */
+

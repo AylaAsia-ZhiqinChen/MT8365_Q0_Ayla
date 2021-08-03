@@ -1,0 +1,305 @@
+#
+# Touchscreen driver configuration
+#
+menu "GT9110 Touchscreen Config"
+	depends on TOUCHSCREEN_MTK_GT9110
+
+#if TOUCHSCREEN_MTK_GT9XX
+
+config GTP_USE_PINCTRL
+	bool "GT9110 GPIO use Pinctrl"
+	default n
+	help
+	  Say Y here if you have GT9110 touch panel.
+
+	  If unsure, say N.
+	  This is a GT9110 config , you can config it
+	  if you want to use.
+
+config GTP_FIRMWARE
+	string "GT9110 firmawre group"
+	default "firmware"
+	help
+	  Say Y here if you have GT9110 touch panel.
+
+	  If unsure, say N.
+	  This is a GT9110 config , you can config it
+	  if you want to use.
+
+config GTP_CONFIG
+	string "GT9110 config data group"
+	default "config0"
+	help
+	  Say Y here if you have GT9110 touch panel.
+
+	  If unsure, say N.
+	  This is a GT9110 config , you can config it
+	  if you want to use.
+
+
+config GTP_DRIVER_SEND_CFG
+	bool "GT9110 driver send config"
+	default y
+	help
+	  Say Y here if you have GT9110 touch panel.
+
+	  If unsure, say N.
+	  This is a GT9110 config , you can config it
+	  if you want to use.
+
+
+config GTP_CUSTOM_CFG
+	bool "GT9110 custom config"
+	default n
+	help
+	  Say Y here if you have GT9110 touch panel.
+
+	  If unsure, say N.
+	  This is a GT9110 config , you can config it
+	  if you want to use.
+
+
+config GTP_HAVE_TOUCH_KEY
+	bool "GT9110 touch key enable"
+	default n
+	help
+	  Say Y here if you have GT9110 touch panel.
+
+	  If unsure, say N.
+	  This is a GT9110 config , you can config it
+	  if you want to use.
+
+
+config GTP_WITH_HOVER
+	bool "GT9110 hover enable"
+	default n
+	help
+	  Say Y here if you have GT9110 touch panel.
+
+	  If unsure, say N.
+	  This is a GT9110 config , you can config it
+	  if you want to use.
+
+
+config GTP_CHANGE_X2Y
+	bool "GT9110 X2Y"
+	default n
+	help
+	  Say Y here if you have GT9110 touch panel.
+
+	  If unsure, say N.
+	  This is a GT9110 config , you can config it
+	  if you want to use.
+
+
+config GTP_COMPATIBLE_MODE
+	bool "GT9110 flahless compatible"
+	default n
+	help
+	  Say Y here if you have GT9110 touch panel.
+
+	  If unsure, say N.
+	  This is a GT9110 config , you can config it
+	  if you want to use.
+
+
+config GTP_WARP_X_ON
+	bool "GT9110 swap x"
+	default n
+	help
+	  Say Y here if you have GT9110 touch panel.
+
+	  If unsure, say N.
+	  This is a GT9110 config , you can config it
+	  if you want to use.
+
+
+config GTP_WARP_Y_ON
+	bool "GT9110 swap y"
+	default n
+	help
+	  Say Y here if you have GT9110 touch panel.
+
+	  If unsure, say N.
+	  This is a GT9110 config , you can config it
+	  if you want to use.
+
+
+config GTP_GESTURE_WAKEUP
+	bool "GT9110 gesture wakeup"
+	default n
+	help
+	  Say Y here if you have GT9110 touch panel.
+
+	  If unsure, say N.
+	  This is a GT9110 config , you can config it
+	  if you want to use.
+
+
+config GTP_HOTKNOT
+	bool "GT9110 hotknot"
+	default n
+	help
+	  Say Y here if you have GT9110 touch panel.
+
+	  If unsure, say N.
+	  This is a GT9110 config , you can config it
+	  if you want to use.
+
+
+config HOTKNOT_BLOCK_RW
+	bool "GT9110 hotknot blocking rw"
+	default n
+	help
+	  Say Y here if you have GT9110 touch panel.
+
+	  If unsure, say N.
+	  This is a GT9110 config , you can config it
+	  if you want to use.
+
+
+config GTP_PROXIMITY
+	bool "GT9110 proximity"
+	default n
+	help
+	  Say Y here if you have GT9110 touch panel.
+
+	  If unsure, say N.
+	  This is a GT9110 config , you can config it
+	  if you want to use.
+
+
+config GTP_AUTO_UPDATE
+	bool "GT9110 firmware auto update"
+	default n
+	help
+	  Say Y here if you have GT9110 touch panel.
+
+	  If unsure, say N.
+	  This is a GT9110 config , you can config it
+	  if you want to use.
+
+
+config GTP_AUTO_UPDATE_CFG
+	bool "GT9110 config data auto update"
+	default n
+	help
+	  Say Y here if you have GT9110 touch panel.
+
+	  If unsure, say N.
+	  This is a GT9110 config , you can config it
+	  if you want to use.
+
+
+config GTP_REQUEST_FW_UPDATE
+	bool "GT9110 firmware in request firmware"
+	default n
+	help
+	  Say Y here if you have GT9110 touch panel.
+
+	  If unsure, say N.
+	  This is a GT9110 config , you can config it
+	  if you want to use.
+
+
+config GTP_SUPPORT_I2C_DMA
+	bool "GT9110 support i2c dma"
+	default n
+	help
+	  Say Y here if you have GT9110 touch panel.
+
+	  If unsure, say N.
+	  This is a GT9110 config , you can config it
+	  if you want to use.
+
+
+config GTP_CREATE_WR_NODE
+	bool "GT9110 create debug node"
+	default y
+	help
+	  Say Y here if you have GT9110 touch panel.
+
+	  If unsure, say N.
+	  This is a GT9110 config , you can config it
+	  if you want to use.
+
+
+config GTP_ESD_PROTECT
+	bool "GT9110 esd protection"
+	default y
+	help
+	  Say Y here if you have GT9110 touch panel.
+
+	  If unsure, say N.
+	  This is a GT9110 config , you can config it
+	  if you want to use.
+
+
+config GTP_CHARGER_DETECT
+	bool "GT9110 charger detection"
+	default n
+	help
+	  Say Y here if you have GT9110 touch panel.
+
+	  If unsure, say N.
+	  This is a GT9110 config , you can config it
+	  if you want to use.
+
+
+config GTP_CHARGER_SWITCH
+	bool "GT9110 for Mediatek package"
+	default n
+	help
+	  Say Y here if you have GT9110 touch panel.
+
+	  If unsure, say N.
+	  This is a GT9110 config , you can config it
+	  if you want to use.
+
+
+config GTP_DEBUG_ARRAY_ON
+	bool "GT9110 debug array"
+	default n
+	help
+	  Say Y here if you have GT9110 touch panel.
+
+	  If unsure, say N.
+	  This is a GT9110 config , you can config it
+	  if you want to use.
+
+
+config GTP_DEBUG_FUNC_ON
+	bool "GT9110 debug func on"
+	default n
+	help
+	  Say Y here if you have GT9110 touch panel.
+
+	  If unsure, say N.
+	  This is a GT9110 config , you can config it
+	  if you want to use.
+
+
+config GTP_DEBUG_ON
+	bool "GT9110 debug on"
+	default n
+	help
+	  Say Y here if you have GT9110 touch panel.
+
+	  If unsure, say N.
+	  This is a GT9110 config , you can config it
+	  if you want to use.
+
+
+config GTP_POWER_CTRL_SLEEP
+	bool "GT9110 power down when sleeping"
+	default n
+	help
+	  Say Y here if you have GT9110 touch panel.
+
+	  If unsure, say N.
+	  This is a GT9110 config , you can config it
+	  if you want to use.
+
+
+#endif
+endmenu

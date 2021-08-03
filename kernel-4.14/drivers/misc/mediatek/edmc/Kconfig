@@ -1,0 +1,8 @@
+config MTK_EDMC_SUPPORT
+	bool "EDMC (External DMA) Driver"
+	depends on MTK_VPU_SUPPORT
+	help
+	  The purpose of Mediatek eDMC is performing
+	  data transfer between external memory such as
+	  DRAM/TCM, It will cooperate with MDLA. eDMC
+	  support different modes for image process.

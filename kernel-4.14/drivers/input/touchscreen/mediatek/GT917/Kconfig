@@ -1,0 +1,230 @@
+#
+# GT917 Touchscreen driver configuration
+#
+menu "GT917 Touchscreen Config"
+	depends on TOUCHSCREEN_MTK_GT917
+
+#if TOUCHSCREEN_MTK_GT917
+
+config GTP_USE_PINCTRL
+	bool "GT917 GPIO use Pinctrl"
+	default y
+	help
+	  Say Y here if you want use pinctrl subsystem to operate gpio.
+	  Say N here if you want use libgpio to operate gpio.
+	  Build in 2.x kernel should say N.
+	  Default set to Y
+
+config GTP_FIRMWARE
+	string "GT917 firmawre group"
+	default "firmware1"
+
+config GTP_CONFIG
+	string "GT917 config data group"
+	default "config1"
+
+config GTP_DRIVER_SEND_CFG
+	bool "GT917 driver send config"
+	default y
+	help
+	  Say Y here if you have GT9 touch panel GTP_DRIVER_SEND_CFG.
+	  When turn this option on, driver will send config group data
+	  to touch IC to set touch IC status.
+	  If unsure, say N.
+
+config GTP_CUSTOM_CFG
+	bool "GT917 custom config"
+	help
+	  Say Y here if you have GT9 touch panel GTP_CUSTOM_CFG.
+	  When turn this option on, you can customize the config group data,
+	  which can send to touch IC to set touch IC status.
+	  If unsure, say N.
+
+config GTP_HAVE_TOUCH_KEY
+	bool "GT917 touch key enable"
+	default y
+	help
+	  Say Y here if you have GT9 touch panel GTP_HAVE_TOUCH_KEY.
+	  When turn this option on, you can use touch virtual key function,
+	  it will report key event to input subsystem.
+	  If unsure, say N.
+
+config GTP_CHANGE_X2Y
+	bool "GT917 X2Y"
+	help
+	  Say Y here if you have GT9 touch panel GTP_CHANGE_X2Y.
+	  When turn this option on, coordinate x and y will swap,
+	  check the coordinate and see whether you want it.
+	  If unsure, say N.
+
+config GTP_COMPATIBLE_MODE
+	bool "GT917 flahless compatible"
+	help
+	  Say Y here if you have GT9 touch panel GTP_COMPATIBLE_MODE.
+	  When turn this option on, driver will check touch IC type,
+	  and support GT9F wilth old style.
+	  If unsure, say N.
+
+config GTP_WARP_X_ON
+	bool "GT917 swap x"
+	help
+	  Say Y here if you have GT9 touch panel GTP_WARP_X_ON.
+	  When turn this option on, coordinate x will change to (x_max - 1 -x),
+	  check the coordinate and see whether you want it.
+	  If unsure, say N.
+
+config GTP_WARP_Y_ON
+	bool "GT917 swap y"
+	help
+	  Say Y here if you have GT9 touch panel GTP_WARP_Y_ON.
+	  When turn this option on, coordinate y will change to (y_max - 1 -y),
+	  check the coordinate and see whether you want it.
+	  If unsure, say N.
+
+config GTP_GESTURE_WAKEUP
+	bool "GT917 gesture wakeup"
+	help
+	  Say Y here if you have GT9 touch panel GTP_GESTURE_WAKEUP.
+	  When turn this option on, driver will support wakeup by gesture in when
+	  display off.
+	  If unsure, say N.
+
+config GTP_HOTKNOT
+	bool "GT917 hotknot"
+	default y
+	help
+	  Say Y here if you have GT9 touch panel GTP_HOTKNOT.
+	  When turn this option on, driver will support hotknot function, it can transfer
+	  data by two panels touch each other.
+	  If unsure, say N.
+
+config HOTKNOT_BLOCK_RW
+	bool "GT917 hotknot blocking rw"
+	help
+	  Say Y here if you have GT9 touch panel HOTKNOT_BLOCK_RW.
+	  When turn this option on, driver will support hotknot read and write with block
+	  unit, to improve transfer speed.
+	  If unsure, say N.
+
+config GTP_PROXIMITY
+	bool "GT917 proximity"
+	help
+	  Say Y here if you have GT9 touch panel GTP_PROXIMITY.
+	  When turn this option on, driver will use hwmsonser to check status, to prevent
+	  report uneccesary misoperation to input system.
+	  If unsure, say N.
+
+config GTP_WITH_PEN
+	bool "GT917 pen enable"
+	help
+	  Say Y here if you have GT9 touch panel GTP_WITH_PEN.
+	  When turn this option on, driver will support pen touch function, allow use to
+	  use pen to operate touch panel.
+	  If unsure, say N.
+
+config GTP_AUTO_UPDATE
+	bool "GT917 firmware auto update"
+	help
+	  Say Y here if you have GT9 touch panel GTP_AUTO_UPDATE.
+	  When turn this option on, driver will enable upgrade touch IC function when boot
+	  up, it will cost extra time, which part to upgrade depend on other options.
+	  If unsure, say N.
+
+config GTP_AUTO_UPDATE_CFG
+	bool "GT917 config data auto update"
+	help
+	  Say Y here if you have GT9 touch panel GTP_AUTO_UPDATE_CFG.
+	  When turn this option on, driver will upgrade touch IC config data when boot up,
+	  it will cost extra time.
+	  If unsure, say N.
+
+config GTP_HEADER_FW_UPDATE
+	bool "GT917 firmware in header file"
+	help
+	  Say Y here if you have GT9 touch panel GTP_HEADER_FW_UPDATE.
+	  When turn this option on, driver will upgrade touch IC firmware when boot up,
+	  it will cost extra time.
+	  If unsure, say N.
+
+config GTP_REQUEST_FW_UPDATE
+	bool "GT917 firmware in request firmware"
+	help
+	  Say Y here if you have GT9 touch panel GTP_REQUEST_FW_UPDATE.
+	  When turn this option on, driver will search firmware in data partition,
+	  it will cost extra time.
+	  If unsure, say N.
+
+config GTP_SUPPORT_I2C_DMA
+	bool "GT917 support i2c dma"
+	help
+	  Say Y here if you have GT9 touch panel GTP_SUPPORT_I2C_DMA.
+	  When turn this option on, driver will use i2c dma mode, usually it will have
+	  a better speed.
+	  If unsure, say N.
+
+config GTP_CREATE_WR_NODE
+	bool "GT917 create debug node"
+	help
+	  Say Y here if you have GT9 touch panel GTP_CREATE_WR_NODE.
+	  When turn this option on, driver will create writeable node to let tool debug,
+	  sometimes it is not allowed since it has potential security issue.
+	  If unsure, say N.
+
+config GTP_ESD_PROTECT
+	bool "GT917 esd protection"
+	help
+	  Say Y here if you have GT9 touch panel GTP_ESD_PROTECT.
+	  When turn this option on, driver will enable ESD(Electo-Static discharge) protect,
+	  it will make touch work more stable, but performance may worse.
+	  If unsure, say N.
+
+config GTP_CHARGER_DETECT
+	bool "GT917 charger detection"
+	help
+	  Say Y here if you have GT9 touch panel GTP_CHARGER_DETECT.
+	  When turn this option on, driver detect charge mode periodic.
+	  Usually not neccessay.
+	  If unsure, say N.
+
+config GTP_CHARGER_SWITCH
+	bool "GT917 charger detection"
+	help
+	  Say Y here if you have GT9 touch panel GTP_CHARGER_SWITCH.
+	  When turn this option on, driver can send charge group data to touch IC.
+	  Usually not neccessay.
+	  If unsure, say N.
+
+config GTP_DEBUG_ARRAY_ON
+	bool "GT917 debug array"
+	help
+	  Say Y here if you have GT9 touch panel GTP_DEBUG_ARRAY_ON.
+	  When turn this option on, macro GTP_DEBUG_ARRAY will print array member, otherwise
+	  it will do nothing.
+	  If unsure, say N.
+
+config GTP_DEBUG_FUNC_ON
+	bool "GT917 debug func on"
+	help
+	  Say Y here if you have GT9 touch panel GTP_DEBUG_FUNC_ON.
+	  When turn this option on, macro GTP_DEBUG_FUNC will print function name and line,
+	  otherwise it will do nothing.
+	  If unsure, say N.
+
+config GTP_DEBUG_ON
+	bool "GT917 debug on"
+	help
+	  Say Y here if you have GT9 touch panel GTP_DEBUG_ON.
+	  When turn this option on, macro GTP_DEBUG will print the content string, otherwise
+	  it will do nothing.
+	  If unsure, say N.
+
+config GTP_POWER_CTRL_SLEEP
+	bool "GT917 power down when sleeping"
+	help
+	  Say Y here if you have GT9 touch panel GTP_POWER_CTRL_SLEEP.
+	  When turn this option on, driver will use i2c send data to control touch IC sleep,
+	  otherwise it will use regulator subsystem.
+	  If unsure, say N.
+
+#endif
+endmenu
