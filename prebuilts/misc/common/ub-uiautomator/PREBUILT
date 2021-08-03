@@ -1,0 +1,10 @@
+ub-uiautomator.jar
+	is obtained from ub-support-test@4720804
+	can be rebuilt from
+		project platform/frameworks/uiautomator
+		revision 1e122aeaafd6421b8f9aa4b378fb728e887552d4
+
+uiautomator-2.2.0-alpha4.jar
+	is obtained from
+		downloading https://maven.google.com/androidx/test/uiautomator/uiautomator/2.2.0-alpha4/uiautomator-2.2.0-alpha4.aar
+		and extracting classes.jar
