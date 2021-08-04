@@ -1,0 +1,15 @@
+Carried from glibc-2.15 we have a stdatomic.h symlink.
+
+There's no motivating build failure I could produce for this. It's incredibly
+cheap to include, and random online posts indicate that stdatomic.h only
+appeared with gcc 4.9. Probably worth checking if this is still needed when we
+move to that.
+
+-----
+diff --git a/usr/include/stdatomic.h b/usr/include/stdatomic.h
+new file mode 120000
+--- /dev/null
++++ b/usr/include/stdatomic.h
+@@ -0,0 +1 @@
++../../../../../../../../bionic/libc/include/stdatomic.h
+\ No newline at end of file

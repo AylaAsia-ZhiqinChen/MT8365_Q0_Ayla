@@ -1,0 +1,14 @@
+%rename link old-link
+%rename link_gcc_c_sequence emsk_link_gcc_c_sequence
+
+*link:
+%(old-link) -L emsk_em9d%s
+
+*emsk_libgloss:
+-ldw_uart
+
+*emsk_libc:
+-lc
+
+*link_gcc_c_sequence:
+%(emsk_link_gcc_c_sequence) --start-group %G %(emsk_libc) %(emsk_libgloss) --end-group
